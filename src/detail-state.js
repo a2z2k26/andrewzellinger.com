@@ -141,7 +141,10 @@ function replaceDetailHistory(entry, overrides = {}) {
 
 function mediaMarkup(entry) {
   const label = entry.media?.label ?? `Tasman Glacier landscape stand-in for ${entry.title}`;
-  return `<div class="media-background-holder landscape detail-unit__media detail-unit__media--placeholder" role="img" aria-label="${escapeHtml(label)}"></div>`;
+  const source = entry.media?.src
+    ? ` style="--portfolio-media-image: url('${escapeHtml(entry.media.src)}')"`
+    : "";
+  return `<div class="media-background-holder landscape detail-unit__media detail-unit__media--placeholder" role="img" aria-label="${escapeHtml(label)}"${source}></div>`;
 }
 
 function unitMarkup(entry, index, entries, hidden) {

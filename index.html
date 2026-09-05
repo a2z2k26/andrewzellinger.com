@@ -285,6 +285,9 @@
       const media = makeElement("div", "media-background-holder landscape project-media-placeholder");
       media.setAttribute("role", "img");
       media.setAttribute("aria-label", project.media.label);
+      if (project.media.src) {
+        media.style.setProperty("--portfolio-media-image", `url("${project.media.src}")`);
+      }
       mediaSpacing.append(media);
 
       const copySpacing = makeElement("div", "margin-bottom space-medium");

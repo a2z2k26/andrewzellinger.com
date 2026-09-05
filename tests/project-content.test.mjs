@@ -39,7 +39,13 @@ test("project detail data is complete and uses no runtime Notion source referenc
     assert.ok(project.headline);
     assert.ok(project.summary);
     assert.ok(project.media?.label);
-    assert.match(project.media.label, /Tasman Glacier landscape stand-in/);
+    if (project.slug === "mcdonalds") {
+      assert.equal(project.media.src, "/images/projects/mcdonalds.png");
+      assert.equal(project.media.label, "McDonald's self-order kiosk project image");
+    } else {
+      assert.match(project.media.label, /Tasman Glacier landscape stand-in/);
+      assert.equal(project.media.src, undefined);
+    }
     assert.ok(project.metadata.client);
     assert.ok(project.metadata.studio);
     assert.ok(project.metadata.year);

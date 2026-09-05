@@ -939,7 +939,7 @@ figcaption {
 .biography-portrait-placeholder,
 .detail-unit__media {
   background-color: #2b2b2b !important;
-  background-image: url('/images/tasman-glacier-stand-in.jpg') !important;
+  background-image: var(--portfolio-media-image, url('/images/tasman-glacier-stand-in.jpg')) !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;

@@ -1339,7 +1339,8 @@ const projectRecords = [
     ],
     "summary": "McDonald's was in the middle of \"Experience of the Future\" — one of the most ambitious digital transformations in QSR history. Self-order kiosks were rolling out to thousands of locations globally, but the first version of the kiosk application had clear UX problems.",
     "media": {
-      "label": "Temporary neutral image for McDonalds"
+      "label": "McDonald's self-order kiosk project image",
+      "src": "/images/projects/mcdonalds.png"
     },
     "sections": [
       {
@@ -1445,7 +1446,9 @@ export const PROJECTS = Object.freeze(projectRecords.map((project) => {
     meta: Object.freeze([...project.meta]),
     media: Object.freeze({
       ...project.media,
-      label: "Tasman Glacier landscape stand-in for " + project.title,
+      label: project.media.src
+        ? project.media.label
+        : "Tasman Glacier landscape stand-in for " + project.title,
     }),
     sections: publishedNarrative.sections,
   });
