@@ -1,0 +1,38 @@
+:root {
+  --lens-rim: 0.72;
+  --lens-frost: 0.13;
+  --lens-blur: 2.5px;
+  --lens-shadow: 0.55;
+  --lens-shadow-blur: 18px;
+}
+
+.dom-glass-filter-definitions {
+  position: fixed;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.dom-glass-lens-effect {
+  background: rgba(190,200,205,var(--lens-frost)) !important;
+  border: 1px solid rgba(255,255,255,calc(.44 * var(--lens-rim)));
+  box-shadow:
+    0 0 7px rgba(255,255,255,calc(.18 * var(--lens-rim))) inset,
+    calc(-4px * var(--lens-rim)) calc(-5px * var(--lens-rim)) 14px rgba(255,255,255,calc(.34 * var(--lens-rim))) inset,
+    3px 4px 16px rgba(3,5,10,calc(.38 * var(--lens-rim))) inset,
+    0 9px var(--lens-shadow-blur) rgba(0,0,0,calc(.88 * var(--lens-shadow)));
+  backdrop-filter: url("#dom-liquid-glass") blur(var(--lens-blur)) saturate(1.08) contrast(1.08);
+  -webkit-backdrop-filter: url("#dom-liquid-glass") blur(var(--lens-blur)) saturate(1.08) contrast(1.08);
+}
+
+.dom-glass-lens-effect::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: inherit;
+  border-top: 1px solid rgba(255,255,255,calc(.62 * var(--lens-rim)));
+  border-left: 1px solid rgba(255,255,255,calc(.26 * var(--lens-rim)));
+  filter: blur(.35px);
+  opacity: .72;
+  pointer-events: none;
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="45px" height="34px" viewBox="0 0 45 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon-gallery-arrow-right</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-1012.000000, -268.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="icon-gallery-arrow-right" transform="translate(1012.000000, 268.380000)">
+                <path d="M36.54,13.98 L36.54,11.34 C35.26,11.34 34.24,11.26 33.48,11.1 C32.72,10.94 32.08,10.6 31.56,10.08 L24.72,3.24 L27.96,0 L44.64,16.32 L27.96,32.64 L24.72,29.4 L31.62,22.5 C32.58,21.54 34.22,21.06 36.54,21.06 L36.54,18.48 L0,18.48 L0,13.98 L36.54,13.98 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

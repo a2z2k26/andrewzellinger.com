@@ -1,0 +1,99 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+
+test("shared DOM liquid-glass lens follows the refractive tutorial model", async () => {
+  const html = await readFile(new URL("../dev/liquid-glass-lab.html", import.meta.url), "utf8");
+  const runtime = await readFile(new URL("../src/effects/dom-glass-lens.js", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/effects/dom-glass-lens.css", import.meta.url), "utf8");
+  const siteEntry = await readFile(new URL("../src/site-motion.js", import.meta.url), "utf8");
+  const band = await readFile(new URL("../src/effects/glass-band.js", import.meta.url), "utf8");
+
+  assert.match(html, /data-dom-glass-lens/);
+  assert.match(runtime, /feDisplacementMap/);
+  assert.match(runtime, /1 - radius \* radius/);
+  assert.match(runtime, /settings\.warp/);
+  assert.match(runtime, /waveX/);
+  assert.match(runtime, /waveY/);
+  assert.match(runtime, /settings\.refraction \+ settings\.chromatic/);
+  assert.match(runtime, /settings\.refraction - settings\.chromatic/);
+  assert.match(styles, /backdrop-filter:\s*url\("#dom-liquid-glass"\)/);
+  assert.match(styles, /box-shadow:/);
+  assert.match(styles, /0 0 7px rgba\(255,255,255,calc\(\.18 \* var\(--lens-rim\)\)\) inset/);
+  assert.match(styles, /filter:\s*blur\(\.35px\)/);
+  assert.match(siteEntry, /center-glass-lens\.js/);
+  assert.doesNotMatch(siteEntry, /dom-glass-lab|liquid-chrome/);
+  assert.doesNotMatch(band, /uLens|plusMaterial|plusControls/);
+});
+
+test("center control expands from a 164px lens into a substantially inset portrait menu", async () => {
+  const styles = await readFile(new URL("../src/effects/center-control.css", import.meta.url), "utf8");
+  const runtime = await readFile(new URL("../src/effects/center-glass-lens.js", import.meta.url), "utf8");
+  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*width:\s*164px;[^}]*height:\s*164px/s);
+  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*align-self:\s*center/s);
+  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*margin-inline:\s*auto/s);
+  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*--glass-nav-menu-inset:\s*32px;[^}]*--glass-nav-menu-icon-gap:\s*24px;[^}]*--glass-nav-close-height:\s*44px;[^}]*--glass-nav-menu-optical-y:\s*8px;[^}]*width:\s*164px;[^}]*height:\s*164px/s);
+  assert.match(styles, /\.glass-nav-shell\.glass-nav-shell--open\s*\{[^}]*width:\s*240px;[^}]*height:\s*320px/s);
+  assert.match(styles, /\.glass-nav-shell \.nav_menu\s*\{[^}]*position:\s*absolute;[^}]*right:\s*auto;[^}]*left:\s*50%;[^}]*transform:\s*translateX\(-50%\) !important;/s);
+  assert.match(styles, /\.glass-nav-shell \.nav_menu\.show\s*\{[^}]*transform:\s*translateX\(-50%\) !important;/s);
+  assert.match(styles, /\.glass-nav-shell--open \.nav_toggle\s*\{[^}]*bottom:\s*var\(--glass-nav-menu-inset\);[^}]*height:\s*var\(--glass-nav-close-height\)/s);
+  assert.match(styles, /\.glass-nav-shell \.glass-nav-menu-list\s*\{[^}]*position:\s*relative;[^}]*top:\s*var\(--glass-nav-menu-optical-y\);[^}]*height:\s*calc\(100% - var\(--glass-nav-menu-inset\) - var\(--glass-nav-close-height\)\);[^}]*padding-inline:\s*var\(--glass-nav-menu-inset\);[^}]*align-items:\s*center;[^}]*justify-content:\s*center;/s);
+  assert.match(styles, /\.glass-nav-shell \.glass-nav-link\s*\{[^}]*width:\s*100%;[^}]*font-family:\s*"Geist", sans-serif;[^}]*font-size:\s*20px;[^}]*font-weight:\s*500;[^}]*font-synthesis:\s*none;[^}]*line-height:\s*24px;[^}]*text-align:\s*center;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(runtime, /glass-nav-menu-list/);
+  assert.match(runtime, /menuObserver\.observe/);
+  assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*?\.glass-nav-shell\.glass-nav-shell--open\s*\{[^}]*width:\s*240px;[^}]*height:\s*320px;/s);
+});
+
+test("all center-control states use one supplied 36px SVG plus/X icon", async () => {
+  const styles = await readFile(new URL("../src/effects/center-control.css", import.meta.url), "utf8");
+  const runtime = await readFile(new URL("../src/effects/center-glass-lens.js", import.meta.url), "utf8");
+
+  assert.match(runtime, /http:\/\/www\.w3\.org\/2000\/svg/);
+  assert.match(runtime, /viewBox", "0 0 36 36"/);
+  assert.match(runtime, /width", "36"/);
+  assert.match(runtime, /height", "36"/);
+  assert.match(runtime, /M18 0C19\.0843 0\.000258911[^"]+18 0Z/);
+  assert.match(runtime, /path\.setAttribute\("fill", "white"\)/);
+  assert.doesNotMatch(runtime, /nav_icon-h|nav_icon-v|legacyBar/);
+  assert.match(styles, /\.glass-nav-shell \.nav_icon-plus\s*\{[^}]*width:\s*36px;[^}]*height:\s*36px;[^}]*transform:\s*rotate\(0deg\);[^}]*transition:\s*transform/s);
+  assert.match(styles, /\.glass-nav-shell--open \.nav_icon-plus,[^}]+html\.detail-route \.glass-nav-shell \.nav_icon-plus\s*\{[^}]*transform:\s*rotate\(45deg\);/s);
+  assert.doesNotMatch(styles, /nav_icon-h|nav_icon-v/);
+});
+
+test("every breakpoint uses one stacked menu and contains no legacy circular-menu implementation", async () => {
+  const sourceFiles = [
+    "../index.html",
+    "../articles/index.html",
+    "../info/index.html",
+    "../detail-shell.html",
+    "../public/js/site-shell.js",
+    "../public/css/caverzasio.css",
+    "../src/biography.css",
+    "../src/detail-state.css",
+    "../src/effects/center-glass-lens.js",
+    "../scripts/mirror-source.mjs",
+  ];
+  const sources = await Promise.all(sourceFiles.map((file) => readFile(new URL(file, import.meta.url), "utf8")));
+
+  sources.forEach((source) => {
+    assert.doesNotMatch(source, /circletext|nav_menu-circle|ct-letter|Nav Circle|totalWidth|radius\s*=\s*90|nav_icon-h|nav_icon-v/);
+  });
+
+  for (const source of sources.slice(0, 4)) {
+    assert.match(source, /data-nav-menu-list/);
+  }
+
+  const runtime = sources[8];
+  assert.match(runtime, /menu\.querySelector\("\[data-nav-menu-list\]"\)/);
+  assert.doesNotMatch(runtime, /querySelectorAll\("\.ct-letter"\)|replaceChildren/);
+});
+
+test("Leva tuning controls have one reversible global off switch", async () => {
+  const config = await readFile(new URL("../src/effects/glass-lab-config.js", import.meta.url), "utf8");
+  const siteLens = await readFile(new URL("../src/effects/center-glass-lens.js", import.meta.url), "utf8");
+  const lab = await readFile(new URL("../src/effects/dom-glass-lab.js", import.meta.url), "utf8");
+
+  assert.match(config, /GLASS_LAB_CONTROLS_ENABLED\s*=\s*false/);
+  assert.match(siteLens, /import\.meta\.env\.DEV\s*&&\s*GLASS_LAB_CONTROLS_ENABLED/);
+  assert.match(lab, /if\s*\(GLASS_LAB_CONTROLS_ENABLED\)/);
+});

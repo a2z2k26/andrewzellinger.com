@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Andrew Zellinger • Articles</title>
+  <meta name="description" content="Articles by Andrew Zellinger.">
+  <meta property="og:title" content="Andrew Zellinger • Articles">
+  <meta property="og:description" content="Articles by Andrew Zellinger.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Andrew Zellinger • Articles">
+  <meta name="twitter:description" content="Articles by Andrew Zellinger.">
+  <link rel="canonical" href="/articles">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="/css/normalize.css" rel="stylesheet">
+  <link href="/css/components.css" rel="stylesheet">
+  <link href="/css/caverzasio.css" rel="stylesheet">
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="/images/webclip.png" rel="apple-touch-icon">
+  <style>
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "ss08" 1;
+    }
+    ::selection {
+      color: var(--selection--text-color);
+      background-color: var(--selection--background-color);
+    }
+    *[tabindex]:focus-visible {
+      outline: .125rem solid #4d65ff;
+      outline-offset: .125rem;
+    }
+    .page.articles .container-xlarge {
+      padding-left: var(--structure--padding-desktop);
+      padding-right: var(--structure--padding-desktop);
+    }
+    .page.articles .nav_brand {
+      color: inherit;
+    }
+    .articles-index {
+      width: 100%;
+      position: relative;
+    }
+    .articles-index__list {
+      width: auto;
+      margin-right: var(--structure--padding-desktop);
+      margin-left: calc(50% + (var(--structure--grid-row-gap) / 2));
+      padding-top: 0;
+      padding-bottom: var(--space--desktop-xxlarge);
+    }
+    .articles-entry-list {
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+    }
+    .articles-scroll-space {
+      display: none;
+    }
+    .articles-index__header {
+      font-family: var(--fonts--family-mono);
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 10px;
+      letter-spacing: .36px;
+      opacity: .4;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .articles-entry-list > li {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+    .articles-entry-list > li + li {
+      border-top: 1px solid rgba(255, 255, 255, .16);
+    }
+    .articles-entry {
+      grid-column-gap: 24px;
+      grid-template-columns: 256px minmax(0, 1fr);
+      align-items: center;
+      width: 100%;
+      display: grid;
+    }
+    .articles-entry__thumbnail {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      background-color: #2b2b2b;
+    }
+    .articles-entry__body {
+      min-width: 0;
+    }
+    .articles-entry__meta {
+      color: #9c9c9c;
+      opacity: 1;
+      margin-top: 12px;
+      margin-bottom: var(--space--desktop-medium);
+      gap: 24px;
+      font-family: var(--fonts--family-mono);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 13px;
+      letter-spacing: .36px;
+      text-transform: uppercase;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .articles-entry__title.heading-style-h2.new {
+      max-width: 100%;
+      margin: 0;
+      font-family: var(--fonts--family-display);
+      font-size: 22px;
+      line-height: 20px;
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: 400;
+    }
+    .articles-entry__excerpt {
+      max-width: 100%;
+      color: var(--swatches--light-1);
+      opacity: 1;
+      margin-top: 0;
+      margin-right: 0;
+      margin-bottom: 0;
+      margin-left: 0;
+      font-family: "Geist", sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 0;
+      text-indent: 0;
+      text-transform: uppercase;
+    }
+    .nav_menu {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease;
+    }
+    .nav_menu.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav .container-xlarge + * { margin-top: 0; }
+    @media screen and (min-width: 992px) {
+      .articles-entry__meta.works-meta-spacing {
+        margin-bottom: 12px;
+      }
+      html[data-articles-motion="running"] .articles-index__list {
+        z-index: 2;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        top: var(--structure--padding-desktop);
+        right: var(--structure--padding-desktop);
+        bottom: var(--structure--padding-desktop);
+        left: calc(50% + (var(--structure--grid-row-gap) / 2));
+        overflow: hidden;
+        display: flex;
+        background: var(--swatches--dark-1);
+      }
+      html[data-articles-motion="running"] .articles-index__header {
+        z-index: 2;
+        flex: none;
+        margin: 0;
+        padding-bottom: 16px;
+        position: relative;
+        background: var(--swatches--dark-1);
+      }
+      html[data-articles-motion="running"] .articles-motion-track,
+      html[data-articles-motion="running"] .articles-motion-set {
+        flex-direction: column;
+        flex: none;
+        display: flex;
+      }
+      html[data-articles-motion="running"] .articles-motion-track {
+        will-change: transform;
+      }
+      html[data-articles-motion="running"] .articles-motion-set > li {
+        padding-top: 32px;
+        padding-bottom: 32px;
+        border-top: 1px solid rgba(255, 255, 255, .16);
+      }
+      html[data-articles-motion="running"] .articles-scroll-space {
+        width: 1px;
+        height: 500vh;
+        pointer-events: none;
+        display: block;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .page.articles .container-xlarge {
+        padding-left: var(--structure--padding-tablet);
+        padding-right: var(--structure--padding-tablet);
+      }
+      .articles-index__list {
+        margin-right: var(--structure--padding-tablet);
+        margin-left: var(--structure--padding-tablet);
+        padding-top: var(--structure--padding-tablet);
+      }
+      .articles-entry-list > li {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+      .articles-entry {
+        grid-column-gap: 24px;
+        grid-template-columns: 201px minmax(0, 1fr);
+      }
+      .articles-entry__meta {
+        margin-bottom: var(--space--tablet-medium);
+      }
+      .articles-entry__title { max-width: 100%; }
+      .articles-entry__excerpt {
+        max-width: 100%;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .page.articles .container-xlarge {
+        padding-left: var(--structure--padding-smartphone);
+        padding-right: var(--structure--padding-smartphone);
+      }
+      .articles-index__list {
+        margin-right: var(--structure--padding-smartphone);
+        margin-left: var(--structure--padding-smartphone);
+        padding-top: var(--structure--padding-smartphone);
+      }
+      .articles-entry {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 24px;
+        align-items: start;
+      }
+      .articles-entry__meta {
+        margin-bottom: var(--space--smartphone-medium);
+      }
+    }
+  </style>
+  <script type="module" src="/src/articles-index.js"></script>
+  <script type="module" src="/src/site-motion.js"></script>
+  <script type="module" src="/src/detail-state.js"></script>
+</head>
+<body>
+  <div class="page articles">
+    <div class="wrapper">
+      <nav class="nav" aria-label="Primary navigation">
+        <div class="container-xlarge">
+          <a href="/" class="nav_brand w-inline-block">
+            <div>ANDREW ZELLINGER</div>
+          </a>
+        </div>
+        <div class="container-xlarge nav_container">
+          <div class="nav_wrapper">
+            <div class="nav_toggle" role="button" tabindex="0" aria-label="Toggle navigation" aria-expanded="false">
+              <div class="nav_icon">
+              </div>
+            </div>
+            <div class="nav_menu">
+              <div class="nav_menu-list" data-nav-menu-list>
+                <a href="/" class="nav_link">Home</a>
+                <a href="/projects" class="nav_link">Projects</a>
+                <a href="/articles" aria-current="page" class="nav_link w--current">Articles</a>
+                <a href="/history" class="nav_link">History</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-xlarge nav_h">
+          <div class="display-inlineflex"><div id="h">NYC 00:00:00</div></div>
+        </div>
+      </nav>
+      <header class="title">
+        <div class="container-xlarge"><h1 class="heading">Writing Samples</h1></div>
+      </header>
+      <!-- UI prototype: first-pass text hierarchy for /articles; all entry copy is temporary. -->
+      <main class="articles-index" aria-label="Articles">
+        <div class="articles-index__list">
+          <div class="articles-index__header">All (10)</div>
+          <ol class="articles-entry-list">
+            <li>
+              <a href="/articles/designing-for-systems-that-change/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="designing-for-systems-that-change" aria-label="Read article: Designing for systems that change">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 1"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">Designing for systems that change</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 01, September 2026, Practice">
+                    <span>Issue 01</span>
+                    <span>Sep 2026</span>
+                    <span>Practice</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">Temporary notes on shaping products that adapt over time without losing clarity, trust, or a recognizably human point of view.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/the-interface-is-becoming-a-conversation/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="the-interface-is-becoming-a-conversation" aria-label="Read article: The interface is becoming a conversation">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 2"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">The interface is becoming a conversation</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 02, September 2026, Interfaces">
+                    <span>Issue 02</span>
+                    <span>Sep 2026</span>
+                    <span>Interfaces</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">A provisional essay about moving beyond fixed screens toward products that listen, respond, and make their reasoning easier to understand.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/prototypes-as-instruments-for-thinking/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="prototypes-as-instruments-for-thinking" aria-label="Read article: Prototypes as instruments for thinking">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 3"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">Prototypes as instruments for thinking</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 03, August 2026, Prototyping">
+                    <span>Issue 03</span>
+                    <span>Aug 2026</span>
+                    <span>Prototyping</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">Draft reflections on using working models to expose assumptions, sharpen decisions, and bring difficult product questions into view.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/working-at-the-edge-of-certainty/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="working-at-the-edge-of-certainty" aria-label="Read article: Working at the edge of certainty">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 4"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">Working at the edge of certainty</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 04, August 2026, Strategy">
+                    <span>Issue 04</span>
+                    <span>Aug 2026</span>
+                    <span>Strategy</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">Temporary editorial copy about making useful product decisions when the technology, customer behavior, and opportunity are still moving.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/building-fluency-before-building-features/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="building-fluency-before-building-features" aria-label="Read article: Building fluency before building features">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 5"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">Building fluency before building features</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 05, July 2026, Teams">
+                    <span>Issue 05</span>
+                    <span>Jul 2026</span>
+                    <span>Teams</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">A replaceable first-pass piece on helping teams develop shared judgment before committing emerging capabilities to a roadmap.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/where-judgment-enters-the-loop/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="where-judgment-enters-the-loop" aria-label="Read article: Where judgment enters the loop">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 6"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">Where judgment enters the loop</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 06, July 2026, Systems">
+                    <span>Issue 06</span>
+                    <span>Jul 2026</span>
+                    <span>Systems</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">Temporary observations on deciding which parts of an intelligent product should adapt, ask, explain, or remain deliberately fixed.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/the-cost-of-invisible-decisions/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="the-cost-of-invisible-decisions" aria-label="Read article: The cost of invisible decisions">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 7"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">The cost of invisible decisions</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 07, June 2026, Craft">
+                    <span>Issue 07</span>
+                    <span>Jun 2026</span>
+                    <span>Craft</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">A mock editorial note about the product choices users may never see, but feel through pace, confidence, and coherence.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/designing-alignment-before-interfaces/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="designing-alignment-before-interfaces" aria-label="Read article: Designing alignment before interfaces">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 8"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">Designing alignment before interfaces</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 08, June 2026, Leadership">
+                    <span>Issue 08</span>
+                    <span>Jun 2026</span>
+                    <span>Leadership</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">Replaceable copy on helping product teams agree on the problem, the tradeoffs, and the standard of evidence before drawing screens.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/what-prototypes-make-discussable/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="what-prototypes-make-discussable" aria-label="Read article: What prototypes make discussable">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 9"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">What prototypes make discussable</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 09, May 2026, Research">
+                    <span>Issue 09</span>
+                    <span>May 2026</span>
+                    <span>Research</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">A provisional reflection on how tangible experiments give teams a shared object for critique, learning, and better disagreement.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+            <li>
+              <a href="/articles/a-practical-optimism-for-emerging-tools/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="a-practical-optimism-for-emerging-tools" aria-label="Read article: A practical optimism for emerging tools">
+              <article class="articles-entry">
+                <div class="articles-entry__thumbnail" role="img" aria-label="Tasman Glacier landscape stand-in for article 10"></div>
+                <div class="articles-entry__body">
+                  <h2 class="articles-entry__title heading-style-h2 new">A practical optimism for emerging tools</h2>
+                  <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Issue 10, May 2026, Futures">
+                    <span>Issue 10</span>
+                    <span>May 2026</span>
+                    <span>Futures</span>
+                  </div>
+                  <p class="articles-entry__excerpt works-project-description">Temporary notes on staying ambitious about new capabilities while remaining specific about people, consequences, and real value.</p>
+                </div>
+              </article>
+              </a>
+            </li>
+          </ol>
+        </div>
+        <div class="articles-scroll-space" aria-hidden="true"></div>
+      </main>
+    </div>
+  </div>
+  <script src="/js/site-shell.js"></script>
+</body>
+</html>

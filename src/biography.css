@@ -1,0 +1,373 @@
+.page.info .nav_brand {
+  color: inherit;
+}
+
+.page.info .wrapper {
+  padding-top: var(--structure--padding-desktop);
+  padding-bottom: var(--structure--padding-desktop);
+}
+
+.page.info .nav_menu {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+
+.page.info .nav_menu.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.page.info .nav .container-xlarge + * {
+  margin-top: 0;
+}
+
+.biography-section,
+.biography-layout,
+.biography-layout__content {
+  width: 100%;
+}
+
+.biography-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--structure--grid-row-gap);
+}
+
+.biography-layout__content {
+  min-width: 0;
+}
+
+.biography-portrait-placeholder {
+  width: 100%;
+}
+
+.biography-editorial {
+  color: var(--swatches--light-1);
+  text-transform: none;
+}
+
+.biography-editorial p,
+.biography-editorial h2,
+.biography-editorial h3,
+.biography-editorial dl,
+.biography-editorial dd,
+.biography-editorial ol {
+  margin: 0;
+}
+
+.biography-introduction {
+  padding-top: 44px;
+  padding-bottom: 52px;
+}
+
+.biography-introduction__lead {
+  width: 100%;
+  max-width: none;
+  font-family: var(--fonts--family-display);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: 0;
+  text-indent: 0;
+}
+
+.biography-introduction__practice-label {
+  margin-top: 52px !important;
+  color: #9c9c9c;
+  font-family: var(--fonts--family-mono);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: .36px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.biography-introduction__practice-body {
+  width: 80%;
+  max-width: none;
+  margin-top: 24px !important;
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
+  text-indent: 0;
+  text-transform: uppercase;
+}
+
+.biography-block {
+  display: grid;
+  grid-template-columns: minmax(0, calc((100% - var(--structure--grid-row-gap)) / 3 - 80px)) minmax(0, 1fr);
+  column-gap: var(--structure--grid-row-gap);
+  padding-top: 52px;
+  padding-bottom: 52px;
+  border-bottom: 1px solid rgba(255, 255, 255, .16);
+}
+
+.biography-block--capabilities {
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.biography-block--availability {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 24px;
+}
+
+.biography-block--availability .biography-prose {
+  max-width: none;
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
+  text-indent: 0;
+  text-transform: uppercase;
+}
+
+.biography-block__label,
+.biography-capability__label,
+.biography-clients__label,
+.biography-contact__label {
+  color: #9c9c9c;
+  font-family: var(--fonts--family-mono);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: .36px;
+  text-transform: uppercase;
+}
+
+.biography-prose {
+  min-width: 0;
+  max-width: 72ch;
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.biography-prose > p + p {
+  margin-top: 24px;
+}
+
+.biography-experience-section {
+  margin-top: 40px;
+  padding-bottom: 52px;
+}
+
+.biography-experience-section__heading {
+  margin: 0;
+  padding-bottom: 32px;
+  color: #9c9c9c;
+  font-family: var(--fonts--family-mono);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: .36px;
+  text-align: left;
+  text-indent: 0;
+  text-transform: uppercase;
+}
+
+.biography-experience {
+  padding: 0;
+  list-style: none;
+}
+
+.biography-experience__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) max-content;
+  column-gap: 24px;
+  align-items: start;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+}
+
+.biography-experience__row:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, .16);
+}
+
+.biography-experience__organization,
+.biography-experience__role,
+.biography-experience__dates {
+  min-width: 0;
+}
+
+.biography-experience__organization {
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.biography-experience__role {
+  color: rgba(255, 255, 255, .78);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.biography-experience__dates {
+  color: #9c9c9c;
+  font-family: var(--fonts--family-mono);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: .36px;
+  text-align: right;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.biography-capabilities-content {
+  min-width: 0;
+}
+
+.biography-capabilities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 24px;
+}
+
+.biography-capability__items {
+  margin-top: 12px !important;
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.biography-clients {
+  grid-column: 1 / -1;
+  margin-top: 52px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+}
+
+.biography-clients__list {
+  margin-top: 12px !important;
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
+  text-indent: 0;
+  text-transform: uppercase;
+}
+
+.biography-contact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--structure--grid-row-gap);
+  padding-top: 52px;
+}
+
+.biography-contact__link {
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+@media screen and (max-width: 991px) {
+  .biography-experience-section {
+    margin-top: 64px;
+  }
+
+  .biography-experience__row {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .biography-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .biography-layout__spacer {
+    display: none;
+  }
+
+  .biography-layout__content {
+    min-width: 0;
+  }
+
+  .page.info .wrapper {
+    padding-top: var(--structure--padding-tablet);
+    padding-bottom: var(--structure--padding-tablet);
+  }
+
+  .biography-introduction__lead {
+    max-width: 22ch;
+    line-height: 32px;
+  }
+
+  .biography-introduction__practice-body {
+    width: 100%;
+  }
+
+}
+
+@media screen and (max-width: 767px) {
+  .biography-introduction {
+    padding-top: 32px;
+    padding-bottom: 40px;
+  }
+
+  .biography-introduction__lead {
+    max-width: 19ch;
+    font-size: 28px;
+    line-height: 30px;
+  }
+
+  .biography-block {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .biography-experience__row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 8px;
+  }
+
+  .biography-experience__dates {
+    text-align: left;
+  }
+
+  .biography-capabilities,
+  .biography-contact {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .biography-introduction__lead {
+    max-width: none;
+    font-size: 26px;
+    line-height: 28px;
+  }
+}

@@ -1,0 +1,367 @@
+.detail-route {
+  --detail-project-media-title-gap: 44px;
+  --detail-project-description-section-gap: 64px;
+  --detail-project-section-copy-edge-gap: 52px;
+  --detail-project-section-label-inset: 28px;
+  --detail-project-section-body-shift: 80px;
+  --detail-project-inter-unit-gap: 64px;
+}
+
+.portfolio-detail-link {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
+.articles-entry-link {
+  width: 100%;
+}
+
+.detail-shell .nav_brand {
+  color: inherit;
+}
+
+.nav_menu {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+
+.nav_menu.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.works-motion-card > .portfolio-detail-link {
+  width: 100%;
+}
+
+.portfolio-detail-link:focus-visible {
+  outline: 1px solid var(--swatches--light-1);
+  outline-offset: 4px;
+}
+
+html.detail-route .nav_menu {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.detail-route[data-detail-kind="project"] .nav_menu a[href="/projects"],
+html.detail-route[data-detail-kind="article"] .nav_menu a[href="/articles"] {
+  color: var(--swatches--accent-1);
+}
+
+html.detail-route .works-motion-field,
+html.detail-route .works-scroll-space,
+html.detail-route .articles-index {
+  display: none !important;
+}
+
+.detail-view {
+  width: 100%;
+  position: relative;
+}
+
+.detail-rail {
+  width: auto;
+  margin-right: var(--structure--padding-desktop);
+  margin-left: calc(50% + (var(--structure--grid-row-gap) / 2));
+  padding-top: 0;
+  padding-bottom: var(--space--desktop-xxlarge);
+}
+
+.detail-sets,
+.detail-set {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-sets {
+  gap: var(--structure--gutter-width);
+}
+
+.detail-set {
+  gap: var(--space--desktop-xlarge);
+}
+
+.detail-set.detail-set--project {
+  gap: var(--detail-project-inter-unit-gap);
+}
+
+.detail-set.detail-set--article,
+.detail-view--project .detail-sets,
+.detail-view--article .detail-sets {
+  gap: var(--detail-project-inter-unit-gap);
+}
+
+.detail-set[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+.detail-unit {
+  width: 100%;
+  scroll-margin-top: var(--structure--padding-desktop);
+}
+
+.detail-unit__media {
+  width: 100%;
+  background-color: #2b2b2b;
+}
+
+.detail-unit__media--placeholder {
+  background-color: #2b2b2b !important;
+}
+
+.detail-unit__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-unit__copy {
+  padding-top: 20px;
+}
+
+.detail-unit__copy--project,
+.detail-unit__copy--article {
+  padding-top: var(--detail-project-media-title-gap);
+}
+
+.detail-unit__meta {
+  color: var(--swatches--light-1);
+  opacity: .4;
+  gap: 24px;
+  font-family: var(--fonts--family-mono);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 10px;
+  letter-spacing: .36px;
+  text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-unit__meta--project,
+.detail-unit__meta--article {
+  font-family: var(--fonts--family-mono);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: .36px;
+  text-transform: uppercase;
+}
+
+.detail-unit__meta--article {
+  color: #9c9c9c;
+  opacity: 1;
+}
+
+.detail-unit__title {
+  max-width: 90%;
+  margin: 0;
+  padding: 16px 0;
+  font-family: var(--fonts--family-display);
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.detail-unit__title--project,
+.detail-unit__title--article {
+  font-size: 32px;
+  line-height: 32px;
+  text-transform: none;
+}
+
+.detail-unit__title:focus {
+  outline: none;
+}
+
+.detail-unit__lede {
+  max-width: 78%;
+  margin: 0;
+  padding-top: 16px;
+  font-family: var(--fonts--family-display);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-indent: 0;
+  text-transform: none;
+}
+
+.detail-unit__lede--project,
+.detail-unit__lede--article {
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.detail-unit__sections {
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-unit__sections--project {
+  padding-top: var(--detail-project-description-section-gap);
+}
+
+.detail-unit__article-body {
+  margin-left: calc((100% - var(--structure--grid-row-gap)) / 3 - var(--detail-project-section-body-shift) + var(--structure--grid-row-gap));
+  padding-top: var(--detail-project-description-section-gap);
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.detail-unit__article-body p {
+  margin: 0;
+}
+
+.detail-unit__article-body p + p {
+  margin-top: 24px;
+}
+
+.detail-unit__section {
+  grid-column-gap: var(--structure--grid-row-gap);
+  grid-template-columns: 1fr 2fr;
+  padding-top: 28px;
+  padding-bottom: 27px;
+  border-top: 1px solid rgba(255, 255, 255, .16);
+  display: grid;
+}
+
+.detail-unit__section--project {
+  grid-template-columns: minmax(0, calc((100% - var(--structure--grid-row-gap)) / 3 - var(--detail-project-section-body-shift))) minmax(0, 1fr);
+  align-items: baseline;
+  padding-top: var(--detail-project-section-copy-edge-gap);
+}
+
+.detail-unit__section--project-context,
+.detail-unit__section--project-work {
+  padding-bottom: var(--detail-project-section-copy-edge-gap);
+}
+
+.detail-unit__section-label {
+  color: var(--swatches--light-1);
+  opacity: .4;
+  font-family: var(--fonts--family-mono);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.detail-unit__section--project .detail-unit__section-label {
+  color: #9c9c9c;
+  opacity: 1;
+}
+
+.detail-unit__section p {
+  margin: 0;
+  font-family: var(--fonts--family-display);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: .36px;
+  text-indent: 0;
+  text-transform: none;
+}
+
+.detail-unit__section-body--project p {
+  color: var(--swatches--light-1);
+  font-family: "Geist", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.detail-unit__section-body p + p {
+  margin-top: var(--space--desktop-small);
+}
+
+.detail-transition-media {
+  z-index: 120;
+  pointer-events: none;
+  background-color: #2b2b2b;
+  overflow: hidden;
+  position: fixed !important;
+  will-change: transform;
+}
+
+.detail-transition-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media screen and (max-width: 991px) {
+  .detail-rail {
+    margin-right: var(--structure--padding-tablet);
+    margin-left: var(--structure--padding-tablet);
+    padding-top: var(--structure--padding-tablet);
+  }
+
+  .detail-set {
+    gap: var(--space--tablet-xlarge);
+  }
+
+  .detail-unit__title {
+    max-width: 100%;
+  }
+
+  .detail-unit__lede {
+    max-width: 100%;
+  }
+
+}
+
+@media screen and (max-width: 767px) {
+  .detail-rail {
+    margin-right: var(--structure--padding-smartphone);
+    margin-left: var(--structure--padding-smartphone);
+    padding-top: var(--structure--padding-smartphone);
+  }
+
+  .detail-unit__title {
+    max-width: 100%;
+  }
+
+  .detail-unit__lede {
+    max-width: 100%;
+  }
+
+  .detail-unit__article-body {
+    margin-left: 0;
+  }
+
+  .detail-unit__section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .detail-unit__section--project {
+    align-items: stretch;
+    padding-top: var(--detail-project-section-label-inset);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-transition-media {
+    display: none !important;
+  }
+}

@@ -1,0 +1,36 @@
+.glass-band-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+html[data-glass-bands="active"] .glass-proxy-text-ready,
+html[data-glass-bands="active"] .glass-proxy-text-ready * {
+  -webkit-text-fill-color: transparent !important;
+}
+
+html[data-glass-bands="active"] .glass-proxy-media-ready {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+}
+
+@media print {
+  .glass-band-canvas {
+    display: none !important;
+  }
+
+  .glass-proxy-text-ready,
+  .glass-proxy-text-ready * {
+    -webkit-text-fill-color: currentColor !important;
+  }
+
+  .glass-proxy-media-ready {
+    background-color: revert !important;
+    background-image: revert !important;
+    border-color: revert !important;
+  }
+}

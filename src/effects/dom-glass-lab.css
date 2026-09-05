@@ -1,0 +1,116 @@
+:root { color-scheme: dark; }
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; background: #050505; color: #f5f5f5; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+.glass-lab-scene { min-height: 180vh; }
+
+.glass-lab-header {
+  position: fixed;
+  z-index: 4;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.glass-lab-stage {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #e7e7e2;
+  color: #050505;
+}
+
+.glass-lab-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.18) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.glass-lab-marquee {
+  position: absolute;
+  top: calc(50% - 29px);
+  left: 0;
+  display: flex;
+  width: max-content;
+  font-family: Georgia, serif;
+  font-size: 54px;
+  line-height: 1;
+  white-space: nowrap;
+  animation: glass-lab-marquee 14s linear infinite;
+}
+
+.glass-lab-copy {
+  position: absolute;
+  left: 5vw;
+  top: 20vh;
+  font-size: clamp(32px, 7vw, 112px);
+  font-weight: 700;
+  line-height: .88;
+  letter-spacing: -.06em;
+}
+
+.glass-lab-copy p { margin: 0; }
+
+.glass-lab-colour {
+  position: absolute;
+  width: 22vw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(1px);
+}
+
+.glass-lab-colour--cyan { right: 15vw; top: 13vh; background: #00d9ff; }
+.glass-lab-colour--magenta { left: 18vw; bottom: 8vh; background: #ff3dc8; }
+
+.glass-lab-hairline {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: #111;
+}
+
+.glass-lab-note {
+  margin: 0;
+  padding: 48px 16px;
+  max-width: 42rem;
+  font-family: Georgia, serif;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.dom-glass-lens-lab {
+  position: fixed;
+  z-index: 20;
+  left: 50%;
+  top: 50%;
+  width: 64px;
+  height: 64px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes glass-lab-marquee {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-lab-marquee { animation-play-state: paused; }
+}

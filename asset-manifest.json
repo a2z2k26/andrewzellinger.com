@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-09-03T17:42:51Z",
+  "routes": [
+    "index.html",
+    "info/index.html"
+  ],
+  "localizedAssets": 15,
+  "skippedVideoAssets": 0,
+  "failures": []
+}

@@ -1,0 +1,141 @@
+.glass-nav-shell {
+  --glass-nav-menu-inset: 32px;
+  --glass-nav-menu-icon-gap: 24px;
+  --glass-nav-close-height: 44px;
+  --glass-nav-menu-optical-y: 8px;
+  width: 164px;
+  height: 164px;
+  align-self: center;
+  margin-inline: auto;
+  pointer-events: auto;
+  overflow: hidden;
+  border-radius: 50%;
+  transition:
+    width .58s cubic-bezier(.2,.8,.2,1),
+    height .58s cubic-bezier(.2,.8,.2,1),
+    border-radius .58s cubic-bezier(.2,.8,.2,1);
+  isolation: isolate;
+}
+
+.glass-nav-shell.glass-nav-shell--open {
+  width: 240px;
+  height: 320px;
+  border-radius: 28px;
+}
+
+.glass-nav-shell .nav_toggle,
+html.detail-route .glass-nav-shell .nav_toggle,
+html.detail-route .glass-nav-shell .nav_toggle.active {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent !important;
+  transform: none !important;
+  transition: height .58s cubic-bezier(.2,.8,.2,1);
+}
+
+.glass-nav-shell--open .nav_toggle {
+  top: auto;
+  bottom: var(--glass-nav-menu-inset);
+  height: var(--glass-nav-close-height);
+  border-radius: 0;
+}
+
+.glass-nav-shell .nav_menu {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: transparent !important;
+  transform: translateX(-50%) !important;
+  transition: opacity .25s ease .06s;
+}
+
+.glass-nav-shell .nav_menu.show {
+  transform: translateX(-50%) !important;
+}
+
+.glass-nav-shell .glass-nav-menu-list {
+  position: relative;
+  top: var(--glass-nav-menu-optical-y);
+  width: 100%;
+  height: calc(100% - var(--glass-nav-menu-inset) - var(--glass-nav-close-height));
+  padding-inline: var(--glass-nav-menu-inset);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  animation: none !important;
+  transform: none !important;
+}
+
+.glass-nav-shell .glass-nav-link {
+  position: relative;
+  width: 100%;
+  color: rgba(255,255,255,.78);
+  font-family: "Geist", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  font-synthesis: none;
+  line-height: 24px;
+  letter-spacing: .04em;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 1px 5px rgba(0,0,0,.5);
+  opacity: 0;
+  transform: translateY(7px);
+  transition: opacity .22s ease, transform .32s cubic-bezier(.2,.8,.2,1), color .2s ease;
+}
+
+.glass-nav-shell--open .glass-nav-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.glass-nav-shell--open .glass-nav-link:nth-child(2) { transition-delay: .035s; }
+.glass-nav-shell--open .glass-nav-link:nth-child(3) { transition-delay: .07s; }
+.glass-nav-shell--open .glass-nav-link:nth-child(4) { transition-delay: .105s; }
+
+.glass-nav-shell .glass-nav-link:hover,
+.glass-nav-shell .glass-nav-link.w--current {
+  color: #fff;
+}
+
+.glass-nav-shell .nav_icon {
+  transform: none;
+}
+
+.glass-nav-shell .nav_icon-plus {
+  display: block;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  transform: rotate(0deg);
+  transform-origin: 50% 50%;
+  transition: transform .32s cubic-bezier(.2,.8,.2,1);
+}
+
+.glass-nav-shell--open .nav_icon-plus,
+html.detail-route .glass-nav-shell .nav_icon-plus {
+  transform: rotate(45deg);
+}
+
+@media screen and (max-width: 991px) {
+  .glass-nav-shell {
+    width: 96px;
+    height: 96px;
+  }
+
+  .glass-nav-shell.glass-nav-shell--open {
+    width: 240px;
+    height: 320px;
+  }
+}
