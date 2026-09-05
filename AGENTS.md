@@ -6,6 +6,8 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- The After Hours visual experiment was a capability test and is excluded from the active site. Keep it preserved on `experiment/after-hours`; continue the accepted design on `main` and do not reintroduce the experiment unless Andrew requests it.
+
 - Use the original Caverzasio implementation as a structural template while allowing major content and menu changes.
 - Preserve its typography, solid-black theme, responsive behavior, and interaction language unless the user explicitly changes direction.
 - The persistent upper-left site header reads “ANDREW ZELLINGER” in Geist Medium at every breakpoint and on every route, at 13px/12px uppercase with 0.06em letter spacing; preserve its placement and behavior, and keep its link pointed to the canonical Index/home route at `/`.
