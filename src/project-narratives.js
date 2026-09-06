@@ -143,4 +143,13 @@ export const PROJECT_NARRATIVES = Object.freeze({
     "LearnVest continued to operate and evolve under Northwestern Mutual until 2018, when the consumer-facing service was discontinued and its technology was absorbed into internal planning tools. During that period, the New York organization tripled in size, and LearnVest's product language influenced Northwestern Mutual's wider approach to digital financial experiences. The brand ended, but the platform thinking and technology continued inside the company.",
     "Designing for personal finance means designing for emotion as much as function. Every dashboard asks someone to confront a version of their financial reality. The difference between motivation and paralysis often comes down to sequence: what appears first, what remains available for deeper inspection, and what stays out of the way until it becomes relevant. That lesson shaped the hierarchy across both the desktop and mobile work.",
   ),
+
+  "amazon-fire-tv": narrative(
+    "A provisional case-study record for Andrew's Design Lead work with Sketch and Amazon Fire TV during 2024–2025.",
+    "The verified portfolio record currently identifies Amazon Fire TV as a Sketch engagement from 2024–2025. Additional project context has not yet been supplied, so this entry intentionally avoids describing an unverified brief, product problem, audience, market, or business objective.",
+    "Andrew's verified role was Design Lead. The specific responsibilities, team structure, collaborators, process, deliverables, and areas of ownership have not yet been documented in the available source material.",
+    "This provisional page reserves the final case-study structure without filling those gaps with assumptions. Once source material is available, the Work section can be replaced with a factual account of Andrew's contribution and the decisions represented by the project image.",
+    "Outcome details have not yet been supplied. No product result, launch claim, performance measure, or organizational impact is attributed to the engagement in this temporary version.",
+    "The record will remain explicitly provisional until Andrew provides the supporting project narrative. The published image, client, studio, role, and date range are the only project-specific facts currently presented.",
+  ),
 });

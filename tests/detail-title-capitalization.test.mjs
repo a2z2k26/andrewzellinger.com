@@ -22,6 +22,7 @@ const expectedTitles = [
   "Turner TV",
   "McDonalds",
   "Northwestern Mutual",
+  "Amazon Fire TV",
 ];
 
 test("case-study titles retain canonical project capitalization", () => {

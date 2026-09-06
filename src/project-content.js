@@ -1430,6 +1430,51 @@ const projectRecords = [
         ]
       }
     ]
+  },
+  {
+    "kind": "project",
+    "slug": "amazon-fire-tv",
+    "path": "/case-studies/amazon-fire-tv/",
+    "collectionPath": "/projects",
+    "title": "Amazon Fire TV",
+    "headline": "Amazon Fire TV",
+    "metadata": {
+      "client": "Amazon Fire TV",
+      "studio": "Sketch",
+      "year": "2024 — 2025",
+      "role": "Design Lead"
+    },
+    "meta": [
+      "Amazon Fire TV",
+      "Sketch",
+      "2024 — 2025",
+      "Design Lead"
+    ],
+    "summary": "A provisional case-study record for Andrew's Design Lead work with Sketch and Amazon Fire TV during 2024–2025.",
+    "media": {
+      "label": "Amazon Fire TV interface displayed in a vehicle",
+      "src": "/images/projects/amazon-fire-tv.png"
+    },
+    "sections": [
+      {
+        "label": "Context",
+        "paragraphs": [
+          "The verified portfolio record currently identifies Amazon Fire TV as a Sketch engagement from 2024–2025. Additional project context has not yet been supplied."
+        ]
+      },
+      {
+        "label": "Work",
+        "paragraphs": [
+          "Andrew's verified role was Design Lead. The specific responsibilities, team structure, process, and deliverables will be added when the supporting case-study material is available."
+        ]
+      },
+      {
+        "label": "Outcome",
+        "paragraphs": [
+          "Outcome details have not yet been supplied. This temporary entry avoids attributing unverified product results or claims to the engagement."
+        ]
+      }
+    ]
   }
 ];
 

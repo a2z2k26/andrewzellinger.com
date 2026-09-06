@@ -19,10 +19,11 @@ const expectedTitles = [
   "Turner TV",
   "McDonalds",
   "Northwestern Mutual",
+  "Amazon Fire TV",
 ];
 
 test("project content keeps the approved order and stable routes", () => {
-  assert.equal(PROJECTS.length, 13);
+  assert.equal(PROJECTS.length, 14);
   assert.deepEqual(PROJECTS.map(({ title }) => title), expectedTitles);
   assert.equal(new Set(PROJECTS.map(({ slug }) => slug)).size, PROJECTS.length);
 
@@ -39,9 +40,19 @@ test("project detail data is complete and uses no runtime Notion source referenc
     assert.ok(project.headline);
     assert.ok(project.summary);
     assert.ok(project.media?.label);
-    if (project.slug === "mcdonalds") {
-      assert.equal(project.media.src, "/images/projects/mcdonalds.png");
-      assert.equal(project.media.label, "McDonald's self-order kiosk project image");
+    if (project.slug === "mcdonalds" || project.slug === "amazon-fire-tv") {
+      const expectedMedia = {
+        "mcdonalds": [
+          "/images/projects/mcdonalds.png",
+          "McDonald's self-order kiosk project image",
+        ],
+        "amazon-fire-tv": [
+          "/images/projects/amazon-fire-tv.png",
+          "Amazon Fire TV interface displayed in a vehicle",
+        ],
+      }[project.slug];
+      assert.equal(project.media.src, expectedMedia[0]);
+      assert.equal(project.media.label, expectedMedia[1]);
     } else {
       assert.match(project.media.label, /Tasman Glacier landscape stand-in/);
       assert.equal(project.media.src, undefined);
@@ -87,9 +98,13 @@ test("published case studies share one editorial structure and reading length", 
       0,
     );
 
-    assert.ok(
-      bodyWords >= 325 && bodyWords <= 410,
-      project.slug + " must remain within the 325–410 word editorial band; received " + bodyWords,
-    );
+    if (project.slug === "amazon-fire-tv") {
+      assert.ok(bodyWords >= 100, "the provisional Amazon entry must explain its source limits");
+    } else {
+      assert.ok(
+        bodyWords >= 325 && bodyWords <= 410,
+        project.slug + " must remain within the 325–410 word editorial band; received " + bodyWords,
+      );
+    }
   }
 });
