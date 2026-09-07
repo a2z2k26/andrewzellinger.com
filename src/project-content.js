@@ -63,7 +63,8 @@ const projectRecords = [
     ],
     "summary": "The application uses sessions of audio content to help listeners develop healthier sleep behaviors and wake up experiences.",
     "media": {
-      "label": "Temporary neutral image for Audible Sleep"
+      "label": "Audible Sleep screen array project image",
+      "src": "/images/projects/audible-sleep-screen-array.png"
     },
     "sections": [
       {
@@ -172,7 +173,8 @@ const projectRecords = [
     ],
     "summary": "A groundbreaking collaboration between ustwo and Google's Wear OS team revolutionized watch face design and development, setting a new standard for smart watch face user experiences more broadly.",
     "media": {
-      "label": "Temporary neutral image for Android Wear"
+      "label": "Android Wear watch face array project image",
+      "src": "/images/projects/android-wear-array.png"
     },
     "sections": [
       {
@@ -331,7 +333,8 @@ const projectRecords = [
     ],
     "summary": "Paired with a Fi collar, the Fi app brings you even closer to your dog. View your dog's location and activity levels on the app and be alerted if they ever escape.",
     "media": {
-      "label": "Temporary neutral image for Fi Smart Collar"
+      "label": "Fi Smart Collar app screen array project image",
+      "src": "/images/projects/fi-screen-array.png"
     },
     "sections": [
       {
@@ -501,7 +504,8 @@ const projectRecords = [
     ],
     "summary": "WeWork, a global company offering flexible shared office spaces for entrepreneurs, startups, freelancers, and other professionals, faced a unique challenge.",
     "media": {
-      "label": "Temporary neutral image for WeWork Studio"
+      "label": "WeWork Studio sales tool project image",
+      "src": "/images/projects/wework-screen.png"
     },
     "sections": [
       {
@@ -614,7 +618,8 @@ const projectRecords = [
     ],
     "summary": "Foursquare was splitting in two. The product that had defined location-based social networking — the check-in — was migrating to a new app called Swarm, and Foursquare itself was pivoting to become a personalized local discovery platform.",
     "media": {
-      "label": "Temporary neutral image for Foursquare"
+      "label": "Foursquare branding project image",
+      "src": "/images/projects/foursquare-branding.png"
     },
     "sections": [
       {
@@ -778,7 +783,8 @@ const projectRecords = [
     ],
     "summary": "Here's how P&G answered the call from the next generation of beauty consumers who are increasingly conscious about the impact of their choices on the environment and society.",
     "media": {
-      "label": "Temporary neutral image for Proctor & Gamble"
+      "label": "Proctor & Gamble tablet experience project image",
+      "src": "/images/projects/pandg-tablets.png"
     },
     "sections": [
       {
@@ -906,7 +912,8 @@ const projectRecords = [
     ],
     "summary": "Reuters wanted to rethink how people consume video news. The premise was simple and radical: most news apps dump a feed on you and let you drown. Reuters TV asked a different question — how much time do you actually have?",
     "media": {
-      "label": "Temporary neutral image for Thompson Reuters"
+      "label": "Reuters TV project scene image",
+      "src": "/images/projects/reuters-tv-scene.png"
     },
     "sections": [
       {
@@ -962,7 +969,8 @@ const projectRecords = [
     ],
     "summary": "This case study details how PwC, a leading global financial consultancy, streamlined their internal audit processes through a bespoke application developed in collaboration with Philosophie. The goal was to enhance efficiency and accuracy in financial audits for their largest enterprise clients.",
     "media": {
-      "label": "Temporary neutral image for Price Waterhouse Coopers"
+      "label": "Price Waterhouse Coopers website project image",
+      "src": "/images/projects/pwc-website.png"
     },
     "sections": [
       {
@@ -1102,7 +1110,8 @@ const projectRecords = [
     ],
     "summary": "A comprehensive product design engagement with Avantos that reimagined how investment banking institutions onboard prospective clients — delivering a two-sided, AI-powered software platform that streamlined a traditionally manual, high-friction process.",
     "media": {
-      "label": "Temporary neutral image for Avantos"
+      "label": "Avantos product interface project image",
+      "src": "/images/projects/avantos-screen.png"
     },
     "sections": [
       {

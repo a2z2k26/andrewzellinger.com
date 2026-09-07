@@ -118,6 +118,15 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/history/index.html", import.meta.url));
   await access(new URL("../dist/client/articles/index.html", import.meta.url));
   await access(new URL("../dist/client/images/tasman-glacier-stand-in.jpg", import.meta.url));
+  await access(new URL("../dist/client/images/projects/audible-sleep-screen-array.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/android-wear-array.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/fi-screen-array.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/wework-screen.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/foursquare-branding.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/pandg-tablets.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/reuters-tv-scene.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/pwc-website.png", import.meta.url));
+  await access(new URL("../dist/client/images/projects/avantos-screen.png", import.meta.url));
   await access(new URL("../dist/client/images/projects/mcdonalds.png", import.meta.url));
   await access(new URL("../dist/client/images/projects/amazon-fire-tv.png", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));

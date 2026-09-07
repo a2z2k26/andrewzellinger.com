@@ -40,8 +40,56 @@ test("project detail data is complete and uses no runtime Notion source referenc
     assert.ok(project.headline);
     assert.ok(project.summary);
     assert.ok(project.media?.label);
-    if (project.slug === "mcdonalds" || project.slug === "amazon-fire-tv") {
+    if (
+      project.slug === "audible-sleep"
+      || project.slug === "android-wear"
+      || project.slug === "fi-smart-collar"
+      || project.slug === "wework-studio"
+      || project.slug === "foursquare"
+      || project.slug === "proctor-and-gamble"
+      || project.slug === "thompson-reuters"
+      || project.slug === "price-waterhouse-coopers"
+      || project.slug === "avantos"
+      || project.slug === "mcdonalds"
+      || project.slug === "amazon-fire-tv"
+    ) {
       const expectedMedia = {
+        "audible-sleep": [
+          "/images/projects/audible-sleep-screen-array.png",
+          "Audible Sleep screen array project image",
+        ],
+        "android-wear": [
+          "/images/projects/android-wear-array.png",
+          "Android Wear watch face array project image",
+        ],
+        "fi-smart-collar": [
+          "/images/projects/fi-screen-array.png",
+          "Fi Smart Collar app screen array project image",
+        ],
+        "wework-studio": [
+          "/images/projects/wework-screen.png",
+          "WeWork Studio sales tool project image",
+        ],
+        "foursquare": [
+          "/images/projects/foursquare-branding.png",
+          "Foursquare branding project image",
+        ],
+        "proctor-and-gamble": [
+          "/images/projects/pandg-tablets.png",
+          "Proctor & Gamble tablet experience project image",
+        ],
+        "thompson-reuters": [
+          "/images/projects/reuters-tv-scene.png",
+          "Reuters TV project scene image",
+        ],
+        "price-waterhouse-coopers": [
+          "/images/projects/pwc-website.png",
+          "Price Waterhouse Coopers website project image",
+        ],
+        "avantos": [
+          "/images/projects/avantos-screen.png",
+          "Avantos product interface project image",
+        ],
         "mcdonalds": [
           "/images/projects/mcdonalds.png",
           "McDonald's self-order kiosk project image",

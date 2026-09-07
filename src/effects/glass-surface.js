@@ -66,9 +66,12 @@ const SURFACE_VERTEX = /* glsl */ `
 const SURFACE_FRAGMENT = /* glsl */ `
   uniform sampler2D uMap;
   uniform float uOpacity;
+  uniform vec2 uUvScale;
+  uniform vec2 uUvOffset;
   varying vec2 vUv;
   void main() {
-    vec4 sampled = texture2D(uMap, vUv);
+    vec2 coverUv = vUv * uUvScale + uUvOffset;
+    vec4 sampled = texture2D(uMap, coverUv);
     gl_FragColor = vec4(sampled.rgb, sampled.a * uOpacity);
     #include <colorspace_fragment>
   }
@@ -241,6 +244,38 @@ function isNearViewport(rectangle) {
     && rectangle.left < innerWidth + CULL_MARGIN;
 }
 
+function coverUvFor(texture, rectangle) {
+  const image = texture?.image;
+  const imageWidth = image?.naturalWidth || image?.videoWidth || image?.width || 0;
+  const imageHeight = image?.naturalHeight || image?.videoHeight || image?.height || 0;
+  if (!imageWidth || !imageHeight || !rectangle.width || !rectangle.height) {
+    return {
+      scaleX: 1,
+      scaleY: 1,
+      offsetX: 0,
+      offsetY: 0,
+    };
+  }
+
+  const imageAspect = imageWidth / imageHeight;
+  const rectangleAspect = rectangle.width / rectangle.height;
+  let scaleX = 1;
+  let scaleY = 1;
+
+  if (imageAspect > rectangleAspect) {
+    scaleX = rectangleAspect / imageAspect;
+  } else {
+    scaleY = imageAspect / rectangleAspect;
+  }
+
+  return {
+    scaleX,
+    scaleY,
+    offsetX: (1 - scaleX) / 2,
+    offsetY: (1 - scaleY) / 2,
+  };
+}
+
 export function initGlassSurface() {
   const previousRuntime = window[RUNTIME_KEY];
   previousRuntime?.destroy?.();
@@ -355,6 +390,8 @@ export function initGlassSurface() {
       uniforms: {
         uMap: { value: blank },
         uOpacity: { value: 1 },
+        uUvScale: { value: new THREE.Vector2(1, 1) },
+        uUvOffset: { value: new THREE.Vector2(0, 0) },
       },
       vertexShader: SURFACE_VERTEX,
       fragmentShader: SURFACE_FRAGMENT,
@@ -470,6 +507,14 @@ export function initGlassSurface() {
       );
       mesh.scale.set(rectangle.width, rectangle.height, 1);
       material.uniforms.uOpacity.value = elementOpacity(element);
+      if (entry.kind === "media") {
+        const uv = coverUvFor(entry.texture, rectangle);
+        material.uniforms.uUvScale.value.set(uv.scaleX, uv.scaleY);
+        material.uniforms.uUvOffset.value.set(uv.offsetX, uv.offsetY);
+      } else {
+        material.uniforms.uUvScale.value.set(1, 1);
+        material.uniforms.uUvOffset.value.set(0, 0);
+      }
       mesh.visible = material.uniforms.uOpacity.value > 0.002;
     }
 

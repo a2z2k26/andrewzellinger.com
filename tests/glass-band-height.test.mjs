@@ -77,6 +77,22 @@ test("glass bands rasterize the retained media surfaces into the shader", async 
   assert.match(surface, /const TEXT_SELECTOR/);
 });
 
+test("glass media proxy crops images with cover geometry instead of stretching", async () => {
+  const surface = await readFile(
+    new URL("../src/effects/glass-surface.js", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(surface, /function coverUvFor\(texture, rectangle\)/);
+  assert.match(surface, /const imageAspect = imageWidth \/ imageHeight;/);
+  assert.match(surface, /const rectangleAspect = rectangle\.width \/ rectangle\.height;/);
+  assert.match(surface, /scaleX = rectangleAspect \/ imageAspect;/);
+  assert.match(surface, /scaleY = imageAspect \/ rectangleAspect;/);
+  assert.match(surface, /uUvScale\.value\.set\(uv\.scaleX, uv\.scaleY\)/);
+  assert.match(surface, /uUvOffset\.value\.set\(uv\.offsetX, uv\.offsetY\)/);
+  assert.match(surface, /vec2 coverUv = vUv \* uUvScale \+ uUvOffset;/);
+});
+
 test("the shader owns one canvas and suppresses duplicate native media paint", async () => {
   const surface = await readFile(
     new URL("../src/effects/glass-surface.js", import.meta.url),
