@@ -217,6 +217,12 @@ function createContentLoop(logicalItems, {
     cloneSet.inert = true;
     cloneSet.replaceChildren(...logicalItems.map((item) => item.cloneNode(true)));
     cloneSet.querySelectorAll(itemSelector).forEach((item, index) => {
+      [
+        item,
+        ...item.querySelectorAll(".glass-proxy-media-ready, .glass-proxy-text-ready"),
+      ].forEach((element) => {
+        element.classList.remove("glass-proxy-media-ready", "glass-proxy-text-ready");
+      });
       item.dataset.loopClone = `${position}-${index + 1}`;
       const detailLink = item.querySelector("[data-portfolio-detail-link]");
       if (detailLink) {

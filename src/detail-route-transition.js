@@ -72,18 +72,17 @@ export function runVerticalExpansion({
       autoAlpha: 1,
       y: 0,
       clipPath: "inset(0 0 0% 0)",
-      duration: .56,
-      delay: .16,
+      duration: .72,
       ease: "power3.out",
       onComplete: () => finish(true),
     });
   } else {
     tween = gsap.to(target, {
       autoAlpha: 0,
-      y: -16,
+      y: -12,
       clipPath: "inset(0 0 100% 0)",
-      duration: .32,
-      ease: "power3.in",
+      duration: .52,
+      ease: "power3.inOut",
       willChange: "transform,opacity,clip-path",
       onComplete: () => finish(true),
     });
@@ -93,10 +92,16 @@ export function runVerticalExpansion({
 }
 
 export function runRouteTransition({
+  direction = "enter",
   mediaVisual,
   mediaFrom,
   mediaTo,
   nativeTarget = null,
+  nativeCopy = null,
+  copyFrom = null,
+  copyTo = null,
+  expansionTarget = null,
+  revealTarget = null,
   reduceMotion = false,
   onComplete = () => {},
 }) {
@@ -108,6 +113,13 @@ export function runRouteTransition({
     if (finished) return;
     finished = true;
     nativeTarget?.style.removeProperty("visibility");
+    if (nativeCopy) gsap.set(nativeCopy, { clearProps: "transform,opacity,visibility,willChange" });
+    if (expansionTarget) {
+      gsap.set(expansionTarget, {
+        clearProps: "transform,opacity,visibility,clipPath,willChange",
+      });
+    }
+    if (revealTarget) gsap.set(revealTarget, { clearProps: "opacity,visibility,willChange" });
     overlay?.remove();
     if (notify) onComplete();
   };
@@ -117,37 +129,99 @@ export function runRouteTransition({
     finish(false);
   };
 
-  if (
-    reduceMotion
-    || !mediaVisual
-    || !mediaFrom
-    || !mediaTo
-    || !nativeTarget
-    || ![mediaFrom.width, mediaFrom.height, mediaTo.width, mediaTo.height].every((value) => value > 0)
-  ) {
+  const canAnimateMedia = Boolean(
+    mediaVisual
+    && mediaFrom
+    && mediaTo
+    && nativeTarget
+    && [mediaFrom.width, mediaFrom.height, mediaTo.width, mediaTo.height]
+      .every((value) => value > 0),
+  );
+
+  if (reduceMotion) {
     requestAnimationFrame(() => finish(true));
     return { timeline: null, cancel };
   }
 
-  overlay = holdRouteVisual(mediaVisual, "detail-transition-media", mediaTo);
-  nativeTarget.style.visibility = "hidden";
-  gsap.set(overlay, {
-    x: mediaFrom.left - mediaTo.left,
-    y: mediaFrom.top - mediaTo.top,
-    scaleX: mediaFrom.width / mediaTo.width,
-    scaleY: mediaFrom.height / mediaTo.height,
-    transformOrigin: "0 0",
-  });
+  if (canAnimateMedia) {
+    overlay = holdRouteVisual(mediaVisual, "detail-transition-media", mediaTo);
+    nativeTarget.style.visibility = "hidden";
+    gsap.set(overlay, {
+      x: mediaFrom.left - mediaTo.left,
+      y: mediaFrom.top - mediaTo.top,
+      scaleX: mediaFrom.width / mediaTo.width,
+      scaleY: mediaFrom.height / mediaTo.height,
+      transformOrigin: "0 0",
+      willChange: "transform",
+    });
+  }
+
+  const animateExpandedCard = direction === "enter" && canAnimateMedia;
+  if (animateExpandedCard && nativeCopy) {
+    const copyY = copyFrom && copyTo ? copyFrom.top - copyTo.top : 24;
+    gsap.set(nativeCopy, {
+      autoAlpha: copyFrom ? 1 : 0,
+      y: copyY,
+      willChange: "transform,opacity",
+    });
+  }
+  if (animateExpandedCard && expansionTarget) {
+    gsap.set(expansionTarget, {
+      autoAlpha: 0,
+      y: 32,
+      clipPath: "inset(0 0 100% 0)",
+      willChange: "transform,opacity,clip-path",
+    });
+  }
+  if (revealTarget) {
+    gsap.set(revealTarget, {
+      autoAlpha: 0,
+      willChange: "opacity",
+    });
+  }
+
+  if (!overlay && !revealTarget && !animateExpandedCard) {
+    requestAnimationFrame(() => finish(true));
+    return { timeline: null, cancel };
+  }
 
   timeline = gsap.timeline({ onComplete: () => finish(true) });
-  timeline.to(overlay, {
-    x: 0,
-    y: 0,
-    scaleX: 1,
-    scaleY: 1,
-    duration: .7,
-    ease: "power3.inOut",
-  });
+  timeline.addLabel("travel", 0);
+  if (overlay) {
+    timeline.to(overlay, {
+      x: 0,
+      y: 0,
+      scaleX: 1,
+      scaleY: 1,
+      duration: 1.2,
+      ease: "power3.inOut",
+    }, "travel");
+  }
+  if (animateExpandedCard && nativeCopy) {
+    timeline.to(nativeCopy, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1.16,
+      ease: "power3.inOut",
+    }, "travel+=.04");
+  }
+  if (animateExpandedCard && expansionTarget) {
+    timeline.addLabel("expand", .84);
+    timeline.to(expansionTarget, {
+      autoAlpha: 1,
+      y: 0,
+      clipPath: "inset(0 0 0% 0)",
+      duration: .76,
+      ease: "power3.out",
+    }, "expand");
+  }
+  if (revealTarget) {
+    timeline.to(revealTarget, {
+      autoAlpha: 1,
+      duration: .72,
+      ease: "power2.out",
+    }, "travel+=.18");
+  }
 
   return { timeline, cancel };
 }

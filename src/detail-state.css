@@ -63,17 +63,6 @@ html.detail-route .articles-index {
   position: relative;
 }
 
-.detail-expansion-curtain {
-  pointer-events: none;
-  position: fixed;
-  z-index: 90;
-  top: 0;
-  right: var(--structure--padding-desktop);
-  left: calc(50% + (var(--structure--grid-row-gap) / 2));
-  height: var(--detail-expansion-curtain-height, 0);
-  background: #000;
-}
-
 .detail-rail {
   width: auto;
   margin-right: var(--structure--padding-desktop);
@@ -265,6 +254,10 @@ html[data-detail-boundary-motion="active"] [data-detail-motion-lede] {
 }
 
 .detail-unit__title:focus {
+  outline: none;
+}
+
+.detail-unit__title[tabindex]:focus-visible {
   outline: none;
 }
 

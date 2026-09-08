@@ -28,12 +28,11 @@ test("an expanded project card is not treated as an incoming scroll boundary", a
   assert.match(controller, /incoming\.unit !== initialUnit/);
 });
 
-test("entry anchoring masks earlier case-study content until the selected card clears its source position", async () => {
+test("entry motion places the selected project at the canvas top without an intermediate curtain", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 
-  assert.match(runtime, /detail-expansion-curtain/);
-  assert.match(runtime, /syncEntryCurtain/);
-  assert.match(runtime, /currentY < entryScrollY/);
-  assert.match(styles, /\.detail-expansion-curtain\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*90;[^}]*background:\s*#000;/s);
+  assert.match(runtime, /const expandedTop = DETAIL_TOP_INSET/);
+  assert.doesNotMatch(runtime, /detail-expansion-curtain|syncEntryCurtain|entryScrollY/);
+  assert.doesNotMatch(styles, /\.detail-expansion-curtain/);
 });

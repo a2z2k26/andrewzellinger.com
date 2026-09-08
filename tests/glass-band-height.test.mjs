@@ -119,6 +119,13 @@ test("the glass proxy respects hidden route-transition targets", async () => {
   assert.match(surface, /parentStyle\.visibility === "hidden" \|\| parentStyle\.display === "none"/);
 });
 
+test("rebuilt loop clones never inherit a glass-ready hidden-paint state", async () => {
+  const motion = await readFile(new URL("../src/site-motion.js", import.meta.url), "utf8");
+
+  assert.match(motion, /querySelectorAll\("\.glass-proxy-media-ready, \.glass-proxy-text-ready"\)/);
+  assert.match(motion, /classList\.remove\("glass-proxy-media-ready", "glass-proxy-text-ready"\)/);
+});
+
 test("the persistent logo and clock remain native above both effects", async () => {
   const surface = await readFile(
     new URL("../src/effects/glass-surface.js", import.meta.url),

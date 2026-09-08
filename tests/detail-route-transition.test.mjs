@@ -14,7 +14,9 @@ test("project route transitions share media in both directions", async () => {
   assert.match(detail, /pendingDetailRender/);
   assert.match(detail, /operation !== routeOperation/);
   assert.match(detail, /focus\(\{ preventScroll: true \}\)/);
-  assert.match(transition, /duration:\s*\.7/);
+  assert.match(transition, /addLabel\("travel",\s*0\)/);
+  assert.match(transition, /addLabel\("expand",\s*\.84\)/);
+  assert.match(transition, /duration:\s*1\.2/);
   assert.match(transition, /ease:\s*"power3\.inOut"/);
   assert.doesNotMatch(transition, /detail-transition-copy/);
   assert.match(transition, /glass-proxy-media-ready/);
@@ -44,6 +46,7 @@ test("expanded project details reuse the canonical Projects lockup", async () =>
   assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*32px;/s);
   assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;/s);
   assert.match(styles, /\.detail-unit__project-lockup \.works-project-description\s*\{[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;/s);
+  assert.match(styles, /\.detail-unit__title\[tabindex\]:focus-visible\s*\{[^}]*outline:\s*none;/s);
 });
 
 test("detail navigation expands vertically and closes through the active project", async () => {
@@ -51,9 +54,14 @@ test("detail navigation expands vertically and closes through the active project
   const transition = await readFile(new URL("../src/detail-route-transition.js", import.meta.url), "utf8");
   const motion = await readFile(new URL("../src/site-motion.js", import.meta.url), "utf8");
 
-  assert.match(detail, /sourceRect\?\.top/);
+  assert.match(detail, /const expandedTop = DETAIL_TOP_INSET/);
+  assert.match(detail, /sourceCopyRect/);
+  assert.match(detail, /nativeCopy:\s*targetCopy/);
+  assert.match(detail, /expansionTarget:/);
   assert.match(detail, /const returnSlug = activeSlug/);
   assert.match(detail, /anchorSlug:\s*returnSlug/);
+  assert.match(detail, /holdSeconds:\s*1\.35/);
+  assert.match(detail, /revealTarget:\s*collectionField/);
   assert.match(transition, /runVerticalExpansion/);
   assert.doesNotMatch(detail, /sourceCopyVisual/);
   assert.doesNotMatch(detail, /destinationCopy:/);

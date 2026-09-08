@@ -369,7 +369,6 @@ function updateActiveEntry(entries, units) {
 
 function setupDetailScroll(view, entries, circular, reduceMotion, {
   initialUnit = null,
-  entryScrollY = null,
 } = {}) {
   const sourceSet = view.querySelector('[data-detail-set="source"]');
   const afterSet = view.querySelector('[data-detail-set="after"]');
@@ -379,35 +378,6 @@ function setupDetailScroll(view, entries, circular, reduceMotion, {
   let wrapping = false;
   let scrollFrame = 0;
   const boundaryMotion = createBoundaryMotion({ view, circular, reduceMotion, initialUnit });
-  const entryCurtain = initialUnit ? document.createElement("span") : null;
-  let curtainActive = Boolean(entryCurtain && Number.isFinite(entryScrollY));
-
-  if (entryCurtain) {
-    entryCurtain.className = "detail-expansion-curtain";
-    entryCurtain.setAttribute("aria-hidden", "true");
-    view.append(entryCurtain);
-  }
-
-  const removeEntryCurtain = () => {
-    if (!curtainActive) return;
-    curtainActive = false;
-    entryCurtain?.remove();
-  };
-
-  const syncEntryCurtain = (currentY = window.scrollY) => {
-    if (!curtainActive) return;
-    if (currentY < entryScrollY - 1) {
-      removeEntryCurtain();
-      return;
-    }
-    const mediaTop = initialUnit.querySelector(".detail-unit__media")?.getBoundingClientRect().top;
-    if (!Number.isFinite(mediaTop) || mediaTop <= DETAIL_TOP_INSET + 1) {
-      removeEntryCurtain();
-      return;
-    }
-    entryCurtain.style.setProperty("--detail-expansion-curtain-height", `${mediaTop}px`);
-  };
-
   const measure = () => {
     sourceTop = documentTop(sourceSet);
     cycleDistance = circular && afterSet ? documentTop(afterSet) - sourceTop : 0;
@@ -440,7 +410,6 @@ function setupDetailScroll(view, entries, circular, reduceMotion, {
         });
       }
     }
-    syncEntryCurtain(currentY);
     boundaryMotion.render();
     updateActiveEntry(entries, units);
   };
@@ -450,7 +419,6 @@ function setupDetailScroll(view, entries, circular, reduceMotion, {
   };
 
   measure();
-  syncEntryCurtain();
   boundaryMotion.render();
   window.addEventListener("scroll", onScroll, { passive: true });
   return {
@@ -458,7 +426,6 @@ function setupDetailScroll(view, entries, circular, reduceMotion, {
     boundaryMotion,
     destroy() {
       boundaryMotion.destroy();
-      entryCurtain?.remove();
       window.removeEventListener("scroll", onScroll);
       if (scrollFrame) cancelAnimationFrame(scrollFrame);
     },
@@ -482,6 +449,7 @@ function destroyDetailView() {
 async function renderDetail(entry, {
   sourceVisual = null,
   sourceRect = null,
+  sourceCopyRect = null,
 } = {}) {
   const operation = ++routeOperation;
   discardPendingDetailRender();
@@ -526,9 +494,7 @@ async function renderDetail(entry, {
   const animateFromCard = entry.kind === "project"
     && circular
     && Number.isFinite(sourceRect?.top);
-  const expandedTop = animateFromCard
-    ? sourceRect.top
-    : DETAIL_TOP_INSET;
+  const expandedTop = DETAIL_TOP_INSET;
   setScroll(documentTop(selectedUnit) - expandedTop);
   await nextFrame();
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
@@ -540,7 +506,6 @@ async function renderDetail(entry, {
     reduceMotion,
     animateFromCard ? {
       initialUnit: selectedUnit,
-      entryScrollY: window.scrollY,
     } : {},
   );
   let resizeCall = null;
@@ -585,31 +550,24 @@ async function renderDetail(entry, {
   const focusTarget = selectedUnit.querySelector(".detail-unit__title");
   if (entry.kind === "project") {
     const targetMedia = selectedUnit.querySelector(".detail-unit__media");
-    const mediaTransition = runRouteTransition({
+    const targetCopy = selectedUnit.querySelector("[data-project-card-copy]");
+    let transition = null;
+    transition = runRouteTransition({
       direction: "enter",
       mediaVisual: sourceVisual,
       mediaFrom: sourceRect,
       mediaTo: elementRect(targetMedia),
       nativeTarget: targetMedia,
-      reduceMotion,
-    });
-    let transition = null;
-    const expansion = runVerticalExpansion({
-      target: selectedUnit.querySelector("[data-detail-expansion-body]"),
-      direction: "enter",
+      nativeCopy: targetCopy,
+      copyFrom: sourceCopyRect,
+      copyTo: elementRect(targetCopy),
+      expansionTarget: selectedUnit.querySelector("[data-detail-expansion-body]"),
       reduceMotion,
       onComplete: () => {
         if (activeTransition === transition) activeTransition = null;
         if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
       },
     });
-    transition = {
-      timeline: mediaTransition.timeline,
-      cancel() {
-        mediaTransition.cancel();
-        expansion.cancel();
-      },
-    };
     activeTransition = transition;
     return;
   }
@@ -656,6 +614,10 @@ async function restoreCollection(state) {
   const returnMediaVisual = mediaIsVisible
     ? holdRouteVisual(detailMedia.cloneNode(true), "detail-transition-media", returnMediaRect)
     : null;
+  const collectionField = previous.collectionNodes.find((node) => (
+    node.matches?.(".works-motion-field")
+  ));
+  if (canReverse && collectionField) gsap.set(collectionField, { autoAlpha: 0 });
 
   previous.view.style.visibility = "hidden";
   destroyDetailView();
@@ -667,7 +629,7 @@ async function restoreCollection(state) {
     detail: {
       anchorSlug: returnSlug,
       anchorTop: returnAnchorTop,
-      holdSeconds: .8,
+      holdSeconds: 1.35,
     },
   }));
 
@@ -676,6 +638,7 @@ async function restoreCollection(state) {
   await nextFrame();
   if (operation !== routeOperation) {
     returnMediaVisual?.remove();
+    if (collectionField) gsap.set(collectionField, { clearProps: "opacity,visibility" });
     return;
   }
 
@@ -692,8 +655,9 @@ async function restoreCollection(state) {
   ));
   const target = candidates[0];
 
-  if (!returnMediaVisual || !returnMediaRect || !target) {
+  if (!target) {
     returnMediaVisual?.remove();
+    if (collectionField) gsap.set(collectionField, { clearProps: "opacity,visibility" });
     focusTarget?.focus({ preventScroll: true });
     return;
   }
@@ -705,6 +669,7 @@ async function restoreCollection(state) {
     mediaFrom: returnMediaRect,
     mediaTo: target.rect,
     nativeTarget: target.media,
+    revealTarget: collectionField,
     reduceMotion: previous.reduceMotion,
     onComplete: () => {
       if (activeTransition === transition) activeTransition = null;
@@ -725,6 +690,8 @@ function openDetail(link) {
     ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height }
     : null;
   const sourceVisual = sourceMedia?.cloneNode(true) ?? null;
+  const sourceCopy = link.querySelector("[data-project-card-copy]");
+  const sourceCopyRect = elementRect(sourceCopy);
   const sourceRoute = normalizedPath();
   const sourceScrollY = window.scrollY;
   const collectionState = {
@@ -754,6 +721,7 @@ function openDetail(link) {
   renderDetail(entry, {
     sourceVisual,
     sourceRect,
+    sourceCopyRect,
   });
 }
 
