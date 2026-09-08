@@ -1,5 +1,5 @@
-// Temporary editorial records. Titles, metadata, excerpts, and article body
-// paragraphs are shared by the Articles index and every Article Detail route.
+// Editorial records. Titles, metadata, excerpts, and article body paragraphs
+// are shared by the Articles index and every Article Detail route.
 
 const temporaryArticleBody = Object.freeze([
   "Temporary article copy. This paragraph establishes the intended editorial measure and reading rhythm; it should be replaced by Andrew's authored introduction.",
@@ -9,6 +9,26 @@ const temporaryArticleBody = Object.freeze([
 
 const heading = (text) => Object.freeze({ type: "heading", text });
 const paragraph = (text) => Object.freeze({ type: "paragraph", text });
+
+const authoredBody = (source) => Object.freeze(
+  source
+    .trim()
+    .split(/\n\s*\n+/)
+    .flatMap((rawBlock) => {
+      const block = rawBlock.trim();
+      const headingMatch = block.match(/^\[([^\]]+)\](?:\s*\n([\s\S]+))?$/);
+
+      if (!headingMatch) {
+        return paragraph(block.replace(/\s*\n\s*/g, " "));
+      }
+
+      const blocks = [heading(headingMatch[1])];
+      if (headingMatch[2]) {
+        blocks.push(paragraph(headingMatch[2].trim().replace(/\s*\n\s*/g, " ")));
+      }
+      return blocks;
+    }),
+);
 
 const companyOfOneBody = Object.freeze([
   heading("At its worst, my agents waited in line"),
@@ -64,6 +84,387 @@ const aFreeSurfLessonBody = Object.freeze([
   heading("Develop your judgement, but build the machinery that makes it matter. Ride the wave."),
 ]);
 
+const showingMyTeethBody = authoredBody(`
+[I got fired on the day I left Denver]
+
+Two years after COVID hit New York, I packed everything and moved to Colorado — out of the cityscape, closer to the mountains. For two years I backcountry skied with my mountaineer cousin and worked the contracts I'd carried with me from New York. For a while I could breathe. Then the contracts thinned, one by one, as clients pulled back from an economy that hadn't stopped 'contracting' or whatever we call this, since the pandemic. Before I'd fully registered it, I was in survival mode.
+
+[Around then, I learned my father was sick]
+
+So, I took a lead design role at a smart dog collar startup — mostly because the founder fast-tracked my application and promised me the world. What I pieced together shortly after was that he'd landed in hot water when SoftBank pulled back; he'd panicked and quietly let go of his entire design team. I arrived as the sole designer, expected to carry the work of a whole design department alone.
+
+The app had a feature for recovering a pet that had gone missing. The founder asked me to build a flow that solicited video testimonials from users the moment they exited that recovery flow — not to improve the product, but to generate marketing content. He wanted panicked pet owners to record video right after losing an animal. Maybe they'd gotten it back. Maybe they hadn't. Maybe they'd found it on the side of the road. I build for the person on the other side of the screen; the mandate ran against everything I practice. I came back with a range of softer, more humane alternatives. He refused, and reprimanded me for working proactively.
+
+After that, I was pushed out over the course of my last summer in the mountains — taken off product, handed busywork. I had told leadership, plainly, that I was moving to Florida because my father was gravely sick. In my final weeks they flooded me with work anyway. On my last day, with the movers scheduled for the afternoon, they pressed me to hit a marketing deadline that morning. The moment I handed off the work, my accounts froze. Everything went dark except one Slack message from the founder: "Can I connect?" He fired me from a balcony, on the back end of his end-of-summer vacation in Spain. I genuinely believe he angled the camera to show me his view of Barcelona. Then he blocked me — from Slack, and from the work I'd made. On moving day. My father had cancer.
+
+[I put on a blank face and drove twelve hours through the night]
+
+Twelve hours is a long time to think.
+
+I thought about the recruiter who'd reached out two weeks before I was fired.
+
+No prior relationship with her, no warm intro, in the worst job market I'd seen.
+
+I thought about twenty years of doubting myself while watching less capable people steer the ship.
+
+I thought about how imposter syndrome and sharp self-awareness can live in the same body.
+
+I thought about how this industry often hires on perception — more than on the actual work.
+
+I thought about the bootcamps that flooded the field right at my mid-career mark.
+
+How quickly hard-won experience got repriced.
+
+I thought about how the craft itself got commoditized — posted online, copied offshore, fed to a model.
+
+I thought about how the people who'd given their lives to this work kept losing to people who'd learned to perform it.
+
+And I thought about my father.
+
+How I'd left Colorado to be near him, and how, instead, he was going to have to make room for me.
+
+I thought about all of it.
+
+Alone, in the dark, for twelve hours.
+
+And somewhere on that drive, the thing I kept circling back to wasn't the founder, or the recruiter, or the job market. It was that I still wanted to do the work. Not the performance around it — the LinkedIn theater, the personal-brand maintenance, the politics, the hand holding inept startup founders — but the work itself. The problem on the table. The thing that isn't right yet and could be. That's an inconvenient thing to learn about yourself at the bottom of a bad year, bad couple years considering it was only a few past the pandemic. It would have been so much easier to be done.
+
+[I put my hands to work instead]
+
+I got to Florida and spent the months that followed in and out of hospitals with my father, and in the hours around that, studying. I taught myself everything I could about AI — not because I was chasing a trend, but because it was the live edge of the work I love, and because the work was somewhere to put my hands when the rest of it was unbearable. Caring for him and caring about the craft turned out to be the same reflex: a refusal to surrender. Hospital hallways bend time.
+
+I won't pretend I have it all figured out, and I won't talk about where any of it lands. What I'll say is that this stretch made me understand, in a way I hadn't before, what family is actually worth. Family is everything. I'm fairly certain that years from now I'll look back on this hard, strange season — the one that opened with me getting fired from a balcony — and be grateful I got to be there for my family when they needed it.
+
+[why I'm telling you this NOW]
+
+I waited a long time to write any of it down. I didn't post my layoff on LinkedIn — I can't stand LinkedIn — and I didn't write this for industry peers. I wrote this because what happened to me is happening to thousands of people right now, quietly, one balcony at a time. The tech layoffs get reported as numbers. They are not numbers. Each one is a person whose life got rerouted overnight — often while something else, something that actually mattered, was already going wrong in the background. That cost is real, and it's almost entirely invisible, and I think someone should say so plainly.
+
+So if you found your way here — maybe you're a younger designer, maybe you're just someone the industry recently decided was disposable — here's what I have for you. Make your own rules; the old ones don't apply anymore. A lot of the studios and companies you can't get an interview with are failing. If everything feels unfair and upside down, it's because it is — but this industry has always been held together with duct tape and spaghetti code. None of it is a verdict on you.
+
+There's no silver bullet, and even a decade plus of experience is not a magic amulet. But there are people, a lot of us, who still believe in the work, and in what you can make. It's okay to be someone who'd rather get the craft right than perform it online. Hard work still pays off, even in the age of AI. It's okay to be exactly who you are. The work is bigger than the job you thought you signed up for, and there's still a place in it for you. You don't need anyone's permission to build things. Show teeth.
+
+[IF THE IMAGE DOESN'T WORK, PUT A DOG IN IT. IF IT STILL DOESN'T WORK, PUT A BANDAGE ON THE DOG]
+`);
+
+const intentionDeficitDisorderBody = authoredBody(`
+[I call it intention deficit]
+
+Intent debt is what accumulates when a system repeatedly misreads, over-assumes, flattens, or redirects what users actually mean. It is not just a bad answer. It is a pattern of misunderstanding that becomes part of the product. And because AI products can sound confident while being wrong, intent debt can be harder to see than UX debt. The product heard the words, but missed the meaning Most product teams are trained to look for visible friction.
+
+Where did users drop off?
+
+Where did they click?
+
+What did they not understand?
+
+Which step took too long?
+
+Those questions still matter. But AI introduces a different failure mode. The user can type a perfectly reasonable request. The system can respond fluently. The interaction can look successful from the outside. But something is off. The system answered the wrong version of the question. It solved for a generic user instead of this user. It gave a confident answer where a clarifying question would have been better. It optimized for completion when the user needed exploration. It collapsed emotion, context, constraints, or risk into a neat response. It moved too fast. It made the user feel handled rather than helped. That is intention deficit disorder. The words went in. The meaning did not survive. A simple example. Imagine a user asks an AI travel product:
+
+"Can you help me plan a weekend away with my dad? He gets tired easily but does not like feeling old."
+
+A bad system might produce a perfectly organized itinerary. Restaurants. Walking routes. Museums. Times. Links. A cheerful summary. On paper, it did the task. But the real intent was not "make an itinerary." The real intent included dignity, pacing, care, family dynamics, and emotional tact. The system needed to understand that the user's father may need rest without being treated as fragile. It needed options that preserve autonomy. It needed language the user could share without embarrassment. It needed to ask what kind of weekend would feel meaningful to both of them. If the product misses that, the failure may not show up as an error. It may show up as a user quietly not trusting it again. Intent debt often looks like successful task completion until you inspect the human residue it leaves behind.
+
+[How intention debt accumulates]
+
+Intent debt usually starts with reasonable product pressure. A team wants the AI to be fast, helpful, and proactive. They want fewer dead ends. They want the system to show value quickly. They want demos that feel magical. So the product begins to over-answer. It fills in missing context instead of asking. It treats ambiguity as inconvenience. It reduces messy human goals into clean task categories. It pushes toward output when the user is still forming intent. It optimizes for "done" because done is easy to measure. At first, this feels efficient. Then the product starts building a habit of being wrong in the same direction. That is the debt. Not one mistake. A repeated bias in how the system interprets people.
+
+[Signs you have intention deficit disorder]
+
+You may have intent debt if:
+
+Users keep correcting the system in similar ways.
+
+The AI answers quickly but users still ask follow-up questions that reveal the first answer missed the point.
+
+The product performs well in demos but feels brittle in real use.
+
+The system prefers producing an artifact over understanding the situation.
+
+Users describe outputs as "not wrong, but not quite right."
+
+The same prompt works for simple cases and collapses under personal, ambiguous, or high-context cases.
+
+The AI asks too few clarifying questions.
+
+The product has no clear policy for when to slow down, refuse, defer, or escalate.
+
+Teams evaluate outputs for accuracy but not fit.
+
+Support teams can name common misunderstandings that are not represented in design reviews.
+
+The most important signal is repeated correction. When users keep saying some version of "No, I meant..." the product is teaching you where intent is leaking.
+
+[Why this is different from hallucination]
+
+Hallucination gets a lot of attention because it is easy to understand. The system made something up. It claimed a fact that was not true. It cited something that did not exist. That matters. But intent debt is broader. An AI system can be factually correct and still fail the user. It can summarize accurately but omit what matters. It can complete the requested task but choose the wrong level of detail. It can follow policy but sound cold. It can personalize output using the wrong signal. It can ask a question that is technically relevant but socially clumsy. It can be safe in a compliance sense and unsafe in a trust sense. This is why design needs to be involved. Intent debt lives in the gap between correctness and usefulness.
+
+[Preventative care]
+
+Here is a practical way to start addressing it. Choose a recent AI interaction pattern in your product. It might be search, onboarding, recommendations, customer support, planning, summarization, writing assistance, research synthesis, or an agentic workflow. Then review real or realistic interactions against five questions.
+
+1. What did the user literally ask?
+Capture the surface request. Do not interpret yet. Write down the words, action, or selected option.
+2. What might the user have meant?
+List plausible underlying intents. Were they trying to decide, understand, compare, create, repair, explore, avoid risk, gain confidence, save time, feel reassured, or get unstuck? Most AI products fail here because they treat intent as singular.
+
+3. What did the system assume?
+Name the assumptions. Did it assume the user's goal was obvious? That speed mattered most? That the user wanted a complete answer? That the user had expertise? That the user wanted advice rather than options? That the emotional context was irrelevant? Assumptions are not bad. Invisible assumptions are.
+
+4. What did the system optimize for?
+Look at the behavior. Did it optimize for completion, brevity, accuracy, confidence, persuasion, engagement, safety, conversion, convenience, or user agency? Every AI product optimizes for something, even when the team has not named it.
+
+5. What should have happened instead?
+Define the better behavior. Maybe the system should have asked one clarifying question. Maybe it should have offered two paths. Maybe it should have named uncertainty. Maybe it should have slowed down. Maybe it should have refused. Maybe it should have escalated. Maybe it should have produced a smaller first step instead of a complete plan.
+
+This is where intent debt becomes design work.
+
+[A lightweight scoring model]
+
+For each reviewed interaction, score four dimensions from 1 to 5.
+
+[Dimension Question Recognition]
+
+Did the system identify the likely user intent?   Fit Did the response match the user's context, constraints, and stakes?   Agency Did the system preserve meaningful user control?   Recovery Did the product make it easy to correct, refine, or redirect?
+
+The score is not the point. The pattern is. If recognition is consistently low, you may need better onboarding, research, memory, or clarifying behavior. If fit is low, you may need richer context, better examples, or more nuanced product principles. If agency is low, your product may be over-automating. If recovery is low, users may be trapped inside the system's first guess.
+
+[Paying down intent debt]
+
+Intent debt does not get fixed by telling the model to "understand the user better." It gets fixed through product decisions.
+
+Create intent categories that reflect real user needs, not internal feature categories. Add clarifying questions where the cost of guessing is high. Define when the system should give options instead of answers. Design undo, correction, and refinement as first-class interactions. Collect "No, I meant..." examples and turn them into eval cases. Teach the system product-specific judgment through examples and anti-examples. Review high-context interactions with researchers, designers, support teams, and domain experts. Measure whether users accept, edit, reject, or repeatedly redirect AI outputs. Most importantly, decide what should be slow. That may be the least comfortable design decision in AI products. The pressure is always toward speed. Faster answers. Faster generation. Faster workflows. Faster task completion.
+
+But some moments should not be collapsed.
+
+Ambiguity deserves a pause. High stakes deserve a check. Emotional context deserves care. Irreversible actions deserve confirmation. User intent deserves enough time to become visible. Speed is not always respect. Sometimes respect is the system knowing not to rush.
+
+[Intent is a design material]
+
+Designers are used to working with layout, hierarchy, language, motion, flows, states, constraints, and systems.
+
+AI adds another material: interpretation. The product is no longer just presenting choices. It is inferring what people mean, deciding what matters, and taking action on those interpretations. That makes intent a design material. If we do not shape it deliberately, the system will shape it anyway. It will inherit assumptions from training data, prompt fragments, team defaults, business incentives, and whatever got rewarded in the last round of testing. Intent debt is what happens when those assumptions compound without scrutiny.
+
+[The new design review]
+
+A useful AI design review should not stop at the screen. It should ask:
+
+What did the system think the user meant?
+
+Why did it think that?
+
+What else could the user have meant?
+
+When should it ask instead of answer?
+
+What does it do when its first interpretation is wrong?
+
+What kind of misunderstanding would damage trust?
+
+Where are we rewarding completion over comprehension?
+
+Those questions belong in product strategy, research, design critique, content design, QA, and launch readiness. They are not edge cases. They are the experience. The debt you cannot see in Figma. UX debt often leaves visual evidence. Screens pile up. Components fork. Flows sprawl. Copy gets inconsistent. The mess is visible if someone takes the time to look.
+
+Intent debt is quieter. It lives in the relationship between what users meant and what the system did with that meaning. That is why it is so easy to ignore. A team can have a polished interface, a strong design system, a fast model, and a beautiful demo, while the product steadily trains users not to trust it with anything nuanced. The future of AI product quality will not belong only to teams that generate the best outputs. It will belong to teams that get better at understanding what those outputs were supposed to serve.
+
+[That starts with treating intent as something worth designing]
+`);
+
+const twoDollarBillBody = authoredBody(`
+Because here's what two dollars represents: a single deliberation, a handful of agents thinking for a few minutes on the good models, ran up a bill that — annualized across a system that's supposed to do this kind of thing constantly, unattended, while I sleep — is a quiet financial wound. Not a catastrophe. A drip. And a drip is exactly the failure mode an autonomous system is built to hide from you, because the whole point is that you're not watching. Which is the whole problem with how we talk about these systems.
+
+[Day nine is where I live]
+
+You've seen the demo a hundred times. An autonomous agent does something impressive — books the trip, fixes the bug, files the PR — the video cuts, and the lights come up. What you never see is the same agent running on your own hardware, unattended, on day nine. Day nine is where I live. My agent harness runs 24/7 on a Mac mini, reads my messages, executes scheduled work, and spends real money against real APIs while I sleep. The failure modes on day nine are nothing like the ones in the demo. They're quieter and meaner. The two-dollar mistake was one of them — and it was the cheap kind, the kind that's cheap enough to be a lesson instead of a disaster. This article is about the contracts that I built so that I could actually leave this thing running with confidence.
+
+[The four ways trust dies quietly]
+
+1. Silent degradation. This is the killer. A subsystem doesn't crash — it just stops being connected. Some setter never got called at boot, so from then on it politely no-ops, invisibly, forever. The system looks healthy. It's just not doing one of the things you think it's doing. You find out three weeks later when you notice the thing never happened.
+
+2. Alert fatigue. An alarm that fires too often is an alarm you mute. Once you've muted it, it might as well not exist — and the one time it fires for a real reason, you're not looking. Most monitoring dies this way: not from missing alerts, but from too many.
+
+3. Dishonest accounting. This is the two-dollar mistake's evil twin. A budget gate that can't tell "this call cost zero dollars" from "I have no idea what this call cost" will eventually make a very wrong decision, quietly, because it treated unknown as free. Except this time you never even see the two dollars.
+
+4. Incomplete stops. You typed /halt. The surfaces that remembered to implement halting stopped. The one subprocess three layers down that spawned its own children didn't get the message, and it's still running, still spending.
+
+None of these show up in a demo. All of them show up in week two. So I designed for them directly, and gave each one a name and a contract.
+
+[The mechanisms]
+
+A wiring manifest, so nothing degrades silently. My harness declares its cross-subsystem connections — 28 of them — explicitly. At every boot, each one reports as active, pending, or failed. And failed is kept distinct from pending: "tried to wire and crashed" is a different state from "deferred by plan," and conflating them is exactly how you miss a real failure. A subsystem that gets invoked before its wire fired raises an error instead of no opping. The boot log reads like a pre-flight checklist, because that's what it is. If something isn't connected, the system tells me at startup — loudly — instead of letting me discover it weeks later.
+
+A skip taxonomy, so the alarm stays trustworthy. When one of my ~19 scheduled services decides not to do work, it has to say why in a fixed vocabulary: missing a secret, missing config, not due yet, a dependency's down, the operator disabled it, or genuinely nothing to do. Six categories, machine-readable. The crucial detail: a skip resets the failure counter. A service that correctly decides "nothing to do today" is healthy, not failing — so it never inflates the count that drives alerts. The result is an alarm that only rings when something is actually wrong, which is the only kind of alarm you don't mute.
+
+Four-state cost accounting, so the budget is honest. Here's where the two dollars comes back, because this is the mechanism it built. Every model call resolves to one of four states: measured, estimated, unknown, or not_applicable. Measured-zero is a real, confirmed zero. Unknown means a parser failed — and unknown is never silently turned into $0. The system checks this contract at boot with synthetic events and refuses to start if it's broken.
+
+The fix the two-dollar run actually triggered was a fifty-fold cost reduction: swap the expensive frontier models on the specialist seats for a slate of cheap-frontier models, a different one per role so the reasoning actually differs at the model layer instead of just the prompt. Two dollars became four cents. The board got slower — fifteen to twenty-five minutes where it used to take five to ten — and I raised the timeout and decided slower-and-affordable beats fast-and-bleeding. That tradeoff, made in a config file at 50× savings, is more representative of real agent work than anything in the demo reel. Around it sit the rest of the guardrails: per-call caps, per-issue caps, per-day budgets, a per-tick ceiling so a single scheduled wake-up can't spiral, and a kill-switch in the decision logic that escalates to a human the moment a run blows its budget. None of that makes the agents smarter. All of it is the difference between a system you can run for a year and a science project you shut off after a week because the bill scared you.
+
+And now the part that should make you uncomfortable, because it's the part most people building this won't admit: a large part of my system cannot currently measure its own cost. The specialist agents — the bulk of the roster — run on a subscription-billed local model. Subscription billing is opaque: there's no per-call dollar figure coming back, because you're not paying per call, you're paying a flat fee. So when the system asks "what did that operation cost?", the honest answer for those agents is unknown. Not zero. Unknown. And the single most important rule in the entire cost system is that those two are never, ever allowed to be confused. So the system fails closed on unknown. It refuses to charge a number it can't trust — it tags the operation, logs it, and surfaces the gap rather than papering over it.
+
+I'm running a financial system that is honest about being partially blind. That's not a flaw I'm hiding — it's the design. The alternative isn't "a system that knows all its costs"; that system doesn't exist yet for this setup, because the pricing model for that backend literally isn't wired. The alternative is a system that pretends to know, coerces every unknown to zero, shows you a clean dashboard, and lies. I'd rather run the one that says "I don't know what that cost, and I've stopped rather than guess."
+
+One halt contract, so stop means stop. Every autonomous surface in the system — services, the experiment loop, the issue factory, job search — checks the same two-method halt contract before starting work and while doing it. /halt propagates everywhere, including in-flight subprocess cancellation: terminate, wait, kill, and then kill the whole process group so any MCP servers or tool children a subprocess spawned die with it. A halt that only works on the surfaces that opted in isn't a halt. It's a suggestion. I designed mine to not be a suggestion.
+
+[The ladder: autonomy is earned, not granted]
+The mechanisms above make a running system trustworthy. But there's a prior question: how does a new autonomous behavior earn the right to run at all?
+
+[My answer is a ladder, and nothing skips a rung]
+
+dry-run ledger → shadow mode → soak harness → feature flag → production.
+
+A new capability first just writes down what it would do, executing nothing. Then it runs for real with its output diverted and compared, never applied. Then it soaks — my issue-resolver runs in shadow for fourteen days under observation before anything flips. Then it goes behind a feature flag I control, reversible in one command. Only then does it touch production — and even there it's still budget-capped, halt-checked, and cost-accounted.
+
+You don't decide to trust an autonomous system. You give it graduated chances to demonstrate it, with instruments running the whole time. My self-improvement loop — the part of the system that proposes changes to itself — lives at the bottom of this ladder permanently: it runs proposal-only, under a $2/day budget (yes, that number), with a forbidden-files list, and it never executes a change without me approving it. The system can help build itself, exactly as far as it has earned and not one rung further.
+
+[What I'd tell you to steal]
+
+If you're building something that runs unattended, the demo is lying to you about what matters. The hard part isn't the impressive action — it's the boring contracts that make the system safe to not watch:
+
+Make degradation loud. Declare your wiring and report it at boot.
+
+Make correct inaction free. A no-op should never look like a failure.
+
+Make unknowns visible. Never coerce "I don't know" into a convenient default.
+
+Make stop total. One halt contract, honored everywhere, kills the whole tree.
+
+Make autonomy earned. A ladder with instruments beats a leap of faith.
+
+Everyone wants AI agents to be about intelligence. The day-to-day reality is that they're about trust under uncertainty — and a huge amount of that uncertainty is financial. You are spending real money, continuously, through a system you've designed specifically so you don't have to watch it. The engineering that matters most is the engineering that lets you not watch without going broke and without being lied to about it. Trust isn't a feeling you bring to a system. It's a property you build into it — twenty-eight wires reported at boot, six ways to say "I correctly did nothing," four states of knowing what something cost, and one word that stops everything. The two-dollar mistake was cheap enough to be a lesson instead of a disaster, and I've spent a lot of effort since making sure every future version of it stays cheap: capped, gated, escalated, and above all honestly accounted — even when honest means admitting I can't see the number at all.
+
+Nobody puts "and here's how I make sure it doesn't quietly bankrupt me, while flying half-blind on cost" in the launch video. But that's the work. That's most of the work. A system that won't tell you what it doesn't know about its own spending is one I trust less than any dashboard that's never once said "unknown." That's what week two actually requires. The demo never has to find out. A system you leave running does.
+`);
+
+const youAlwaysLetYourselfWinBody = authoredBody(`
+Every AI product team hits the same moment. The demo works. The model says something coherent. The prototype feels alive in a way software didn't a few years ago. People lean forward. Someone says, "This is impressive."
+
+[Then the real question arrives: is it good?]
+
+Not "did it respond," or "did the API return something," or "did the prompt work once while the team was watching." Good the way product people mean it — useful, clear, trustworthy, fit for the user, honest about uncertainty, able to recover when it's wrong, and consistent enough that the product feels designed rather than merely generated.
+
+In too many teams, the answer is still: a senior person looks at it.
+
+[That is not a quality system. That is a bottleneck with taste]
+
+It's also a quiet way of playing chess against yourself. And against yourself, you always let yourself win.
+
+Designers have spent years making quality more visible. We turned messy product intent into journey maps, principles, design systems, content guidelines, accessibility checks, critique rituals, research plans, and launch reviews. We learned to make judgment discussable. Now AI has moved much of product behavior into places designers rarely inspect: prompts, system instructions, retrieval logic, tool calls, model defaults, memory, guardrails, ranking rules, agent policies, and fallback states. The interface is no longer the whole experience. It is the surface where a deeper system shows itself. So designers need a new habit: stop treating the prompt as the main design artifact, and start treating evals as one.
+
+[What an eval really is]
+
+In engineering and machine learning, an eval is a test that measures whether a model performs well on a defined task. That sounds technical, formal, and distant from design practice. The underlying idea is simple. An eval is a repeatable way to judge whether an AI system behaves according to your standards. That is design work.
+
+Designers evaluate constantly. We judge whether a flow makes sense, whether a message is clear, whether a visual hierarchy supports the user's task, whether an edge case breaks trust, whether an interaction asks too much of someone at the wrong moment. The difference is that AI products don't give us one fixed flow to inspect. They give us a range of possible behaviors. So the design question changes from "Does this screen work?" to "Across many situations, does this system behave in ways we'd be proud to ship?" That is what evals are for.
+
+[Prompts are not enough]
+
+Prompts are seductive because they feel like control. Write the right instruction, add the right examples, tighten the tone, tell the model what to avoid, tell it to think step by step, tell it to act like your best researcher or editor or support agent. Sometimes that works. Often it works just enough to make you overconfident. A prompt is a production input. It helps the system make something. An eval is a quality instrument. It helps the team decide whether the thing being made is acceptable over time. Without evals, teams mistake a good output for a good system. That is dangerous, because AI quality is not a single-state problem. The same product can be thoughtful in one conversation, evasive in another, overconfident in a third, and quietly harmful in a fourth. It can handle common use cases well while failing the unusual situations that matter most. Prompts shape behavior. Evals reveal it. You need both.
+
+[Why designers should care]
+
+There is a version of evals that belongs deeply to engineering. Latency, cost, task completion, retrieval accuracy, benchmark performance, regression testing, jailbreak resistance, and infrastructure reliability all matter. Designers don't need to own that. But there is another layer — how the system behaves as an experience — that design is uniquely qualified to lead.
+
+Does the system understand what the user is actually asking for?
+
+Does it know when to ask a clarifying question?
+
+Does it express uncertainty in a way that helps rather than irritates?
+
+Does it feel capable without pretending to be omniscient?
+
+Does it handle vulnerable, high-stakes, or emotionally loaded moments with appropriate care?
+
+Does its output fit the product's point of view?
+
+These are not "tone" questions. They are product quality questions. If designers don't help define them, someone else will. Usually by accident.
+
+[The designer's eval stack]
+
+A practical design eval doesn't need to start as a complex platform. It can begin as a structured document and a weekly ritual. The stack has five parts:
+
+1. Behavioral criteria. Start by naming the qualities the system must preserve. Not vague qualities like "good" or "human" — specific standards. For example:
+
+It should answer the user's actual intent, not just the literal wording.
+
+It should ask for missing information before making risky assumptions.
+
+It should distinguish confidence from uncertainty.
+
+It should use the product's language, not generic assistant language.
+
+These become the team's shared quality bar.
+
+2. Scenario set. AI products need to be tested against situations, not just happy paths. A good scenario set includes:
+
+Common tasks users perform every day.
+
+Ambiguous requests where intent is incomplete.
+
+Edge cases where the system is likely to over-assume.
+
+High-friction moments where users are confused or frustrated.
+
+Boundary cases where the system should refuse, redirect, or escalate.
+
+Accessibility and inclusion cases where phrasing, assumptions, or defaults may exclude people.
+
+The scenario set is where research becomes operational. Every confusing support ticket, failed usability session, sales objection, and edge-case interview can become an eval scenario.
+
+3. Examples and anti-examples. Designers are good at pattern recognition, but teams need more than vibes. For each scenario, collect examples of:
+
+Strong responses.
+
+Acceptable responses.
+
+Weak responses.
+
+Unshippable responses.
+
+The anti-examples matter most. They teach the system and the team what failure looks like — the move you'd skip if you were only playing your own side. This is where taste becomes concrete. Instead of "this doesn't feel right," you can say: "This response is overconfident, skips the user's constraint, and gives no recovery path." That is a far more useful critique.
+
+4. Review cadence. Evals only matter if they're used repeatedly. Set a rhythm:
+
+Weekly: review a small set of critical scenarios.
+
+Before launch: run the full scenario set.
+
+After model or prompt changes: compare old and new behavior.
+
+After incidents: add new failure cases to the eval set.
+
+The goal isn't ceremony. It's to keep quality from depending on memory, heroics, or whoever happened to be in the room.
+
+5. Ownership and escalation. Every criterion needs an owner. Some belong to design, some to research, some to content, some to policy, legal, data science, engineering, or support. The important thing is that failures have a path. If the model repeatedly misunderstands user intent, who investigates? If the tone is technically compliant but brand-damaging, who decides? If the product gives a correct answer in a way users don't trust, who owns the fix? Without ownership, evals become a graveyard of observations.
+
+[A simple AI UX eval rubric]
+
+Earlier I listed a few behavioral criteria as examples. A working rubric expands them into something a team can score together. Criterion What to look for Score     Intent fidelity Does the system respond to what the user actually means, not just the surface wording? 1-5   Usefulness Does the response help the user make progress? 1-5   Uncertainty handling Does it show confidence, uncertainty, and limits appropriately? 1-5   Assumption control Does it avoid inventing context or overfilling gaps? 1-5   Tone and posture Does it sound appropriate for the product, moment, and user need? 1-5   Recovery If the output is imperfect, is there a clear way to correct, refine, undo, or escalate? 1-5   Inclusion and accessibility Does it avoid exclusionary assumptions and support different user needs? 1-5   Boundary behavior Does it refuse, redirect, or ask for help when it should? 1-5   Product point of view Does the behavior reflect what this product believes good help looks like? 1-5. Use the score to start a conversation, not end one. The notes matter more than the number.
+
+[The weekly ritual]
+
+If I were adding this to a design team's operating rhythm, I'd start with a 45-minute weekly review.
+
+Five minutes: choose three scenarios.
+
+Ten minutes: run the current product, prompt, or prototype against them.
+
+Fifteen minutes: score the outputs using the rubric.
+
+Ten minutes: identify the highest-risk failure pattern.
+
+Five minutes: assign one change to make before the next review.
+
+That is enough to begin. The important part isn't the meeting. It's the muscle. Designers need to practice looking at AI behavior as a material — not as magic, not as a demo, not as a mysterious property of the model, but as something that can be shaped, reviewed, compared, and improved.
+
+[What changes when designers lead evals]
+
+When designers help define evals, the team stops asking only whether the AI can do the task. It starts asking better questions. What kind of help are we trying to provide? What should the system never do, even if the user asks? Where should it be opinionated, and where should it be humble? Where should it slow down? Where should it hand control back to the user? Where would a technically correct answer still feel wrong? These questions are not decoration. They are the product. The companies that treat evals as only technical infrastructure will measure what machines can count. The companies that bring design into evals will measure what users actually experience.
+
+[The quality bar has to move upstream]
+
+AI makes production faster. That is the obvious part. The less obvious part is that it also makes mediocrity faster. It can generate more screens, more copy, more flows, more summaries — more plausible-looking work. Without evals, teams ship whatever looks impressive in the shortest demo. With evals, teams make their standards visible before the system scales. That is the work now. Not better prompts — better ways to know whether the product is behaving well. Anyone can play themselves and win. Evals are how you find out whether you would have.
+`);
+
 function article({ slug, title, issue, date, category, meta, summary, body = temporaryArticleBody, index }) {
   const articleMeta = meta ?? [issue, date, category];
   return Object.freeze({
@@ -100,39 +501,35 @@ export const ARTICLE_DETAILS = Object.freeze([
   }),
   article({
     index: 3,
-    slug: "prototypes-as-instruments-for-thinking",
-    title: "Prototypes as instruments for thinking",
-    issue: "Issue 03",
-    date: "Aug 2026",
-    category: "Prototyping",
-    summary: "Draft reflections on using working models to expose assumptions, sharpen decisions, and bring difficult product questions into view.",
+    slug: "showing-my-teeth",
+    title: "Showing My Teeth",
+    meta: ["Andrew Zellinger", "Mar 28th 2026"],
+    summary: "Two years after COVID hit New York, I packed everything and moved to Colorado — out of the cityscape, closer to the mountains.",
+    body: showingMyTeethBody,
   }),
   article({
     index: 4,
-    slug: "working-at-the-edge-of-certainty",
-    title: "Working at the edge of certainty",
-    issue: "Issue 04",
-    date: "Aug 2026",
-    category: "Strategy",
-    summary: "Temporary editorial copy about making useful product decisions when the technology, customer behavior, and opportunity are still moving.",
+    slug: "intention-deficit-disorder",
+    title: "Intention Deficit Disorder",
+    meta: ["Andrew Zellinger", "May 16th 2026"],
+    summary: "Intention debt is the new UX debt, there I said it. When AI repeatedly misreads what people mean, the product gets worse in ways your design system will never catch. For years, designers have had language for the slow accumulation of product mess. UX debt. It is the confusing setting that never got renamed. The onboarding step everyone knows is too long. The modal added to fix a launch problem that somehow became permanent. The flow that made sense three strategies ago. The inconsistency users trip over because every team solved the same problem slightly differently. UX debt is not always dramatic. That is why it survives. It hides inside reasonable compromises. We will clean it up later. We just need the release out. This edge case is rare. The user can figure it out. The tooltip explains it. Support can handle it. We know it is not ideal, but it works. Then, eventually, the product feels heavier than it should. Every improvement takes longer. Every new feature has to route around old decisions. Users feel the drag even when they cannot name it. AI products have their own version of this.",
+    body: intentionDeficitDisorderBody,
   }),
   article({
     index: 5,
-    slug: "building-fluency-before-building-features",
-    title: "Building fluency before building features",
-    issue: "Issue 05",
-    date: "Jul 2026",
-    category: "Teams",
-    summary: "A replaceable first-pass piece on helping teams develop shared judgment before committing emerging capabilities to a roadmap.",
+    slug: "two-dollar-bill",
+    title: "Two-Dollar Bill",
+    meta: ["Andrew Zellinger", "May 16th 2026"],
+    summary: "Here's what week two taught me about trusting an autonomous system. Every agent demo ends before week two. Week two is where you find out what your system actually costs — and whether it's telling you the truth about it. I want to start with a two-dollar mistake, because it's the most honest thing I can say about running autonomous agents, and almost nobody writes the honest version. One run of my board of directors — a panel of agents that deliberates on a hard question and votes — cost about two dollars. Once. That's the whole incident. It didn't crash the system. It didn't leak data. It cost two dollars instead of the four cents it should have, and it taught me more about building agent systems than most of the architecture did.",
+    body: twoDollarBillBody,
   }),
   article({
     index: 6,
-    slug: "where-judgment-enters-the-loop",
-    title: "Where judgment enters the loop",
-    issue: "Issue 06",
-    date: "Jul 2026",
-    category: "Systems",
-    summary: "Temporary observations on deciding which parts of an intelligent product should adapt, ask, explain, or remain deliberately fixed.",
+    slug: "you-always-let-yourself-win",
+    title: "You Always Let Yourself Win",
+    meta: ["Andrew Zellinger", "May 16th 2026"],
+    summary: "Designers need evals, not just prompts. Prompting gets you a result; evals decide whether that result is worth shipping.",
+    body: youAlwaysLetYourselfWinBody,
   }),
   article({
     index: 7,
