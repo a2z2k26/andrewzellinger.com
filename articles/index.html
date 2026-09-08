@@ -60,16 +60,6 @@
     .articles-scroll-space {
       display: none;
     }
-    .articles-index__header {
-      font-family: var(--fonts--family-mono);
-      font-size: 10px;
-      font-weight: 400;
-      line-height: 10px;
-      letter-spacing: .36px;
-      opacity: .4;
-      margin-bottom: 16px;
-      text-transform: uppercase;
-    }
     .articles-entry-list > li {
       padding-top: 32px;
       padding-bottom: 32px;
@@ -161,14 +151,6 @@
         display: flex;
         background: var(--swatches--dark-1);
       }
-      html[data-articles-motion="running"] .articles-index__header {
-        z-index: 2;
-        flex: none;
-        margin: 0;
-        padding-bottom: 16px;
-        position: relative;
-        background: var(--swatches--dark-1);
-      }
       html[data-articles-motion="running"] .articles-motion-track,
       html[data-articles-motion="running"] .articles-motion-set {
         flex-direction: column;
@@ -182,6 +164,9 @@
         padding-top: 32px;
         padding-bottom: 32px;
         border-top: 1px solid rgba(255, 255, 255, .16);
+      }
+      html[data-articles-motion="running"] .articles-motion-set > li:first-child {
+        border-top: 0;
       }
       html[data-articles-motion="running"] .articles-scroll-space {
         width: 1px;
@@ -275,7 +260,6 @@
       <!-- UI prototype: first-pass text hierarchy for /articles; all entry copy is temporary. -->
       <main class="articles-index" aria-label="Articles">
         <div class="articles-index__list">
-          <div class="articles-index__header">All (10)</div>
           <ol class="articles-entry-list">
             <li>
               <a href="/articles/designing-for-systems-that-change/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="designing-for-systems-that-change" aria-label="Read article: Designing for systems that change">

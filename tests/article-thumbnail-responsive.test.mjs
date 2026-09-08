@@ -35,10 +35,12 @@ test("Articles use the Projects-like title, metadata, excerpt hierarchy", async 
 test("Articles rows keep route-specific editorial spacing", async () => {
   const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
 
+  assert.doesNotMatch(html, /articles-index__header|All \(10\)/i);
   assert.match(html, /\.articles-entry-list > li\s*\{[^}]*padding-top:\s*32px;[^}]*padding-bottom:\s*32px;/s);
   assert.doesNotMatch(html, /\.articles-entry-list > li:first-child\s*\{[^}]*padding-top:\s*0;/s);
   assert.match(html, /\.articles-entry\s*\{[^}]*grid-column-gap:\s*24px;/s);
   assert.match(html, /html\[data-articles-motion="running"\] \.articles-motion-set > li\s*\{[^}]*padding-top:\s*32px;[^}]*padding-bottom:\s*32px;[^}]*border-top:/s);
+  assert.match(html, /html\[data-articles-motion="running"\] \.articles-motion-set > li:first-child\s*\{[^}]*border-top:\s*0;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry-list > li\s*\{[^}]*padding-top:\s*24px;[^}]*padding-bottom:\s*24px;/s);
   assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__meta\.works-meta-spacing\s*\{[^}]*margin-bottom:\s*12px;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin-bottom:\s*var\(--space--tablet-medium\);/s);

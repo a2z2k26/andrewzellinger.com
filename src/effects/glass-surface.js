@@ -18,7 +18,6 @@ import "./glass-surface.css";
 
 const TEXT_SELECTOR = [
   ".title .heading",
-  ".articles-index__header",
   ".articles-entry__meta",
   ".articles-entry__title",
   ".articles-entry__excerpt",
