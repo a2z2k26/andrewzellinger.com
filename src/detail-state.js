@@ -214,6 +214,12 @@ function projectLockupMarkup(entry) {
   </div>`;
 }
 
+function articleBodyBlockMarkup(block) {
+  if (typeof block === "string") return `<p>${escapeHtml(block)}</p>`;
+  if (block?.type === "heading") return `<h3>${escapeHtml(block.text)}</h3>`;
+  return `<p>${escapeHtml(block?.text ?? "")}</p>`;
+}
+
 function unitMarkup(entry, index, entries, hidden) {
   const isProject = entry.kind === "project";
   const meta = isProject
@@ -236,7 +242,7 @@ function unitMarkup(entry, index, entries, hidden) {
   }
 
   const body = `<div class="detail-unit__article-body">
-      ${entry.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+      ${entry.body.map(articleBodyBlockMarkup).join("")}
     </div>`;
 
   return `<article class="detail-unit" data-detail-index="${index}" data-detail-slug="${entry.slug}"${id}>

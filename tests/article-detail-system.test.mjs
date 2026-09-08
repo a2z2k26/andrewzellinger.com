@@ -20,10 +20,21 @@ test("article records use one shared index/detail source with flexible ordered b
     assert.equal(article.kind, "article");
     assert.equal(article.collectionPath, "/articles");
     assert.equal(article.path, `/articles/${article.slug}/`);
-    assert.equal(article.meta.length, 3);
-    assert.deepEqual(article.body, legacyBody);
+    assert.ok(article.meta.length >= 2);
+    assert.ok(article.body.length > 0);
     assert.equal("sections" in article, false);
   }
+
+  const [companyOfOne, ...temporaryArticles] = ARTICLE_DETAILS;
+  assert.equal(companyOfOne.slug, "company-of-one");
+  assert.equal(companyOfOne.title, "Company of One");
+  assert.deepEqual(companyOfOne.meta, ["Andrew Zellinger", "Jun 2nd 2026"]);
+  assert.match(companyOfOne.summary, /^I spent years building agent systems the wrong way/);
+  assert.equal(companyOfOne.body.filter((block) => block.type === "heading").length, 8);
+  assert.equal(companyOfOne.body.filter((block) => block.type === "paragraph").length, 16);
+  assert.equal(companyOfOne.body[0].text, "At its worst, my agents waited in line");
+  assert.match(companyOfOne.body.at(-1).text, /the only success metric that ever mattered\.$/);
+  temporaryArticles.forEach((article) => assert.deepEqual(article.body, legacyBody));
 
   assert.match(indexRuntime, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js"/);
   assert.match(indexRuntime, /entry\.meta\.map/);
@@ -35,11 +46,15 @@ test("Article Detail renders semantic paragraphs without fixed section labels", 
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 
-  assert.match(runtime, /entry\.body\.map\(\(paragraph\) => `<p>\$\{escapeHtml\(paragraph\)\}<\/p>`\)/);
+  assert.match(runtime, /entry\.body\.map\(articleBodyBlockMarkup\)/);
+  assert.match(runtime, /block\?\.type === "heading"/);
+  assert.match(runtime, /<h3>\$\{escapeHtml\(block\.text\)\}<\/h3>/);
   assert.match(runtime, /class="detail-unit__article-body"/);
   assert.doesNotMatch(runtime, />Opening<|>Argument<|>Notes</);
   assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*margin-left:\s*calc\(\(100% - var\(--structure--grid-row-gap\)\) \/ 3 - var\(--detail-project-section-body-shift\) \+ var\(--structure--grid-row-gap\)\);[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(styles, /\.detail-unit__article-body p \+ p\s*\{[^}]*margin-top:\s*24px;/s);
+  assert.match(styles, /\.detail-unit__article-body h3\s*\{[^}]*margin:\s*48px 0 0;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;/s);
+  assert.match(styles, /\.detail-unit__article-body h3:first-child\s*\{[^}]*margin-top:\s*0;/s);
   assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*?\.detail-unit__article-body\s*\{[^}]*margin-left:\s*0;/s);
 });
 
