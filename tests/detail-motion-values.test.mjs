@@ -54,3 +54,12 @@ test("motionFrame resolves outgoing and incoming media and copy", () => {
   assert.equal(end.incomingLedeOpacity, 1);
   assert.ok(motionFrame(.5, true).incomingMediaY < motionFrame(.5, false).incomingMediaY);
 });
+
+test("incoming media reveals immediately and resolves before its copy", () => {
+  const justInside = motionFrame(.01, false);
+  const imageComplete = motionFrame(.65, false);
+
+  assert.ok(justInside.incomingReveal > 0);
+  assert.equal(imageComplete.incomingReveal, 1);
+  assert.equal(imageComplete.incomingTitleOpacity, 0);
+});
