@@ -94,13 +94,13 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(cutDeferOrBuild.body.filter((block) => block.type === "paragraph").length, 40);
 
   assert.equal(designPrinciples.slug, "design-principles-that-actually-shape-the-product");
-  assert.equal(designPrinciples.title, "Design Principles That Shape the Product");
+  assert.equal(designPrinciples.title, "Product Design Principles");
   assert.deepEqual(designPrinciples.meta, ["Andrew Zellinger"]);
   assert.equal(designPrinciples.body.filter((block) => block.type === "heading").length, 5);
   assert.equal(designPrinciples.body.filter((block) => block.type === "paragraph").length, 25);
 
   assert.equal(embeddedProductDesignLessons.slug, "lessons-from-fifteen-years-of-embedded-product-design");
-  assert.equal(embeddedProductDesignLessons.title, "Lessons from Embedded Product Design");
+  assert.equal(embeddedProductDesignLessons.title, "Embedded Product Design Lessons");
   assert.deepEqual(embeddedProductDesignLessons.meta, ["Andrew Zellinger"]);
   assert.equal(embeddedProductDesignLessons.body.filter((block) => block.type === "heading").length, 7);
   assert.equal(embeddedProductDesignLessons.body.filter((block) => block.type === "paragraph").length, 31);
@@ -132,7 +132,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.match(indexRuntime, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js"/);
   assert.match(indexRuntime, /entry\.meta\.map/);
   assert.match(indexRuntime, /entry\.summary/);
-  assert.match(indexRuntime, /<span class="articles-entry__cta">View article<\/span>/);
+  assert.match(indexRuntime, /<span class="articles-entry__cta">Read more<\/span>/);
   assert.match(detailContent, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js"/);
 });
 
