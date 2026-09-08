@@ -1,6 +1,8 @@
 import { gsap } from "gsap";
 import { boundaryProgress, motionFrame } from "./detail-motion-values.js";
 
+const BOUNDARY_PENDING_CLASS = "detail-unit__media--boundary-pending";
+
 function unitParts(unit) {
   return {
     unit,
@@ -37,6 +39,16 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
   let activePair = null;
   let activeProgress = 0;
 
+  const syncPendingMedia = (incoming, nextRect) => {
+    const media = incoming?.media;
+    if (!media || !nextRect) return;
+    if (nextRect.top >= window.innerHeight) {
+      media.classList.add(BOUNDARY_PENDING_CLASS);
+    } else if (nextRect.top <= window.innerHeight * .1) {
+      media.classList.remove(BOUNDARY_PENDING_CLASS);
+    }
+  };
+
   const measure = () => {
     if (!enabled) return;
     const units = [...view.querySelectorAll(".detail-unit")].map(unitParts);
@@ -46,6 +58,9 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
         incoming,
       }))
       .filter(({ incoming }) => incoming.unit !== initialUnit);
+    pairs.forEach(({ incoming }) => {
+      syncPendingMedia(incoming, incoming.media?.getBoundingClientRect());
+    });
   };
 
   const clear = () => {
@@ -60,6 +75,7 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
     const candidates = pairs.map((pair) => {
       const nextRect = pair.incoming.media?.getBoundingClientRect();
       if (!nextRect) return null;
+      syncPendingMedia(pair.incoming, nextRect);
       const progress = boundaryProgress(nextRect.top, window.innerHeight);
       if (progress <= 0 || progress >= 1) return null;
       return { pair, progress, distance: Math.abs(progress - .5), nextRect };
@@ -116,6 +132,8 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
   const destroy = () => {
     clear();
     pairs.forEach(resetPair);
+    view.querySelectorAll(`.${BOUNDARY_PENDING_CLASS}`)
+      .forEach((media) => media.classList.remove(BOUNDARY_PENDING_CLASS));
     pairs = [];
   };
 

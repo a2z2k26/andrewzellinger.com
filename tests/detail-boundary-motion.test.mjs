@@ -28,6 +28,17 @@ test("an expanded project card is not treated as an incoming scroll boundary", a
   assert.match(controller, /incoming\.unit !== initialUnit/);
 });
 
+test("incoming project media is pre-armed before its first viewport-edge frame", async () => {
+  const controller = await readFile(new URL("../src/detail-boundary-motion.js", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+
+  assert.match(controller, /BOUNDARY_PENDING_CLASS/);
+  assert.match(controller, /nextRect\.top >= window\.innerHeight/);
+  assert.match(controller, /classList\.add\(BOUNDARY_PENDING_CLASS\)/);
+  assert.match(controller, /classList\.remove\(BOUNDARY_PENDING_CLASS\)/);
+  assert.match(styles, /\.detail-unit__media--boundary-pending\s*\{[^}]*clip-path:\s*inset\(100% 0 0 0\);/s);
+});
+
 test("entry motion places the selected project at the canvas top without an intermediate curtain", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
