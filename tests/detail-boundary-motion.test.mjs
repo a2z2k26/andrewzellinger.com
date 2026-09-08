@@ -53,7 +53,7 @@ test("entry motion places the selected project at the canvas top without an inte
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 
-  assert.match(runtime, /const expandedTop = DETAIL_TOP_INSET/);
+  assert.match(runtime, /const expandedTop = detailTopInset\(\)/);
   assert.doesNotMatch(runtime, /detail-expansion-curtain|syncEntryCurtain|entryScrollY/);
   assert.doesNotMatch(styles, /\.detail-expansion-curtain/);
 });

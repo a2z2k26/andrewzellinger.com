@@ -27,7 +27,7 @@ test("shared DOM liquid-glass lens follows the refractive tutorial model", async
   assert.doesNotMatch(band, /uLens|plusMaterial|plusControls/);
 });
 
-test("opaque center control grows one rounded menu panel above a centered 100px circle", async () => {
+test("opaque center control retains its reversible panel sequence with responsive geometry", async () => {
   const styles = await readFile(new URL("../src/effects/center-control.css", import.meta.url), "utf8");
   const runtime = await readFile(new URL("../src/effects/center-control.js", import.meta.url), "utf8");
   const surface = await readFile(new URL("../src/effects/center-gooey-surface.jsx", import.meta.url), "utf8");
@@ -60,8 +60,8 @@ test("opaque center control grows one rounded menu panel above a centered 100px 
   assert.match(runtime, /center-nav-menu-list/);
   assert.match(runtime, /mountCenterGooeySurface/);
   assert.match(runtime, /import\("\.\/center-gooey-surface\.jsx"\)/);
-  assert.match(runtime, /panel\.animate\(MENU_MORPH_KEYFRAMES/);
-  assert.match(runtime, /menuList\.animate\(MENU_LIST_KEYFRAMES/);
+  assert.match(runtime, /panel\.animate\(scaleMorphFrames\(MENU_MORPH_KEYFRAMES, geometry\.scale\)/);
+  assert.match(runtime, /menuList\.animate\(scaleMorphFrames\(MENU_LIST_KEYFRAMES, geometry\.scale\)/);
   assert.match(runtime, /playbackRate\s*=\s*isOpen \? 1 : -1/);
   assert.match(runtime, /const progress = currentTime \/ MENU_MORPH_DURATION_MS/);
   assert.doesNotMatch(runtime, /runMorphSequence|morphTimers|MORPH_STEP_MS|MORPH_SETTLE_MS|CLOSE_LABEL_RELEASE_MS/);

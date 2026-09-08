@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Design elevation review</title>
+<style>
+body { margin:0; background:#202020; color:#ddd; font:12px system-ui; }
+header { height:64px; display:flex; align-items:center; gap:12px; padding:0 24px; }
+button,select { background:#333; color:white; border:1px solid #666; border-radius:4px; padding:8px; font:inherit; }
+main {display:flex; justify-content:center; gap:24px; padding:8px 24px; }
+.frame {position:relative; flex:none; background:#000; }
+iframe {border:0; display:block; transform-origin:top left; }
+label {display:flex; gap:6px; align-items:center; }
+</style></head><body>
+<header><strong>Isolated design review</strong>
+<select aria-label="Route"><option value="/">Home</option><option value="/projects">Projects</option><option value="/articles">Articles</option><option value="/history">History</option><option value="/case-studies/audible-sleep/">Project detail</option><option value="/articles/the-constraint-was-the-brief/">Article detail</option></select>
+<select aria-label="Viewport"><option value="390,844">Phone 390</option><option value="768,1024">Tablet 768</option><option value="1440,1000">Desktop 1440</option><option value="1280,720">Desktop 1280</option><option value="844,390">Landscape</option></select>
+<button id="menu">Toggle preview menu</button><button id="scroll">Scroll preview</button><button id="top">Top</button><button id="escape">Escape</button>
+<label><input type="checkbox" id="compare">Compare baseline</label><button id="inspect">Inspect</button><label><input type="checkbox" id="reduce">Reduce motion</label><button id="open-item">Open item</button></header>
+<output id="metrics" style="position:fixed;bottom:0;left:0;z-index:5;font-size:10px;background:#333;max-width:100%;white-space:pre-wrap"></output>
+<main><div class="frame" id="before" hidden><iframe title="Accepted baseline"></iframe></div><div class="frame" id="after"><iframe title="Design experiment"></iframe></div></main>
+<script type="module">
+const route=document.querySelector('[aria-label="Route"]'), viewport=document.querySelector('[aria-label="Viewport"]'), compare=document.querySelector('#compare');
+const frames=[...document.querySelectorAll('iframe')], preview=frames[1];
+const load=()=>{frames[0].src=`http://127.0.0.1:5178${route.value}`;preview.src=route.value+(document.querySelector('#reduce').checked?'?motion=reduce':'');};
+function resize(){
+ const [w,h]=viewport.value.split(',').map(Number), count=compare.checked?2:1;
+ document.querySelector('#before').hidden=!compare.checked;
+ const scale=Math.min(1,(innerWidth-48-24*(count-1))/(w*count),(innerHeight-88)/h);
+ frames.forEach(frame=>{frame.width=w;frame.height=h;frame.style.transform=`scale(${scale})`;frame.parentElement.style.width=`${w*scale}px`;frame.parentElement.style.height=`${h*scale}px`;});
+}
+route.addEventListener('change',load);viewport.addEventListener('change',resize);compare.addEventListener('change',resize);addEventListener('resize',resize);
+document.querySelector('#reduce').addEventListener('change',load);
+document.querySelector('#open-item').onclick=()=>{
+ const d=preview.contentDocument,w=preview.contentWindow;
+ const links=[...d.querySelectorAll('[data-portfolio-detail-link]')];
+ links.find(a=>{const r=a.getBoundingClientRect();return r.top>=0&&r.top<w.innerHeight*.8;})?.click();
+};
+document.querySelector('#menu').onclick=()=>preview.contentDocument.querySelector('.nav_toggle').click();
+document.querySelector('#scroll').onclick=()=>preview.contentWindow.scrollBy({top:preview.contentWindow.innerHeight*.78,behavior:'instant'});
+document.querySelector('#top').onclick=()=>preview.contentWindow.scrollTo({top:0,behavior:'instant'});
+document.querySelector('#escape').onclick=()=>preview.contentDocument.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+document.querySelector('#inspect').onclick=()=>{
+ const d=preview.contentDocument,w=preview.contentWindow;
+ const rect=s=>{const n=d.querySelector(s);if(!n)return null;const r=n.getBoundingClientRect(),c=w.getComputedStyle(n);return {x:r.x,y:r.y,width:r.width,height:r.height,display:c.display,opacity:c.opacity,font:c.fontSize,transform:c.transform};};
+ document.querySelector('#metrics').textContent=JSON.stringify({url:w.location.pathname,width:w.innerWidth,height:w.innerHeight,scrollWidth:d.documentElement.scrollWidth,scrollY:w.scrollY,title:rect('.title'),toggle:rect('.nav_toggle'),icon:rect('.nav_icon-plus'),panel:rect('.center-gooey-menu-panel-surface'),menu:d.querySelector('.nav_menu').getAttribute('aria-hidden'),links:[...d.querySelectorAll('.center-nav-link')].map(a=>({text:a.textContent,tabIndex:a.tabIndex,visibility:w.getComputedStyle(a).visibility})),active:d.activeElement.textContent?.trim().slice(0,45)});
+};
+resize();load();
+</script></body></html>

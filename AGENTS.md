@@ -6,6 +6,10 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- In the design-elevation experiment, Andrew is comfortable with the mobile menu overlaid at the bottom. Start with a smaller bottom-centered control and refine its visual treatment; do not presume a side-pinned control is preferred. The experiment remains subject to his visual review before any merge into main.
+
+- September 8 design-elevation experiment: Andrew authorized a complete visual and interaction refinement in this separate worktree and `codex/design-elevation` branch. The accepted rollback baseline is main at `700ba4b`; never merge this experiment into main without his explicit review and approval. Keep the existing desktop 50:50 split, black canvas, Geist typography, content, and approved imagery as the foundation. All retained routes, components, transitions, and responsive states may be refined. Give tablet and mobile deliberate layouts. Keep the accepted preview on 5178 and this experiment on 5179.
+
 - The September 8 Geist-wide typography experiment supersedes any remaining serif directives: no visible text uses Times Newer Roman. The History career lead, generic detail lede, and generic detail-section prose now use Geist Sans Medium while preserving their existing sizes, line heights, tracking, capitalization, and layout. Keep the unused serif font asset and display token available only for a reversible rollback until Andrew accepts or rejects the experiment.
 
 - The September 8 full editorial pass supersedes the earlier three-case pilot and the three-section/325-word minimum rules. All 18 sufficiently documented cases use Context, Work, Key decisions (three semantic bullets), Outcome, capped at 350 body words without a minimum. Amazon Fire TV remains a short factual engagement record until Andrew supplies its decision evidence. Keep canonical summaries shared by listing and detail. Section labels are H3 elements styled to preserve the existing label geometry.

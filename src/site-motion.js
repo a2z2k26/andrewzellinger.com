@@ -4,6 +4,7 @@ import { PROJECTS } from "./project-content.js";
 import "./site-fonts.css";
 import "./effects/center-control.css";
 import "./effects/center-control.js";
+import "./elevation/index.js";
 
 const INDEX_PATH = "";
 const WORKS_PATH = "/projects";

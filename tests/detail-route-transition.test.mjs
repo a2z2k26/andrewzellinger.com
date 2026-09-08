@@ -54,7 +54,7 @@ test("detail navigation expands vertically and closes through the active project
   const transition = await readFile(new URL("../src/detail-route-transition.js", import.meta.url), "utf8");
   const motion = await readFile(new URL("../src/site-motion.js", import.meta.url), "utf8");
 
-  assert.match(detail, /const expandedTop = DETAIL_TOP_INSET/);
+  assert.match(detail, /const expandedTop = detailTopInset\(\)/);
   assert.match(detail, /sourceCopyRect/);
   assert.match(detail, /nativeCopy:\s*targetCopy/);
   assert.match(detail, /expansionTarget:/);

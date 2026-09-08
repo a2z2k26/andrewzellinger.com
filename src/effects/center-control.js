@@ -1,3 +1,5 @@
+import { navigationGeometry, scaleMorphFrames } from "../elevation/nav-geometry.js";
+
 let destroyCenterControl = null;
 
 const SHARED_ICON_SVG_NAMESPACE = "http://www.w3.org/2000/svg";
@@ -56,8 +58,27 @@ function initCenterControl() {
   let panelAnimation = null;
   let menuListAnimation = null;
   let progressFrame = 0;
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isDetailRoute = document.documentElement.classList.contains("detail-route");
+  const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const forceReducedMotion = import.meta.env.DEV && new URLSearchParams(location.search).get("motion") === "reduce";
+  let reducedMotion = reduceQuery.matches || forceReducedMotion;
+  const isDetailRoute = () => document.documentElement.classList.contains("detail-route");
+  const label = document.createElement("span");
+  label.className = "edition-nav-label";
+  label.setAttribute("aria-hidden", "true");
+  shell.append(label);
+  menu.id ||= "primary-navigation";
+  toggle.setAttribute("aria-controls", menu.id);
+  let geometry = navigationGeometry(innerWidth, innerHeight);
+  const updateGeometry = () => {
+    geometry = navigationGeometry(innerWidth, innerHeight);
+    shell.style.setProperty("--center-nav-closed-size", `${geometry.buttonSize}px`);
+    shell.style.setProperty("--center-nav-menu-width", `${geometry.panelWidth}px`);
+    shell.style.setProperty("--center-nav-menu-height", `${geometry.panelHeight}px`);
+    shell.style.setProperty("--edition-menu-travel", `${geometry.travel}px`);
+    panelAnimation?.effect.setKeyframes(scaleMorphFrames(MENU_MORPH_KEYFRAMES, geometry.scale));
+    menuListAnimation?.effect.setKeyframes(scaleMorphFrames(MENU_LIST_KEYFRAMES, geometry.scale));
+  };
+  updateGeometry();
 
   const setLinkStage = (stage) => {
     const nextStage = Math.max(0, Math.min(4, stage));
@@ -90,7 +111,7 @@ function initCenterControl() {
 
     const icon = toggle.querySelector(".nav_icon-plus");
     if (icon) {
-      const iconProgress = isDetailRoute ? 1 : Math.min(1, progress / ICON_ROTATION_PROGRESS);
+      const iconProgress = isDetailRoute() ? 1 : Math.min(1, progress / ICON_ROTATION_PROGRESS);
       icon.style.transform = `rotate(${iconProgress * 45}deg)`;
     }
 
@@ -140,12 +161,12 @@ function initCenterControl() {
       return;
     }
 
-    panelAnimation = panel.animate(MENU_MORPH_KEYFRAMES, {
+    panelAnimation = panel.animate(scaleMorphFrames(MENU_MORPH_KEYFRAMES, geometry.scale), {
       duration: MENU_MORPH_DURATION_MS,
       fill: "both",
       easing: "linear",
     });
-    menuListAnimation = menuList.animate(MENU_LIST_KEYFRAMES, {
+    menuListAnimation = menuList.animate(scaleMorphFrames(MENU_LIST_KEYFRAMES, geometry.scale), {
       duration: MENU_MORPH_DURATION_MS,
       fill: "both",
       easing: "linear",
@@ -180,12 +201,49 @@ function initCenterControl() {
     }
     playTimeline(isOpen);
     menu.setAttribute("aria-hidden", String(!isOpen));
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    label.textContent = isDetailRoute() ? "Back" : isOpen ? "Close" : "Menu";
+    applyProgressState();
     menu.querySelectorAll("a").forEach((anchor) => {
       anchor.tabIndex = isOpen ? 0 : -1;
     });
   };
   const menuObserver = new MutationObserver(syncMenuState);
   menuObserver.observe(menu, { attributes: true, attributeFilter: ["class"] });
+  const routeObserver = new MutationObserver(syncMenuState);
+  routeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  const dismiss = () => {
+    menu.classList.remove("show");
+    toggle.classList.remove("active");
+  };
+  const onKeyDown = (event) => {
+    if (!menuIsOpen) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      dismiss();
+      toggle.focus({ preventScroll: true });
+    }
+    // Keep Tab inside the open disclosure. Link order follows the visible stack.
+    if (event.key === "Tab") {
+      const links = [...menu.querySelectorAll("a")].filter((link) => getComputedStyle(link).visibility === "visible");
+      const items = [toggle, ...links];
+      const index = items.indexOf(document.activeElement);
+      if (index === -1) return;
+      event.preventDefault();
+      items[(index + (event.shiftKey ? -1 : 1) + items.length) % items.length].focus({ preventScroll: true });
+    }
+  };
+  const onOutsidePointer = (event) => {
+    if (menuIsOpen && !toggle.contains(event.target) && !menuList?.contains(event.target)) dismiss();
+  };
+  document.addEventListener("keydown", onKeyDown);
+  document.addEventListener("pointerdown", onOutsidePointer);
+  window.addEventListener("resize", updateGeometry);
+  const onMotionPreferenceChange = () => {
+    reducedMotion = reduceQuery.matches || forceReducedMotion;
+    playTimeline(menuIsOpen);
+  };
+  reduceQuery.addEventListener("change", onMotionPreferenceChange);
   syncMenuState();
 
   destroyCenterControl = () => {
@@ -194,6 +252,12 @@ function initCenterControl() {
     panelAnimation?.cancel();
     menuListAnimation?.cancel();
     menuObserver.disconnect();
+    routeObserver.disconnect();
+    document.removeEventListener("keydown", onKeyDown);
+    document.removeEventListener("pointerdown", onOutsidePointer);
+    window.removeEventListener("resize", updateGeometry);
+    reduceQuery.removeEventListener("change", onMotionPreferenceChange);
+    label.remove();
     gooeySurface?.destroy();
     toggle.querySelector(".nav_icon-plus")?.style.removeProperty("transform");
     delete shell.dataset.navLinkStage;
@@ -207,4 +271,6 @@ if (document.readyState === "loading") {
   requestAnimationFrame(initCenterControl);
 }
 
-window.addEventListener("pagehide", () => destroyCenterControl?.(), { once: true });
+// A bfcache return must restore the control after pagehide unmounts its renderer.
+window.addEventListener("pagehide", () => destroyCenterControl?.());
+window.addEventListener("pageshow", (event) => { if (event.persisted) initCenterControl(); });

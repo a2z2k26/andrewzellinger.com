@@ -24,6 +24,7 @@ const DETAIL_STATE_KEY = "portfolioDetail";
 const COLLECTION_STATE_KEY = "portfolioCollection";
 const DETAIL_TOP_INSET = 16;
 const DESKTOP_QUERY = "(min-width: 992px)";
+const detailTopInset = () => DETAIL_TOP_INSET + (matchMedia(DESKTOP_QUERY).matches ? 0 : 64);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 let activeDetail = null;
@@ -344,7 +345,7 @@ function elementRect(element) {
   return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
 }
 
-function closestDetailUnit(view, slug, targetTop = DETAIL_TOP_INSET) {
+function closestDetailUnit(view, slug, targetTop = detailTopInset()) {
   return [...view.querySelectorAll(`.detail-unit[data-detail-slug="${slug}"]`)]
     .map((unit) => ({
       unit,
@@ -368,7 +369,7 @@ function killTransition() {
 }
 
 function updateActiveEntry(entries, units) {
-  const marker = window.scrollY + DETAIL_TOP_INSET + 2;
+  const marker = window.scrollY + detailTopInset() + 2;
   let activeUnit = units[0];
   for (const unit of units) {
     if (documentTop(unit) <= marker) activeUnit = unit;
@@ -402,7 +403,7 @@ function setupDetailScroll(view, entries, circular, reduceMotion, {
     scrollFrame = 0;
     let currentY = window.scrollY;
     if (circular && cycleDistance && !wrapping) {
-      const lowerBoundary = sourceTop - DETAIL_TOP_INSET;
+      const lowerBoundary = sourceTop - detailTopInset();
       const upperBoundary = lowerBoundary + cycleDistance;
       if (currentY < lowerBoundary) {
         wrapping = true;
@@ -521,7 +522,7 @@ async function renderDetail(entry, {
   await nextFrame();
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
-  const expandedTop = DETAIL_TOP_INSET;
+  const expandedTop = detailTopInset();
   setScroll(documentTop(selectedUnit) - expandedTop);
   await nextFrame();
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
@@ -671,7 +672,7 @@ async function restoreCollection(state) {
   const mediaIsVisible = returnMediaRect
     && returnMediaRect.top + returnMediaRect.height > 0
     && returnMediaRect.top < window.innerHeight;
-  const returnAnchorTop = mediaIsVisible ? returnMediaRect.top : DETAIL_TOP_INSET;
+  const returnAnchorTop = mediaIsVisible ? returnMediaRect.top : detailTopInset();
   const returnMediaVisual = mediaIsVisible
     ? holdRouteVisual(detailMedia.cloneNode(true), "detail-transition-media", returnMediaRect)
     : null;
