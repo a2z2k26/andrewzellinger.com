@@ -30,7 +30,7 @@ function resetPair(pair) {
   resetParts(pair.incoming);
 }
 
-export function createBoundaryMotion({ view, circular, reduceMotion }) {
+export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit = null }) {
   const enabled = Boolean(view?.classList.contains("detail-view--project")) && !reduceMotion;
   const compact = !circular;
   let pairs = [];
@@ -40,10 +40,12 @@ export function createBoundaryMotion({ view, circular, reduceMotion }) {
   const measure = () => {
     if (!enabled) return;
     const units = [...view.querySelectorAll(".detail-unit")].map(unitParts);
-    pairs = units.slice(1).map((incoming, index) => ({
-      outgoing: units[index],
-      incoming,
-    }));
+    pairs = units.slice(1)
+      .map((incoming, index) => ({
+        outgoing: units[index],
+        incoming,
+      }))
+      .filter(({ incoming }) => incoming.unit !== initialUnit);
   };
 
   const clear = () => {

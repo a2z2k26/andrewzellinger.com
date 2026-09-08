@@ -1,7 +1,11 @@
 import { gsap } from "gsap";
 import "./detail-state.css";
 import { createBoundaryMotion } from "./detail-boundary-motion.js";
-import { holdRouteVisual, runRouteTransition } from "./detail-route-transition.js";
+import {
+  holdRouteVisual,
+  runRouteTransition,
+  runVerticalExpansion,
+} from "./detail-route-transition.js";
 import {
   ARTICLE_DETAILS,
   CASE_STUDIES,
@@ -156,11 +160,44 @@ function replaceDetailHistory(entry, overrides = {}) {
 
 function mediaMarkup(entry) {
   const label = entry.media?.label ?? `Tasman Glacier landscape stand-in for ${entry.title}`;
+  const projectClass = entry.kind === "project" ? " project-media-placeholder" : "";
   const source = entry.media?.src
     ? ` style="--portfolio-media-image: url('${escapeHtml(entry.media.src)}')"`
     : "";
-  return `<div class="media-background-holder landscape detail-unit__media detail-unit__media--placeholder" role="img" aria-label="${escapeHtml(label)}"${source}>
+  return `<div class="media-background-holder landscape${projectClass} detail-unit__media detail-unit__media--placeholder" role="img" aria-label="${escapeHtml(label)}"${source}>
     <span class="detail-unit__media-shade" aria-hidden="true"></span>
+  </div>`;
+}
+
+function projectSectionsMarkup(entry) {
+  return `<div class="detail-unit__sections detail-unit__sections--project" data-detail-expansion-body>
+    ${entry.sections.map((section) => `<section class="detail-unit__section detail-unit__section--project detail-unit__section--project-${section.label.toLowerCase()}">
+      <div class="detail-unit__section-label">${escapeHtml(section.label)}</div>
+      <div class="detail-unit__section-body detail-unit__section-body--project">
+        ${sectionParagraphs(section).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+      </div>
+    </section>`).join("")}
+  </div>`;
+}
+
+function projectLockupMarkup(entry) {
+  const meta = projectCardTags(entry);
+  const lede = projectCardDescription(entry);
+  return `<div class="detail-unit__project-lockup">
+    <div class="margin-bottom space-small works-media-spacing">${mediaMarkup(entry)}</div>
+    <div class="margin-bottom space-medium detail-unit__copy detail-unit__copy--project" data-project-card-copy data-detail-motion-copy>
+      <div class="grid _3-col">
+        <h2 class="heading-style-h2 new detail-unit__title detail-unit__title--project" data-detail-motion-title tabindex="-1">${escapeHtml(entry.title)}</h2>
+        <div class="detail-unit__project-details">
+          <div class="margin-bottom space-medium works-meta-spacing">
+            <div class="display-inlineflex categories detail-unit__meta detail-unit__meta--project" data-detail-motion-meta>${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
+          </div>
+          <div class="margin-bottom space-medium works-description-spacing">
+            <p class="works-project-description detail-unit__lede detail-unit__lede--project" data-detail-motion-lede>${escapeHtml(lede)}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>`;
 }
 
@@ -178,16 +215,14 @@ function unitMarkup(entry, index, entries, hidden) {
   const titleClass = `detail-unit__title detail-unit__title--${entry.kind}`;
   const metaClass = `detail-unit__meta detail-unit__meta--${entry.kind}`;
   const ledeClass = `detail-unit__lede detail-unit__lede--${entry.kind}`;
-  const body = isProject
-    ? `<div class="detail-unit__sections detail-unit__sections--project">
-      ${entry.sections.map((section) => `<section class="detail-unit__section detail-unit__section--project detail-unit__section--project-${section.label.toLowerCase()}">
-      <div class="detail-unit__section-label">${escapeHtml(section.label)}</div>
-      <div class="detail-unit__section-body detail-unit__section-body--project">
-        ${sectionParagraphs(section).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
-      </div>
-    </section>`).join("")}
-    </div>`
-    : `<div class="detail-unit__article-body">
+  if (isProject) {
+    return `<article class="detail-unit" data-detail-index="${index}" data-detail-slug="${entry.slug}"${id}>
+      ${projectLockupMarkup(entry)}
+      ${projectSectionsMarkup(entry)}
+    </article>`;
+  }
+
+  const body = `<div class="detail-unit__article-body">
       ${entry.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
     </div>`;
 
@@ -235,25 +270,6 @@ function elementRect(element) {
   const rect = element?.getBoundingClientRect();
   if (!rect || rect.width <= 0 || rect.height <= 0) return null;
   return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
-}
-
-function headerVisual(unit) {
-  const copy = unit?.querySelector(".detail-unit__copy")?.cloneNode(true);
-  copy?.querySelector(".detail-unit__sections, .detail-unit__article-body")?.remove();
-  return copy ?? null;
-}
-
-function headerRect(unit) {
-  const copy = unit?.querySelector(".detail-unit__copy");
-  const copyRect = copy?.getBoundingClientRect();
-  const ledeRect = unit?.querySelector("[data-detail-motion-lede]")?.getBoundingClientRect();
-  if (!copyRect || !ledeRect || copyRect.width <= 0) return null;
-  return {
-    left: copyRect.left,
-    top: copyRect.top,
-    width: copyRect.width,
-    height: Math.max(1, ledeRect.bottom - copyRect.top),
-  };
 }
 
 function closestDetailUnit(view, slug, targetTop = DETAIL_TOP_INSET) {
@@ -351,7 +367,10 @@ function updateActiveEntry(entries, units) {
   document.title = `Andrew Zellinger • ${entry.title}`;
 }
 
-function setupDetailScroll(view, entries, circular, reduceMotion) {
+function setupDetailScroll(view, entries, circular, reduceMotion, {
+  initialUnit = null,
+  entryScrollY = null,
+} = {}) {
   const sourceSet = view.querySelector('[data-detail-set="source"]');
   const afterSet = view.querySelector('[data-detail-set="after"]');
   const units = [...view.querySelectorAll(".detail-unit")];
@@ -359,7 +378,35 @@ function setupDetailScroll(view, entries, circular, reduceMotion) {
   let cycleDistance = 0;
   let wrapping = false;
   let scrollFrame = 0;
-  const boundaryMotion = createBoundaryMotion({ view, circular, reduceMotion });
+  const boundaryMotion = createBoundaryMotion({ view, circular, reduceMotion, initialUnit });
+  const entryCurtain = initialUnit ? document.createElement("span") : null;
+  let curtainActive = Boolean(entryCurtain && Number.isFinite(entryScrollY));
+
+  if (entryCurtain) {
+    entryCurtain.className = "detail-expansion-curtain";
+    entryCurtain.setAttribute("aria-hidden", "true");
+    view.append(entryCurtain);
+  }
+
+  const removeEntryCurtain = () => {
+    if (!curtainActive) return;
+    curtainActive = false;
+    entryCurtain?.remove();
+  };
+
+  const syncEntryCurtain = (currentY = window.scrollY) => {
+    if (!curtainActive) return;
+    if (currentY < entryScrollY - 1) {
+      removeEntryCurtain();
+      return;
+    }
+    const mediaTop = initialUnit.querySelector(".detail-unit__media")?.getBoundingClientRect().top;
+    if (!Number.isFinite(mediaTop) || mediaTop <= DETAIL_TOP_INSET + 1) {
+      removeEntryCurtain();
+      return;
+    }
+    entryCurtain.style.setProperty("--detail-expansion-curtain-height", `${mediaTop}px`);
+  };
 
   const measure = () => {
     sourceTop = documentTop(sourceSet);
@@ -393,6 +440,7 @@ function setupDetailScroll(view, entries, circular, reduceMotion) {
         });
       }
     }
+    syncEntryCurtain(currentY);
     boundaryMotion.render();
     updateActiveEntry(entries, units);
   };
@@ -402,6 +450,7 @@ function setupDetailScroll(view, entries, circular, reduceMotion) {
   };
 
   measure();
+  syncEntryCurtain();
   boundaryMotion.render();
   window.addEventListener("scroll", onScroll, { passive: true });
   return {
@@ -409,6 +458,7 @@ function setupDetailScroll(view, entries, circular, reduceMotion) {
     boundaryMotion,
     destroy() {
       boundaryMotion.destroy();
+      entryCurtain?.remove();
       window.removeEventListener("scroll", onScroll);
       if (scrollFrame) cancelAnimationFrame(scrollFrame);
     },
@@ -432,8 +482,6 @@ function destroyDetailView() {
 async function renderDetail(entry, {
   sourceVisual = null,
   sourceRect = null,
-  sourceCopyVisual = null,
-  sourceCopyRect = null,
 } = {}) {
   const operation = ++routeOperation;
   discardPendingDetailRender();
@@ -475,11 +523,26 @@ async function renderDetail(entry, {
   const sourceSet = view.querySelector('[data-detail-set="source"]');
   const selectedIndex = entries.findIndex((candidate) => candidate.slug === entry.slug);
   const selectedUnit = sourceSet.querySelector(`.detail-unit[data-detail-index="${selectedIndex}"]`);
-  setScroll(documentTop(selectedUnit) - DETAIL_TOP_INSET);
+  const animateFromCard = entry.kind === "project"
+    && circular
+    && Number.isFinite(sourceRect?.top);
+  const expandedTop = animateFromCard
+    ? sourceRect.top
+    : DETAIL_TOP_INSET;
+  setScroll(documentTop(selectedUnit) - expandedTop);
   await nextFrame();
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
-  const scrollRuntime = setupDetailScroll(view, entries, circular, reduceMotion);
+  const scrollRuntime = setupDetailScroll(
+    view,
+    entries,
+    circular,
+    reduceMotion,
+    animateFromCard ? {
+      initialUnit: selectedUnit,
+      entryScrollY: window.scrollY,
+    } : {},
+  );
   let resizeCall = null;
   const rerenderForEnvironment = () => {
     const nextCircular = matchMedia(DESKTOP_QUERY).matches && !shouldReduceMotion();
@@ -522,26 +585,31 @@ async function renderDetail(entry, {
   const focusTarget = selectedUnit.querySelector(".detail-unit__title");
   if (entry.kind === "project") {
     const targetMedia = selectedUnit.querySelector(".detail-unit__media");
-    let transition = null;
-    transition = runRouteTransition({
+    const mediaTransition = runRouteTransition({
       direction: "enter",
       mediaVisual: sourceVisual,
       mediaFrom: sourceRect,
       mediaTo: elementRect(targetMedia),
-      copyVisual: sourceCopyVisual,
-      copyRect: sourceCopyRect,
       nativeTarget: targetMedia,
-      detailHeader: {
-        titles: [...selectedUnit.querySelectorAll("[data-detail-motion-title]")],
-        meta: selectedUnit.querySelector("[data-detail-motion-meta]"),
-        lede: selectedUnit.querySelector("[data-detail-motion-lede]"),
-      },
+      reduceMotion,
+    });
+    let transition = null;
+    const expansion = runVerticalExpansion({
+      target: selectedUnit.querySelector("[data-detail-expansion-body]"),
+      direction: "enter",
       reduceMotion,
       onComplete: () => {
         if (activeTransition === transition) activeTransition = null;
         if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
       },
     });
+    transition = {
+      timeline: mediaTransition.timeline,
+      cancel() {
+        mediaTransition.cancel();
+        expansion.cancel();
+      },
+    };
     activeTransition = transition;
     return;
   }
@@ -559,21 +627,34 @@ async function restoreCollection(state) {
 
   const saved = state?.[COLLECTION_STATE_KEY];
   const scrollY = saved?.scrollY ?? previous.sourceScrollY ?? 0;
-  const originSlug = saved?.originSlug ?? previous.originSlug;
   const activeSlug = document.documentElement.dataset.detailActiveSlug;
+  const returnSlug = activeSlug;
   const activeUnit = closestDetailUnit(previous.view, activeSlug);
   const canReverse = previous.view.classList.contains("detail-view--project")
     && !previous.reduceMotion
-    && activeSlug === originSlug
+    && Boolean(returnSlug)
     && Boolean(activeUnit);
+
+  if (canReverse) {
+    const collapse = runVerticalExpansion({
+      target: activeUnit.querySelector("[data-detail-expansion-body]"),
+      direction: "return",
+      reduceMotion: previous.reduceMotion,
+    });
+    activeTransition = collapse;
+    await collapse.finished;
+    if (operation !== routeOperation) return;
+    if (activeTransition === collapse) activeTransition = null;
+  }
+
   const detailMedia = canReverse ? activeUnit.querySelector(".detail-unit__media") : null;
   const returnMediaRect = elementRect(detailMedia);
-  const returnCopyRect = canReverse ? headerRect(activeUnit) : null;
-  const returnMediaVisual = returnMediaRect
+  const mediaIsVisible = returnMediaRect
+    && returnMediaRect.top + returnMediaRect.height > 0
+    && returnMediaRect.top < window.innerHeight;
+  const returnAnchorTop = mediaIsVisible ? returnMediaRect.top : DETAIL_TOP_INSET;
+  const returnMediaVisual = mediaIsVisible
     ? holdRouteVisual(detailMedia.cloneNode(true), "detail-transition-media", returnMediaRect)
-    : null;
-  const returnCopyVisual = returnCopyRect
-    ? holdRouteVisual(headerVisual(activeUnit), "detail-transition-copy", returnCopyRect)
     : null;
 
   previous.view.style.visibility = "hidden";
@@ -582,22 +663,27 @@ async function restoreCollection(state) {
   previous.collectionNodes.forEach((node) => { node.hidden = false; });
   restoreCollectionChrome(previous);
   activeDetail = null;
-  window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
+  window.dispatchEvent(new CustomEvent(MOTION_ROUTE_EVENT, {
+    detail: {
+      anchorSlug: returnSlug,
+      anchorTop: returnAnchorTop,
+      holdSeconds: .8,
+    },
+  }));
 
   await nextFrame();
   setScroll(scrollY);
   await nextFrame();
   if (operation !== routeOperation) {
     returnMediaVisual?.remove();
-    returnCopyVisual?.remove();
     return;
   }
 
   const candidateLinks = [...document.querySelectorAll(
-    `[data-portfolio-detail-link][data-detail-slug="${originSlug}"]`,
+    `[data-portfolio-detail-link][data-detail-slug="${returnSlug}"]`,
   )];
   const focusTarget = candidateLinks.find((link) => !link.closest("[aria-hidden='true']"));
-  const targetTop = previous.sourceRect?.top ?? returnMediaRect?.top ?? 0;
+  const targetTop = returnAnchorTop;
   const candidates = candidateLinks.map((link) => {
     const media = link.querySelector(".media-background-holder");
     return { link, media, rect: elementRect(media) };
@@ -608,7 +694,6 @@ async function restoreCollection(state) {
 
   if (!returnMediaVisual || !returnMediaRect || !target) {
     returnMediaVisual?.remove();
-    returnCopyVisual?.remove();
     focusTarget?.focus({ preventScroll: true });
     return;
   }
@@ -619,10 +704,7 @@ async function restoreCollection(state) {
     mediaVisual: returnMediaVisual,
     mediaFrom: returnMediaRect,
     mediaTo: target.rect,
-    copyVisual: returnCopyVisual,
-    copyRect: returnCopyRect,
     nativeTarget: target.media,
-    destinationCopy: target.link.querySelector("[data-project-card-copy]"),
     reduceMotion: previous.reduceMotion,
     onComplete: () => {
       if (activeTransition === transition) activeTransition = null;
@@ -643,9 +725,6 @@ function openDetail(link) {
     ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height }
     : null;
   const sourceVisual = sourceMedia?.cloneNode(true) ?? null;
-  const sourceCopy = link.querySelector("[data-project-card-copy]");
-  const sourceCopyRect = elementRect(sourceCopy);
-  const sourceCopyVisual = sourceCopy?.cloneNode(true) ?? null;
   const sourceRoute = normalizedPath();
   const sourceScrollY = window.scrollY;
   const collectionState = {
@@ -675,8 +754,6 @@ function openDetail(link) {
   renderDetail(entry, {
     sourceVisual,
     sourceRect,
-    sourceCopyVisual,
-    sourceCopyRect,
   });
 }
 

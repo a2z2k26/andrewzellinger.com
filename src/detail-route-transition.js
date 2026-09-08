@@ -1,10 +1,5 @@
 import { gsap } from "gsap";
 
-function asArray(value) {
-  if (!value) return [];
-  return Array.isArray(value) ? value.filter(Boolean) : [value];
-}
-
 function prepareOverlay(element, className, rect) {
   if (!element || !rect) return null;
   const overlay = element;
@@ -37,31 +32,75 @@ export function holdRouteVisual(element, className, rect) {
   return overlay;
 }
 
-function clearTargets(targets) {
-  gsap.set(targets, { clearProps: "transform,opacity,visibility,willChange" });
-}
-
-export function runRouteTransition({
-  direction,
-  mediaVisual,
-  mediaFrom,
-  mediaTo,
-  copyVisual = null,
-  copyRect = null,
-  nativeTarget = null,
-  detailHeader = {},
-  destinationCopy = null,
+export function runVerticalExpansion({
+  target,
+  direction = "enter",
   reduceMotion = false,
   onComplete = () => {},
 }) {
-  const detailTitles = asArray(detailHeader.titles);
-  const detailMeta = asArray(detailHeader.meta);
-  const detailLede = asArray(detailHeader.lede);
-  const detailTargets = [...detailTitles, ...detailMeta, ...detailLede];
-  const compact = matchMedia("(max-width: 991px)").matches;
-  const distanceFactor = compact ? .5 : 1;
+  let tween = null;
+  let finished = false;
+  let resolveFinished;
+  const completion = new Promise((resolve) => { resolveFinished = resolve; });
+
+  const finish = (notify = true) => {
+    if (finished) return;
+    finished = true;
+    if (target) gsap.set(target, { clearProps: "transform,opacity,visibility,clipPath,willChange" });
+    resolveFinished();
+    if (notify) onComplete();
+  };
+
+  const cancel = () => {
+    tween?.kill();
+    finish(false);
+  };
+
+  if (!target || reduceMotion) {
+    requestAnimationFrame(() => finish(true));
+    return { tween: null, finished: completion, cancel };
+  }
+
+  if (direction === "enter") {
+    gsap.set(target, {
+      autoAlpha: 0,
+      y: 24,
+      clipPath: "inset(0 0 100% 0)",
+      willChange: "transform,opacity,clip-path",
+    });
+    tween = gsap.to(target, {
+      autoAlpha: 1,
+      y: 0,
+      clipPath: "inset(0 0 0% 0)",
+      duration: .56,
+      delay: .16,
+      ease: "power3.out",
+      onComplete: () => finish(true),
+    });
+  } else {
+    tween = gsap.to(target, {
+      autoAlpha: 0,
+      y: -16,
+      clipPath: "inset(0 0 100% 0)",
+      duration: .32,
+      ease: "power3.in",
+      willChange: "transform,opacity,clip-path",
+      onComplete: () => finish(true),
+    });
+  }
+
+  return { tween, finished: completion, cancel };
+}
+
+export function runRouteTransition({
+  mediaVisual,
+  mediaFrom,
+  mediaTo,
+  nativeTarget = null,
+  reduceMotion = false,
+  onComplete = () => {},
+}) {
   let overlay = null;
-  let copyOverlay = null;
   let timeline = null;
   let finished = false;
 
@@ -69,17 +108,14 @@ export function runRouteTransition({
     if (finished) return;
     finished = true;
     nativeTarget?.style.removeProperty("visibility");
-    clearTargets(detailTargets);
-    clearTargets(destinationCopy);
     overlay?.remove();
-    copyOverlay?.remove();
     if (notify) onComplete();
   };
 
-  function cancel() {
+  const cancel = () => {
     timeline?.kill();
     finish(false);
-  }
+  };
 
   if (
     reduceMotion
@@ -94,9 +130,7 @@ export function runRouteTransition({
   }
 
   overlay = holdRouteVisual(mediaVisual, "detail-transition-media", mediaTo);
-  copyOverlay = holdRouteVisual(copyVisual, "detail-transition-copy", copyRect);
   nativeTarget.style.visibility = "hidden";
-
   gsap.set(overlay, {
     x: mediaFrom.left - mediaTo.left,
     y: mediaFrom.top - mediaTo.top,
@@ -105,25 +139,7 @@ export function runRouteTransition({
     transformOrigin: "0 0",
   });
 
-  if (copyOverlay) gsap.set(copyOverlay, { autoAlpha: 1, y: 0 });
-
-  if (direction === "enter") {
-    gsap.set(detailTitles, { autoAlpha: 0, y: 24 * distanceFactor });
-    gsap.set(detailMeta, { autoAlpha: 0, y: 18 * distanceFactor });
-    gsap.set(detailLede, { autoAlpha: 0, y: 14 * distanceFactor });
-  } else {
-    gsap.set(destinationCopy, { autoAlpha: 0, y: 12 * distanceFactor });
-  }
-
   timeline = gsap.timeline({ onComplete: () => finish(true) });
-  if (copyOverlay) {
-    timeline.to(copyOverlay, {
-      autoAlpha: 0,
-      y: (direction === "enter" ? 12 : -12) * distanceFactor,
-      duration: .24,
-      ease: "power2.in",
-    }, 0);
-  }
   timeline.to(overlay, {
     x: 0,
     y: 0,
@@ -131,21 +147,7 @@ export function runRouteTransition({
     scaleY: 1,
     duration: .7,
     ease: "power3.inOut",
-  }, direction === "return" ? .06 : 0);
-
-  if (direction === "enter") {
-    timeline
-      .to(detailTitles, { autoAlpha: 1, y: 0, duration: .3, ease: "power2.out" }, .46)
-      .to(detailMeta, { autoAlpha: 1, y: 0, duration: .3, ease: "power2.out" }, .505)
-      .to(detailLede, { autoAlpha: 1, y: 0, duration: .3, ease: "power2.out" }, .55);
-  } else {
-    timeline.to(destinationCopy, {
-      autoAlpha: 1,
-      y: 0,
-      duration: .3,
-      ease: "power2.out",
-    }, .48);
-  }
+  });
 
   return { timeline, cancel };
 }

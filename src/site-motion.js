@@ -184,6 +184,7 @@ function createContentLoop(logicalItems, {
   namespace,
   sourceContainerSelector,
   initialSnapshot,
+  initialAnchor,
 }) {
   const field = document.querySelector(fieldSelector);
   const sourceContainer = sourceContainerSelector
@@ -240,9 +241,11 @@ function createContentLoop(logicalItems, {
   let resizeCall = null;
   let settleCall = null;
   let decayTween = null;
+  let startCall = null;
   let direction = initialSnapshot?.direction > 0 ? 1 : -1;
   let distance = 0;
   let pendingPhase = Number.isFinite(initialSnapshot?.phase) ? initialSnapshot.phase : null;
+  let pendingAnchor = initialAnchor?.anchorSlug ? initialAnchor : null;
   const speedState = { multiplier: 1 };
 
   const currentPhase = () => {
@@ -298,6 +301,8 @@ function createContentLoop(logicalItems, {
 
   const buildLoop = () => {
     loopTween?.kill();
+    startCall?.kill();
+    startCall = null;
     if (distance) pendingPhase = currentPhase();
     gsap.set(track, { y: 0 });
     const setGap = Number.parseFloat(getComputedStyle(track).rowGap) || 0;
@@ -307,10 +312,34 @@ function createContentLoop(logicalItems, {
     const duration = distance / LOOP_SPEED_PX_PER_SECOND;
     track.dataset.loopDistance = String(distance);
     track.dataset.loopDuration = String(duration);
-    const initialY = pendingPhase === null ? -distance : (pendingPhase * distance) - distance;
+    const anchor = pendingAnchor;
+    let initialY = pendingPhase === null ? -distance : (pendingPhase * distance) - distance;
+    if (anchor) {
+      const anchorItem = logicalItems.find((item) => (
+        item.querySelector("[data-portfolio-detail-link]")?.dataset.detailSlug === anchor.anchorSlug
+      ));
+      const anchorMedia = anchorItem?.querySelector(".media-background-holder, .articles-entry__thumbnail");
+      if (anchorMedia) {
+        const trackTop = track.getBoundingClientRect().top;
+        const mediaOffset = anchorMedia.getBoundingClientRect().top - trackTop;
+        const fieldTop = field.getBoundingClientRect().top;
+        initialY = (Number(anchor.anchorTop) || fieldTop) - fieldTop - mediaOffset;
+        while (initialY > 0) initialY -= distance;
+        while (initialY <= -2 * distance) initialY += distance;
+        track.dataset.loopAnchorSlug = anchor.anchorSlug;
+      }
+    }
     pendingPhase = null;
+    pendingAnchor = null;
     gsap.set(track, { y: initialY });
-    startSegment();
+    if (anchor?.holdSeconds > 0) {
+      startCall = gsap.delayedCall(anchor.holdSeconds, () => {
+        startCall = null;
+        startSegment();
+      });
+    } else {
+      startSegment();
+    }
   };
 
   const setDirection = (nextDirection) => {
@@ -359,6 +388,7 @@ function createContentLoop(logicalItems, {
       resizeCall?.kill();
       settleCall?.kill();
       decayTween?.kill();
+      startCall?.kill();
       if (distance) {
         loopSnapshots.set(namespace, {
           phase: currentPhase(),
@@ -394,7 +424,7 @@ function createScrollDirectionObserver(onDirection) {
   return () => window.removeEventListener("scroll", onScroll);
 }
 
-export function initSiteMotion({ reduceMotion } = {}) {
+export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
   destroyActiveRuntime?.();
   destroyActiveRuntime = null;
 
@@ -462,6 +492,7 @@ export function initSiteMotion({ reduceMotion } = {}) {
         ? createContentLoop(logicalItems, {
           ...routeLoop,
           initialSnapshot: loopSnapshots.get(routeLoop.namespace),
+          initialAnchor,
         })
         : { setDirection() {}, handleInput() {}, destroy() {} };
       const stopSmoothScrolling = createSmoothScrolling(contentLoop.handleInput);
@@ -499,4 +530,6 @@ function startWhenReady() {
 }
 
 startWhenReady();
-window.addEventListener("portfolio:routechange", () => initSiteMotion());
+window.addEventListener("portfolio:routechange", (event) => {
+  initSiteMotion({ initialAnchor: event.detail });
+});
