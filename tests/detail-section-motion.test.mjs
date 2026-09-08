@@ -23,8 +23,9 @@ test("section motion is prepared before paint and cleaned up with the detail vie
 
   assert.match(runtime, /createDetailSectionMotion/);
   assert.match(runtime, /const sectionMotion = createDetailSectionMotion\(\{[\s\S]*?view,[\s\S]*?enabled: entry\.kind === "project" && circular,/);
+  assert.match(runtime, /activeDetail = \{[\s\S]*?sectionMotion,/);
   assert.match(runtime, /sectionMotion\.start\(\)/);
-  assert.match(runtime, /activeDetail\.sectionMotion\?\.destroy\(\)/);
+  assert.match(runtime, /detail\.sectionMotion\?\.destroy\(\)/);
 });
 
 test("project rules draw from left to right without changing reduced-motion paint", async () => {

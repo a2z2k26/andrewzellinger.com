@@ -68,3 +68,24 @@ test("detail navigation expands vertically and closes through the active project
   assert.match(motion, /initialAnchor/);
   assert.match(motion, /anchorSlug/);
 });
+
+test("an interrupted detail rerender restores Projects atomically", async () => {
+  const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+  const popState = detail.slice(
+    detail.indexOf("function onPopState"),
+    detail.indexOf("function initializeDetailState"),
+  );
+
+  assert.ok(popState.indexOf("if (pendingDetailRender)") < popState.indexOf("if (activeDetail)"));
+  assert.match(popState, /discardPendingDetailRender\(\{ restoreCollection: true \}\);\s*return;/);
+  assert.match(detail, /if \(toggle && \(activeDetail \|\| pendingDetailRender\)\)/);
+  assert.match(detail, /function destroyDetailView\(detail = activeDetail\)[\s\S]*?if \(activeDetail === detail\) activeDetail = null;/);
+});
+
+test("detail routes cannot leak a generic Detail heading into a collection", async () => {
+  const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+  const shell = await readFile(new URL("../detail-shell.html", import.meta.url), "utf8");
+
+  assert.match(detail, /function collectionChromeFor\(entry\)/);
+  assert.doesNotMatch(shell, /<h1 class="heading">Detail<\/h1>/);
+});

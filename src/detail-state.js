@@ -69,6 +69,15 @@ function collectionNodes() {
   ].filter(Boolean);
 }
 
+function collectionChromeFor(entry) {
+  const project = entry.kind === "project";
+  return {
+    collectionHeading: project ? "Selected work" : "Writing samples",
+    collectionTitle: `Andrew Zellinger • ${project ? "Projects" : "Articles"}`,
+    collectionCanonical: entry.collectionPath,
+  };
+}
+
 function closeNavigationMenu() {
   const toggle = document.querySelector(".nav_toggle");
   const menu = document.querySelector(".nav_menu");
@@ -130,6 +139,8 @@ function discardPendingDetailRender({ restoreCollection = false } = {}) {
   pending.sectionMotion?.destroy();
   pending.view?.remove();
   if (!restoreCollection) return;
+  if (activeDetail) destroyDetailView(activeDetail);
+  activeDetail = null;
   pending.collectionNodes.forEach((node) => { node.hidden = false; });
   restoreCollectionChrome(pending);
   window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
@@ -438,15 +449,16 @@ function currentEntry(entries) {
   return detailFromPath(window.location.pathname) ?? entries[0];
 }
 
-function destroyDetailView() {
-  if (!activeDetail) return;
-  activeDetail.sectionMotion?.destroy();
-  activeDetail.scrollRuntime?.destroy();
-  activeDetail.resizeCall?.kill();
-  window.removeEventListener("resize", activeDetail.onResize);
-  activeDetail.reduceMotionQuery.removeEventListener("change", activeDetail.onMotionPreferenceChange);
+function destroyDetailView(detail = activeDetail) {
+  if (!detail) return;
+  detail.sectionMotion?.destroy();
+  detail.scrollRuntime?.destroy();
+  detail.resizeCall?.kill();
+  window.removeEventListener("resize", detail.onResize);
+  detail.reduceMotionQuery.removeEventListener("change", detail.onMotionPreferenceChange);
   killTransition();
-  activeDetail.view.remove();
+  detail.view.remove();
+  if (activeDetail === detail) activeDetail = null;
 }
 
 async function renderDetail(entry, {
@@ -456,15 +468,14 @@ async function renderDetail(entry, {
 } = {}) {
   const operation = ++routeOperation;
   discardPendingDetailRender();
-  if (activeDetail) destroyDetailView();
+  const previousDetail = activeDetail;
+  if (previousDetail) destroyDetailView(previousDetail);
 
-  const collectionHeading = activeDetail?.collectionHeading
-    ?? document.querySelector(".title .heading")?.textContent
-    ?? (entry.kind === "project" ? "Selected work" : "Writing samples");
-  const collectionTitle = activeDetail?.collectionTitle ?? document.title;
-  const collectionCanonical = activeDetail?.collectionCanonical
-    ?? document.querySelector('link[rel="canonical"]')?.getAttribute("href")
-    ?? entry.collectionPath;
+  const fallbackChrome = collectionChromeFor(entry);
+  const collectionHeading = previousDetail?.collectionHeading ?? fallbackChrome.collectionHeading;
+  const collectionTitle = previousDetail?.collectionTitle ?? fallbackChrome.collectionTitle;
+  const collectionCanonical = previousDetail?.collectionCanonical
+    ?? fallbackChrome.collectionCanonical;
   const reduceMotionQuery = matchMedia(REDUCED_MOTION_QUERY);
   const reduceMotion = shouldReduceMotion(reduceMotionQuery);
   const circular = matchMedia(DESKTOP_QUERY).matches && !reduceMotion;
@@ -512,7 +523,6 @@ async function renderDetail(entry, {
     entries,
     circular,
     reduceMotion,
-    sectionMotion,
     animateFromCard ? {
       initialUnit: selectedUnit,
     } : {},
@@ -541,6 +551,7 @@ async function renderDetail(entry, {
     entries,
     circular,
     reduceMotion,
+    sectionMotion,
     scrollRuntime,
     resizeCall,
     onResize,
@@ -631,11 +642,9 @@ async function restoreCollection(state) {
   if (canReverse && collectionField) gsap.set(collectionField, { autoAlpha: 0 });
 
   previous.view.style.visibility = "hidden";
-  destroyDetailView();
-  activeDetail = previous;
+  destroyDetailView(previous);
   previous.collectionNodes.forEach((node) => { node.hidden = false; });
   restoreCollectionChrome(previous);
-  activeDetail = null;
   window.dispatchEvent(new CustomEvent(MOTION_ROUTE_EVENT, {
     detail: {
       anchorSlug: returnSlug,
@@ -752,7 +761,7 @@ function isModifiedActivation(event) {
 
 function onDocumentClick(event) {
   const toggle = event.target.closest(".nav_toggle");
-  if (toggle && activeDetail) {
+  if (toggle && (activeDetail || pendingDetailRender)) {
     event.preventDefault();
     event.stopImmediatePropagation();
     closeDetail();
@@ -760,7 +769,7 @@ function onDocumentClick(event) {
   }
 
   let link = event.target.closest("[data-portfolio-detail-link]");
-  if (!link && !activeDetail && Number.isFinite(event.clientX) && Number.isFinite(event.clientY)) {
+  if (!link && !activeDetail && !pendingDetailRender && Number.isFinite(event.clientX) && Number.isFinite(event.clientY)) {
     const clone = [...document.querySelectorAll("[data-loop-detail-slug]")].find((element) => {
       const rect = element.getBoundingClientRect();
       return event.clientX >= rect.left
@@ -770,13 +779,13 @@ function onDocumentClick(event) {
     });
     link = clone?.querySelector("[data-portfolio-detail-link]") ?? null;
   }
-  if (!link || activeDetail || isModifiedActivation(event)) return;
+  if (!link || activeDetail || pendingDetailRender || isModifiedActivation(event)) return;
   event.preventDefault();
   openDetail(link);
 }
 
 function onDocumentKeyDown(event) {
-  if (activeDetail || event.key !== "Enter") return;
+  if (activeDetail || pendingDetailRender || event.key !== "Enter") return;
   const link = event.target.closest?.("[data-portfolio-detail-link]");
   if (!link) return;
   event.preventDefault();
@@ -790,13 +799,14 @@ function onPopState(event) {
     return;
   }
   if (!isCollectionPath()) return;
-  if (activeDetail) {
-    restoreCollection(event.state);
-    return;
-  }
   if (pendingDetailRender) {
     routeOperation += 1;
     discardPendingDetailRender({ restoreCollection: true });
+    return;
+  }
+  if (activeDetail) {
+    restoreCollection(event.state);
+    return;
   }
 }
 
