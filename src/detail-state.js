@@ -22,6 +22,8 @@ const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 let activeDetail = null;
 let activeTransition = null;
+let pendingDetailRender = null;
+let routeOperation = 0;
 const FORCE_REDUCED_MOTION = import.meta.env.DEV
   && new URLSearchParams(window.location.search).get("motion") === "reduce";
 
@@ -99,7 +101,7 @@ function setDetailChrome(entry) {
   document.querySelector('link[rel="canonical"]')?.setAttribute("href", entry.path);
 }
 
-function restoreCollectionChrome() {
+function restoreCollectionChrome(detail = activeDetail) {
   document.documentElement.classList.remove("detail-route");
   delete document.documentElement.dataset.detailKind;
   delete document.documentElement.dataset.detailActiveSlug;
@@ -109,11 +111,22 @@ function restoreCollectionChrome() {
   toggle?.setAttribute("aria-label", "Toggle navigation");
   toggle?.removeAttribute("title");
 
-  if (!activeDetail) return;
+  if (!detail) return;
   const heading = document.querySelector(".title .heading");
-  if (heading) heading.textContent = activeDetail.collectionHeading;
-  document.title = activeDetail.collectionTitle;
-  document.querySelector('link[rel="canonical"]')?.setAttribute("href", activeDetail.collectionCanonical);
+  if (heading) heading.textContent = detail.collectionHeading;
+  document.title = detail.collectionTitle;
+  document.querySelector('link[rel="canonical"]')?.setAttribute("href", detail.collectionCanonical);
+}
+
+function discardPendingDetailRender({ restoreCollection = false } = {}) {
+  const pending = pendingDetailRender;
+  if (!pending) return;
+  pendingDetailRender = null;
+  pending.view?.remove();
+  if (!restoreCollection) return;
+  pending.collectionNodes.forEach((node) => { node.hidden = false; });
+  restoreCollectionChrome(pending);
+  window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
 }
 
 function detailState(entry, overrides = {}) {
@@ -241,6 +254,17 @@ function headerRect(unit) {
     width: copyRect.width,
     height: Math.max(1, ledeRect.bottom - copyRect.top),
   };
+}
+
+function closestDetailUnit(view, slug, targetTop = DETAIL_TOP_INSET) {
+  return [...view.querySelectorAll(`.detail-unit[data-detail-slug="${slug}"]`)]
+    .map((unit) => ({
+      unit,
+      rect: elementRect(unit.querySelector(".detail-unit__media")),
+    }))
+    .filter(({ rect }) => rect)
+    .sort((a, b) => Math.abs(a.rect.top - targetTop) - Math.abs(b.rect.top - targetTop))[0]?.unit
+    ?? null;
 }
 
 function killTransition() {
@@ -411,6 +435,8 @@ async function renderDetail(entry, {
   sourceCopyVisual = null,
   sourceCopyRect = null,
 } = {}) {
+  const operation = ++routeOperation;
+  discardPendingDetailRender();
   if (activeDetail) destroyDetailView();
 
   const collectionHeading = activeDetail?.collectionHeading
@@ -433,14 +459,25 @@ async function renderDetail(entry, {
   const host = document.querySelector(".wrapper");
   host.insertAdjacentHTML("beforeend", viewMarkup(entries, circular));
   const view = host.querySelector(".detail-view:last-child");
+  const pending = {
+    operation,
+    view,
+    collectionHeading,
+    collectionTitle,
+    collectionCanonical,
+    collectionNodes: nodes,
+  };
+  pendingDetailRender = pending;
   document.documentElement.dataset.detailMode = circular ? "circular" : "static";
   await nextFrame();
+  if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
   const sourceSet = view.querySelector('[data-detail-set="source"]');
   const selectedIndex = entries.findIndex((candidate) => candidate.slug === entry.slug);
   const selectedUnit = sourceSet.querySelector(`.detail-unit[data-detail-index="${selectedIndex}"]`);
   setScroll(documentTop(selectedUnit) - DETAIL_TOP_INSET);
   await nextFrame();
+  if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
   const scrollRuntime = setupDetailScroll(view, entries, circular, reduceMotion);
   let resizeCall = null;
@@ -480,6 +517,7 @@ async function renderDetail(entry, {
     originSlug: history.state?.[DETAIL_STATE_KEY]?.originSlug ?? entry.slug,
     sourceRect,
   };
+  pendingDetailRender = null;
 
   const focusTarget = selectedUnit.querySelector(".detail-unit__title");
   if (entry.kind === "project") {
@@ -513,6 +551,7 @@ async function renderDetail(entry, {
 }
 
 async function restoreCollection(state) {
+  const operation = ++routeOperation;
   if (!activeDetail) return;
   const previous = activeDetail;
   killTransition();
@@ -522,9 +561,7 @@ async function restoreCollection(state) {
   const scrollY = saved?.scrollY ?? previous.sourceScrollY ?? 0;
   const originSlug = saved?.originSlug ?? previous.originSlug;
   const activeSlug = document.documentElement.dataset.detailActiveSlug;
-  const activeUnit = previous.view.querySelector(
-    `[data-detail-set="source"] .detail-unit[data-detail-slug="${activeSlug}"]`,
-  );
+  const activeUnit = closestDetailUnit(previous.view, activeSlug);
   const canReverse = previous.view.classList.contains("detail-view--project")
     && !previous.reduceMotion
     && activeSlug === originSlug
@@ -543,13 +580,18 @@ async function restoreCollection(state) {
   destroyDetailView();
   activeDetail = previous;
   previous.collectionNodes.forEach((node) => { node.hidden = false; });
-  restoreCollectionChrome();
+  restoreCollectionChrome(previous);
   activeDetail = null;
   window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
 
   await nextFrame();
   setScroll(scrollY);
   await nextFrame();
+  if (operation !== routeOperation) {
+    returnMediaVisual?.remove();
+    returnCopyVisual?.remove();
+    return;
+  }
 
   const candidateLinks = [...document.querySelectorAll(
     `[data-portfolio-detail-link][data-detail-slug="${originSlug}"]`,
@@ -691,7 +733,15 @@ function onPopState(event) {
     renderDetail(entry);
     return;
   }
-  if (isCollectionPath() && activeDetail) restoreCollection(event.state);
+  if (!isCollectionPath()) return;
+  if (activeDetail) {
+    restoreCollection(event.state);
+    return;
+  }
+  if (pendingDetailRender) {
+    routeOperation += 1;
+    discardPendingDetailRender({ restoreCollection: true });
+  }
 }
 
 function initializeDetailState() {

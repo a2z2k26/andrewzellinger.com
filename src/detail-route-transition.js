@@ -8,11 +8,16 @@ function asArray(value) {
 function prepareOverlay(element, className, rect) {
   if (!element || !rect) return null;
   const overlay = element;
+  [overlay, ...overlay.querySelectorAll(".glass-proxy-media-ready, .glass-proxy-text-ready")]
+    .forEach((node) => {
+      node.classList.remove("glass-proxy-media-ready", "glass-proxy-text-ready");
+    });
   overlay.classList.add(className);
   overlay.removeAttribute("role");
   overlay.removeAttribute("aria-label");
   overlay.setAttribute("aria-hidden", "true");
   overlay.querySelector(".detail-unit__media-shade")?.remove();
+  overlay.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
   overlay.style.removeProperty("transform");
   overlay.style.removeProperty("opacity");
   overlay.style.removeProperty("visibility");

@@ -10,10 +10,15 @@ test("project route transitions share media in both directions", async () => {
   assert.match(detail, /direction:\s*"enter"/);
   assert.match(detail, /direction:\s*"return"/);
   assert.match(detail, /originSlug/);
+  assert.match(detail, /closestDetailUnit\(previous\.view, activeSlug\)/);
+  assert.match(detail, /pendingDetailRender/);
+  assert.match(detail, /operation !== routeOperation/);
   assert.match(detail, /focus\(\{ preventScroll: true \}\)/);
   assert.match(transition, /duration:\s*\.7/);
   assert.match(transition, /ease:\s*"power3\.inOut"/);
   assert.match(transition, /detail-transition-copy/);
+  assert.match(transition, /glass-proxy-media-ready/);
+  assert.match(transition, /glass-proxy-text-ready/);
   assert.match(transition, /aria-hidden/);
   assert.match(transition, /cancel\(\)/);
   assert.match(collection, /dataset\.projectCardCopy/);
