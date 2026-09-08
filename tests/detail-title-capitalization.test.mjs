@@ -110,7 +110,7 @@ test("expanded projects use collection spacing while article details stay unchan
   assert.match(styles, /--detail-project-description-section-gap:\s*64px;/);
   assert.match(styles, /\.detail-unit__copy\s*\{[^}]*padding-top:\s*20px;/s);
   assert.match(styles, /\.detail-unit__copy--article\s*\{[^}]*padding-top:\s*var\(--detail-article-media-title-gap\);/s);
-  assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*32px;/s);
+  assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(styles, /\.detail-unit__sections\s*\{[^}]*padding-top:\s*40px;/s);
   assert.match(styles, /\.detail-unit__sections--project\s*\{[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(runtime, /detail-unit__section--project-\$\{section\.label\.toLowerCase\(\)\}/);

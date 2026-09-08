@@ -150,7 +150,7 @@ html[data-detail-boundary-motion="active"] [data-detail-motion-lede] {
 }
 
 .detail-unit__project-lockup .works-media-spacing {
-  margin-bottom: 32px;
+  margin-bottom: var(--detail-project-description-section-gap);
 }
 
 .detail-unit__project-lockup .detail-unit__copy {

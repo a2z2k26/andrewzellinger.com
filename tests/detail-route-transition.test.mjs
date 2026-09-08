@@ -43,7 +43,7 @@ test("expanded project details reuse the canonical Projects lockup", async () =>
   assert.match(detail, /display-inlineflex categories/);
   assert.match(detail, /works-meta-spacing/);
   assert.match(detail, /works-project-description/);
-  assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*32px;/s);
+  assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;/s);
   assert.match(styles, /\.detail-unit__project-lockup \.works-project-description\s*\{[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;/s);
   assert.match(styles, /\.detail-unit__title\[tabindex\]:focus-visible\s*\{[^}]*outline:\s*none;/s);
