@@ -228,10 +228,15 @@ function createTexture(canvas) {
 }
 
 function elementOpacity(element) {
-  let opacity = parseFloat(getComputedStyle(element).opacity) || 0;
+  const style = getComputedStyle(element);
+  if (style.visibility === "hidden" || style.display === "none") return 0;
+  let opacity = parseFloat(style.opacity) || 0;
   let parent = element.parentElement;
-  while (parent && parent !== document.body) {
-    if (parent.style.opacity) opacity *= parseFloat(parent.style.opacity) || 0;
+  while (parent) {
+    const parentStyle = getComputedStyle(parent);
+    if (parentStyle.visibility === "hidden" || parentStyle.display === "none") return 0;
+    opacity *= parseFloat(parentStyle.opacity) || 0;
+    if (parent === document.body) break;
     parent = parent.parentElement;
   }
   return opacity;

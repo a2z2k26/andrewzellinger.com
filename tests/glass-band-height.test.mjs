@@ -109,6 +109,16 @@ test("the shader owns one canvas and suppresses duplicate native media paint", a
   assert.match(styles, /html\[data-glass-bands="active"\] \.glass-proxy-media-ready\s*\{[^}]*background-image:\s*none !important;/s);
 });
 
+test("the glass proxy respects hidden route-transition targets", async () => {
+  const surface = await readFile(
+    new URL("../src/effects/glass-surface.js", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(surface, /style\.visibility === "hidden" \|\| style\.display === "none"/);
+  assert.match(surface, /parentStyle\.visibility === "hidden" \|\| parentStyle\.display === "none"/);
+});
+
 test("the persistent logo and clock remain native above both effects", async () => {
   const surface = await readFile(
     new URL("../src/effects/glass-surface.js", import.meta.url),
