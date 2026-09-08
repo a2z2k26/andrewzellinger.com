@@ -25,7 +25,7 @@ test("article records use one shared index/detail source with flexible ordered b
     assert.equal("sections" in article, false);
   }
 
-  const [companyOfOne, ...temporaryArticles] = ARTICLE_DETAILS;
+  const [companyOfOne, aFreeSurfLesson, ...temporaryArticles] = ARTICLE_DETAILS;
   assert.equal(companyOfOne.slug, "company-of-one");
   assert.equal(companyOfOne.title, "Company of One");
   assert.deepEqual(companyOfOne.meta, ["Andrew Zellinger", "Jun 2nd 2026"]);
@@ -34,6 +34,15 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(companyOfOne.body.filter((block) => block.type === "paragraph").length, 16);
   assert.equal(companyOfOne.body[0].text, "At its worst, my agents waited in line");
   assert.match(companyOfOne.body.at(-1).text, /the only success metric that ever mattered\.$/);
+
+  assert.equal(aFreeSurfLesson.slug, "a-free-surf-lesson");
+  assert.equal(aFreeSurfLesson.title, "A Free Surf Lesson");
+  assert.deepEqual(aFreeSurfLesson.meta, ["Andrew Zellinger", "Jan 9th 2026"]);
+  assert.match(aFreeSurfLesson.summary, /^Good taste alone won't save you from the crashing wave\./);
+  assert.equal(aFreeSurfLesson.body.filter((block) => block.type === "heading").length, 8);
+  assert.equal(aFreeSurfLesson.body.filter((block) => block.type === "paragraph").length, 16);
+  assert.equal(aFreeSurfLesson.body[0].text, "It's a comforting story. It's also incomplete");
+  assert.match(aFreeSurfLesson.body.at(-1).text, /^Develop your judgement, but build the machinery/);
   temporaryArticles.forEach((article) => assert.deepEqual(article.body, legacyBody));
 
   assert.match(indexRuntime, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js"/);
