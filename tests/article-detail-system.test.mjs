@@ -4,24 +4,18 @@ import test from "node:test";
 
 import { ARTICLE_DETAILS } from "../src/article-content.js";
 
-const legacyBody = [
-  "Temporary article copy. This paragraph establishes the intended editorial measure and reading rhythm; it should be replaced by Andrew's authored introduction.",
-  "Temporary article copy. This section reserves space for the central position, supporting examples, and the practical implications of the idea without inventing a finished argument.",
-  "Temporary article copy. References, counterpoints, and a closing synthesis will live here once the real draft and supporting sources are available.",
-];
-
 test("article records use one shared index/detail source with flexible ordered bodies", async () => {
   const indexHtml = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
   const indexRuntime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
   const detailContent = await readFile(new URL("../src/detail-content.js", import.meta.url), "utf8");
 
-  assert.equal(ARTICLE_DETAILS.length, 10);
-  assert.equal(new Set(ARTICLE_DETAILS.map(({ slug }) => slug)).size, 10);
+  assert.equal(ARTICLE_DETAILS.length, 11);
+  assert.equal(new Set(ARTICLE_DETAILS.map(({ slug }) => slug)).size, 11);
   for (const article of ARTICLE_DETAILS) {
     assert.equal(article.kind, "article");
     assert.equal(article.collectionPath, "/articles");
     assert.equal(article.path, `/articles/${article.slug}/`);
-    assert.ok(article.meta.length >= 2);
+    assert.ok(article.meta.length >= 1);
     assert.ok(article.body.length > 0);
     assert.equal("sections" in article, false);
   }
@@ -33,7 +27,11 @@ test("article records use one shared index/detail source with flexible ordered b
     intentionDeficitDisorder,
     twoDollarBill,
     youAlwaysLetYourselfWin,
-    ...temporaryArticles
+    cutDeferOrBuild,
+    designPrinciples,
+    embeddedProductDesignLessons,
+    constraintWasTheBrief,
+    realMvp,
   ] = ARTICLE_DETAILS;
   assert.equal(companyOfOne.slug, "company-of-one");
   assert.equal(companyOfOne.title, "Company of One");
@@ -89,14 +87,42 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.match(youAlwaysLetYourselfWin.body[0].text, /^Every AI product team hits the same moment/);
   assert.match(youAlwaysLetYourselfWin.body.at(-1).text, /^AI makes production faster/);
 
-  assert.equal(temporaryArticles.length, 4);
-  temporaryArticles.forEach((article) => assert.deepEqual(article.body, legacyBody));
+  assert.equal(cutDeferOrBuild.slug, "cut-defer-or-build");
+  assert.equal(cutDeferOrBuild.title, "Cut, Defer or Build");
+  assert.deepEqual(cutDeferOrBuild.meta, ["Andrew Zellinger"]);
+  assert.equal(cutDeferOrBuild.body.filter((block) => block.type === "heading").length, 5);
+  assert.equal(cutDeferOrBuild.body.filter((block) => block.type === "paragraph").length, 40);
 
-  for (const article of ARTICLE_DETAILS.slice(0, 6)) {
-    assert.match(indexHtml, new RegExp(`data-detail-slug="${article.slug}"`));
-    assert.match(indexHtml, new RegExp(`aria-label="Read article: ${article.title}"`));
+  assert.equal(designPrinciples.slug, "design-principles-that-actually-shape-the-product");
+  assert.equal(designPrinciples.title, "Design Principles That Actually Shape the Product");
+  assert.deepEqual(designPrinciples.meta, ["Andrew Zellinger"]);
+  assert.equal(designPrinciples.body.filter((block) => block.type === "heading").length, 5);
+  assert.equal(designPrinciples.body.filter((block) => block.type === "paragraph").length, 25);
+
+  assert.equal(embeddedProductDesignLessons.slug, "lessons-from-fifteen-years-of-embedded-product-design");
+  assert.equal(embeddedProductDesignLessons.title, "Lessons from Fifteen Years of Embedded Product Design");
+  assert.deepEqual(embeddedProductDesignLessons.meta, ["Andrew Zellinger"]);
+  assert.equal(embeddedProductDesignLessons.body.filter((block) => block.type === "heading").length, 7);
+  assert.equal(embeddedProductDesignLessons.body.filter((block) => block.type === "paragraph").length, 31);
+
+  assert.equal(constraintWasTheBrief.slug, "the-constraint-was-the-brief");
+  assert.equal(constraintWasTheBrief.title, "The Constraint Was the Brief");
+  assert.deepEqual(constraintWasTheBrief.meta, ["Andrew Zellinger"]);
+  assert.equal(constraintWasTheBrief.body.filter((block) => block.type === "heading").length, 5);
+  assert.equal(constraintWasTheBrief.body.filter((block) => block.type === "paragraph").length, 22);
+
+  assert.equal(realMvp.slug, "what-makes-a-real-mvp");
+  assert.equal(realMvp.title, "What Makes a Real MVP?");
+  assert.deepEqual(realMvp.meta, ["Andrew Zellinger"]);
+  assert.equal(realMvp.body.filter((block) => block.type === "heading").length, 4);
+  assert.equal(realMvp.body.filter((block) => block.type === "paragraph").length, 21);
+
+  for (const article of ARTICLE_DETAILS) {
+    assert.ok(indexHtml.includes(`data-detail-slug="${article.slug}"`));
+    assert.ok(indexHtml.includes(`aria-label="Read article: ${article.title}"`));
   }
-  assert.doesNotMatch(indexHtml, /prototypes-as-instruments-for-thinking|where-judgment-enters-the-loop/);
+  assert.doesNotMatch(indexHtml, /prototypes-as-instruments-for-thinking|where-judgment-enters-the-loop|Jason Ramirez/i);
+  assert.doesNotMatch(JSON.stringify(ARTICLE_DETAILS), /Jason Ramirez/i);
 
   assert.match(indexRuntime, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js"/);
   assert.match(indexRuntime, /entry\.meta\.map/);

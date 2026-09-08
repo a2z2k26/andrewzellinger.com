@@ -30,6 +30,33 @@ const authoredBody = (source) => Object.freeze(
     }),
 );
 
+const stripInlineMarkdown = (text) => text
+  .replace(/\*\*([^*]+)\*\*/g, "$1")
+  .replace(/\*([^*]+)\*/g, "$1")
+  .trim();
+
+const authoredMarkdownBody = (source) => Object.freeze(
+  source
+    .trim()
+    .split(/\n\s*\n+/)
+    .flatMap((rawBlock) => {
+      const block = rawBlock.trim();
+      if (!block || block === "---") return [];
+
+      const headingMatch = block.match(/^##\s+(.+)$/s);
+      if (headingMatch) return heading(stripInlineMarkdown(headingMatch[1]));
+
+      const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
+      if (lines.every((line) => /^(?:-|\d+\.)\s+/.test(line))) {
+        return lines.map((line) => paragraph(stripInlineMarkdown(line)));
+      }
+
+      return paragraph(stripInlineMarkdown(lines
+        .map((line) => line.replace(/^>\s?/, ""))
+        .join(" ")));
+    }),
+);
+
 const companyOfOneBody = Object.freeze([
   heading("At its worst, my agents waited in line"),
   paragraph(`A manager needed the expensive model to do its job. So did four others. There was one account, one lock, and a five-minute timeout — so they queued, by priority, one at a time, while the rest of the system stalled waiting on a decision that hadn't happened yet. Underneath, a call graph I never wrote was assembling itself at runtime: one agent deciding it needed another, that one escalating to a third, the whole thing spidering outward through hops I couldn't predict and couldn't price. When it broke, I had recovery systems and failover systems to catch it, which is the politest possible way of admitting the coordination itself was brittle.`),
@@ -465,6 +492,311 @@ When designers help define evals, the team stops asking only whether the AI can 
 AI makes production faster. That is the obvious part. The less obvious part is that it also makes mediocrity faster. It can generate more screens, more copy, more flows, more summaries — more plausible-looking work. Without evals, teams ship whatever looks impressive in the shortest demo. With evals, teams make their standards visible before the system scales. That is the work now. Not better prompts — better ways to know whether the product is behaving well. Anyone can play themselves and win. Evals are how you find out whether you would have.
 `);
 
+const cutDeferOrBuildBody = authoredMarkdownBody(`
+I've been in that room many times. The decision is always the same three options: cut it, defer it, or build it. And the default answer is almost always the wrong one.
+
+On a recent engagement, designing an AI-powered onboarding platform for investment banks, we spent real time imagining what the product could eventually do. Predictive personalization. Automated escalation on flagged issues. Proactive guidance based on client behavior. Interactive meeting summaries. Good ideas, all of them, and none made it into what we shipped.
+
+The gap between what the technology could do and what the MVP delivered was a constant creative tension for the whole engagement. Managing that tension well is most of the job.
+
+## When to cut
+
+Cutting is hardest because the idea is usually good. That's what makes it dangerous. A good idea nobody asked for still consumes the same weeks as a bad one.
+
+Ask:
+
+- Did this come from research, or from the team's enthusiasm?
+- Did any user describe the problem it solves, in their own words, unprompted?
+- If it shipped alone, would anyone notice?
+- Does it require a capability that doesn't exist yet in the product or the org?
+- Is it here because it demos well?
+
+That last question is the sharp one. Some features exist to make a stakeholder presentation land. That's a real need, but it's a marketing need, and it should be funded and scoped as one, not smuggled into a build.
+
+## When to defer
+
+Defer is for good ideas with a missing prerequisite. Usually data, sometimes trust.
+
+Ask:
+
+- Does this depend on behavior the product hasn't accumulated yet? Personalization needs a history to personalize against.
+- Would users accept it before they trust the basics? Automation lands very differently once someone has watched the system get simple things right for a month.
+- Can you design the seam now so it drops in later without a rebuild?
+- Is the concept worth documenting even though it isn't worth building?
+
+Deferred work should still be designed to a level that proves it's coherent. On that same engagement, the future-state concepts served a real purpose even unbuilt. They demonstrated the roadmap to investors and helped raise a Series A. Just don't confuse a concept that funds the company with a concept that ships to users.
+
+## When to build
+
+Build is for the thing that changes the user's day.
+
+Ask:
+
+- Did this show up in interviews as an actual complaint rather than a wish?
+- Does the workflow break without it?
+- Can you name the moment in the journey it occurs, and who is present?
+- If you shipped only this, would the product still be worth using?
+
+Research pointed at one answer over and over: manual data entry was the single largest source of frustration for the operators managing these relationships. Repetitive, error-prone, endless. So the MVP centered on document ingestion and pre-population, which turned their job from typing into checking. Everything else waited.
+
+Pilot testing with over a hundred professionals confirmed it. They responded most strongly to exactly that feature. They also asked for the deeper AI capabilities we'd cut, which is the good version of this outcome: users pulling for the roadmap rather than the team pushing it.
+
+## The scope review
+
+Make it a recurring meeting, not a one-time negotiation, because the answers change as research comes in.
+
+The agenda I use:
+
+1. Restate the problem the product is solving, in one sentence.
+2. Review what was learned since last time, from users specifically.
+3. Walk the current scope list and mark each item cut, deferred, or building.
+4. Say what each decision is based on. "Research showed X" or "we don't have the data yet" or "this is for the investor deck."
+5. Confirm the deferred list is written down somewhere the client will actually find it.
+
+The last step matters more than it sounds. Deferred ideas that vanish get reinvented six months later at full cost. Deferred ideas that are documented become the roadmap.
+
+## Key lessons
+
+1. The default answer is "build it," and the default answer is usually wrong.
+2. Enthusiasm is not evidence. Interviews are.
+3. Features that exist to demo well are a real need, scoped as the wrong thing.
+4. Defer needs a written home or it becomes cut by accident.
+5. Users asking for what you cut is the sign you scoped correctly.
+6. Cut and defer are the two decisions that make the MVP shippable. Build is the easy one.
+`);
+
+const designPrinciplesBody = authoredMarkdownBody(`
+The set that worked best for me came out of a project where the stakes made vagueness impossible: designing AI-assisted onboarding for investment banking clients. Sensitive financial documents. Regulatory exposure. Users who were, in one persona's case, a woman with a complex family trust structure who found most digital tools intimidating and was openly skeptical that software could handle her situation without her advisor in the loop.
+
+You cannot design that with "be delightful."
+
+## Write principles at the decision level
+
+The test of a good principle is whether it resolves an argument you're actually going to have. Ours did, because each one named a specific trade-off the team hit weekly.
+
+**Pre-population over manual entry.** The AI reads the uploaded documents and fills the form. The person's role shifts from typing to checking. This one principle reorganized the entire customer experience, because every screen then had to answer a different question: not "what do we need from you," but "here's what we found, is it right?"
+
+**Every extracted value carries its provenance.** Any data point the system pulled had to show its source document and line reference, with a confidence score. No number appears in the interface as if it simply knew.
+
+**Every automated action has a human checkpoint.** Automation proposes. A person confirms. In a regulated domain this isn't a nicety, but the useful part is that it settled dozens of small design arguments before they started.
+
+**Progressive disclosure with stated reasons.** Step by step, with a visible indicator of where you are and an explanation of why each piece of information is needed. Research had shown clients felt lost, unsure what was expected or how long it would take. The principle addressed that directly.
+
+Notice that each one is falsifiable. You can look at a screen and say "this violates the second principle," and everyone in the room will agree. That's the bar.
+
+## Principles come from research, not from a workshop
+
+We ran fifteen stakeholder interviews with relationship associates, regional VPs, and advisors before writing any of this. The technique that produced the most was using a journey map as the interview prompt rather than a question list. We'd built a comprehensive map of the analog process, from verbal commitment through the first ninety days after handoff, and walked people through it stage by stage.
+
+Grounding the conversation in a concrete workflow got us pain points that abstract questions never surface. People are bad at answering "what's frustrating about your job" and very good at answering "walk me through what happens here."
+
+Four findings came out of it, and each one turned into a principle. Manual entry was the biggest source of frustration. Clients felt lost. Coordination between roles was fragmented across email and phone. Trust and transparency were non-negotiable given the sensitivity of the data.
+
+That's the actual method. Research, then patterns, then principles. Writing principles first produces a description of the designer you'd like to be.
+
+> Principles you write from ambition describe you. Principles you write from research describe the problem.
+
+## The part that didn't work
+
+Alongside the MVP, we developed a set of future-state concepts: predictive personalization, automated escalation, proactive guidance. Those didn't get principles. They got mockups.
+
+And that's exactly why they stayed mockups. They were compelling to look at and impossible to argue about, because there was no stated standard they could fail to meet. A concept with no principle attached can't be critiqued, only admired. Admiration doesn't ship anything.
+
+If I were doing it again, I'd hold the speculative work to the same test as the buildable work. Not to constrain the imagining, but because a future-state concept that can't satisfy your own principles is telling you something useful about the future state.
+
+## Put the principle in the structure
+
+The most durable principle I've written wasn't in a document at all. It was in the data model.
+
+We defined a hierarchy for the onboarding journey: journey, phase, action, sub-action group, sub-action, task. Six levels. That structure decided the navigation, the progress indicators, the operator's ability to configure a journey per client, and the customer's sense of where they were in a long process.
+
+The data model was as much a design decision as any screen. And unlike a written principle, it enforced itself. You couldn't build a screen that violated it, because the screen had nowhere to get its content from.
+
+That's the strongest version of a design principle: one that has been built into a structure, where following it is easier than not.
+
+## What I'd tell someone writing them
+
+1. If nobody could disagree, it isn't a principle.
+2. Derive them from research, not from a workshop with sticky notes.
+3. Name the trade-off each one resolves.
+4. Hold speculative work to them too, or it stays speculative.
+5. The best principle is one you've encoded in the structure, where it enforces itself.
+`);
+
+const embeddedProductDesignLessonsBody = authoredMarkdownBody(`
+The pattern of my career has been showing up inside someone else's company, usually small, usually under pressure, and being responsible for the product experience end to end. Research through interface, sometimes through the marketing site. The lessons below are the ones I'd want a younger version of me to have.
+
+## Use the artifact as the interview
+
+> People are bad at answering "what's frustrating?" and very good at answering "walk me through what happens here."
+
+On a project mapping the client onboarding process for investment banks, we built a comprehensive journey map before conducting a single interview. It covered everything from verbal commitment through the first ninety days after handoff.
+
+Then we used the map itself as the interview prompt. Fifteen conversations with relationship associates, regional VPs, and advisors, all conducted by walking the map together stage by stage.
+
+The difference in output was dramatic. Abstract questions produce abstract answers and a lot of generic complaints about "communication." A concrete workflow in front of someone produces specifics: this handoff is where things get dropped, this document always arrives late, this is the third place I retype the same number.
+
+Build the artifact first. Then let people correct it. Correction is easier than recall.
+
+## The data model is a design decision
+
+> Structure is design, and it's the part you can't fix later.
+
+The same project needed a way to represent an onboarding journey that could flex across different institutions with different processes. We ended up with six levels: journey, phase, action, sub-action group, sub-action, task.
+
+That structure wasn't preliminary work before the design. It was the design. It determined the navigation, the progress indicators, what an operator could configure per client, and how a person experienced moving through a long, intimidating process.
+
+I've watched teams treat information architecture as engineering's problem and then spend months fighting an interface that can't express what users need. Get into the model early. It's the highest-leverage hour a designer spends.
+
+## Design for the state the user is actually in
+
+> Nobody is calm when they use the feature you're most proud of.
+
+On a pet-tech product, one of the flows I worked on was the mode that activates when a dog escapes its safe zone and the owner has to track it live. The person using that screen is panicking. Their vocabulary has narrowed. They are moving.
+
+On an audio sleep product, the opposite extreme: the person is in bed, lights off, and about to lose consciousness. We designed the player so a successful session required exactly two interactions, start and stop. Controls faded on inactivity and handed off to the lock screen.
+
+Both are the same lesson. The default design persona is an alert, seated, unhurried person who has never existed. Ask what state your user is in at that exact screen, and design for that person instead.
+
+## When the team shrinks, you own coherence
+
+> A small team doesn't produce less work. It produces less-connected work.
+
+I joined one engagement shortly after the company had gone through layoffs, and inherited a scope normally spread across several people: research, wireframes, prototypes, interface, the corporate site, marketing materials.
+
+What surprised me wasn't the volume. It was that coherence became my explicit job rather than an emergent property of a functioning team. With a full org, consistency happens through critique and shared systems. With three people, it happens because one person is holding the whole thing in their head and deliberately checking it.
+
+If you're the last designer standing, schedule the coherence pass. It won't happen on its own, and it's the first thing to go.
+
+## Two-sided products require constant empathy-switching
+
+> One user visits once. The other lives there. They cannot share a design vocabulary.
+
+The onboarding platform had two audiences: prospective clients going through the process a single time in their lives, anxious and unfamiliar, and financial operators managing dozens of these relationships simultaneously.
+
+One side needed guidance, reassurance, progressive disclosure, and explanation of why each piece of information mattered. The other needed density, filtering, status at a glance, and the ability to drill into any relationship in two clicks.
+
+The mistake is designing one and adapting it. They need distinct vocabularies over a shared system. What holds them together is the underlying model, not the interface conventions.
+
+## Pilot beyond the room
+
+> Internal consensus is the cheapest and least reliable validation available.
+
+We pilot tested that platform with over a hundred investment bankers. The feature they responded to most strongly was the one research had predicted, which was reassuring. But the testing also surfaced things no amount of internal review would have: terminology that didn't match how they spoke, filtering needs on the dashboard we hadn't anticipated, specific points where clients got confused about progress.
+
+A hundred is not a magic number. The point is that it's large enough to be outside your stakeholder circle. Everyone in the building has already absorbed your framing. That's precisely why they can't test it.
+
+## The list
+
+- **Interview with an artifact.** Correction beats recall.
+- **The data model is design.** Get in early.
+- **Design for the actual state.** Panicked, half-asleep, interrupted.
+- **Small team, deliberate coherence.** It stops being automatic.
+- **Two audiences, two vocabularies, one model.**
+- **Validate outside the building.** Your stakeholders share your blind spots.
+`);
+
+const constraintWasTheBriefBody = authoredMarkdownBody(`
+## The challenge
+
+An audio company wanted to enter the sleep market. The premise was straightforward: sessions of audio content that help people fall asleep, stay asleep, and wake up better. Our studio was brought in to design and prototype the mobile experience, with a team of about fifteen designers and product strategists working fast.
+
+The obvious approach for a media app is to give the listener control. Playback, scrubbing, track skipping, queue management, volume, browse-while-playing. That's the vocabulary the category runs on, and it's what a stakeholder expects to see in a player mockup.
+
+It's also completely wrong for this product, and figuring out why took reframing the constraint as the brief.
+
+## Reframing the question
+
+The person using a sleep player is not a listener in any normal sense. They're in bed, in the dark, at the point of losing consciousness. Every interaction we designed was an interaction that would keep them awake.
+
+So the constraint stopped being "how few controls can we get away with" and became the actual specification: **a successful session involves exactly two interactions. Start and stop.**
+
+That's a hard number, and hard numbers are what make a constraint useful. "Keep it simple" resolves no arguments. "Two interactions" kills features in meetings.
+
+## What the constraint produced
+
+Working backward from two taps forced a set of decisions we'd never have reached by subtraction.
+
+**Setup moved out of the session.** If you can't configure during playback, configuration has to happen before, and it has to be light enough that someone will actually do it every night. That produced the bedtime and rise time inputs, adjustable daily because real schedules move. It also produced a mood forecast: the listener picks from a small fixed set, stressful, busy, active, mellow, quiet, and the session is generated to suit. Both are pre-session inputs that make the in-session interface unnecessary.
+
+**Controls learned to disappear.** After a period of inactivity the controls faded and the device handed off to a minimal lock screen player, with only the essentials reachable through a menu. The interface removed itself once it had done its job.
+
+**The session got modalities instead of a queue.** Fall asleep, stay asleep, rise. Three phases the system moves through on its own, rather than content the listener has to steer.
+
+**Visuals replaced feedback.** An ambient calming visualization instead of the usual progress and metadata furniture, because a progress bar is information that only matters to someone who intends to remain conscious.
+
+None of that is a subtracted version of a normal player. It's a different object, and the constraint is what produced it.
+
+## The same move, elsewhere
+
+I've since used a similar reframe on projects that looked nothing alike.
+
+On a pet-tech product, the flow that activates when a dog escapes its safe zone has a comparable constraint pointing the other direction. The user is panicking, outdoors, moving. That's not "make it simple" either. It's a specific state with specific implications: large touch targets, live location as the entire screen, no decisions that require reading a paragraph.
+
+On another engagement I joined shortly after the company had gone through layoffs, the constraint was headcount. My scope covered work normally spread across several people. The productive reframe there wasn't "how do I do five jobs." It was recognizing that coherence, which a full team produces automatically through critique and shared systems, had become a deliberate task that someone had to schedule. Naming it that way made it survivable.
+
+> A vague constraint is a complaint. A specific one is a brief.
+
+## Key lessons
+
+1. Convert the limitation into a number. Two taps, six weeks, one person. Vague constraints resolve nothing.
+2. Ask what the constraint implies rather than how to escape it. The implication is usually the design.
+3. Work backward from the constrained moment. What has to happen before, so nothing has to happen during?
+4. The user's state is a constraint, and it's the one most often ignored.
+5. Constrained solutions aren't reduced versions of the unconstrained one. They're a different object, usually better.
+6. When resources are the constraint, name what stops happening automatically. That's the thing to schedule.
+`);
+
+const realMvpBody = authoredMarkdownBody(`
+An MVP is three things:
+
+1. **The fewest features that get the job done.**
+2. **A path someone can complete without giving up.**
+3. **Something that delivers real value at the end.**
+
+Most failed first versions satisfy one and three. They're small, and the value is genuinely there for anyone who reaches it. They fail on two, and nobody reaches it.
+
+## Minimal is the easy part
+
+Cutting scope is a skill teams already have. What teams are bad at is noticing when the cut has broken the path.
+
+On a project designing AI-assisted onboarding for investment banking clients, one persona was a woman in her fifties with a complex financial picture spread across real estate and trusts. Not particularly comfortable with digital tools. Openly skeptical that software could handle her situation without her advisor involved. She would go through this process exactly once in her life.
+
+A minimal version for her is easy to imagine: a form, an upload field, a submit button. Minimal, and the value is real at the end. She would abandon it in four minutes.
+
+What made it viable was the work that looks like overhead on a scope list. Pre-population, so the system read her documents and she checked rather than typed. Progress indicators, because she needed to know where she was in something long. Explanations of why each piece of information was needed, because trust was the actual constraint. An assistant available at every step to answer the questions she'd otherwise have called her advisor about.
+
+None of that is minimal. All of it is viable.
+
+## The completion test
+
+The test is simple and most teams skip it: hand a person a goal and watch.
+
+Not a demo. Not a walkthrough where you narrate. Give them the objective and stay quiet. The moment you're listening for is the one where they stop and say some version of "I don't know what to do now." If they can't resolve it within reasonable effort, you have a product that is minimal and not viable.
+
+We ran that platform past a hundred professionals in pilot testing. It confirmed the thing research had predicted, that automating manual data entry was the feature that mattered most, and it surfaced things internal review never would have: terminology that didn't match how they talked, filtering they needed on the dashboard, specific points where clients lost the thread of their own progress.
+
+A hundred isn't a magic number. What matters is testing outside the building, because everyone inside has already absorbed your framing and can no longer see the gaps.
+
+## Viability is state-dependent
+
+The same feature set can be viable for one user and unusable for another, based purely on the condition they're in.
+
+Designing a sleep product taught me this. The listener is in bed, in the dark, half-conscious. Every control is an obstacle. We built the player so a successful session required exactly two interactions, start and stop, with controls fading on inactivity. Adding features there would have reduced viability.
+
+Designing the flow for a pet owner whose dog has escaped teaches the opposite. That person is panicked and moving. They need less on screen and bigger targets, but they also need more certainty: live location, unambiguous next action, no paragraph to read.
+
+Both are viable. Neither is minimal in a way that would survive a generic scope-cutting exercise. The question isn't "what's the least we can build," it's "what's the least this person, in this state, needs to finish."
+
+## The real lesson
+
+Stop asking whether the first version is impressive. Ask whether someone can finish.
+
+Impressive first versions are common and mostly useless. They demo beautifully, they raise money, and then real users hit the third screen and stop. The unglamorous work of a real MVP is almost entirely about the middle of the journey, which is exactly the part that never appears in a pitch.
+
+Clarity is what makes something viable. Everything else is decoration on a path nobody completes.
+`);
+
 function article({ slug, title, issue, date, category, meta, summary, body = temporaryArticleBody, index }) {
   const articleMeta = meta ?? [issue, date, category];
   return Object.freeze({
@@ -533,38 +865,42 @@ export const ARTICLE_DETAILS = Object.freeze([
   }),
   article({
     index: 7,
-    slug: "the-cost-of-invisible-decisions",
-    title: "The cost of invisible decisions",
-    issue: "Issue 07",
-    date: "Jun 2026",
-    category: "Craft",
-    summary: "A mock editorial note about the product choices users may never see, but feel through pace, confidence, and coherence.",
+    slug: "cut-defer-or-build",
+    title: "Cut, Defer or Build",
+    meta: ["Andrew Zellinger"],
+    summary: "Every 0-1 engagement reaches a point where the vision outruns the budget. You've mapped the future state, the client has seen it, everyone is excited, and someone finally has to decide what actually gets designed in the weeks that remain.",
+    body: cutDeferOrBuildBody,
   }),
   article({
     index: 8,
-    slug: "designing-alignment-before-interfaces",
-    title: "Designing alignment before interfaces",
-    issue: "Issue 08",
-    date: "Jun 2026",
-    category: "Leadership",
-    summary: "Replaceable copy on helping product teams agree on the problem, the tradeoffs, and the standard of evidence before drawing screens.",
+    slug: "design-principles-that-actually-shape-the-product",
+    title: "Design Principles That Actually Shape the Product",
+    meta: ["Andrew Zellinger"],
+    summary: "Most design principles die in the deck they were born in. They're written at the wrong altitude, agreed to by everyone, and then never invoked in an actual decision. \"Be delightful.\" \"Put the user first.\" Nobody disagrees, which is exactly the problem. A principle that nothing can violate isn't steering anything.",
+    body: designPrinciplesBody,
   }),
   article({
     index: 9,
-    slug: "what-prototypes-make-discussable",
-    title: "What prototypes make discussable",
-    issue: "Issue 09",
-    date: "May 2026",
-    category: "Research",
-    summary: "A provisional reflection on how tangible experiments give teams a shared object for critique, learning, and better disagreement.",
+    slug: "lessons-from-fifteen-years-of-embedded-product-design",
+    title: "Lessons from Fifteen Years of Embedded Product Design",
+    meta: ["Andrew Zellinger"],
+    summary: "TL;DR. I embed with early and mid-stage startups and help them get from zero to one. Six lessons that changed how I work, most of them learned the expensive way.",
+    body: embeddedProductDesignLessonsBody,
   }),
   article({
     index: 10,
-    slug: "a-practical-optimism-for-emerging-tools",
-    title: "A practical optimism for emerging tools",
-    issue: "Issue 10",
-    date: "May 2026",
-    category: "Futures",
-    summary: "Temporary notes on staying ambitious about new capabilities while remaining specific about people, consequences, and real value.",
+    slug: "the-constraint-was-the-brief",
+    title: "The Constraint Was the Brief",
+    meta: ["Andrew Zellinger"],
+    summary: "An audio company wanted to enter the sleep market.",
+    body: constraintWasTheBriefBody,
+  }),
+  article({
+    index: 11,
+    slug: "what-makes-a-real-mvp",
+    title: "What Makes a Real MVP?",
+    meta: ["Andrew Zellinger"],
+    summary: "I've spent most of my career building zero-to-one products for startups, which means I've spent most of my career arguing about what belongs in a first version. The argument is never really about features. It's about what \"viable\" means.",
+    body: realMvpBody,
   }),
 ]);
