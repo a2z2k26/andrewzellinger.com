@@ -5,10 +5,10 @@ import test from "node:test";
 test("Articles thumbnails grow responsively without changing their 3:2 geometry", async () => {
   const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
 
-  assert.match(html, /\.articles-entry\s*\{[^}]*grid-template-columns:\s*256px minmax\(0, 1fr\);/s);
+  assert.match(html, /\.articles-entry\s*\{[^}]*grid-template-columns:\s*288px minmax\(0, 1fr\);/s);
   assert.match(html, /\.articles-entry\s*\{[^}]*align-items:\s*center;/s);
   assert.match(html, /\.articles-entry__thumbnail\s*\{[^}]*width:\s*100%;[^}]*aspect-ratio:\s*3 \/ 2;/s);
-  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry\s*\{[^}]*grid-template-columns:\s*201px minmax\(0, 1fr\);/s);
+  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry\s*\{[^}]*grid-template-columns:\s*224px minmax\(0, 1fr\);/s);
   assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*row-gap:\s*24px;[^}]*align-items:\s*start;/s);
 });
 
@@ -27,7 +27,7 @@ test("Articles use the Projects-like title, metadata, excerpt hierarchy", async 
   assert.equal(html.match(/articles-entry__title heading-style-h2 new/g)?.length, 10);
   assert.equal(html.match(/articles-entry__meta display-inlineflex categories works-meta-spacing/g)?.length, 10);
   assert.equal(html.match(/articles-entry__excerpt works-project-description/g)?.length, 10);
-  assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*margin:\s*0;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*22px;[^}]*line-height:\s*20px;[^}]*text-transform:\s*none;[^}]*font-weight:\s*400;/s);
+  assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*margin:\s*0;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;[^}]*font-weight:\s*400;/s);
   assert.match(html, /\.articles-entry__meta\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;[^}]*margin-top:\s*12px;[^}]*margin-bottom:\s*var\(--space--desktop-medium\);[^}]*gap:\s*24px;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap;/s);
   assert.match(html, /\.articles-entry__excerpt\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*opacity:\s*1;[^}]*margin-top:\s*0;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*uppercase;/s);
 });
