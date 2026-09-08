@@ -59,22 +59,42 @@ test("glass bands preserve AZRAEL's vertical-only circular refraction", async ()
   assert.match(band, /displacement\.y \+= edge \* uBandBottom \* uStrength;/);
 });
 
-test("glass bands rasterize the retained media surfaces into the shader", async () => {
+test("glass bands rasterize retained non-project media surfaces into the shader", async () => {
   const surface = await readFile(
     new URL("../src/effects/glass-surface.js", import.meta.url),
     "utf8",
   );
 
   assert.match(surface, /const MEDIA_SELECTOR/);
-  assert.match(surface, /"\.project-media-placeholder"/);
   assert.match(surface, /"\.index-media-placeholder"/);
   assert.match(surface, /"\.articles-entry__thumbnail"/);
   assert.match(surface, /"\.biography-portrait-placeholder"/);
-  assert.match(surface, /"\.detail-unit__media"/);
   assert.match(surface, /new THREE\.TextureLoader\(\)\.load/);
   assert.match(surface, /entry\.kind === "media"/);
   assert.match(surface, /"glass-proxy-media-ready"/);
   assert.match(surface, /const TEXT_SELECTOR/);
+});
+
+test("transition-sensitive project surfaces remain native DOM paint", async () => {
+  const surface = await readFile(
+    new URL("../src/effects/glass-surface.js", import.meta.url),
+    "utf8",
+  );
+  const textSelector = surface.slice(
+    surface.indexOf("const TEXT_SELECTOR"),
+    surface.indexOf("const MEDIA_SELECTOR"),
+  );
+  const mediaSelector = surface.slice(
+    surface.indexOf("const MEDIA_SELECTOR"),
+    surface.indexOf("const SURFACE_SELECTOR"),
+  );
+
+  assert.doesNotMatch(textSelector, /\.works-motion-card/);
+  assert.doesNotMatch(textSelector, /\.detail-unit__title/);
+  assert.doesNotMatch(textSelector, /\.detail-unit__meta/);
+  assert.doesNotMatch(textSelector, /\.detail-unit__lede/);
+  assert.doesNotMatch(mediaSelector, /\.project-media-placeholder/);
+  assert.doesNotMatch(mediaSelector, /\.detail-unit__media/);
 });
 
 test("glass media proxy crops images with cover geometry instead of stretching", async () => {

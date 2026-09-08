@@ -18,9 +18,6 @@ import "./glass-surface.css";
 
 const TEXT_SELECTOR = [
   ".title .heading",
-  ".works-motion-card .heading-style-h2.new",
-  ".works-motion-card .display-inlineflex.categories",
-  ".works-motion-card p",
   ".articles-index__header",
   ".articles-entry__meta",
   ".articles-entry__title",
@@ -38,19 +35,14 @@ const TEXT_SELECTOR = [
   ".biography-clients__list",
   ".biography-contact__label",
   ".biography-contact__link",
-  ".detail-unit__title",
-  ".detail-unit__meta",
-  ".detail-unit__lede",
   ".detail-unit__section",
   ".detail-unit__article-body",
 ].join(",");
 
 const MEDIA_SELECTOR = [
-  ".project-media-placeholder",
   ".index-media-placeholder",
   ".articles-entry__thumbnail",
   ".biography-portrait-placeholder",
-  ".detail-unit__media",
 ].join(",");
 
 const SURFACE_SELECTOR = `${TEXT_SELECTOR},${MEDIA_SELECTOR}`;
