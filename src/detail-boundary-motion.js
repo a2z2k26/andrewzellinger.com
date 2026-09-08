@@ -33,7 +33,11 @@ function resetPair(pair) {
 }
 
 export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit = null }) {
-  const enabled = Boolean(view?.classList.contains("detail-view--project")) && !reduceMotion;
+  const enabled = Boolean(
+    view?.classList.contains("detail-view--project")
+    || view?.classList.contains("detail-view--article"),
+  ) && !reduceMotion;
+  const animateOutgoing = view?.classList.contains("detail-view--project");
   const compact = !circular;
   let pairs = [];
   let activePair = null;
@@ -97,16 +101,18 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
     activeProgress = progress;
     document.documentElement.dataset.detailBoundaryMotion = "active";
 
-    gsap.set(pair.outgoing.media, {
-      y: frame.outgoingMediaY,
-      scale: frame.outgoingMediaScale,
-      transformOrigin: "50% 50%",
-    });
-    gsap.set(pair.outgoing.shade, { opacity: frame.outgoingShade });
-    gsap.set(pair.outgoing.header, {
-      y: frame.outgoingCopyY,
-      opacity: frame.outgoingCopyOpacity,
-    });
+    if (animateOutgoing) {
+      gsap.set(pair.outgoing.media, {
+        y: frame.outgoingMediaY,
+        scale: frame.outgoingMediaScale,
+        transformOrigin: "50% 50%",
+      });
+      gsap.set(pair.outgoing.shade, { opacity: frame.outgoingShade });
+      gsap.set(pair.outgoing.header, {
+        y: frame.outgoingCopyY,
+        opacity: frame.outgoingCopyOpacity,
+      });
+    }
     gsap.set(pair.incoming.media, {
       y: frame.incomingMediaY,
       scale: frame.incomingMediaScale,

@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { CASE_STUDIES } from "../src/detail-content.js";
 import { PROJECTS } from "../src/project-content.js";
-import { PROJECT_SECTION_LABELS } from "../src/project-narratives.js";
+import { PROJECT_SECTION_LABELS, ENGAGEMENT_SECTION_LABELS } from "../src/project-narratives.js";
 
 const expectedTitles = [
   "Audible Sleep",
@@ -13,10 +13,10 @@ const expectedTitles = [
   "Android Wear",
   "Live Auctioneers",
   "Andrew Eccles",
-  "Proctor & Gamble",
+  "Procter & Gamble",
   "Modern Age",
   "Fi Collar",
-  "Thompson Reuters",
+  "Thomson Reuters",
   "Gero Timer",
   "Foursquare Brand",
   "Amazon Fire TV",
@@ -111,7 +111,7 @@ test("project detail data is complete and uses no runtime Notion source referenc
         ],
         "proctor-and-gamble": [
           "/images/projects/proctor-screen.png",
-          "Proctor & Gamble digital experience project image",
+          "Procter & Gamble digital experience project image",
         ],
         "thompson-reuters": [
           "/images/projects/reuters-screen.png",
@@ -159,7 +159,7 @@ test("project detail data is complete and uses no runtime Notion source referenc
         ],
         "gero-app": [
           "/images/projects/gero-screen.png",
-          "Gero App smartwatch fitness project image",
+          "Gero Timer Pomodoro app for Apple Watch and iPhone",
         ],
       }[project.slug];
       assert.equal(project.media.src, expectedMedia[0]);
@@ -176,7 +176,7 @@ test("project detail data is complete and uses no runtime Notion source referenc
     }
     assert.equal(project.meta.length, 4);
     assert.ok(project.sections.length > 0);
-    assert.ok(project.sections.every((section) => section.label && section.paragraphs.length > 0));
+    assert.ok(project.sections.every((section) => section.label && (section.paragraphs.length > 0 || section.items?.length > 0)));
   }
 
   const runtimeContent = JSON.stringify(PROJECTS);
@@ -218,36 +218,17 @@ test("Positive Brand uses the approved 2018 year tag", () => {
   assert.equal(positiveBrand?.meta[2], "2018");
 });
 
-test("published case studies share one editorial structure and reading length", () => {
-  const wordCount = (value) => value.trim().split(/\s+/).filter(Boolean).length;
-
+test("case studies use substantive decisions without a padding quota", () => {
   for (const project of PROJECTS) {
-    assert.deepEqual(
-      project.sections.map(({ label }) => label),
-      PROJECT_SECTION_LABELS,
-      project.slug + " must use the shared section sequence",
-    );
-    assert.deepEqual(
-      project.sections.map(({ paragraphs }) => paragraphs.length),
-      [1, 1, 1],
-      project.slug + " must render Context, Work, and Outcome as one paragraph each",
-    );
-
-    const bodyWords = project.sections.reduce(
-      (total, section) => total + section.paragraphs.reduce(
-        (sectionTotal, paragraph) => sectionTotal + wordCount(paragraph),
-        0,
-      ),
-      0,
-    );
-
-    if (project.slug === "amazon-fire-tv") {
-      assert.ok(bodyWords >= 75, "provisional entries must explain their source limits");
-    } else {
-      assert.ok(
-        bodyWords >= 325 && bodyWords <= 410,
-        project.slug + " must remain within the 325–410 word editorial band; received " + bodyWords,
-      );
+    const shortRecord = project.slug === "amazon-fire-tv";
+    assert.deepEqual(project.sections.map(s => s.label), shortRecord ? ENGAGEMENT_SECTION_LABELS : PROJECT_SECTION_LABELS);
+    assert.deepEqual(project.sections.map(s => s.paragraphs.length), shortRecord ? [1,1,1] : [1,1,0,1]);
+    if (!shortRecord) {
+      assert.equal(project.sections[2].items.length, 3);
+      assert.ok(project.sections[2].items.every(item => item.trim().split(/\s+/).length >= 10));
     }
+    const words = project.sections.flatMap(s => [...s.paragraphs, ...(s.items ?? [])]).join(" ").split(/\s+/).length;
+    assert.ok(words <= 350, project.slug + " exceeds the editorial upper budget");
+    assert.ok(project.summary.length > 30);
   }
 });

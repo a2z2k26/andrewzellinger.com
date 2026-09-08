@@ -21,15 +21,18 @@ test("Biography permanently omits the Archive-derived reference register", async
 });
 
 test("Biography renders one semantic editorial source in the approved order", async () => {
-  const [html, runtime] = await Promise.all([
+  const [html, runtime, styles] = await Promise.all([
     readFile(new URL("../info/index.html", import.meta.url), "utf8"),
     readFile(new URL("../src/biography.js", import.meta.url), "utf8"),
+    readFile(new URL("../src/biography.css", import.meta.url), "utf8"),
   ]);
 
   assert.equal(html.match(/data-biography-content-anchor/g)?.length, 1);
   assert.equal(html.match(/data-biography-contact-anchor/g)?.length, 1);
   assert.match(html, /class="biography-layout" aria-label="Professional biography"/);
-  assert.match(html, /class="media-background-holder landscape biography-portrait-placeholder"/);
+  assert.match(html, /class="media-background-holder landscape biography-portrait-placeholder" role="img" aria-label="Andrew Zellinger in profile"/);
+  assert.match(styles, /\.biography-portrait-placeholder\s*\{[^}]*--portfolio-media-image:\s*url\("\/images\/history\/az-headshot-extended-v1\.png"\);/s);
+  await access(new URL("../public/images/history/az-headshot-extended-v1.png", import.meta.url));
 
   const lead = runtime.indexOf('"biography-introduction__lead"');
   const practiceLabel = runtime.indexOf('"biography-introduction__practice-label"');
@@ -56,7 +59,7 @@ test("Biography uses the shared editorial type and tightened responsive grid", a
   assert.match(styles, /\.page\.info \.wrapper\s*\{[^}]*padding-top:\s*var\(--structure--padding-desktop\);[^}]*padding-bottom:\s*var\(--structure--padding-desktop\);/s);
   assert.match(styles, /\.biography-introduction\s*\{[^}]*padding-top:\s*44px;[^}]*padding-bottom:\s*52px;/s);
   assert.doesNotMatch(styles.match(/\.biography-introduction\s*\{[^}]*\}/s)?.[0] ?? "", /border-bottom/);
-  assert.match(styles, /\.biography-introduction__lead\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*none;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*32px;[^}]*line-height:\s*40px;[^}]*text-indent:\s*0;/s);
+  assert.match(styles, /\.biography-introduction__lead\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*none;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*32px;[^}]*font-weight:\s*500;[^}]*line-height:\s*40px;[^}]*text-indent:\s*0;/s);
   assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*?\.biography-introduction__lead\s*\{[^}]*line-height:\s*32px;/s);
   assert.match(styles, /\.biography-introduction__practice-label\s*\{[^}]*margin-top:\s*52px[^}]*color:\s*#9c9c9c;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-align:\s*left;[^}]*text-transform:\s*uppercase;/s);
   assert.match(styles, /\.biography-introduction__practice-body\s*\{[^}]*width:\s*80%;[^}]*margin-top:\s*24px[^}]*font-family:\s*"Geist", sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;[^}]*letter-spacing:\s*0;[^}]*text-transform:\s*uppercase;/s);

@@ -1,200 +1,223 @@
 // @ts-check
-
-/**
- * Published editorial layer for the case-study collection.
- *
- * These narratives condense the one-time Notion extraction into one shared
- * portfolio format. They do not add claims beyond the extracted source. The
- * original records remain in project-content.js as private provenance; only
- * this normalized layer is exposed to the collection and detail views.
- */
-
-export const PROJECT_SECTION_LABELS = Object.freeze([
-  "Context",
-  "Work",
-  "Outcome",
-]);
-
-function narrative(summary, context, role, approach, outcome, reflection) {
-  return Object.freeze({
-    summary,
-    sections: Object.freeze([
-      Object.freeze({ label: "Context", paragraphs: Object.freeze([context]) }),
-      Object.freeze({ label: "Work", paragraphs: Object.freeze([`${role} ${approach}`]) }),
-      Object.freeze({ label: "Outcome", paragraphs: Object.freeze([`${outcome} ${reflection}`]) }),
-    ]),
-  });
+// Public editorial layer, revised 2026-09-08. Source recollections are retained
+// in project-content.js; unresolved evidence is tracked privately in docs/content-claim-ledger.md.
+// No minimum word quota: evidence determines the length of each record.
+export const PROJECT_SECTION_LABELS = Object.freeze(["Context", "Work", "Key decisions", "Outcome"]);
+export const ENGAGEMENT_SECTION_LABELS = Object.freeze(["Context", "Work", "Outcome"]);
+const textSection = (label, text) => Object.freeze({label, paragraphs:Object.freeze([text])});
+function narrative([summary, context, work, decisions, outcome]) {
+  const sections = [textSection("Context", context), textSection("Work", work)];
+  if (decisions.length) sections.push(Object.freeze({label:"Key decisions", paragraphs:Object.freeze([]), items:Object.freeze(decisions)}));
+  sections.push(textSection("Outcome", outcome));
+  return Object.freeze({summary, sections:Object.freeze(sections)});
 }
-
-export const PROJECT_NARRATIVES = Object.freeze({
-  "audible-sleep": narrative(
-    "A mobile sleep experience that used Audible's audio library to help listeners prepare for sleep, stay asleep, and wake with greater intention.",
-    "Audible wanted to extend its audio expertise beyond audiobooks and into sleep, a need made more visible by the growing focus on mental well-being during the pandemic. Working with I&Co, the team set out to prototype a dedicated mobile experience built around guided sleep sessions. The product had to make a large content library feel calm and purposeful while accommodating different bedtime routines, changing schedules, and expectations about what a useful night of audio should contain.",
-    "As UX Lead, I established the experience direction and worked with a multidisciplinary team of 15 designers and product strategists. I translated research into the application architecture, led the wireframing of core journeys, and concentrated on the session player and its interaction states. I also partnered with visual design, Audible's internal team, and subject-matter experts to keep the prototype aligned with the brand, technically plausible, and grounded in recognizable sleep behaviors.",
-    "Research with sleep specialists, existing market material, personas, and user feedback shaped three primary territories: Home, Browse, and Profile. Home helped listeners configure bedtime, rise time, and a mood forecast; Browse made the sleep catalog easier to explore; Profile held personal settings and preferences. A flexible card system connected those areas and surfaced relevant content. The central player was deliberately minimal, supporting fall-asleep, stay-asleep, and wake phases while reducing interaction once a session began. Prototypes tested both in-app and lock-screen controls, personalized session generation, and the balance between guidance and low stimulation.",
-    "The resulting prototype brought personalized sleep sessions, discovery, scheduling, and playback into one coherent Audible experience. Usability feedback and reviews with the internal team informed refinements to navigation, controls, and session logic before handoff. The work demonstrated how sleep content could extend Audible's service without feeling separate from its core product, and it gave the client a tangible model for integrating the concept into the broader application.",
-    "The project reinforced that a sleep product should demand less attention as it succeeds. Personalization mattered, but so did restraint: the interface had to help someone begin a session, then quietly recede. Close collaboration with domain experts and Audible's team made that balance possible, while repeated testing kept the player, cards, and scheduling tools focused on the moments that genuinely supported a nightly routine.",
-  ),
-
-  "android-wear": narrative(
-    "A collection of expressive, glanceable watch faces that helped Google and ustwo establish early design patterns for the Wear OS platform.",
-    "As Google prepared Wear OS and its watch-face API, it asked ustwo to explore what a native visual language for smartwatches could become. The work needed to move beyond shrinking phone interfaces onto a wrist. Each face had to communicate time immediately, operate within tight technical and display constraints, support useful live data, and still leave room for personal expression. The collection would debut around Google's developer conference and help establish examples for designers entering the platform.",
-    "I worked as one of five designers alongside engineers, project managers, and Google's developer-relations team. My responsibilities spanned platform research, concept development, wireframes, interactive prototypes, usability testing, and implementation reviews. I also contributed to documentation that translated what we learned into reusable guidance for future Wear OS watch-face design, connecting the exploratory work to a broader platform standard.",
-    "We studied the operating system, competing watch faces, and distinct user needs around glanceability, customization, and data. Broad sketching narrowed into prototypes that tested legibility, motion, color, and interaction on actual watch hardware. The final directions included Rift, where 60 colored spikes made the passage of seconds visible; Waves, a configurable field of flipping color tiles; and Versus, a restrained face that brought fitness data forward. Testing exposed readability problems in changing light and led to stronger contrast, adjusted type, and more useful personalization options.",
-    "The collaboration produced 20 watch faces across expressive digital styles and data-oriented designs. The team worked closely with Google's engineers to refine performance, compatibility, animation, and behavior across multiple devices. The faces launched with the platform work and were widely adopted, while the accompanying documentation helped communicate practical principles for building legible, customizable experiences on a small and unfamiliar screen.",
-    "Wearables make every decision visible. There is no space for decorative complexity that interferes with a glance, yet a watch is also unusually personal. The strongest work came from treating usability and character as the same problem rather than opposing goals. Continuous prototyping on hardware, paired with close engineering collaboration, turned technical constraints into a design vocabulary instead of a limitation.",
-  ),
-
-  "fi-smart-collar": narrative(
-    "A product and growth engagement that strengthened Fi's safety, subscription, and community experiences across its mobile app and website.",
-    "Fi pairs a GPS-enabled dog collar with a mobile application for location, activity, and escape alerts. In 2023, the company needed to expand that experience while operating with a smaller internal team. The brief covered several connected problems: improve Lost Dog Mode as tracking technology evolved, simplify subscription and checkout decisions, add social and referral mechanics, and bring the website and marketing surfaces into closer alignment with the product.",
-    "As Design Lead, I covered a range normally distributed across a larger team. I conducted research, facilitated stakeholder workshops, mapped flows, produced wireframes and prototypes, designed production interfaces, and worked directly with engineering through implementation. The role crossed the application, ecommerce journey, corporate website, and campaign material, so maintaining a coherent experience and brand language was as important as resolving any single feature.",
-    "Interviews, surveys, and competitive analysis highlighted three recurring needs: trustworthy real-time tracking, useful personalization, and stronger connection among dog owners. Those findings guided improvements to Lost Dog Mode and its post-recovery feedback flow, breed-specific landing pages, a clearer subscription and checkout journey, shared dog profiles, and a referral system. Prototypes helped test navigation, instructions, and feature comprehension before refinement. Design reviews with engineers kept new GPS behavior, alerts, and account relationships understandable across devices and states.",
-    "The engagement produced a more cohesive set of product and growth experiences: clearer safety workflows, a streamlined path to subscription and collar purchase, personalized acquisition pages, and community mechanics that supported sharing and referrals. User testing informed navigation and instructional changes, while close implementation collaboration helped preserve the intended behavior. Together, the work gave Fi a practical design foundation for expanding the service after a period of organizational change.",
-    "Designing a pet-safety product raises the emotional stakes of ordinary interface decisions. When a dog escapes, clarity and confidence matter more than novelty; elsewhere, personalization and community can make the product feel warm rather than clinical. The work reinforced the value of switching deliberately between those modes while keeping the underlying system consistent, and of making technical capability legible at the exact moment a person needs to trust it.",
-  ),
-
-  "wework-studio": narrative(
-    "A tablet-first sales tool that helped WeWork representatives tailor pitches, tour spaces, and communicate the value of membership more consistently.",
-    "WeWork's real-estate expansion was outpacing its ability to fill new locations. Sales representatives relied on individual presentation styles and a large, complex set of benefits, spaces, and media, making the quality of a pitch vary by experience and circumstance. Philosophie was asked to prototype a sales application that could support an in-person conversation without turning it into a rigid presentation, and make WeWork's strongest visual assets useful during tours and client meetings.",
-    "As Design Director, I led the UX and UI direction with a team of three designers, a product manager, and an engineer. I oversaw research, high-fidelity wireframes, interactive prototypes, and alignment with WeWork's internal design and product teams. My role was to give the team a clear product structure while preserving enough flexibility for sales representatives to adapt the tool to their own voice, prospect, and setting.",
-    "We observed walkthroughs and interviewed sales staff across levels of seniority to understand how pitches differed, where information was forgotten, and what representatives knew about a prospect before a meeting. The resulting flow supported multiple paths rather than a prescribed script. Tablet and large-screen navigation made spaces, amenities, videos, floor plans, 3D renders, and virtual tours easy to retrieve in conversation. Search and maps borrowed familiar patterns from WeWork's website, while a diary study placed the prototype in representatives' hands and gathered feedback over time.",
-    "In under four months, the team delivered a high-fidelity prototype that consolidated sales information and media into a coherent, brand-aligned experience. Representatives could move from location discovery to a virtual tour or supporting content without interrupting the discussion. Diary-study feedback helped refine the flow and confirmed the value of a flexible structure, giving WeWork a tested direction for making sales conversations more consistent, visual, and responsive to prospective tenants.",
-    "The strongest sales tool does not replace the person giving the pitch; it helps them listen and respond. Designing around varied presentation styles made the application more useful than a linear deck would have been. The project also showed the value of testing a work tool over time: a diary study surfaced practical needs that a single usability session could miss, especially when the interface had to live inside a real client conversation.",
-  ),
-
-  foursquare: narrative(
-    "A new identity for Foursquare's transition from check-in culture to a personalized platform for discovering places.",
-    "Foursquare was splitting in two. The product that had defined location-based social networking, the check-in, was migrating to a new app called Swarm, while Foursquare itself was becoming a personalized local discovery platform. Co-founder Dennis Crowley brought in Red Antler to help signal that change. The identity needed to shed years of association with check-ins, communicate a more purposeful product, and retain enough recognition to carry an established audience through a fundamental transition.",
-    "I worked with the Red Antler team to develop the assets and applications of the new Foursquare identity. The assignment was production-intensive brand design: take the strategic direction and build a coherent system across the app and its wider set of touchpoints. The work centered on a superhero-inspired F monogram that also suggested a map pin, flag, and speech bubble, and had to remain distinctive at the scale of a mobile app icon.",
-    "The rebrand was an exercise in compression. Early directions explored evolutions of the existing identity, but the scale of the product change demanded something that felt new rather than merely updated. A bold blue, pink, and white palette gave the system energy, while the F emblem carried recognition across product and marketing contexts. Every decision was repeatedly tested against the app as the primary canvas, with close iteration between Red Antler and Foursquare's internal team.",
-    "The identity launched in July 2014 with the redesigned Foursquare app and the separate Swarm release. It received broad coverage across the design and technology press and became one of the year's more visible rebrands. More importantly, the system gave Foursquare a recognizable symbol for its move from a check-in utility to a discovery platform, with a mark that remained legible throughout the app ecosystem.",
-    "Building an asset that millions of people may see on a home screen makes restraint unavoidable. At 16 pixels, an identity cannot hide behind complexity; the silhouette, color, and underlying idea have to carry the entire system. The project sharpened my understanding of how a strategic product change can be made tangible through a small number of disciplined visual decisions.",
-  ),
-
-  "live-auctioneers": narrative(
-    "A shared design system that brought LiveAuctioneers' web and mobile products into alignment while giving design and engineering a scalable foundation.",
-    "LiveAuctioneers connects buyers to live global auctions across art, jewelry, collectibles, and other categories. As the company grew and acquired additional properties, inconsistencies accumulated across its website and native application. Design files had migrated from Sketch to Figma without a consistent component method, while engineering was rebuilding UI in Storybook with uneven documentation. The organization needed a common language that could improve the current experience and support future product expansion.",
-    "As consulting Design Lead, I managed a small design team and partnered with product and engineering stakeholders. I led audits of the existing interfaces and implementation process, defined the framework and roadmap for a replacement system, and oversaw an atomic library spanning Figma and Storybook. A core responsibility was ensuring that component intent, states, and edge cases were documented clearly enough to serve both design and development.",
-    "We began by inventorying existing components and evaluating how they behaved together across web and mobile. That audit exposed visual inconsistencies, duplicated patterns, missing states, and process gaps. The roadmap moved from foundations such as color, typography, grids, and spacing into reusable controls, status patterns, and larger compositions. Design and engineering developed the system in parallel, documenting intended use in both Figma and Storybook. Internal reviews and user testing helped validate behavior, while cross-platform checks ensured components remained coherent in different contexts.",
-    "The completed system contained more than 500 documented components and established a shared source of truth for future product work. It reduced repeated design and implementation effort, improved consistency across customer-facing surfaces, and gave LiveAuctioneers a framework that could accommodate continued growth and acquired properties. The collaboration also brought design and engineering closer together by making component decisions, constraints, and ownership visible to both disciplines.",
-    "A design system is not the library itself; it is the agreement around how a product is built. The most valuable work was connecting interface evidence, component design, documentation, and engineering implementation into one operating model. Starting earlier would have prevented some of the accumulated debt, but the audit made that debt actionable and created the feedback loop needed for the system to keep evolving rather than becoming another static artifact.",
-  ),
-
-  "proctor-and-gamble": narrative(
-    "An immersive digital experience that translated P&G's sustainability commitments into an exploratory, educational journey for beauty consumers.",
-    "P&G wanted to communicate sustainability and responsible ingredient sourcing to a generation of beauty consumers who expected more transparency from global brands. With AKQA, the company envisioned The Beauty Sphere, a browser-based 3D environment combining editorial content, live media, and interactive spaces. The challenge was to make a complex corporate program understandable and engaging without allowing the spectacle of the environment to obscure the information it was meant to convey.",
-    "As UX Design Lead, I oversaw the experience architecture and focused on the Royal Botanic Gardens, Kew journey. I conducted research, developed flows and wireframes, and collaborated with a senior UX designer, 3D artists, visual designers, sound designers, and engineers. My role connected interaction logic, spatial navigation, content, sound, and accessibility so that the experience could remain coherent while several disciplines built it simultaneously.",
-    "Audience research emphasized sustainability, ingredient transparency, and the appeal of immersive learning. Those findings informed a greenhouse-like world where visitors followed a garden path, collected plant samples used in P&G products, heard educational audio, and encountered detours about endangered species. A card system surfaced videos, stills, and live content across the broader Beauty Sphere. Flow diagrams and prototypes concentrated on crossroads, collection progress, expanded media, and the final shareable artifact tied to a tree-planting pledge. Testing across devices led to clearer directions and more dependable interaction patterns.",
-    "The final direction joined the Kew garden, media cards, live content, and supporting component library into one modular experience. It gave P&G a more participatory way to explain sourcing and sustainability programs, and a system that could accommodate new stories over time. Collaboration with engineering and the visual disciplines helped translate the interaction model into a feasible 3D implementation while preserving the educational sequence and essential accessibility considerations.",
-    "Immersion only earns its complexity when it helps someone understand the subject. The project required a constant balance between exploration and orientation: visitors needed freedom to feel curious, but enough structure to know where to go and why each interaction mattered. Designing the garden as a legible journey, rather than an open-ended demonstration, made the technology serve the message and reinforced the importance of usability inside expressive spatial work.",
-  ),
-
-  "thompson-reuters": narrative(
-    "A cross-platform video-news product that generated a personalized Reuters newscast around the amount of time a viewer actually had.",
-    "Reuters wanted to rethink how people consume video news. Most news products presented an open-ended feed; Reuters TV began with a more useful constraint: how much time do you have? A viewer could choose between five and 30 minutes and receive a personalized newscast assembled from segments produced by Reuters journalists around the world. The service was conceived across iOS, Android, Apple TV, Roku, and web, pairing editorial authority with a responsive, generated format.",
-    "Working with Ueno's design team, I contributed to the UI and UX across web and mobile. The central challenge was making duration selection feel immediate, more like stating an intention than configuring a setting. The wider interface also had to support a generated playlist that viewers could inspect, skip, reorder, or save for offline use while maintaining the visual restraint that defined the product direction.",
-    "The signature interaction was the time selector. Once a viewer set a duration, Reuters TV assembled a sequence using their interests, location, and the day's major stories. The playlist appeared when needed and receded during playback. Reuters Now offered a continuously updated, skippable lineup alongside uninterrupted live events. Each platform shared the same product logic but adapted to its context; television interfaces required remote-friendly hierarchy and lean-back readability, while phones and tablets supported faster touch-based control.",
-    "Reuters TV launched in February 2015 and was recognized as an inventive approach to personalized news. It demonstrated interest in finite, time-aware viewing and operated for nearly five years. In January 2020, Reuters consolidated the service's video content into the main Reuters News app and reuters.com, ending the standalone product while carrying its underlying editorial and video work into the broader news platform.",
-    "The proposition still feels unusually relevant: build something worth watching around the time a person can give. The deeper design question was how to make an automatically assembled experience feel edited rather than arbitrary. Reuters TV worked at that boundary between automation and editorial judgment, showing that personalization becomes more credible when the product exposes a simple human constraint instead of asking the algorithm to define the entire experience.",
-  ),
-
-  "price-waterhouse-coopers": narrative(
-    "An internal audit platform that reduced manual data handling and made a complex financial-review process easier to coordinate, inspect, and approve.",
-    "PwC's audit specialists managed sensitive financial work through a fragmented, largely manual process. Data moved from client documents into spreadsheets, assignments passed among specialists, checkers, coaches, and managers, and each handoff created opportunities for delay or error. Philosophie was asked to design an internal application that could centralize assignments, improve document handling, and shorten the path from audit setup to review without oversimplifying the rigor of the underlying work.",
-    "I led the product's design work as Design Director, combining stakeholder interviews, field research, journey mapping, interaction design, prototyping, and implementation collaboration. I visited PwC's Tampa office and spoke with people across the audit workflow to understand not only the formal process but the workarounds and communication habits around it. I translated those findings into the application structure and worked with the product owner and engineering team through testing and delivery.",
-    "The team mapped the audit journey end to end, using flow diagrams to identify repeated entry, unclear ownership, and fragile document transfers. Wireframes and prototypes then tested a centralized portal for assignments, an audit setup flow, data-entry and review states, and management oversight. A document reader securely parsed client material and populated relevant values, shifting specialists from transcription toward verification. A test summary gave managers and coaches a shared view of progress and notes. Multiple rounds of staff feedback refined hierarchy, terminology, and the balance between dense financial information and usable task guidance.",
-    "The resulting application brought audit setup, assignments, source documents, data, review, and team communication into one environment. Automating parts of document handling reduced dependence on manual transcription and created a clearer path for checking work. Piloting with PwC staff surfaced refinements before broader implementation, and close engineering collaboration helped the system fit existing security and operational constraints. The project established a practical digital model for a process previously distributed across spreadsheets and disconnected tools.",
-    "Complex internal software cannot be simplified by hiding the work; it has to reveal the right complexity to the right person at the right moment. Field research was essential because the real workflow lived between official stages. The project reinforced that information hierarchy, ownership, and traceability are core interaction-design problems, especially when users need to move quickly without losing confidence in sensitive financial decisions.",
-  ),
-
-  avantos: narrative(
-    "A two-sided, AI-assisted onboarding platform that helped investment-banking teams replace fragmented document and coordination work with a transparent shared process.",
-    "Investment-banking onboarding requires clients and financial operators to exchange sensitive documents, verify information, coordinate across roles, and satisfy compliance requirements. Much of that work still depended on forms, email, and disconnected systems. Avantos asked for a white-label platform serving both prospective clients and the operators managing their relationships. The design challenge was not simply to automate tasks, but to make AI useful in a domain where every extracted value needed provenance, oversight, and trust.",
-    "As AI Product Designer, I led end-to-end product design across the customer and operator experiences. I conducted research, built the journey map and personas, defined information architecture and the underlying workflow model, and produced interaction design, high-fidelity UI, prototypes, and implementation specifications. Working directly with Avantos leadership, engineers, and financial-services experts, I also shaped AI concepts and investor-facing product material while keeping the MVP grounded in technical and regulatory realities.",
-    "Fifteen interviews with advisors, relationship service associates, and regional vice presidents revealed manual entry, unclear client progress, and fragmented handoffs as central problems. We modeled onboarding as a hierarchy of journeys, phases, actions, groups, sub-actions, and tasks, giving institutions a configurable foundation. Clients could upload documents, review AI-extracted and pre-populated data, follow clear progress, and ask an embedded agent for guidance. Operators received a dense relationship dashboard, configurable templates, confidence-scored document verification with source references, task controls, collaboration tools, and a path to DocuSign. More than 100 investment bankers participated in pilot testing and informed refinements to terminology, filtering, confidence display, and progress feedback.",
-    "The engagement delivered a comprehensive MVP prototype for both sides of the platform and a roadmap for deeper AI capability. The tested workflow shifted operators from repetitive transcription toward focused verification while giving clients a more guided view of what was required and why. The design vision and prototype supported Avantos's investor story as the company secured more than $2 million in Series A funding, and established a configurable base for serving multiple financial institutions.",
-    "The project clarified three principles for AI products in sensitive domains. Data architecture is part of experience design; automation must expose its sources and confidence; and human judgment should remain available wherever risk exceeds certainty. The most useful AI features reduced drudgery without pretending to replace the relationship. That balance between acceleration, transparency, and agency has become central to how I approach agentic systems and workflow products.",
-  ),
-
-  "turner-tv": narrative(
-    "A participatory design and prototyping engagement that grounded Turner's streaming strategy in the behavior of everyday television viewers.",
-    "By 2019, Turner Broadcasting was deep into its transition toward direct-to-consumer streaming. The company had technology, content, and a growing set of strategic initiatives, but still needed clearer evidence of what ordinary viewers wanted from a Turner product. Rather than begin with executive assumptions or competitor patterns, the engagement asked a more direct question: which features and viewing models would people across ages, habits, and demographics actually value?",
-    "I designed and facilitated an ideation workshop around a diverse panel of television viewers. Using card sorting and participatory design exercises, I helped participants surface, group, and prioritize ideas based on their actual behavior. I then translated the strongest concepts into interactive prototypes within days, giving Turner's product team tangible experiences to evaluate instead of leaving the work as workshop notes or an abstract strategy deck.",
-    "The workshop was designed to generate honest signal and preserve momentum. Card sorting exposed how viewers organized content, navigation, and feature concepts in their own mental models, including where those models diverged from common platform assumptions. We used that evidence to select a focused set of ideas and build prototypes substantial enough to place in someone's hands. Rapid interaction design changed the discussion from whether a concept sounded plausible to how it behaved and what would need to be true for it to work.",
-    "The research and prototypes gave Turner's product organization a consumer-informed basis for feature prioritization during a consequential period in its streaming strategy. The work fed into internal conversations about the company's direct-to-consumer future and provided concrete material for evaluating opportunities quickly. Those decisions later sat within the broader WarnerMedia reorganization and the path toward the service that became HBO Max.",
-    "Here, the method was as important as the screens. The prototypes mattered because they preserved what participants had revealed and made it difficult for the organization to retreat into familiar assumptions. For a broadcaster accustomed to speaking to a mass audience, listening closely to a small group of people required a different posture. Participatory design created that opening, and rapid prototyping kept the learning attached to product decisions.",
-  ),
-
-  mcdonalds: narrative(
-    "A global self-order kiosk redesign that made a large menu easier to navigate for customers with widely different needs and levels of digital confidence.",
-    "McDonald's was rolling out its Experience of the Future program across thousands of restaurants, with self-order kiosks becoming a major customer touchpoint. The first-generation interface had accumulated deep navigation, crowded customization, aggressive upsell prompts, and uneven clarity. The challenge was unusually broad: accommodate a massive menu, regional variation, payment, and operational constraints for customers ranging from confident digital users to people ordering from a touchscreen for the first time.",
-    "I led UX for the kiosk redesign as part of Method's wider engagement across McDonald's mobile, web, kiosk, and digital menu-board ecosystem. The work began with an audit of the existing experience and observation in operating restaurants. Research across the United States, United Kingdom, Australia, and China helped the team understand differences in ordering behavior and accessibility needs. I translated those findings into the v2 architecture, navigation, customization flow, and supporting interaction patterns.",
-    "The redesign focused on reducing cognitive load without reducing choice. Clearer categories, stronger product hierarchy, and a more direct customization flow helped customers understand where they were and what remained. Upsell moments became part of the ordering sequence rather than interruptions. Because the kiosk did not operate alone, its patterns aligned with a global digital design system spanning the mobile app and menu boards. Research also connected interface decisions to restaurant operations, including kiosk placement, customer comfort, and the way orders entered kitchen systems alongside counter and drive-through traffic.",
-    "The redesigned experience became part of an accelerated rollout that upgraded roughly 1,000 restaurants per quarter and ultimately placed kiosks in more than 15,000 locations. Reported first-year results included a five-to-six-percent increase in average check size, influenced by product discovery and more considered upsell placement. The work also contributed to a shared digital system capable of supporting McDonald's customer-facing surfaces across markets and formats.",
-    "Designing at McDonald's scale means designing for nearly everyone. A useful flow cannot rely on a narrow persona, assumed digital literacy, or patience with interface conventions. The project forced each decision toward obviousness while still respecting operational and commercial complexity. It remains one of the clearest examples in my work of accessibility, information architecture, service design, and business performance converging in the same screen.",
-  ),
-
-  "northwestern-mutual": narrative(
-    "Cross-platform product design for LearnVest as its consumer financial-planning experience became part of Northwestern Mutual's broader digital ecosystem.",
-    "Northwestern Mutual acquired LearnVest for $250 million, pairing a 158-year-old financial institution with a consumer fintech platform used by 1.5 million registered users. LearnVest had made budgeting, goal setting, account tracking, and access to planners feel approachable rather than institutional. As the New York team scaled from roughly 150 to 450 people, the product needed to expand across desktop and mobile while preserving the clarity and tone that had made the original service successful.",
-    "I worked directly with the Northwestern Mutual and LearnVest team across dashboard, budgeting, goal-tracking, and account-management experiences. My contribution focused on how users moved among those surfaces and how the same financial information should change between desktop and mobile. The design challenge was to preserve LearnVest's consumer-first simplicity while accommodating a larger organization, broader planning ecosystem, and more varied set of customer and advisor needs.",
-    "Financial planning lives or dies on information design. Desktop layouts could support comparisons among spending, trends, goals, and advisor communication, while mobile needed to answer a more immediate question: am I on track? The work calibrated hierarchy and density for each context rather than reproducing the same screen at different sizes. It also navigated a tonal tension between LearnVest's friendly startup character and Northwestern Mutual's institutional authority, aiming for an experience that felt credible without becoming intimidating or impersonal.",
-    "LearnVest continued to operate and evolve under Northwestern Mutual until 2018, when the consumer-facing service was discontinued and its technology was absorbed into internal planning tools. During that period, the New York organization tripled in size, and LearnVest's product language influenced Northwestern Mutual's wider approach to digital financial experiences. The brand ended, but the platform thinking and technology continued inside the company.",
-    "Designing for personal finance means designing for emotion as much as function. Every dashboard asks someone to confront a version of their financial reality. The difference between motivation and paralysis often comes down to sequence: what appears first, what remains available for deeper inspection, and what stays out of the way until it becomes relevant. That lesson shaped the hierarchy across both the desktop and mobile work.",
-  ),
-
-  "amazon-fire-tv": narrative(
-    "A provisional case-study record for Andrew's Design Lead work with Sketch and Amazon Fire TV during 2024–2025.",
-    "The verified portfolio record currently identifies Amazon Fire TV as a Sketch engagement from 2024–2025. Additional project context has not yet been supplied, so this entry intentionally avoids describing an unverified brief, product problem, audience, market, or business objective.",
-    "Andrew's verified role was Design Lead. The specific responsibilities, team structure, collaborators, process, deliverables, and areas of ownership have not yet been documented in the available source material.",
-    "This provisional page reserves the final case-study structure without filling those gaps with assumptions. Once source material is available, the Work section can be replaced with a factual account of Andrew's contribution and the decisions represented by the project image.",
-    "Outcome details have not yet been supplied. No product result, launch claim, performance measure, or organizational impact is attributed to the engagement in this temporary version.",
-    "The record will remain explicitly provisional until Andrew provides the supporting project narrative. The published image, client, studio, role, and date range are the only project-specific facts currently presented.",
-  ),
-
-  "andrew-eccles": narrative(
-    "An image-led portfolio website that gave commercial photographer Andrew Eccles a flexible framework for presenting work across entertainment, music, film, and sports.",
-    "In 2016, commercial photographer Andrew Eccles worked with Crate to create a portfolio website for work spanning entertainment, music, film, and sports. The site needed to present recognizable subjects without allowing celebrity to overwhelm the photography. It also had to support how prospective clients, agencies, and editors review portfolios: quickly, visually, and across varied image formats. The challenge was creating enough structure to make a large archive navigable while keeping the interface quiet and image-led.",
-    "I worked with Crate and directly with Andrew on UX and interface design. My role focused on organizing content, defining browsing paths, and translating the character of his work into a responsive system. That meant balancing Andrew's point of view with practical portfolio needs: clear groupings, predictable navigation, and layouts that could accommodate portraits, editorial series, and commercial assignments without forcing every image into the same presentation.",
-    "The design direction treated the website as a flexible viewing environment rather than a conventional marketing site. Large photography carried the experience, while typography and controls were deliberately restrained. We explored how visitors could move between bodies of work, understand the context of an assignment, and continue browsing without repeatedly returning to an index. Page templates were structured around sequencing and pacing, allowing individual images to hold attention while still feeling connected to a broader series. Responsive behavior was especially important because tight mobile crops could change the impact of a portrait. The layouts therefore prioritized image integrity, useful focal points, and simple transitions between overview and detail states.",
-    "The resulting portfolio direction gave Andrew a coherent framework for presenting commercial and editorial photography to different audiences. It brought a varied archive into one visual system without making the work feel mechanically uniform. The site could foreground the personality of each shoot while maintaining a consistent browsing experience and provide a practical foundation for publishing new work as the portfolio evolved.",
-    "The project reinforced that portfolio design is an exercise in restraint. The interface has to provide orientation, but it should never compete with the work it presents. Designing around photographs with different proportions, subjects, and emotional tones required a system that was disciplined without becoming rigid. The strongest decisions made the website recede while helping each series land with clarity.",
-  ),
-
-  "modern-age": narrative(
-    "A connected digital journey that helped Modern Age customers discover services, find a physical location, book appointments, and complete checkout with confidence.",
-    "In 2021, Modern Age was building a technology-enabled service that connected its digital experience with in-person therapeutic care. The website had to do more than explain the offering: it needed to help prospective customers understand available services, find an appropriate brick-and-mortar location, book an appointment, and complete checkout with confidence. As the startup expanded, those journeys accumulated new decisions and promotional messages, creating a need for clearer structure across discovery, scheduling, and conversion.",
-    "I joined the startup directly as Design Lead and worked across the website and supporting customer journeys. My role included shaping new product features, improving location discovery, refining appointment booking and checkout, and designing ancillary experiences such as the chatbot and promotional modules. I collaborated with the internal team to translate evolving business needs into flows and interface patterns that could be implemented incrementally without making the customer experience feel fragmented.",
-    "The work focused on reducing uncertainty at the moments where a customer had to move from interest to action. Location pages and find-a-location pathways were organized to make proximity, services, and next steps easier to understand. Booking and checkout flows were reviewed as connected parts of one journey, with attention to sequence, form requirements, and the information customers needed before committing to an appointment. The chatbot was designed as a supporting guide rather than a replacement for the primary navigation, helping answer common questions and direct visitors toward relevant services or locations. I also helped create a flexible promotional component system for the main website and social channels. Those modules gave the team a consistent way to rotate offers and timely messages without rebuilding the surrounding experience for each campaign.",
-    "The resulting design work connected Modern Age's marketing site more directly to its physical service experience. Customers had clearer paths from learning about the company to locating a clinic, selecting an appointment, and completing checkout. The reusable chatbot and promotional patterns also gave the startup additional ways to support questions and communicate changing offers while maintaining a coherent visual and interaction system.",
-    "Working inside an early-stage company required balancing immediate growth needs with the foundations of a durable product. Conversion improvements could not be isolated from trust, especially when a digital journey ended in an in-person therapeutic service. The project reinforced the value of treating content, location discovery, scheduling, and checkout as one continuous experience rather than a collection of independent features.",
-  ),
-
-  "pi-app": narrative(
-    "A brand foundation and rapid MVP that translated the Positive Intelligence philosophy into a structured, approachable digital practice.",
-    "Positive Intelligence needed an initial brand and product expression that could translate its founder's published philosophy into a practical digital experience. The program presented a framework for recognizing unproductive mental patterns and building more constructive habits, but the first application had to turn that body of teaching into something people could understand and use over time. The opportunity was twofold: establish a recognizable identity for the company, then rapidly prototype an MVP that made the practice feel approachable, structured, and credible.",
-    "I worked directly with the founder across brand and product design. I created the initial logo and typography direction, then carried those foundations into the first application prototype. My role connected identity, interface, and experience design, allowing the product to develop with one coherent visual language rather than treating branding as a separate layer applied after the functionality had been defined.",
-    "The identity work focused on expressing optimism and personal development without relying on the visual clichés common to self-help products. The logo, type system, and core interface language established a foundation that could feel encouraging while still supporting serious instructional content. For the MVP, I translated the Positive Intelligence philosophy into a sequence of manageable interactions. The experience needed to introduce key ideas, give users a clear sense of progression, and create repeatable moments for study and practice. Rapid prototypes explored how lessons, prompts, exercises, and progress cues could fit together without turning the application into a dense course platform. Navigation and content hierarchy were kept straightforward so the founder's teaching remained central, while the brand system gave the product a consistent tone across onboarding and recurring use.",
-    "The work produced an initial brand foundation and a V1 product concept that demonstrated how the Positive Intelligence program could operate as a guided digital practice. The prototype gave the founder and team a concrete model for organizing the material, introducing users to the philosophy, and supporting continued engagement beyond the original published content.",
-    "This project showed how closely brand and product behavior can reinforce each other at the beginning of a company. A logo could establish recognition, but the product earned coherence through pacing, language, and repeated interaction. Designing both together made it possible to test the promise of the brand inside the experience itself and keep a broad philosophy grounded in clear, usable moments.",
-  ),
-
-  obagi: narrative(
-    "A redesigned skincare experience that unified Obagi's brand, direct ecommerce, product education, and clinician-guided appointment pathways.",
-    "Obagi wanted to redesign its primary website and rethink how its therapeutic skincare brand appeared online. The experience served two related but distinct customer journeys. Some products could be researched and purchased directly through ecommerce, while prescription-dependent products required a consultation with a qualified clinician. The website therefore had to communicate the brand, educate customers, support product discovery, and route people toward either checkout or professional care without making the distinction feel confusing or fragmented.",
-    "Working directly with Obagi as UX Design Director, I oversaw the experience-design effort for the redesign. My role covered research planning, information architecture, user flows, ecommerce and appointment pathways, and the production of UX artifacts used to define the site. I guided the team in translating the refreshed brand direction into an experience that could support both commercial goals and the additional responsibility that comes with clinician-guided products.",
-    "Research and journey planning focused on the questions customers needed answered before choosing a path: what a product addressed, whether professional consultation was required, and what the next step involved. We mapped the direct-purchase journey from education and product comparison through cart and checkout, then designed a parallel clinician pathway for finding care and booking an appointment. Shared navigation, product language, and visual cues kept those experiences connected while making their different requirements explicit. The redesign also introduced supporting micro-experiences intended to deepen product understanding and encourage return visits. Educational modules, promotional placements, and reusable content patterns could surface routines, ingredients, and related products without interrupting the primary task. Throughout the work, the UX system had to accommodate a broad catalog while preserving a premium, clinically informed brand presence.",
-    "The resulting direction unified Obagi's brand, commerce, and clinician pathways within one website framework. Customers could move from learning about a concern to understanding a product and taking the appropriate next step, whether that meant purchasing directly or seeking a consultation. Reusable educational and promotional components gave the internal team a foundation for ongoing campaigns and product storytelling.",
-    "The central lesson was that two-sided commerce depends on transparent routing. Hiding the difference between direct and prescription products would create friction later, while overemphasizing it could make the experience feel clinical and difficult. The design needed to introduce the distinction at the right moment, preserve momentum, and treat professional guidance as part of the service rather than an obstacle to conversion.",
-  ),
-
-  "gero-app": narrative(
-    "A Pomodoro companion for your wrist, designed natively for Apple Watch to keep focused work and short breaks in rhythm throughout the day.",
-    "When Apple Watch launched, ustwo wanted to be among the first studios to ship something meaningful on the platform — not a tech demo, but a real product. Gero (pronounced \"jeer-oh,\" Latin for \"to produce\") was the result: a pomodoro time management app designed natively for Apple Watch with a companion iPhone app. The idea was to take the pomodoro technique — 25-minute work sprints followed by short breaks — and move it from a phone timer you ignore to something on your wrist that keeps you in rhythm throughout the day.",
-    "I designed the smartwatch and mobile app interfaces. The core challenge was fitting a workflow that typically lives on a full screen — timers, session counts, break indicators — into the constraints of a watch face. Every interaction had to be glanceable and non-disruptive. The design language drew from a zen mentality — elegant simplicity, nothing that would compete with the focused work the app was supposed to protect. On the phone side, the companion app handled customization — sprint lengths, break durations — so the watch could stay minimal.",
-    "Gero was one of ustwo's first experiments with WatchKit, and the design pushed what the early SDK could do. The interface used subtle transitions and fluid animations crafted frame by frame to feel natural on the wrist — not flashy, but alive. The app faded into the background during sprints and surfaced only to signal cycle changes with non-intrusive sounds. The goal was to build a subconscious habit rather than demand attention. The hardest part was restraint. A pomodoro app can easily become over-featured — stats dashboards, historical tracking, gamification. Gero deliberately avoided all of that. Start a sprint. Work. Take a break. Repeat. The design had to trust the technique and get out of the way.",
-    "Gero shipped as one of the early Apple Watch productivity apps and was featured on Product Hunt. It demonstrated that wearable apps could be more than notification mirrors — they could facilitate real behavioral patterns. For ustwo, it served as both a shipped product and a public case study in designing for a brand new platform with severe constraints.",
-    "Designing for the first generation of Apple Watch was like designing with your hands tied — tiny screen, limited SDK, no established patterns. But that constraint forced clarity. You couldn't rely on any of the usual crutches. Every pixel had to justify itself. That discipline carried forward into everything I designed after.",
-  ),
-});
+const records = {
+  "audible-sleep": [
+    "Sleep-session design for Audible, connecting bedtime setup, personalized audio, and low-interaction playback in a mobile prototype.",
+    "Audible wanted to explore a dedicated sleep experience using its audio library. Working with I&Co, we needed to make discovery and personalization useful before bed without carrying the interaction demands of a conventional media player into the session itself.",
+    "As UX Lead, I translated research into the application architecture, wireframes, and session-player states. I worked with product strategists, visual designers, Audible's internal team, and subject-matter experts. Home, Browse, and Profile supported setup and discovery; interactive prototypes explored how scheduling, content selection, and playback could work together.",
+    [
+      "Separate bedtime, rise-time, and mood configuration from playback so the player can stay quiet once a session begins.",
+      "Organize audio into fall-asleep, stay-asleep, and wake phases rather than ask listeners to manage a conventional queue.",
+      "Make essential controls available in-app and on the lock screen, allowing the interface to recede without removing control."
+    ],
+    "The deliverable was an interactive prototype joining personalized sessions, discovery, scheduling, and playback. Reviews informed navigation and player refinements before handoff. Its central trade-off was giving listeners useful control without asking for more attention at the moment they wanted less."
+  ],
+  "turner-tv": [
+    "Participatory research and rapid prototypes helping Turner explore what viewers wanted from a streaming experience.",
+    "Turner was exploring direct-to-consumer streaming and needed to understand viewer priorities alongside its existing content and technology. The assignment was to turn audience input into product concepts concrete enough for the team to evaluate.",
+    "I designed and facilitated an ideation workshop with television viewers, using card sorting and participatory exercises to surface and group ideas. I translated selected concepts into interactive prototypes within days. My role connected the research activity with interaction design so the workshop produced more than a set of presentation slides.",
+    [
+      "Start with how participants organized viewing needs rather than assume the categories of an existing streaming service.",
+      "Use participant priorities to narrow the concept set before investing in detailed interfaces.",
+      "Prototype behavior so the team could examine how an idea worked, not only whether its description sounded appealing."
+    ],
+    "The handoff combined workshop findings and interactive concepts for Turner's product team. It provided material for discussing features and next steps. Rapid prototyping kept the audience's input visible as an idea became an interface, giving the team something concrete to examine before committing to a direction."
+  ],
+  "obagi": [
+    "UX direction for Obagi's website redesign, connecting direct skincare purchases with clinician-guided appointment pathways.",
+    "Obagi's website needed to support two customer pathways: products available for direct purchase and products requiring professional consultation. The redesign also reconsidered how the skincare brand appeared across the site. Customers needed to understand the appropriate next step without discovering the distinction only at checkout.",
+    "I worked directly with Obagi as UX Design Director. I oversaw UX research and the design artifacts defining the site, including information architecture, user flows, appointment booking, and ecommerce checkout. The engagement also covered supporting promotional experiences intended to explain products and encourage return visits.",
+    [
+      "Distinguish direct purchase from clinician-guided care in the journey, before customers reach an unsuitable checkout path.",
+      "Treat appointment booking and ecommerce as related journeys with different requirements, not one interchangeable transaction.",
+      "Carry the brand through navigation, product information, and promotional components rather than confine it to the homepage."
+    ],
+    "The work defined the UX direction and flows for the website redesign, connecting brand application with purchase and appointment experiences. The key design problem was making two routes understandable within one site: helping customers reach the appropriate next step without obscuring the role of professional care."
+  ],
+  "wework-studio": [
+    "A tablet-first sales prototype bringing WeWork location media and membership information into flexible, in-person presentations.",
+    "WeWork sales representatives needed to discuss spaces, amenities, and membership benefits during tours and meetings. Their presentations varied with the prospect and the representative. Philosophie was asked to prototype a tool that supported that flexibility rather than replace the conversation with a fixed script.",
+    "As Design Director, I led UX and UI direction with designers, a product manager, and an engineer. Research included observing walkthroughs and speaking with sales staff. I oversaw wireframes and a high-fidelity prototype, coordinating with WeWork's internal teams. The content included spaces, floor plans, videos, renders, and virtual tours.",
+    [
+      "Support multiple presentation paths so representatives can respond to a prospect's questions without restarting a linear pitch.",
+      "Keep location media and supporting information retrievable during a live conversation, using familiar search and map patterns.",
+      "Put the prototype into recurring sales work through a diary study, complementing feedback from individual review sessions."
+    ],
+    "The team delivered a high-fidelity sales-application prototype bringing location discovery and presentation media into a single direction for review and refinement. The representative's ability to listen and adapt became a requirement of the interface, rather than something the product expected a salesperson to work around."
+  ],
+  "android-wear": [
+    "Watch-face design with ustwo and Google, exploring expression, glanceability, and hardware constraints on Android Wear.",
+    "Google and ustwo were exploring watch-face design for Android Wear. The challenge was not to shrink a phone interface: a watch needed to communicate time at a glance while accommodating personal expression, live data, and a much smaller display.",
+    "I contributed as part of a design and engineering team working with Google's developer-relations group. My work spanned research, concepts, wireframes, prototypes, usability testing, and implementation reviews. The team's directions included Rift, Waves, and Versus; these are examples of the wider collection, not a claim of sole authorship.",
+    [
+      "Evaluate legibility on watch hardware, where scale, light, and motion expose problems an enlarged design canvas can conceal.",
+      "Balance expressive color and animation with immediate recognition of the time and other essential information.",
+      "Adjust contrast, typography, and customization in response to device constraints rather than apply one visual treatment indiscriminately."
+    ],
+    "The collaboration produced watch-face designs and supporting guidance for Android Wear. Prototyping and engineering reviews connected visual ideas with performance and display behavior. The enduring design tension was personality without sacrificing a glance: a watch can be expressive, but time recognition still has to work."
+  ],
+  "live-auctioneers": [
+    "A shared Figma and Storybook design system for LiveAuctioneers' web and native auction experiences.",
+    "LiveAuctioneers' web and native products had accumulated inconsistent patterns as the business grew. Design files had moved from Sketch to Figma while engineering was developing UI in Storybook. The immediate need was agreement about how components looked, behaved, and should be used.",
+    "As consulting Design Lead, I led interface and process audits, set the system roadmap, and guided a small team in partnership with product and engineering. We inventoried duplicated patterns and missing states, then developed foundations and reusable components. Documentation connected design intent with implementation behavior.",
+    [
+      "Audit interaction states and intended use alongside visual differences, so the library addresses more than surface consistency.",
+      "Develop Figma and Storybook documentation in parallel to make behavior and edge cases discussable across disciplines.",
+      "Establish color, type, spacing, and core controls before expanding into larger interface compositions."
+    ],
+    "The engagement produced a documented design-system framework spanning Figma and Storybook. The library made component behavior and usage decisions available to both design and engineering. Continued adoption depends on maintenance and ownership beyond that initial delivery, so the documentation was part of the product rather than a separate handoff task."
+  ],
+  "andrew-eccles": [
+    "A photography portfolio developed with Crate for Andrew Eccles, presenting commercial work across music, film, and sports.",
+    "In 2016, I worked with Crate and commercial photographer Andrew Eccles on his portfolio website. His work features prominent figures across music, film, and sports. The site needed to present that photography as a body of work prospective clients could browse.",
+    "My contribution was website design in collaboration with the studio and Andrew. The focus was the relationship between the photographs and the interface around them: how the site introduced the work, provided orientation, and maintained an image-led presentation.",
+    [
+      "Give the photographs visual priority, keeping interface decoration secondary to the work.",
+      "Use the commercial portfolio as the organizing purpose rather than turn the site into a celebrity-focused editorial experience.",
+      "Develop the presentation in direct collaboration with the photographer and studio so it reflects the work being shown."
+    ],
+    "The engagement brought Andrew's commercial photography into a portfolio website developed with Crate. The design contribution was a presentation framework that served the images instead of becoming the main event, keeping the photographer's work at the center of the experience."
+  ],
+  "proctor-and-gamble": [
+    "Experience architecture for the Kew garden journey within P&G's Beauty Sphere, combining spatial exploration and educational content.",
+    "P&G's Beauty Sphere was conceived as a browser-based 3D environment for presenting its sourcing and sustainability programs. Within that larger experience, the Royal Botanic Gardens, Kew journey needed to make exploration engaging without losing visitors' orientation or obscuring the information.",
+    "As UX Design Lead with AKQA, I focused on the Kew journey's flows and wireframes. I collaborated with UX, visual, 3D, sound, and engineering specialists to connect navigation, content, and interaction. Prototypes explored the garden path, collection progress, crossroads, and expanded media.",
+    [
+      "Structure the garden as a navigable journey rather than an open-ended 3D space with no clear next step.",
+      "Make plant collection and progress understandable so visitors can follow the educational sequence while exploring.",
+      "Connect audio and visual content to the spatial journey without requiring visitors to lose their place."
+    ],
+    "The design direction combined the Kew journey with supporting interaction patterns for the broader Beauty Sphere. Collaboration connected the UX architecture with the spatial implementation. Visitors needed to understand both where they were and why each interaction mattered; that requirement helped keep the educational sequence visible within an expressive environment."
+  ],
+  "modern-age": [
+    "Location discovery, appointment booking, and checkout design connecting Modern Age's website with in-person services.",
+    "Modern Age connected a digital service with physical locations providing therapeutic care. Its website needed to help prospective customers find a location, understand the available services, book an appointment, and complete checkout. Supporting offers and messages also had to coexist with those practical tasks.",
+    "I joined the startup directly as Design Lead. I worked with the team on website features and enhancements across location discovery, booking, and checkout. My scope also included the chatbot and reusable advertising components carrying rotating promotional information on the website and social channels.",
+    [
+      "Treat location discovery, appointment booking, and checkout as connected steps rather than independently optimized pages.",
+      "Design the chatbot as an additional way to find help without making it a prerequisite for ordinary navigation.",
+      "Use reusable promotional components so offers can change without redefining the surrounding page structure."
+    ],
+    "The engagement produced design work across service discovery and transaction journeys, alongside chatbot and promotional experiences. Those features were designed to support appointment and checkout completion. The responsibility was balancing changing commercial messages with a dependable route to an in-person service."
+  ],
+  "fi-smart-collar": [
+    "Product and growth design for Fi, spanning Lost Dog Mode, subscriptions, checkout, and connected mobile and web experiences.",
+    "Fi combines a GPS dog collar with an application for location, activity, and escape alerts. The engagement crossed safety-critical moments and everyday product growth: tracking a missing dog, understanding subscriptions, purchasing a collar, and connecting with other owners.",
+    "As Design Lead, I worked across research, stakeholder workshops, flows, prototypes, interface design, and engineering collaboration. Lost Dog Mode was a central focus, alongside subscription and checkout journeys, profiles, referrals, and website work. The scope required a consistent product language without treating every interaction as emotionally equivalent.",
+    [
+      "Prioritize tracking information and understandable next actions when the owner is using Lost Dog Mode under stress.",
+      "Connect subscription requirements with the purchase journey so they are part of the decision rather than a late surprise.",
+      "Separate the tone and priorities of safety interactions from community and marketing features, while retaining shared visual patterns."
+    ],
+    "My contribution covered product interfaces and growth-related design across app and web, developed with the internal team and engineers. The work required making a technically complex service understandable when users had very different needs and levels of attention, from an urgent search to an ordinary purchase."
+  ],
+  "thompson-reuters": [
+    "UI and UX contributions to Reuters TV with Ueno, shaping time-bounded video-news viewing across web and mobile.",
+    "Reuters TV organized a newscast around the time a viewer had available. That proposition created a distinct interface problem: duration selection needed to be immediate, while the generated playlist remained understandable and controllable without competing with the news itself.",
+    "Working with Ueno, I contributed to UI and UX across web and mobile. The work explored duration selection, playlist presentation, playback controls, and the relationship between a generated sequence and direct viewer input. Television was part of the wider product ecosystem, not an additional platform I claim to have owned.",
+    [
+      "Make available viewing time a clear input to the experience rather than bury it in configuration.",
+      "Keep playlist controls accessible when needed and visually secondary during playback.",
+      "Adapt shared product logic to web and mobile interaction patterns rather than assume identical controls work in every context."
+    ],
+    "The engagement contributed interface work to Reuters TV's time-aware news experience. Its distinctive constraint was human: the system assembled content, but the viewer supplied the time available and retained a way to intervene. That relationship between generated content and direct control shaped the interaction design."
+  ],
+  "gero-app": [
+    "A Pomodoro timer for Apple Watch and iPhone, separating focused work and break signals from session customization.",
+    "Gero was an ustwo productivity app for Apple Watch with an iPhone companion. It applied the Pomodoro work-and-break routine to a small wearable screen. The challenge was to make a timer useful on the wrist without turning it into another source of interruption.",
+    "I designed the watch and mobile interfaces. The watch focused on the active sprint, break state, and cycle changes; the phone handled settings such as sprint and break duration. Working within early WatchKit constraints meant considering the interaction model and animation alongside the small display.",
+    [
+      "Keep session customization on the phone so the watch can concentrate on the current work or break state.",
+      "Surface cycle changes without requiring the user to keep checking the display throughout a sprint.",
+      "Avoid dashboards and gamification that would compete with the simple start, work, break, and repeat routine."
+    ],
+    "The work produced watch and companion-phone interface designs for the timer. The useful distinction was not merely screen size: the devices had different responsibilities. A constrained platform sharpened the boundary between what needed attention on the wrist and what could remain in the background or on the phone."
+  ],
+  "foursquare": [
+    "Brand-system and asset development with Red Antler for Foursquare's move toward personalized local discovery.",
+    "Foursquare's move from check-in-centered interaction toward local discovery required a different brand expression. Red Antler's identity direction had to work inside the product as well as across its marketing touchpoints, retaining recognition through a substantial change in the service.",
+    "I worked with the Red Antler team on the assets and applications of the identity. My contribution was production-intensive brand design, not sole authorship of the strategy or monogram. The work translated the direction into product and marketing applications in collaboration with Foursquare's internal team.",
+    [
+      "Evaluate the identity at mobile app-icon scale, where recognition cannot depend on fine detail.",
+      "Carry the blue, pink, and white palette consistently across applications while respecting each format's practical requirements.",
+      "Use the distinctive F emblem as a shared anchor rather than create a different visual story for every touchpoint."
+    ],
+    "The engagement produced identity applications supporting Foursquare's new product direction. Execution across formats required precision at small scales, where silhouette, color, and consistency do more than elaborate presentation. The app remained the practical test of whether the wider visual system held together."
+  ],
+  "amazon-fire-tv": [
+    "Design Lead engagement with Sketch for Amazon Fire TV.",
+    "I worked with Sketch on an Amazon Fire TV engagement.",
+    "My role was Design Lead.",
+    [],
+    "Selected interface work is shown above. This entry is a concise engagement record rather than a full process case study."
+  ],
+  "price-waterhouse-coopers": [
+    "Workflow and interface design for PwC audit teams, connecting document verification, assignment ownership, and review.",
+    "PwC audit work moved between client documents, spreadsheets, and multiple review roles. A digital application needed to bring those handoffs together without hiding the rigor of the underlying process. The design problem included both detailed financial information and coordination among specialists, checkers, coaches, and managers.",
+    "As Design Director with Philosophie, I led research, journey mapping, interaction design, and prototyping. Fieldwork at PwC's Tampa office informed the application structure. I worked with the product owner and engineering team on audit setup, assignment management, document-handling concepts, and review states.",
+    [
+      "Design document handling around checking extracted values rather than simply reproduce manual transcription in a new interface.",
+      "Make assignment ownership and review status visible so each role can understand the next action and handoff.",
+      "Use field research to capture workarounds and communication habits that the official process map did not explain."
+    ],
+    "The work brought audit setup, assignments, document information, and review into a shared application design. Staff feedback informed terminology and hierarchy as the team developed the workflow. Traceability and responsibility were central interaction-design concerns, particularly where one person's work became another person's review."
+  ],
+  "northwestern-mutual": [
+    "Desktop and mobile financial-planning design for LearnVest within Northwestern Mutual's digital ecosystem.",
+    "LearnVest's consumer financial-planning experience needed to work across desktop and mobile within Northwestern Mutual's wider offering. Budgeting, goals, accounts, and advisor communication required clear hierarchy without losing the approachable tone of a consumer product.",
+    "I worked directly with the Northwestern Mutual and LearnVest team on dashboards, budgeting, goal tracking, and account management. My contribution focused on navigation and the presentation of financial information across devices. The task was to adapt the experience to different contexts rather than resize the same dense screen.",
+    [
+      "Use desktop space for comparison among spending, trends, and goals, while mobile emphasizes immediate status.",
+      "Sequence information so users can orient themselves before inspecting more detailed financial data.",
+      "Balance an approachable consumer tone with the credibility expected of an institutional planning service."
+    ],
+    "The engagement contributed cross-platform interface designs for financial-planning workflows. The design challenge was to help someone understand their current position, then make deeper inspection available without presenting every financial detail at once. That sequence shaped the different priorities of desktop and mobile."
+  ],
+  "mcdonalds": [
+    "Self-order kiosk UX with Method, connecting menu navigation, customization, upsell, and restaurant operations.",
+    "McDonald's self-order kiosks needed to serve customers with varied levels of digital confidence while accommodating a large menu, customization, payment, and restaurant operations. Deep navigation and crowded ordering screens made the relationship between choice and clarity especially important.",
+    "I led UX for the kiosk redesign as part of Method's wider digital engagement. The work included auditing the existing experience, observing restaurant use, and translating findings into architecture, navigation, customization flows, and interaction patterns. Collaboration connected customer-facing design with the systems and physical setting around the kiosk.",
+    [
+      "Reduce navigation depth while preserving the menu and customization choices customers need to complete an order.",
+      "Place relevant upsell opportunities within the ordering sequence rather than repeatedly interrupt the task.",
+      "Review interface choices alongside kiosk placement and order flow, treating the screen as part of restaurant service."
+    ],
+    "The contribution was UX direction and interaction patterns for the redesigned kiosk experience within a wider digital program. The work reconciled commercial goals with a straightforward ordering path, without assuming every customer had patience or familiarity with touchscreen conventions."
+  ],
+  "avantos": [
+    "AI-assisted onboarding design for financial-services teams, pairing client guidance with document verification and operator workflows.",
+    "Avantos needed a platform for clients and financial operators exchanging documents, checking information, and coordinating onboarding. The opportunity was not simply to automate entry. The experience had to keep extracted information reviewable while supporting both an unfamiliar client and an operator managing many relationships.",
+    "I led end-to-end product design across the client and operator experiences. Research with advisors, relationship associates, and regional leaders informed journey maps, personas, and architecture. I produced interaction design, high-fidelity UI, prototypes, and specifications, working with leadership and engineers to distinguish MVP scope from future AI concepts.",
+    [
+      "Pair extracted values with source references and confidence indicators so operators can verify information rather than accept it without review.",
+      "Give clients guided progress and operators configurable, information-dense workflows over a shared model: journey, phase, action, sub-action group, sub-action, task.",
+      "Prioritize document entry and verification in the MVP prototype, while keeping deeper AI concepts visible as future scope."
+    ],
+    "The engagement delivered an MVP prototype for both audiences and a roadmap for further AI capability. Pilot feedback informed terminology, filtering, and progress presentation. Investor-facing concepts were also part of the work. The prototype made the relationship between automation and human review tangible while separating immediate scope from future possibilities."
+  ],
+  "pi-app": [
+    "Initial identity and application prototyping for Positive Intelligence, connecting its founder's teaching with a digital practice.",
+    "Positive Intelligence needed a brand foundation and an early application for studying and using its founder's philosophy. The assignment linked two beginnings: an identifiable visual language and a first product expression of the program.",
+    "I worked directly with the founder, creating the initial logo and typography and helping rapidly prototype the first version of the application. The role crossed brand and product design, keeping the identity connected to how the teaching would be presented rather than applying it after the interface had been defined.",
+    [
+      "Develop the identity and early interface together so typography and presentation can serve the instructional material.",
+      "Keep the founder's teaching central to the prototype rather than add unrelated product mechanics to expand the scope.",
+      "Use rapid prototyping to make an abstract program concrete enough to discuss as an application."
+    ],
+    "The work produced the initial brand direction and a first-version application prototype. It established a shared starting point for the identity and digital experience: turning the program into something visible and testable at the beginning of the product."
+  ]
+};
+export const PROJECT_NARRATIVES = Object.freeze(Object.fromEntries(
+  Object.entries(records).map(([slug, record]) => [slug, narrative(record)])
+));

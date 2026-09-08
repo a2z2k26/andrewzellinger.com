@@ -56,13 +56,13 @@ const projectRecords = [
     "headline": "Audible Sleep, an immersive sleep solution.",
     "metadata": {
       "client": "Audible",
-      "studio": "IxCo",
+      "studio": "I&Co",
       "year": "2021",
       "role": "UX Lead"
     },
     "meta": [
       "Audible",
-      "IxCo",
+      "I&Co",
       "2021",
       "UX Lead"
     ],
@@ -773,7 +773,7 @@ const projectRecords = [
     "slug": "proctor-and-gamble",
     "path": "/case-studies/proctor-and-gamble/",
     "collectionPath": "/projects",
-    "title": "Proctor & Gamble",
+    "title": "Procter & Gamble",
     "headline": "Showcasing P&G's sustainability program",
     "metadata": {
       "client": "P&G",
@@ -789,7 +789,7 @@ const projectRecords = [
     ],
     "summary": "Here's how P&G answered the call from the next generation of beauty consumers who are increasingly conscious about the impact of their choices on the environment and society.",
     "media": {
-      "label": "Proctor & Gamble digital experience project image",
+      "label": "Procter & Gamble digital experience project image",
       "src": "/images/projects/proctor-screen.png"
     },
     "sections": [
@@ -902,7 +902,7 @@ const projectRecords = [
     "slug": "thompson-reuters",
     "path": "/case-studies/thompson-reuters/",
     "collectionPath": "/projects",
-    "title": "Thompson Reuters",
+    "title": "Thomson Reuters",
     "headline": "TV Streaming Platform for Reuters",
     "metadata": {
       "client": "Thomson Reuters",
@@ -1694,7 +1694,7 @@ const projectRecords = [
     ],
     "summary": "A Pomodoro companion for your wrist, designed natively for Apple Watch to keep focused work and short breaks in rhythm throughout the day.",
     "media": {
-      "label": "Gero App smartwatch fitness project image",
+      "label": "Gero Timer Pomodoro app for Apple Watch and iPhone",
       "src": "/images/projects/gero-screen.png"
     },
     "sections": [

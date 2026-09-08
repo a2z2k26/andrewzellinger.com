@@ -39,6 +39,7 @@
 }
 
 .biography-portrait-placeholder {
+  --portfolio-media-image: url("/images/history/az-headshot-extended-v1.png");
   width: 100%;
 }
 
@@ -64,9 +65,9 @@
 .biography-introduction__lead {
   width: 100%;
   max-width: none;
-  font-family: var(--fonts--family-display);
+  font-family: "Geist", sans-serif;
   font-size: 32px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 40px;
   letter-spacing: 0;
   text-indent: 0;
@@ -370,4 +371,11 @@
     font-size: 26px;
     line-height: 28px;
   }
+}
+.biography-stack-grid {
+  margin-top: 32px;
+}
+
+.biography-stack-content {
+  min-width: 0;
 }

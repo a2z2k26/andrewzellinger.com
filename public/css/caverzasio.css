@@ -38,9 +38,9 @@
   --typography-desktop--body-line: 1em;
   --typography-tablet--body-size: var(--typography-desktop--body-size);
   --typography-smartphone--body-size: var(--typography-desktop--body-size);
-  --typography-desktop--h1-font: var(--fonts--family-display);
-  --typography-desktop--h1-size: 62px;
-  --typography-desktop--h1-line: 62px;
+  --typography-desktop--h1-font: "Geist", sans-serif;
+  --typography-desktop--h1-size: 80px;
+  --typography-desktop--h1-line: 80px;
   --typography-tablet--h1-size: 3em;
   --typography-smartphone--h1-size: 2em;
   --typography-desktop--h2-font: var(--fonts--family-01);
@@ -211,7 +211,7 @@ h1 {
   text-transform: none;
   margin-top: 0;
   margin-bottom: 0;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 h2 {
@@ -1808,7 +1808,7 @@ figcaption {
 }
 
 .heading {
-  letter-spacing: -.02em;
+  letter-spacing: 0;
   text-transform: none;
 }
 

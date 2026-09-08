@@ -4,158 +4,82 @@ import test from "node:test";
 
 import { ARTICLE_DETAILS } from "../src/article-content.js";
 
-test("article records use one shared index/detail source with flexible ordered bodies", async () => {
+test("article records share reviewed metadata, authored bodies and stable routes", async () => {
   const indexHtml = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
   const indexRuntime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
-  const detailContent = await readFile(new URL("../src/detail-content.js", import.meta.url), "utf8");
-
+  const source = await readFile(new URL("../src/article-content.js", import.meta.url), "utf8");
+  const { ARTICLE_DETAILS: previousArticles } = await import("../docs/editorial/article-source-before-2026-09-08-pass.js");
   assert.equal(ARTICLE_DETAILS.length, 11);
-  assert.equal(new Set(ARTICLE_DETAILS.map(({ slug }) => slug)).size, 11);
+  assert.deepEqual(new Set(ARTICLE_DETAILS.map(a => a.slug)), new Set(previousArticles.map(a => a.slug)));
+  assert.deepEqual(ARTICLE_DETAILS.slice(0,3).map(a => a.slug), ["the-constraint-was-the-brief", "intention-deficit-disorder", "company-of-one"]);
+  const text = a => a.body.flatMap(b => b.type === "list" ? b.items : [b.text]).join(" ");
+  const words = a => text(a).trim().split(/\s+/).length;
   for (const article of ARTICLE_DETAILS) {
     assert.equal(article.kind, "article");
     assert.equal(article.collectionPath, "/articles");
     assert.equal(article.path, `/articles/${article.slug}/`);
-    assert.ok(article.meta.length >= 1);
-    assert.ok(article.body.length > 0);
-    assert.equal("sections" in article, false);
-  }
-
-  const [
-    companyOfOne,
-    aFreeSurfLesson,
-    showingMyTeeth,
-    intentionDeficitDisorder,
-    twoDollarBill,
-    youAlwaysLetYourselfWin,
-    cutDeferOrBuild,
-    designPrinciples,
-    embeddedProductDesignLessons,
-    constraintWasTheBrief,
-    realMvp,
-  ] = ARTICLE_DETAILS;
-  assert.equal(companyOfOne.slug, "company-of-one");
-  assert.equal(companyOfOne.title, "Company of One");
-  assert.deepEqual(companyOfOne.meta, ["Andrew Zellinger", "Jun 2nd 2026"]);
-  assert.equal(companyOfOne.summary, "A case for deterministic agent orchestration, hard quality gates, and cost controls that make capable systems safe to operate.");
-  assert.equal(companyOfOne.body.filter((block) => block.type === "heading").length, 8);
-  assert.equal(companyOfOne.body.filter((block) => block.type === "paragraph").length, 16);
-  assert.equal(companyOfOne.body[0].text, "At its worst, my agents waited in line");
-  assert.match(companyOfOne.body.at(-1).text, /the only success metric that ever mattered\.$/);
-
-  assert.equal(aFreeSurfLesson.slug, "a-free-surf-lesson");
-  assert.equal(aFreeSurfLesson.title, "A Free Surf Lesson");
-  assert.deepEqual(aFreeSurfLesson.meta, ["Andrew Zellinger", "Jan 9th 2026"]);
-  assert.equal(aFreeSurfLesson.summary, "Taste still matters in the age of AI, but only when systems literacy, strategy, and execution turn judgment into impact.");
-  assert.equal(aFreeSurfLesson.body.filter((block) => block.type === "heading").length, 8);
-  assert.equal(aFreeSurfLesson.body.filter((block) => block.type === "paragraph").length, 16);
-  assert.equal(aFreeSurfLesson.body[0].text, "It's a comforting story. It's also incomplete");
-  assert.match(aFreeSurfLesson.body.at(-1).text, /^Develop your judgement, but build the machinery/);
-
-  assert.equal(showingMyTeeth.slug, "showing-my-teeth");
-  assert.equal(showingMyTeeth.title, "Showing My Teeth");
-  assert.deepEqual(showingMyTeeth.meta, ["Andrew Zellinger", "Mar 28th 2026"]);
-  assert.equal(showingMyTeeth.summary, "A personal account of professional loss, family crisis, survival, and choosing integrity when the design industry turns hostile.");
-  assert.equal(showingMyTeeth.body.filter((block) => block.type === "heading").length, 6);
-  assert.equal(showingMyTeeth.body.filter((block) => block.type === "paragraph").length, 24);
-  assert.equal(showingMyTeeth.body[0].text, "I got fired on the day I left Denver");
-  assert.match(showingMyTeeth.body.at(-1).text, /^IF THE IMAGE DOESN'T WORK/);
-
-  assert.equal(intentionDeficitDisorder.slug, "intention-deficit-disorder");
-  assert.equal(intentionDeficitDisorder.title, "Intention Deficit Disorder");
-  assert.deepEqual(intentionDeficitDisorder.meta, ["Andrew Zellinger", "May 16th 2026"]);
-  assert.equal(intentionDeficitDisorder.summary, "How AI products accumulate intent debt when they misread users, and how design teams can identify, measure, and prevent it.");
-  assert.equal(intentionDeficitDisorder.body.filter((block) => block.type === "heading").length, 11);
-  assert.equal(intentionDeficitDisorder.body.filter((block) => block.type === "paragraph").length, 47);
-  assert.equal(intentionDeficitDisorder.body[0].text, "I call it intention deficit");
-  assert.equal(intentionDeficitDisorder.body.at(-1).text, "That starts with treating intent as something worth designing");
-
-  assert.equal(twoDollarBill.slug, "two-dollar-bill");
-  assert.equal(twoDollarBill.title, "Two-Dollar Bill");
-  assert.deepEqual(twoDollarBill.meta, ["Andrew Zellinger", "May 16th 2026"]);
-  assert.equal(twoDollarBill.summary, "What a two-dollar agent mistake revealed about cost visibility, operational trust, and why autonomous systems must earn freedom.");
-  assert.equal(twoDollarBill.body.filter((block) => block.type === "heading").length, 6);
-  assert.equal(twoDollarBill.body.filter((block) => block.type === "paragraph").length, 26);
-  assert.match(twoDollarBill.body[0].text, /^Because here's what two dollars represents/);
-  assert.match(twoDollarBill.body.at(-1).text, /^Nobody puts /);
-
-  assert.equal(youAlwaysLetYourselfWin.slug, "you-always-let-yourself-win");
-  assert.equal(youAlwaysLetYourselfWin.title, "You Always Let Yourself Win");
-  assert.deepEqual(youAlwaysLetYourselfWin.meta, ["Andrew Zellinger", "May 16th 2026"]);
-  assert.equal(youAlwaysLetYourselfWin.summary, "Why designers need evals to define product quality, expose weak outputs, and keep AI experiences useful, clear, and trustworthy.");
-  assert.equal(youAlwaysLetYourselfWin.body.filter((block) => block.type === "heading").length, 10);
-  assert.equal(youAlwaysLetYourselfWin.body.filter((block) => block.type === "paragraph").length, 54);
-  assert.match(youAlwaysLetYourselfWin.body[0].text, /^Every AI product team hits the same moment/);
-  assert.match(youAlwaysLetYourselfWin.body.at(-1).text, /^AI makes production faster/);
-
-  assert.equal(cutDeferOrBuild.slug, "cut-defer-or-build");
-  assert.equal(cutDeferOrBuild.title, "Cut, Defer or Build");
-  assert.deepEqual(cutDeferOrBuild.meta, ["Andrew Zellinger"]);
-  assert.equal(cutDeferOrBuild.body.filter((block) => block.type === "heading").length, 5);
-  assert.equal(cutDeferOrBuild.body.filter((block) => block.type === "paragraph").length, 40);
-
-  assert.equal(designPrinciples.slug, "design-principles-that-actually-shape-the-product");
-  assert.equal(designPrinciples.title, "Product Design Principles");
-  assert.deepEqual(designPrinciples.meta, ["Andrew Zellinger"]);
-  assert.equal(designPrinciples.body.filter((block) => block.type === "heading").length, 5);
-  assert.equal(designPrinciples.body.filter((block) => block.type === "paragraph").length, 25);
-
-  assert.equal(embeddedProductDesignLessons.slug, "lessons-from-fifteen-years-of-embedded-product-design");
-  assert.equal(embeddedProductDesignLessons.title, "Embedded Product Design Lessons");
-  assert.deepEqual(embeddedProductDesignLessons.meta, ["Andrew Zellinger"]);
-  assert.equal(embeddedProductDesignLessons.body.filter((block) => block.type === "heading").length, 7);
-  assert.equal(embeddedProductDesignLessons.body.filter((block) => block.type === "paragraph").length, 31);
-
-  assert.equal(constraintWasTheBrief.slug, "the-constraint-was-the-brief");
-  assert.equal(constraintWasTheBrief.title, "The Constraint Was the Brief");
-  assert.deepEqual(constraintWasTheBrief.meta, ["Andrew Zellinger"]);
-  assert.equal(constraintWasTheBrief.body.filter((block) => block.type === "heading").length, 5);
-  assert.equal(constraintWasTheBrief.body.filter((block) => block.type === "paragraph").length, 22);
-
-  assert.equal(realMvp.slug, "what-makes-a-real-mvp");
-  assert.equal(realMvp.title, "What Makes a Real MVP?");
-  assert.deepEqual(realMvp.meta, ["Andrew Zellinger"]);
-  assert.equal(realMvp.body.filter((block) => block.type === "heading").length, 4);
-  assert.equal(realMvp.body.filter((block) => block.type === "paragraph").length, 21);
-
-  for (const article of ARTICLE_DETAILS) {
-    assert.ok(article.summary.length >= 110 && article.summary.length <= 130, `${article.title} summary should fill two desktop lines without becoming an excerpt`);
-    assert.match(article.summary, /\.$/, `${article.title} summary should be one complete sentence`);
-  }
-
-  for (const article of ARTICLE_DETAILS) {
+    assert.deepEqual(article.meta, ["Andrew Zellinger", "Reviewed Sep 8th 2026", `${Math.max(1, Math.ceil(words(article) / 200))} MIN`]);
+    assert.ok(article.summary.length >= 100 && article.summary.length <= 190);
+    assert.match(article.summary, /\.$/);
+    assert.ok(article.body.every(b => b.type === "list" ? b.items.length && b.items.every(Boolean) : b.text?.trim()));
+    assert.equal(article.media.decorative, true);
     assert.ok(indexHtml.includes(`data-detail-slug="${article.slug}"`));
     assert.ok(indexHtml.includes(`aria-label="Read article: ${article.title}"`));
+    for (const meta of article.meta) assert.ok(indexHtml.includes(meta));
   }
-  assert.doesNotMatch(indexHtml, /prototypes-as-instruments-for-thinking|where-judgment-enters-the-loop|Jason Ramirez/i);
-  assert.doesNotMatch(JSON.stringify(ARTICLE_DETAILS), /Jason Ramirez/i);
-
-  assert.match(indexRuntime, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js"/);
+  const bySlug = slug => ARTICLE_DETAILS.find(a => a.slug === slug);
+  const originals = slug => previousArticles.find(a => a.slug === slug);
+  assert.equal(text(bySlug("showing-my-teeth")), text(originals("showing-my-teeth")), "personal essay wording is retained pending publication decision");
+  for (const slug of ["company-of-one", "a-free-surf-lesson", "intention-deficit-disorder", "two-dollar-bill"]) {
+    assert.ok(words(bySlug(slug)) < words(originals(slug)), slug + " should be tightened");
+  }
+  assert.match(bySlug("cut-defer-or-build").body[0].text, /^Every 0-1 engagement/);
+  assert.match(bySlug("design-principles-that-actually-shape-the-product").body[0].text, /^Most design principles die/);
+  assert.match(bySlug("what-makes-a-real-mvp").body[0].text, /^I've spent most of my career/);
+  assert.doesNotMatch(text(bySlug("company-of-one")), /eight gates|gates make that impossible|no business building/);
+  assert.match(text(bySlug("two-dollar-bill")), /does not establish a fifty-fold reduction in total operating cost/);
+  assert.match(text(bySlug("what-makes-a-real-mvp")), /not a measured abandonment time/);
+  assert.match(text(bySlug("you-always-let-yourself-win")), /hypothetical calibration exercise/);
+  assert.doesNotMatch(source, /consolidateParagraphRun/);
+  assert.doesNotMatch(JSON.stringify(ARTICLE_DETAILS), /Jason Ramirez/);
   assert.match(indexRuntime, /entry\.meta\.map/);
   assert.match(indexRuntime, /entry\.summary/);
-  assert.match(indexRuntime, /<span class="articles-entry__cta">Read more<\/span>/);
-  assert.match(detailContent, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js"/);
+  assert.match(indexRuntime, /Read more/);
 });
 
 test("Article Detail renders semantic paragraphs without fixed section labels", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 
-  assert.match(runtime, /entry\.body\.map\(articleBodyBlockMarkup\)/);
-  assert.match(runtime, /block\?\.type === "heading"/);
-  assert.match(runtime, /<h3>\$\{escapeHtml\(block\.text\)\}<\/h3>/);
+  assert.match(runtime, /function articleBodyMarkup\(entry\)/);
+  assert.match(runtime, /entry\.body\.forEach\(\(block\) =>/);
+  assert.match(runtime, /group\.blocks\.map\(articleBodyBlockMarkup\)/);
+  assert.match(runtime, /block\?\.type !== "heading"/);
+  assert.match(runtime, /detail-unit__article-opening/);
+  assert.match(runtime, /detail-unit__article-section/);
+  assert.match(runtime, /<h3>\$\{escapeHtml\(group\.heading\)\}<\/h3>/);
+  assert.match(runtime, /block\?\.type === "list"/);
+  assert.match(runtime, /const tag = block\.ordered \? "ol" : "ul"/);
+  assert.match(runtime, /<li>\$\{escapeHtml\(item\)\}<\/li>/);
   assert.match(runtime, /class="detail-unit__article-body"/);
   assert.doesNotMatch(runtime, />Opening<|>Argument<|>Notes</);
-  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*margin-left:\s*calc\(\(100% - var\(--structure--grid-row-gap\)\) \/ 3 - var\(--detail-project-section-body-shift\) \+ var\(--structure--grid-row-gap\)\);[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
+  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*margin-left:\s*0;[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(styles, /\.detail-unit__article-body p \+ p\s*\{[^}]*margin-top:\s*24px;/s);
-  assert.match(styles, /\.detail-unit__article-body h3\s*\{[^}]*margin:\s*48px 0 0;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;/s);
-  assert.match(styles, /\.detail-unit__article-body h3:first-child\s*\{[^}]*margin-top:\s*0;/s);
-  assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*?\.detail-unit__article-body\s*\{[^}]*margin-left:\s*0;/s);
+  assert.match(styles, /\.detail-unit__article-body p\s*\{[^}]*text-indent:\s*0;/s);
+  assert.match(styles, /\.detail-unit__article-body li \+ li\s*\{[^}]*margin-top:\s*8px;/s);
+  assert.match(styles, /\.detail-unit__article-body > :first-child\s*\{[^}]*padding-top:\s*var\(--detail-project-section-copy-edge-gap\);[^}]*border-top:\s*1px solid rgba\(255, 255, 255, \.16\);/s);
+  assert.match(styles, /\.detail-unit__article-section\s*\{[^}]*margin-top:\s*40px;/s);
+  assert.match(styles, /\.detail-unit__article-section:first-child\s*\{[^}]*margin-top:\s*0;/s);
+  assert.doesNotMatch(styles, /\.detail-unit__article-section\s*\{[^}]*border-top:/s);
+  assert.match(styles, /\.detail-unit__article-section h3\s*\{[^}]*margin:\s*0;[^}]*color:\s*#9c9c9c;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(styles, /\.detail-unit__article-section-body\s*\{[^}]*margin-top:\s*24px;/s);
+  assert.doesNotMatch(styles, /\.detail-unit__article-section h3\s*\{[^}]*font-family:\s*var\(--fonts--family-display\)/s);
 });
 
 test("details keep their current collection navigation and visible headings active", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
 
-  assert.match(runtime, /entry\.kind === "project" \? "Selected work" : "Writing samples"/);
+  assert.match(runtime, /entry\.kind === "project" \? "Projects" : "Articles"/);
   assert.match(runtime, /const activeCollection = entry\.kind === "project" \? "\/projects" : "\/articles"/);
   assert.match(runtime, /document\.querySelectorAll\("\.nav_menu a"\)/);
   assert.match(runtime, /\.setAttribute\("aria-current", "page"\)/);

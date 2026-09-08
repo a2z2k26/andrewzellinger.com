@@ -21,42 +21,73 @@ test("shared DOM liquid-glass lens follows the refractive tutorial model", async
   assert.match(styles, /box-shadow:/);
   assert.match(styles, /0 0 7px rgba\(255,255,255,calc\(\.18 \* var\(--lens-rim\)\)\) inset/);
   assert.match(styles, /filter:\s*blur\(\.35px\)/);
-  assert.match(siteEntry, /center-glass-lens\.js/);
+  assert.match(siteEntry, /center-control\.js/);
+  assert.doesNotMatch(siteEntry, /center-glass-lens\.js|dom-glass-lens\.js/);
   assert.doesNotMatch(siteEntry, /dom-glass-lab|liquid-chrome/);
   assert.doesNotMatch(band, /uLens|plusMaterial|plusControls/);
 });
 
-test("center control expands from a 164px lens into a substantially inset portrait menu", async () => {
+test("opaque center control grows one rounded menu panel above a centered 100px circle", async () => {
   const styles = await readFile(new URL("../src/effects/center-control.css", import.meta.url), "utf8");
-  const runtime = await readFile(new URL("../src/effects/center-glass-lens.js", import.meta.url), "utf8");
-  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*width:\s*164px;[^}]*height:\s*164px/s);
-  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*align-self:\s*center/s);
-  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*margin-inline:\s*auto/s);
-  assert.match(styles, /\.glass-nav-shell\s*\{[^}]*--glass-nav-menu-inset:\s*32px;[^}]*--glass-nav-menu-icon-gap:\s*24px;[^}]*--glass-nav-close-height:\s*44px;[^}]*--glass-nav-menu-optical-y:\s*8px;[^}]*width:\s*164px;[^}]*height:\s*164px/s);
-  assert.match(styles, /\.glass-nav-shell\.glass-nav-shell--open\s*\{[^}]*width:\s*240px;[^}]*height:\s*320px/s);
-  assert.match(styles, /\.glass-nav-shell \.nav_menu\s*\{[^}]*position:\s*absolute;[^}]*right:\s*auto;[^}]*left:\s*50%;[^}]*transform:\s*translateX\(-50%\) !important;/s);
-  assert.match(styles, /\.glass-nav-shell \.nav_menu\.show\s*\{[^}]*transform:\s*translateX\(-50%\) !important;/s);
-  assert.match(styles, /\.glass-nav-shell--open \.nav_toggle\s*\{[^}]*bottom:\s*var\(--glass-nav-menu-inset\);[^}]*height:\s*var\(--glass-nav-close-height\)/s);
-  assert.match(styles, /\.glass-nav-shell \.glass-nav-menu-list\s*\{[^}]*position:\s*relative;[^}]*top:\s*var\(--glass-nav-menu-optical-y\);[^}]*height:\s*calc\(100% - var\(--glass-nav-menu-inset\) - var\(--glass-nav-close-height\)\);[^}]*padding-inline:\s*var\(--glass-nav-menu-inset\);[^}]*align-items:\s*center;[^}]*justify-content:\s*center;/s);
-  assert.match(styles, /\.glass-nav-shell \.glass-nav-link\s*\{[^}]*width:\s*100%;[^}]*font-family:\s*"Geist", sans-serif;[^}]*font-size:\s*20px;[^}]*font-weight:\s*500;[^}]*font-synthesis:\s*none;[^}]*line-height:\s*24px;[^}]*text-align:\s*center;[^}]*text-transform:\s*uppercase;/s);
-  assert.match(runtime, /glass-nav-menu-list/);
+  const runtime = await readFile(new URL("../src/effects/center-control.js", import.meta.url), "utf8");
+  const surface = await readFile(new URL("../src/effects/center-gooey-surface.jsx", import.meta.url), "utf8");
+  const packageJson = await readFile(new URL("../package.json", import.meta.url), "utf8");
+  assert.match(styles, /\.center-nav-shell\s*\{[^}]*--center-nav-closed-size:\s*100px;[^}]*--center-nav-menu-width:\s*280px;[^}]*--center-nav-menu-height:\s*320px;[^}]*width:\s*360px;[^}]*height:\s*380px/s);
+  assert.match(styles, /\.center-nav-shell\s*\{[^}]*align-self:\s*center/s);
+  assert.match(styles, /\.center-nav-shell\s*\{[^}]*margin-inline:\s*auto/s);
+  assert.match(styles, /\.center-nav-shell\s*\{[^}]*pointer-events:\s*none;[^}]*background:\s*transparent !important;[^}]*backdrop-filter:\s*none;/s);
+  assert.match(styles, /\.center-nav-shell \.nav_toggle,[\s\S]*?background:\s*#fff !important;[^}]*transform:\s*translate\(-50%, -50%\) !important;/s);
+  assert.match(styles, /\.center-nav-shell\.center-nav-shell--gooey-ready \.nav_toggle,[\s\S]*?background:\s*transparent !important;/s);
+  assert.match(styles, /\.center-gooey-host\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;[^}]*pointer-events:\s*none;/s);
+  assert.match(surface, /import \{ Liquid \} from "liquid-gooey"/);
+  assert.match(surface, /blur=\{6\}/);
+  assert.match(surface, /contrast=\{18\}/);
+  assert.match(surface, /fill="#fff"/);
+  assert.match(surface, /<Liquid\.Item\s+observe>/);
+  assert.doesNotMatch(surface, /morph=\{/);
+  assert.match(surface, /className="center-gooey-menu-panel-surface"/);
+  assert.doesNotMatch(surface, /MENU_SLOTS|center-gooey-menu-item/);
+  assert.match(packageJson, /"liquid-gooey":\s*"\^0\.2\.1"/);
+  assert.match(styles, /\.center-gooey-menu-panel-surface\s*\{[^}]*width:\s*36px;[^}]*height:\s*36px;[^}]*border-radius:\s*999px;[^}]*transform:\s*translate\(-50%, -50%\);/s);
+  assert.doesNotMatch(styles, /\.center-gooey-menu-panel-surface--step-/);
+  assert.doesNotMatch(styles, /\.center-gooey-menu-panel-surface\s*\{[^}]*transition:/s);
+  assert.match(styles, /\.center-nav-shell \.nav_menu,[\s\S]*?inset:\s*0;[^}]*transform:\s*none !important;[^}]*pointer-events:\s*none;/s);
+  assert.match(styles, /\.center-nav-shell \.center-nav-menu-list\s*\{[^}]*width:\s*var\(--center-nav-menu-width\);[^}]*height:\s*var\(--center-nav-menu-height\);[^}]*padding:\s*64px 40px;[^}]*flex-direction:\s*column;[^}]*gap:\s*20px;[^}]*transform:\s*translate\(-50%, calc\(-50% - 238px\)\) !important;/s);
+  assert.doesNotMatch(styles, /data-nav-morph-step/);
+  assert.match(styles, /\.center-nav-shell \.center-nav-link\s*\{[^}]*width:\s*100%;[^}]*height:\s*24px;[^}]*color:\s*rgba\(0,0,0,\.68\);[^}]*font-family:\s*"Geist", sans-serif;[^}]*font-size:\s*16px;[^}]*font-weight:\s*500;[^}]*font-synthesis:\s*none;[^}]*line-height:\s*20px;[^}]*text-align:\s*center;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(styles, /\.center-nav-shell\[data-nav-link-stage="1"\][\s\S]*?\.center-nav-shell\[data-nav-link-stage="4"\][^}]*\{[^}]*visibility:\s*visible;[^}]*pointer-events:\s*auto;/s);
+  assert.doesNotMatch(styles, /\.center-nav-shell \.center-nav-link\s*\{[^}]*transition:[^}]*opacity/s);
+  assert.match(runtime, /center-nav-menu-list/);
+  assert.match(runtime, /mountCenterGooeySurface/);
+  assert.match(runtime, /import\("\.\/center-gooey-surface\.jsx"\)/);
+  assert.match(runtime, /panel\.animate\(MENU_MORPH_KEYFRAMES/);
+  assert.match(runtime, /menuList\.animate\(MENU_LIST_KEYFRAMES/);
+  assert.match(runtime, /playbackRate\s*=\s*isOpen \? 1 : -1/);
+  assert.match(runtime, /const progress = currentTime \/ MENU_MORPH_DURATION_MS/);
+  assert.doesNotMatch(runtime, /runMorphSequence|morphTimers|MORPH_STEP_MS|MORPH_SETTLE_MS|CLOSE_LABEL_RELEASE_MS/);
+  assert.match(runtime, /center-nav-shell--labels-ready/);
+  assert.match(runtime, /const MENU_MORPH_DURATION_MS = 900/);
+  assert.match(runtime, /shell\.dataset\.navLinkStage = String\(nextStage\)/);
+  assert.match(runtime, /progress >= \.98 \? 4 : progress >= \.78 \? 2 : 0/);
+  assert.match(runtime, /center-nav-shell--closing/);
   assert.match(runtime, /menuObserver\.observe/);
-  assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*?\.glass-nav-shell\.glass-nav-shell--open\s*\{[^}]*width:\s*240px;[^}]*height:\s*320px;/s);
+  assert.doesNotMatch(runtime, /mountDomGlassLens|dom-glass-lens|plusMaterial|backdrop-filter/);
+  assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*?\.center-nav-shell\s*\{[^}]*--center-nav-closed-size:\s*96px;/s);
 });
 
-test("all center-control states use one supplied 36px SVG plus/X icon", async () => {
+test("all center-control states use one black 36px SVG plus/X icon", async () => {
   const styles = await readFile(new URL("../src/effects/center-control.css", import.meta.url), "utf8");
-  const runtime = await readFile(new URL("../src/effects/center-glass-lens.js", import.meta.url), "utf8");
+  const runtime = await readFile(new URL("../src/effects/center-control.js", import.meta.url), "utf8");
 
   assert.match(runtime, /http:\/\/www\.w3\.org\/2000\/svg/);
   assert.match(runtime, /viewBox", "0 0 36 36"/);
   assert.match(runtime, /width", "36"/);
   assert.match(runtime, /height", "36"/);
   assert.match(runtime, /M18 0C19\.0843 0\.000258911[^"]+18 0Z/);
-  assert.match(runtime, /path\.setAttribute\("fill", "white"\)/);
+  assert.match(runtime, /path\.setAttribute\("fill", "black"\)/);
   assert.doesNotMatch(runtime, /nav_icon-h|nav_icon-v|legacyBar/);
-  assert.match(styles, /\.glass-nav-shell \.nav_icon-plus\s*\{[^}]*width:\s*36px;[^}]*height:\s*36px;[^}]*transform:\s*rotate\(0deg\);[^}]*transition:\s*transform/s);
-  assert.match(styles, /\.glass-nav-shell--open \.nav_icon-plus,[^}]+html\.detail-route \.glass-nav-shell \.nav_icon-plus\s*\{[^}]*transform:\s*rotate\(45deg\);/s);
+  assert.match(styles, /\.center-nav-shell \.nav_icon-plus\s*\{[^}]*width:\s*36px;[^}]*height:\s*36px;[^}]*transform:\s*rotate\(0deg\);[^}]*transition:\s*none;/s);
+  assert.match(styles, /html\.detail-route \.center-nav-shell \.nav_icon-plus\s*\{[^}]*transform:\s*rotate\(45deg\);/s);
   assert.doesNotMatch(styles, /nav_icon-h|nav_icon-v/);
 });
 
@@ -70,7 +101,7 @@ test("every breakpoint uses one stacked menu and contains no legacy circular-men
     "../public/css/caverzasio.css",
     "../src/biography.css",
     "../src/detail-state.css",
-    "../src/effects/center-glass-lens.js",
+    "../src/effects/center-control.js",
     "../scripts/mirror-source.mjs",
   ];
   const sources = await Promise.all(sourceFiles.map((file) => readFile(new URL(file, import.meta.url), "utf8")));

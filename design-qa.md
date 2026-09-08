@@ -2,6 +2,36 @@
 
 result: passed
 
+## Geist-wide typography experiment — 2026-09-08
+
+result: passed
+
+- Scope: every visible selector previously assigned Times Newer Roman now uses Geist Sans Medium (`500`) while preserving its existing size, line height, tracking, capitalization, and layout.
+- Updated surfaces: global page headings, Projects and Articles collection titles, detail titles, the History editorial lead, generic detail ledes, and generic detail-section prose.
+- The Times Newer Roman asset and display token remain dormant for a reversible rollback; no visible selector references them.
+- Browser check: Codex in-app browser at 668 × 907 on Home, Projects, Articles, one Article Detail, and History.
+- Computed styles verified in the first title pass: page, project, article, and detail titles resolve to `Geist, sans-serif` at weight `500`; the expanded History and detail-prose pass is verified separately below.
+- Visual check: title geometry, wrapping, spacing, media layout, and center-control placement remained intact at the tested viewport.
+- Focused typography regression tests: 20 of 20 passed. Full suite: 91 of 91 passed. Production build and Sites packaging checks: passed.
+- Expanded browser check: History lead resolves to `Geist, sans-serif` at weight `500`; the case-study detail contains zero visible elements whose computed font family includes Times. Existing Geist-specific description and body overrides remain regular weight, preserving their prior hierarchy.
+
+## Center navigation storyboard pass — 2026-09-08
+
+result: passed
+
+- Visual sources: `Screenshot 2026-09-08 at 3.43.24 PM.png` and `Screenshot 2026-09-08 at 3.44.02 PM.png` supplied by Andrew.
+- Implementation: `src/effects/center-control.js`, `src/effects/center-control.css`, and `src/effects/center-gooey-surface.jsx`.
+- Comparison artifact: `docs/qa/center-menu-storyboard-comparison-2026-09-08.png`.
+- Browser check: Codex in-app browser at 668 × 907 on `http://127.0.0.1:5178/`.
+- Open sequence verified as: plus circle, connected bud, same-width connected oval, large connected oval, detached two-link panel, detached four-link panel.
+- Close runs the exact Open animation instance backward from its current progress; panel geometry, link thresholds, menu-list position, and Plus/X rotation all resolve from that shared timeline.
+- Labels remain hidden until their containing silhouette can hold them; no text paints over the portrait outside the white panel.
+- Final menu panel is separated from the circular control by 30px, 6px more than the preceding state.
+- The six storyboard frames now form one interruptible 900ms Web Animations timeline with symmetric `cubic-bezier(.45,0,.55,1)` segment easing. The `liquid-gooey` observer tracks that geometry directly and no longer adds a separate damped spring behind it.
+- Animated surface radii remain pixel-based from bud through final panel, eliminating the percentage-to-pixel interpolation flash. Open and Close therefore sample identical radius values at identical progress points.
+- Live in-app browser verification: Open and Close both traversed the detached panel, connected oval, emerging bud, and reabsorbed circle states; the final open state retained the approved 30px separation.
+- Focused center-control tests: 5 of 5 passed. Full suite: 91 of 91 passed. Production build: passed.
+
 Reviewed: 2026-09-03
 
 ## Scope

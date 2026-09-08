@@ -182,12 +182,11 @@ const placeholderStyles = `
     html.works-motion-route {
       --works-card-gap: 32px;
     }
-    html.works-motion-route body,
-    html.index-route body {
+    html.works-motion-route body {
       min-height: 300svh;
     }
-    html.index-route {
-      --index-image-gap: var(--structure--padding-desktop);
+    html.index-route body {
+      min-height: 0;
     }
     html.works-motion-route .works-motion-field {
       z-index: 0;
@@ -222,10 +221,10 @@ const placeholderStyles = `
       }
     }
     html.works-motion-route .works-motion-card .heading-style-h2.new {
-      font-family: var(--fonts--family-display);
+      font-family: "Geist", sans-serif;
       font-size: 24px;
       line-height: 24px;
-      font-weight: 400;
+      font-weight: 500;
       letter-spacing: .01em;
       text-transform: none;
     }
@@ -267,63 +266,43 @@ const placeholderStyles = `
       will-change: transform;
     }
     html.index-route .index-media-placeholder {
-      flex: 0 0 auto;
       width: 100%;
+      height: 100%;
       min-height: 0;
-      aspect-ratio: 3 / 2;
+      --portfolio-media-image: url("/images/home/az-hero-extended-v2.png");
       background-color: #2b2b2b;
     }
-    html.index-route .index-motion-field {
+    html.index-route .index-static-field {
       z-index: 0;
       position: fixed;
       top: var(--structure--padding-desktop);
       right: var(--structure--padding-desktop);
       bottom: var(--structure--padding-desktop);
       left: calc(50% + (var(--structure--grid-row-gap) / 2));
-      display: flex;
-      flex-direction: column;
-      row-gap: var(--index-image-gap);
       overflow: hidden;
       contain: layout paint;
     }
-    html.index-route .index-motion-track {
-      display: flex;
-      flex: 0 0 auto;
-      flex-direction: column;
-      row-gap: var(--index-image-gap);
-      width: 100%;
-    }
-    html.index-route .index-motion-set {
-      display: flex;
-      flex: 0 0 auto;
-      flex-direction: column;
-      row-gap: var(--index-image-gap);
-      width: 100%;
-    }
-    html.index-route .index-scroll-space {
-      height: 300svh;
-      pointer-events: none;
-    }
-    html.index-route[data-index-motion="running"] .index-motion-track {
-      will-change: transform;
+    @media screen and (min-width: 992px) {
+      html.index-route .index-media-placeholder {
+        background-position: center center !important;
+        background-size: cover !important;
+        transform: scale(1.1);
+        transform-origin: center center;
+      }
     }
     @media screen and (max-width: 991px) {
-      html.index-route {
-        --index-image-gap: var(--structure--padding-tablet);
-      }
       html.works-motion-route .works-motion-field,
-      html.index-route .index-motion-field {
+      html.index-route .index-static-field {
         top: 100px;
         right: var(--structure--padding-tablet);
         bottom: var(--structure--padding-tablet);
         left: var(--structure--padding-tablet);
       }
-      html.works-motion-route[data-works-motion="mobile-static"] body,
-      html.index-route[data-index-motion="mobile-static"] body {
+      html.works-motion-route[data-works-motion="mobile-static"] body {
         min-height: 0;
       }
       html.works-motion-route[data-works-motion="mobile-static"] .works-motion-field,
-      html.index-route[data-index-motion="mobile-static"] .index-motion-field {
+      html.index-route .index-static-field {
         position: relative;
         inset: auto;
         width: auto;
@@ -332,23 +311,24 @@ const placeholderStyles = `
         overflow: visible;
         contain: none;
       }
-      html.works-motion-route[data-works-motion="mobile-static"] .works-scroll-space,
-      html.index-route[data-index-motion="mobile-static"] .index-scroll-space {
+      html.works-motion-route[data-works-motion="mobile-static"] .works-scroll-space {
         display: none;
       }
-      html.works-motion-route[data-works-motion="mobile-static"] .works-motion-card,
-      html.index-route[data-index-motion="mobile-static"] .index-media-placeholder {
+      html.works-motion-route[data-works-motion="mobile-static"] .works-motion-card {
         transform: none !important;
         will-change: auto !important;
       }
+      html.index-route .index-media-placeholder {
+        height: auto;
+        aspect-ratio: 3 / 2;
+      }
     }
     @media (prefers-reduced-motion: reduce) {
-      html.works-motion-route body,
-      html.index-route body {
+      html.works-motion-route body {
         min-height: 0;
       }
       html.works-motion-route .works-motion-field,
-      html.index-route .index-motion-field {
+      html.index-route .index-static-field {
         position: relative;
         inset: auto;
         width: calc(50% - (var(--structure--padding-desktop) + (var(--structure--grid-row-gap) / 2)));
@@ -357,26 +337,18 @@ const placeholderStyles = `
         overflow: visible;
         contain: none;
       }
-      html.index-route .index-scroll-space {
-        display: none;
-      }
       html.works-motion-route .works-scroll-space {
         display: none;
       }
       html.works-motion-route .works-motion-card,
-      html.works-motion-route .works-motion-track,
-      html.index-route .index-media-placeholder {
-        transform: none !important;
-        will-change: auto !important;
-      }
-      html.index-route .index-motion-track {
+      html.works-motion-route .works-motion-track {
         transform: none !important;
         will-change: auto !important;
       }
     }
     @media screen and (max-width: 991px) and (prefers-reduced-motion: reduce) {
       html.works-motion-route .works-motion-field,
-      html.index-route .index-motion-field {
+      html.index-route .index-static-field {
         width: auto;
         margin: 0 var(--structure--padding-tablet) var(--structure--padding-tablet);
       }
@@ -400,7 +372,7 @@ const placeholderStyles = `
       indexLink?.classList.remove("w--current");
       projectsLink?.setAttribute("aria-current", "page");
       projectsLink?.classList.add("w--current");
-      if (heading) heading.textContent = "Selected work";
+      if (heading) heading.textContent = "Projects";
       document.title = "Andrew Zellinger • Projects";
       document.querySelector('meta[property="og:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
       document.querySelector('meta[property="twitter:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
@@ -477,18 +449,13 @@ const placeholderStyles = `
       }
 
       if (pagePath === "") {
-        const motionField = makeElement("div", "index-motion-field");
-        motionField.setAttribute("aria-label", "Selected imagery");
-        for (let index = 0; index < 5; index += 1) {
-          const placeholder = makeElement("div", "media-background-holder landscape index-media-placeholder");
-          placeholder.setAttribute("role", "img");
-          placeholder.setAttribute("aria-label", "Tasman Glacier landscape stand-in panel " + (index + 1));
-          motionField.append(placeholder);
-        }
-
-        const scrollSpace = makeElement("div", "index-scroll-space");
-        scrollSpace.setAttribute("aria-hidden", "true");
-        anchor.replaceWith(motionField, scrollSpace);
+        const staticField = makeElement("div", "index-static-field");
+        staticField.setAttribute("aria-label", "Portrait");
+        const portrait = makeElement("div", "media-background-holder index-media-placeholder");
+        portrait.setAttribute("role", "img");
+        portrait.setAttribute("aria-label", "Andrew Zellinger seated in profile");
+        staticField.append(portrait);
+        anchor.replaceWith(staticField);
       }
     };
 
@@ -557,7 +524,7 @@ function transformHtml(source, sourceFile) {
         .replace(/\s+w--current\b/i, "")
         .replace(
           /<div>[^<]*<\/div>/i,
-          '<div>A. ZELLINGER</div>',
+          '<div>ZELLINGER</div>',
         ),
     )
     .replace(/<div id="h">00:00(?::00)?<\/div>/g, '<div id="h">NYC 00:00:00</div>')
@@ -591,7 +558,7 @@ function transformHtml(source, sourceFile) {
     );
     html = html.replace(
       /<h1 class="heading">Selected works<\/h1>/i,
-      '<h1 class="heading"><span class="home-title-desktop">Product designer</span><span class="home-title-mobile">Designer</span></h1>',
+      '<h1 class="heading"><span class="home-title-desktop">Designer</span><span class="home-title-mobile">Designer</span></h1>',
     );
     html = html
       .replace(/<title>[^<]*<\/title>/i, "<title>Andrew Zellinger • Designer</title>")
@@ -614,11 +581,11 @@ function transformHtml(source, sourceFile) {
       .replace(/<meta content="[^"]*" property="twitter:title">/i, '<meta content="Andrew Zellinger • History" property="twitter:title">')
       .replace(/<meta content="[^"]*" property="twitter:description">/i, `<meta content="${biographyDescription}" property="twitter:description">`)
       .replace(/Fabio Caverzasio • Art Director &amp; Web Designer/g, "Andrew Zellinger • History")
-      .replace('<h1 class="heading">Info</h1>', '<h1 class="heading">A brief history</h1>')
+      .replace('<h1 class="heading">Info</h1>', '<h1 class="heading">History</h1>')
       .replace(/<meta content="summary_large_image" name="twitter:card">/i, '<meta content="summary_large_image" name="twitter:card">\n  <link rel="canonical" href="/history">')
       .replace(
         /<div class="media-background-holder landscape"><img\b[^>]*class="media-background-image about"[^>]*><\/div>/i,
-        '<div class="media-background-holder landscape biography-portrait-placeholder" role="img" aria-label="Tasman Glacier landscape stand-in for biography portrait"></div>',
+        '<div class="media-background-holder landscape biography-portrait-placeholder" role="img" aria-label="Andrew Zellinger in profile"></div>',
       )
       .replace(
         /(<div class="margin-bottom space-small">\s*<div class="media-background-holder landscape biography-portrait-placeholder"[^>]*><\/div>\s*<\/div>)\s*<div>[\s\S]*?(?=\s*<div id="w-node-fcc7ec25-d021-fce2-4020-63bb76c6a32c-5991fa8c" class="grid _2-col">)/,

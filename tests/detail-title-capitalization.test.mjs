@@ -16,10 +16,10 @@ const expectedTitles = [
   "Android Wear",
   "Live Auctioneers",
   "Andrew Eccles",
-  "Proctor & Gamble",
+  "Procter & Gamble",
   "Modern Age",
   "Fi Collar",
-  "Thompson Reuters",
+  "Thomson Reuters",
   "Gero Timer",
   "Foursquare Brand",
   "Amazon Fire TV",
@@ -37,7 +37,7 @@ test("case-study titles retain canonical project capitalization", () => {
 test("detail routes retain their collection's visible page headings", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
 
-  assert.match(runtime, /heading\.textContent = entry\.kind === "project" \? "Selected work" : "Writing samples"/);
+  assert.match(runtime, /heading\.textContent = entry\.kind === "project" \? "Projects" : "Articles"/);
   assert.doesNotMatch(runtime, /entry\.kind === "project" \? "Case study"/);
 });
 
@@ -62,7 +62,8 @@ test("project details reuse the Projects lockup while articles retain the editor
   assert.match(runtime, /projectCardDescription\(entry\)/);
   assert.match(runtime, /escapeHtml\(entry\.title\)/);
   assert.doesNotMatch(runtime, /entry\.title\.(?:toUpperCase|toLowerCase)\(/);
-  assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;/s);
+  assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*24px;[^}]*font-weight:\s*500;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;/s);
+  assert.match(styles, /\.detail-unit__title\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*24px;[^}]*font-weight:\s*500;/s);
   assert.match(styles, /\.detail-unit__title--article\s*\{[^}]*font-size:\s*32px;[^}]*line-height:\s*32px;[^}]*text-transform:\s*none;/s);
   assert.doesNotMatch(styles, /\.detail-unit__title--project,\s*\.detail-unit__title--article/);
   assert.doesNotMatch(styles, /\.detail-unit__title--article\s*\{[^}]*text-transform:\s*uppercase;/s);
@@ -98,6 +99,8 @@ test("project sections and continuous article bodies use sentence-case Geist typ
   assert.match(styles, /\.detail-unit__section-body--project p\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*400;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*-0\.01em;[^}]*text-transform:\s*none;/s);
   assert.match(styles, /\.detail-unit__section--project \.detail-unit__section-label\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;/s);
   assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*400;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*-0\.01em;[^}]*text-transform:\s*none;/s);
+  assert.match(styles, /\.detail-unit__lede\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s);
+  assert.match(styles, /\.detail-unit__section p\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s);
 });
 
 test("project details retain one primary media surface and omit Process media", async () => {
@@ -126,7 +129,7 @@ test("expanded projects balance their detail spacing while article details stay 
   assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(styles, /\.detail-unit__sections\s*\{[^}]*padding-top:\s*40px;/s);
   assert.match(styles, /\.detail-unit__sections--project\s*\{[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
-  assert.match(runtime, /detail-unit__section--project-\$\{section\.label\.toLowerCase\(\)\}/);
+  assert.ok(runtime.includes('section.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")'));
   assert.match(styles, /--detail-project-section-copy-edge-gap:\s*52px;/);
   assert.match(styles, /--detail-project-section-label-inset:\s*28px;/);
   assert.doesNotMatch(styles, /--detail-project-text-to-divider-gap/);
@@ -135,13 +138,13 @@ test("expanded projects balance their detail spacing while article details stay 
   assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*align-items:\s*baseline;[^}]*padding-top:\s*var\(--detail-project-section-copy-edge-gap\);/s);
   assert.doesNotMatch(styles, /\.detail-unit__section--project \.detail-unit__section-body--project\s*\{[^}]*margin-top:/s);
   assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__section--project\s*\{[^}]*align-items:\s*stretch;[^}]*padding-top:\s*var\(--detail-project-section-label-inset\);/s);
-  assert.match(runtime, /detail-unit__section--project detail-unit__section--project-\$\{section\.label\.toLowerCase\(\)\}/);
+  assert.match(runtime, /detail-unit__section--project detail-unit__section--project-/);
   assert.match(styles, /--detail-project-section-body-shift:\s*80px;/);
   assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*calc\(\(100% - var\(--structure--grid-row-gap\)\) \/ 3 - var\(--detail-project-section-body-shift\)\)\)\s*minmax\(0,\s*1fr\);/s);
   assert.match(runtime, /detail-set detail-set--\$\{name\} detail-set--\$\{kind\}/);
   assert.match(runtime, /detail-view detail-view--\$\{kind\}/);
   assert.match(styles, /--detail-project-inter-unit-gap:\s*72px;/);
-  assert.match(styles, /--detail-article-inter-unit-gap:\s*64px;/);
+  assert.match(styles, /--detail-article-inter-unit-gap:\s*148px;/);
   assert.match(styles, /\.detail-set\.detail-set--project\s*\{[^}]*gap:\s*var\(--detail-project-inter-unit-gap\);/s);
   assert.match(styles, /\.detail-view--project \.detail-sets\s*\{[^}]*gap:\s*var\(--detail-project-inter-unit-gap\);/s);
   assert.match(styles, /\.detail-set\.detail-set--article,\s*\.detail-view--article \.detail-sets\s*\{[^}]*gap:\s*var\(--detail-article-inter-unit-gap\);/s);

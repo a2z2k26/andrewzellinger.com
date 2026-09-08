@@ -22,10 +22,21 @@ test("section motion is prepared before paint and cleaned up with the detail vie
   const runtime = await readSource("../src/detail-state.js");
 
   assert.match(runtime, /createDetailSectionMotion/);
-  assert.match(runtime, /const sectionMotion = createDetailSectionMotion\(\{[\s\S]*?view,[\s\S]*?enabled: entry\.kind === "project" && circular,/);
+  assert.match(runtime, /const sectionMotion = createDetailSectionMotion\(\{[\s\S]*?view,[\s\S]*?enabled: circular,/);
   assert.match(runtime, /activeDetail = \{[\s\S]*?sectionMotion,/);
   assert.match(runtime, /sectionMotion\.start\(\)/);
   assert.match(runtime, /detail\.sectionMotion\?\.destroy\(\)/);
+});
+
+test("article prose reveals in authored groups without splitting individual lines", async () => {
+  const motion = await readSource("../src/detail-section-motion.js");
+  const runtime = await readSource("../src/detail-state.js");
+
+  assert.match(motion, /\.detail-unit__article-opening, \.detail-unit__article-section/);
+  assert.match(motion, /\.detail-unit__article-section h3/);
+  assert.match(motion, /\.detail-unit__article-section-body/);
+  assert.match(runtime, /sectionMotion\.start\(\)/);
+  assert.doesNotMatch(motion, /SplitText|querySelectorAll\("span"\)/);
 });
 
 test("project rules draw from left to right without changing reduced-motion paint", async () => {

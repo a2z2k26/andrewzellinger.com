@@ -118,6 +118,11 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/history/index.html", import.meta.url));
   await access(new URL("../dist/client/articles/index.html", import.meta.url));
   await access(new URL("../dist/client/images/tasman-glacier-stand-in.jpg", import.meta.url));
+  await access(new URL("../dist/client/images/history/az-headshot.png", import.meta.url));
+  await access(new URL("../dist/client/images/history/az-headshot-extended-v1.png", import.meta.url));
+  await access(new URL("../dist/client/images/home/az-hero.png", import.meta.url));
+  await access(new URL("../dist/client/images/home/az-hero-extended.png", import.meta.url));
+  await access(new URL("../dist/client/images/home/az-hero-extended-v2.png", import.meta.url));
   await access(new URL("../dist/client/images/projects/audible-sleep-screen-array.png", import.meta.url));
   await access(new URL("../dist/client/images/projects/android-wear-array.png", import.meta.url));
   await access(new URL("../dist/client/images/projects/fi-screen-array.png", import.meta.url));

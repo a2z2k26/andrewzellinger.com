@@ -16,17 +16,25 @@
 /** @typedef {{ label: string, items: readonly string[] }} BiographyCapabilityGroup */
 
 export const BIOGRAPHY = Object.freeze({
-  lead: "Andrew Zellinger has spent two decades helping companies turn ideas into working products. He is a product designer, creative director, and fractional partner who builds from first principles through product launch.",
+  lead: "I'm Andrew Zellinger, a hands-on product design lead working across complex workflows, design systems, and AI products. I connect strategy, research, and interface design with the practical work of building and refining a product.",
   practice: Object.freeze({
     label: "Design practice",
-    body: "Andrew’s independent practice spans strategy, research, interaction design, brand, and front-end implementation across studios, agencies, startups, and large technology companies. More recently, he has applied that range to AI-native product development, designing and building products around emerging models and agentic systems while helping teams decide where automation belongs, where human agency matters, and how new technology earns trust.",
+    body: "My practice spans product strategy, research, interaction design, branding, and hands-on prototyping. I've worked as the entire design function for early teams and alongside established teams, staying close to both the decisions and the details. This portfolio brings together selected commercial work across studios, agencies, startups, and technology companies: different products and industries, connected by the work of understanding a problem and carrying an idea into an interface people can use.",
+  }),
+  perspective: Object.freeze({
+    label: "An evolving practice",
+    paragraphs: Object.freeze([
+      "I began in art direction and branding, where I learned to think about an idea and its expression together. Product design broadened that work into research, information architecture, interaction, and systems. Embedded engagements taught me to move between setting direction and making the work myself; design leadership and teaching added another dimension: helping other people develop their judgment and craft.",
+      "My independent AI work includes functioning applications, not only interface experiments. I've built an agent harness around bounded delegation, result checks, and cost visibility, and worked on controls for scheduled execution, diagnostics, and cancellation. This is self-directed development, distinct from paid client delivery. It has made implementation and evaluation a more substantial part of how I design.",
+      "That work extends the same judgment I bring to commercial products: deciding what to build, making complex behavior understandable, and keeping people in control where automation has limits. The projects here show that practice across different teams and domains. AI adds another set of materials and constraints; it does not replace the need for research, collaboration, and careful delivery.",
+    ]),
   }),
   experience: Object.freeze({
     label: "Experience",
     entries: Object.freeze([
       Object.freeze({
         organization: "Independent practice",
-        role: "Lead Product Designer",
+        role: "Product design · Client & self-directed work",
         dates: "2013 — Present",
       }),
       Object.freeze({
@@ -45,6 +53,16 @@ export const BIOGRAPHY = Object.freeze({
         dates: "2024 — 2025",
       }),
       Object.freeze({
+        organization: "SketchDeck",
+        role: "Design Lead · Contract",
+        dates: "2023 — 2024",
+      }),
+      Object.freeze({
+        organization: "Fi",
+        role: "Design Lead",
+        dates: "2023 — 2024",
+      }),
+      Object.freeze({
         organization: "Live Auctioneers",
         role: "Systems Design Lead",
         dates: "2022 — 2023",
@@ -55,9 +73,24 @@ export const BIOGRAPHY = Object.freeze({
         dates: "2022 — 2023",
       }),
       Object.freeze({
+        organization: "AKQA",
+        role: "UX Design Lead · Contract",
+        dates: "2022 — 2023",
+      }),
+      Object.freeze({
         organization: "I&Co / Audible Sleep",
         role: "UX Design Lead",
         dates: "2021 — 2022",
+      }),
+      Object.freeze({
+        organization: "Greater Than One",
+        role: "Director of UX · Contract",
+        dates: "2020 — 2021",
+      }),
+      Object.freeze({
+        organization: "Studio Rodrigo",
+        role: "Senior Product Designer · Contract",
+        dates: "2019 — 2020",
       }),
       Object.freeze({
         organization: "Philosophie",
@@ -70,6 +103,11 @@ export const BIOGRAPHY = Object.freeze({
         dates: "2017 — 2018",
       }),
       Object.freeze({
+        organization: "Noom",
+        role: "Senior Product Designer · Contract",
+        dates: "2016 — 2020",
+      }),
+      Object.freeze({
         organization: "Red Antler / Foursquare",
         role: "Senior Designer",
         dates: "2015 — 2016",
@@ -80,14 +118,34 @@ export const BIOGRAPHY = Object.freeze({
         dates: "2015 — 2016",
       }),
       Object.freeze({
+        organization: "Pod1",
+        role: "Senior Product Designer · Contract",
+        dates: "2014 — 2015",
+      }),
+      Object.freeze({
         organization: "ustwo",
         role: "Senior Product Designer",
         dates: "2013 — 2015",
       }),
       Object.freeze({
+        organization: "Crispin Porter & Bogusky",
+        role: "Senior Designer · Contract",
+        dates: "2010 — 2012",
+      }),
+      Object.freeze({
         organization: "School of Visual Arts",
         role: "Adjunct Instructor",
         dates: "2010 — 2012",
+      }),
+      Object.freeze({
+        organization: "Razorfish",
+        role: "Product Designer · Contract",
+        dates: "2009 — 2010",
+      }),
+      Object.freeze({
+        organization: "Iris Nation",
+        role: "Art Director",
+        dates: "2007 — 2010",
       }),
     ]),
   }),
@@ -100,7 +158,7 @@ export const BIOGRAPHY = Object.freeze({
       }),
       Object.freeze({
         label: "Product",
-        items: Object.freeze(["Product strategy", "UX research", "Interaction and systems design", "Fractional design leadership"]),
+        items: Object.freeze(["Product strategy", "Qualitative and quantitative research", "Information architecture", "Interaction design", "Usability testing"]),
       }),
       Object.freeze({
         label: "Delivery",
@@ -108,32 +166,74 @@ export const BIOGRAPHY = Object.freeze({
       }),
       Object.freeze({
         label: "Direction",
-        items: Object.freeze(["Design systems", "Branding and creative direction", "Workshop facilitation", "Founder and leadership partnership"]),
+        items: Object.freeze(["Design systems", "Branding and creative direction", "Workshop facilitation", "Design mentorship and critique", "Team building and hiring", "Product roadmapping"]),
       }),
     ]),
     clients: Object.freeze([
+      "Adidas",
+      "Adult Swim",
+      "Atrient",
       "Amazon",
       "American Express",
       "Apple",
+      "Audible",
       "Avantos",
       "Cosmos",
+      "Coca-Cola",
+      "Fi",
+      "Firebrand TV",
       "Foursquare",
+      "Frigidaire",
       "Google",
       "IBM",
+      "Instrumental",
+      "InteractWith",
+      "LearnVest",
+      "LG",
       "Live Auctioneers",
       "McDonald's",
+      "Mercedes-Benz",
+      "MetLife",
       "Microsoft",
       "Modern Age",
+      "Mystro",
+      "NBCUniversal",
+      "Nike",
+      "Noom",
       "Northwestern Mutual",
+      "Procter & Gamble",
       "PwC",
+      "Rabble",
+      "Seattle Genetics",
+      "Snap Kitchen",
+      "Sony",
+      "State Farm",
       "Thomson Reuters",
+      "Tred",
+      "Tripadvisor",
       "Turner Media",
       "WeWork",
     ]),
   }),
+  education: Object.freeze({
+    label: "Education",
+    body: "B.F.A. in Design, School of Visual Arts, New York City.",
+  }),
+  stack: Object.freeze({
+    label: "Tools & technologies",
+    introduction: "I use Figma and Storybook to connect interface systems with implementation, and code-based prototypes to examine behavior beyond a static screen. Coding agents support my application development and AI-system work. The tools below span commercial delivery and independent use; inclusion is not a claim of equal depth in every technology.",
+    groups: Object.freeze([
+      Object.freeze({ label: "Design & prototyping", items: Object.freeze(["Figma", "Sketch", "Adobe Creative Cloud", "Framer", "Webflow", "Rive", "Storybook"]) }),
+      Object.freeze({ label: "Code & development", items: Object.freeze(["React", "JavaScript", "TypeScript", "HTML / CSS", "Node.js", "Python", "GSAP", "Three.js", "Cursor", "Claude Code", "Codex", "GitHub"]) }),
+      Object.freeze({ label: "AI & image workflows", items: Object.freeze(["Claude", "ChatGPT", "Llama", "ComfyUI / SDXL", "Midjourney", "Krea", "Magnific", "Runway"]) }),
+      Object.freeze({ label: "Motion & 3D", items: Object.freeze(["Spline", "Blender", "Cinema 4D", "Cavalry"]) }),
+      Object.freeze({ label: "Data & deployment", items: Object.freeze(["Supabase", "Pinecone", "Vercel", "Docker", "Cloudflare"]) }),
+      Object.freeze({ label: "Collaboration", items: Object.freeze(["Notion", "Confluence", "Jira", "Google Workspace", "Slack", "Discord"]) }),
+    ]),
+  }),
   availability: Object.freeze({
     label: "Work with me",
-    body: "Andrew is available for fractional, project, and advisory work. He can serve as the design function early on or embed alongside an existing team to move a product from first principles to a built and deployed release.",
+    body: "I'm looking for a senior or lead product design role where I can contribute hands-on, from problem definition through detailed interaction design and delivery. I can establish the design function for an early product or join an existing team working through complex workflows, design systems, or AI features. Get in touch to discuss the role and the work.",
   }),
 });
 

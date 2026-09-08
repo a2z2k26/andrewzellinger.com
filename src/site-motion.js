@@ -3,16 +3,15 @@ import { ARTICLE_DETAILS } from "./article-content.js";
 import { PROJECTS } from "./project-content.js";
 import "./site-fonts.css";
 import "./effects/center-control.css";
-import "./effects/center-glass-lens.js";
+import "./effects/center-control.js";
 
 const INDEX_PATH = "";
-const PANEL_SELECTOR = ".index-media-placeholder";
 const WORKS_PATH = "/projects";
 const WORKS_CARD_SELECTOR = ".works-motion-card";
 const ARTICLES_PATH = "/articles";
 const ARTICLE_CARD_SELECTOR = ".articles-entry-list > li";
 const MOBILE_NATIVE_PATHS = new Set([WORKS_PATH, INDEX_PATH, "/articles", "/history"]);
-const NATIVE_SCROLL_PATHS = new Set();
+const NATIVE_SCROLL_PATHS = new Set([INDEX_PATH]);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const LOOP_SPEED_PX_PER_SECOND = 60;
 const LOOP_MIN_IMPULSE_MULTIPLIER = 8;
@@ -434,18 +433,9 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
   destroyActiveRuntime?.();
   destroyActiveRuntime = null;
 
-  const isIndex = currentPath() === INDEX_PATH;
   const isWorks = currentPath() === WORKS_PATH;
   const isArticles = currentPath() === ARTICLES_PATH;
-  const routeLoop = isIndex
-    ? {
-      dataset: "indexMotion",
-      expectedCount: 5,
-      fieldSelector: ".index-motion-field",
-      itemSelector: PANEL_SELECTOR,
-      namespace: "index",
-    }
-    : isWorks
+  const routeLoop = isWorks
       ? {
         dataset: "worksMotion",
         expectedCount: PROJECTS.length,

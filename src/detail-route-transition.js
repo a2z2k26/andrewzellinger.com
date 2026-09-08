@@ -91,6 +91,44 @@ export function runVerticalExpansion({
   return { tween, finished: completion, cancel };
 }
 
+export function runArticleExitTransition({
+  target,
+  reduceMotion = false,
+}) {
+  let tween = null;
+  let finished = false;
+  let resolveFinished;
+  const completion = new Promise((resolve) => { resolveFinished = resolve; });
+
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    if (target) gsap.set(target, { clearProps: "transform,opacity,visibility,willChange" });
+    resolveFinished();
+  };
+
+  const cancel = () => {
+    tween?.kill();
+    finish();
+  };
+
+  if (!target || reduceMotion) {
+    requestAnimationFrame(finish);
+    return { tween: null, finished: completion, cancel };
+  }
+
+  tween = gsap.to(target, {
+    autoAlpha: 0,
+    y: -12,
+    duration: .34,
+    ease: "power2.in",
+    willChange: "transform,opacity",
+    onComplete: finish,
+  });
+
+  return { tween, finished: completion, cancel };
+}
+
 export function runRouteTransition({
   direction = "enter",
   mediaVisual,
@@ -98,14 +136,19 @@ export function runRouteTransition({
   mediaTo,
   nativeTarget = null,
   nativeCopy = null,
+  sourceCopyVisual = null,
   copyFrom = null,
   copyTo = null,
+  copyMode = "shared",
   expansionTarget = null,
   revealTarget = null,
+  revealDuration = .72,
+  revealOffset = .18,
   reduceMotion = false,
   onComplete = () => {},
 }) {
   let overlay = null;
+  let copyOverlay = sourceCopyVisual?.isConnected ? sourceCopyVisual : null;
   let timeline = null;
   let finished = false;
 
@@ -121,6 +164,7 @@ export function runRouteTransition({
     }
     if (revealTarget) gsap.set(revealTarget, { clearProps: "opacity,visibility,willChange" });
     overlay?.remove();
+    copyOverlay?.remove();
     if (notify) onComplete();
   };
 
@@ -157,10 +201,15 @@ export function runRouteTransition({
   }
 
   const animateExpandedCard = direction === "enter" && canAnimateMedia;
+  const crossfadeCopy = animateExpandedCard
+    && copyMode === "crossfade"
+    && Boolean(nativeCopy);
   if (animateExpandedCard && nativeCopy) {
-    const copyY = copyFrom && copyTo ? copyFrom.top - copyTo.top : 24;
+    const copyY = crossfadeCopy
+      ? 10
+      : copyFrom && copyTo ? copyFrom.top - copyTo.top : 24;
     gsap.set(nativeCopy, {
-      autoAlpha: copyFrom ? 1 : 0,
+      autoAlpha: crossfadeCopy ? 0 : copyFrom ? 1 : 0,
       y: copyY,
       willChange: "transform,opacity",
     });
@@ -197,7 +246,21 @@ export function runRouteTransition({
       ease: "power3.inOut",
     }, "travel");
   }
-  if (animateExpandedCard && nativeCopy) {
+  if (crossfadeCopy && copyOverlay) {
+    timeline.to(copyOverlay, {
+      autoAlpha: 0,
+      duration: .18,
+      ease: "power1.out",
+    }, "travel");
+  }
+  if (crossfadeCopy) {
+    timeline.to(nativeCopy, {
+      autoAlpha: 1,
+      y: 0,
+      duration: .4,
+      ease: "power2.out",
+    }, "travel+=1.02");
+  } else if (animateExpandedCard && nativeCopy) {
     timeline.to(nativeCopy, {
       autoAlpha: 1,
       y: 0,
@@ -218,9 +281,9 @@ export function runRouteTransition({
   if (revealTarget) {
     timeline.to(revealTarget, {
       autoAlpha: 1,
-      duration: .72,
+      duration: revealDuration,
       ease: "power2.out",
-    }, "travel+=.18");
+    }, `travel+=${revealOffset}`);
   }
 
   return { timeline, cancel };

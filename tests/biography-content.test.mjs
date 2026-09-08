@@ -4,16 +4,10 @@ import test from "node:test";
 import { BIOGRAPHY, BIOGRAPHY_CONTACT } from "../src/biography-content.js";
 
 test("biography contains the approved editorial structure and experience record", () => {
-  assert.equal(
-    BIOGRAPHY.lead,
-    "Andrew Zellinger has spent two decades helping companies turn ideas into working products. He is a product designer, creative director, and fractional partner who builds from first principles through product launch.",
-  );
+  assert.ok(BIOGRAPHY.lead.length > 0);
   assert.equal("supportingLead" in BIOGRAPHY, false);
   assert.equal(BIOGRAPHY.practice.label, "Design practice");
-  assert.equal(
-    BIOGRAPHY.practice.body,
-    "Andrew’s independent practice spans strategy, research, interaction design, brand, and front-end implementation across studios, agencies, startups, and large technology companies. More recently, he has applied that range to AI-native product development, designing and building products around emerging models and agentic systems while helping teams decide where automation belongs, where human agency matters, and how new technology earns trust.",
-  );
+  assert.ok(BIOGRAPHY.practice.body.length > 0);
   assert.equal(BIOGRAPHY.experience.label, "Experience");
   assert.deepEqual(
     BIOGRAPHY.experience.entries.map(({ organization }) => organization),
@@ -22,15 +16,25 @@ test("biography contains the approved editorial structure and experience record"
       "Cosmos Holodeck",
       "Avantos",
       "Sketch / Amazon Fire TV",
+      "SketchDeck",
+      "Fi",
       "Live Auctioneers",
       "Modern Age",
+      "AKQA",
       "I&Co / Audible Sleep",
+      "Greater Than One",
+      "Studio Rodrigo",
       "Philosophie",
       "Ueno / Reuters TV",
+      "Noom",
       "Red Antler / Foursquare",
       "Method",
+      "Pod1",
       "ustwo",
+      "Crispin Porter & Bogusky",
       "School of Visual Arts",
+      "Razorfish",
+      "Iris Nation",
     ],
   );
   assert.ok(BIOGRAPHY.experience.entries.every(({ role, dates }) => role && dates));
@@ -38,10 +42,13 @@ test("biography contains the approved editorial structure and experience record"
   assert.equal("foundation" in BIOGRAPHY, false);
   assert.equal(BIOGRAPHY.capabilities.groups.length, 4);
   assert.ok(BIOGRAPHY.capabilities.clients.length >= 12);
-  assert.equal(
-    BIOGRAPHY.availability.body,
-    "Andrew is available for fractional, project, and advisory work. He can serve as the design function early on or embed alongside an existing team to move a product from first principles to a built and deployed release.",
-  );
+  assert.ok(BIOGRAPHY.availability.body.length > 0);
+  assert.doesNotMatch(BIOGRAPHY.lead, /decades|years of experience/i);
+  assert.equal(BIOGRAPHY.perspective.paragraphs.length, 3);
+  assert.match(BIOGRAPHY.education.body, /School of Visual Arts/);
+  const tools = BIOGRAPHY.stack.groups.flatMap(({ items }) => items);
+  assert.equal(tools.length, new Set(tools).size);
+  assert.ok(tools.includes("Figma") && tools.includes("ComfyUI / SDXL"));
 });
 
 test("biography draft avoids disputed metrics and private runtime source paths", () => {

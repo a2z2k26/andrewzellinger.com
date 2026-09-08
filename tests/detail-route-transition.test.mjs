@@ -63,7 +63,7 @@ test("detail navigation expands vertically and closes through the active project
   assert.match(detail, /holdSeconds:\s*1\.35/);
   assert.match(detail, /revealTarget:\s*collectionField/);
   assert.match(transition, /runVerticalExpansion/);
-  assert.doesNotMatch(detail, /sourceCopyVisual/);
+  assert.doesNotMatch(detail, /sourceCopyVisual:\s*targetCopy/);
   assert.doesNotMatch(detail, /destinationCopy:/);
   assert.match(motion, /initialAnchor/);
   assert.match(motion, /anchorSlug/);
@@ -82,10 +82,49 @@ test("an interrupted detail rerender restores Projects atomically", async () => 
   assert.match(detail, /function destroyDetailView\(detail = activeDetail\)[\s\S]*?if \(activeDetail === detail\) activeDetail = null;/);
 });
 
+test("an orphaned detail state cannot leave a collection hidden after Back", async () => {
+  const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+  const popState = detail.slice(
+    detail.indexOf("function onPopState"),
+    detail.indexOf("function initializeDetailState"),
+  );
+
+  assert.match(detail, /function restoreOrphanedCollection\(state\)/);
+  assert.match(popState, /if \(activeDetail\) \{\s*restoreCollection\(event\.state\);\s*return;\s*\}\s*restoreOrphanedCollection\(event\.state\);/s);
+});
+
+test("article close reloads its collection when a hot-reloaded detail shell has no index", async () => {
+  const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+  const restore = detail.slice(
+    detail.indexOf("async function restoreCollection"),
+    detail.indexOf("function openDetail"),
+  );
+
+  assert.match(restore, /if \(!collectionField\) \{/);
+  assert.match(restore, /window\.location\.replace\(previous\.collectionCanonical\);/);
+});
+
 test("detail routes cannot leak a generic Detail heading into a collection", async () => {
   const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const shell = await readFile(new URL("../detail-shell.html", import.meta.url), "utf8");
 
   assert.match(detail, /function collectionChromeFor\(entry\)/);
   assert.doesNotMatch(shell, /<h1 class="heading">Detail<\/h1>/);
+});
+
+test("article navigation expands the thumbnail while crossfading the header after travel", async () => {
+  const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+  const transition = await readFile(new URL("../src/detail-route-transition.js", import.meta.url), "utf8");
+
+  assert.match(detail, /data-article-detail-header/);
+  assert.match(detail, /\[data-project-card-copy\], \.articles-entry__body/);
+  assert.match(detail, /sourceCopyVisual/);
+  assert.match(detail, /nativeCopy:\s*targetHeader/);
+  assert.match(detail, /copyMode:\s*"crossfade"/);
+  assert.match(detail, /runArticleExitTransition/);
+  assert.match(transition, /export function runArticleExitTransition/);
+  assert.match(transition, /copyMode\s*=\s*"shared"/);
+  assert.match(transition, /copyMode === "crossfade"/);
+  assert.match(transition, /travel\+=1\.02/);
+  assert.match(detail, /revealDuration:\s*isArticle \? \.42 : \.72/);
 });

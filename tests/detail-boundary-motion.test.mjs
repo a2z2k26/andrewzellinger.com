@@ -39,6 +39,16 @@ test("incoming project media is pre-armed before its first viewport-edge frame",
   assert.match(styles, /\.detail-unit__media--boundary-pending\s*\{[^}]*clip-path:\s*inset\(100% 0 0 0\);/s);
 });
 
+test("article boundaries animate the incoming chapter without moving the completed article", async () => {
+  const controller = await readFile(new URL("../src/detail-boundary-motion.js", import.meta.url), "utf8");
+
+  assert.match(controller, /detail-view--project[\s\S]*detail-view--article/);
+  assert.match(controller, /const animateOutgoing = view\?\.classList\.contains\("detail-view--project"\)/);
+  assert.match(controller, /if \(animateOutgoing\) \{[\s\S]*pair\.outgoing\.media/);
+  assert.match(controller, /gsap\.set\(pair\.incoming\.media/);
+  assert.match(controller, /gsap\.set\(pair\.incoming\.titles/);
+});
+
 test("entry motion places the selected project at the canvas top without an intermediate curtain", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");

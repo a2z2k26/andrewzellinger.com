@@ -34,6 +34,10 @@ function renderBiography() {
   );
   editorial.append(introduction);
 
+  const perspective = labeledSection(BIOGRAPHY.perspective.label, "perspective");
+  perspective.append(prose(BIOGRAPHY.perspective.paragraphs));
+  editorial.append(perspective);
+
   const experience = element("section", "biography-experience-section");
   experience.append(element("h2", "biography-experience-section__heading", BIOGRAPHY.experience.label));
   const experienceList = element("ol", "biography-experience");
@@ -63,12 +67,32 @@ function renderBiography() {
   });
   const clients = element("div", "biography-clients");
   clients.append(
-    element("h3", "biography-clients__label", "Selected clients"),
+    element("h3", "biography-clients__label", "Selected clients · Direct & studio engagements"),
     element("p", "biography-clients__list", BIOGRAPHY.capabilities.clients.join(" · ")),
   );
   capabilitiesContent.append(capabilityGrid);
   capabilities.append(capabilitiesContent, clients);
   editorial.append(capabilities);
+
+  const education = labeledSection(BIOGRAPHY.education.label, "education");
+  education.append(prose([BIOGRAPHY.education.body]));
+  editorial.append(education);
+
+  const stack = labeledSection(BIOGRAPHY.stack.label, "stack");
+  const stackContent = element("div", "biography-stack-content");
+  stackContent.append(prose([BIOGRAPHY.stack.introduction]));
+  const stackGrid = element("dl", "biography-capabilities biography-stack-grid");
+  BIOGRAPHY.stack.groups.forEach((group) => {
+    const item = element("div", "biography-capability");
+    item.append(
+      element("dt", "biography-capability__label", group.label),
+      element("dd", "biography-capability__items", group.items.join(" · ")),
+    );
+    stackGrid.append(item);
+  });
+  stackContent.append(stackGrid);
+  stack.append(stackContent);
+  editorial.append(stack);
 
   const availability = labeledSection(BIOGRAPHY.availability.label, "availability");
   availability.append(prose([BIOGRAPHY.availability.body]));

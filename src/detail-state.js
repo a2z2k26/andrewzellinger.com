@@ -4,6 +4,7 @@ import { createBoundaryMotion } from "./detail-boundary-motion.js";
 import { createDetailSectionMotion } from "./detail-section-motion.js";
 import {
   holdRouteVisual,
+  runArticleExitTransition,
   runRouteTransition,
   runVerticalExpansion,
 } from "./detail-route-transition.js";
@@ -72,7 +73,7 @@ function collectionNodes() {
 function collectionChromeFor(entry) {
   const project = entry.kind === "project";
   return {
-    collectionHeading: project ? "Selected work" : "Writing samples",
+    collectionHeading: project ? "Projects" : "Articles",
     collectionTitle: `Andrew Zellinger • ${project ? "Projects" : "Articles"}`,
     collectionCanonical: entry.collectionPath,
   };
@@ -84,6 +85,16 @@ function closeNavigationMenu() {
   toggle?.classList.remove("active");
   toggle?.setAttribute("aria-expanded", "false");
   menu?.classList.remove("show");
+}
+
+function setShareMetadata(title, description, path) {
+  for (const selector of ['meta[property="og:title"]', 'meta[name="twitter:title"]', 'meta[property="twitter:title"]']) {
+    document.querySelector(selector)?.setAttribute("content", title);
+  }
+  for (const selector of ['meta[name="description"]', 'meta[property="og:description"]', 'meta[name="twitter:description"]', 'meta[property="twitter:description"]']) {
+    document.querySelector(selector)?.setAttribute("content", description);
+  }
+  document.querySelector('link[rel="canonical"]')?.setAttribute("href", path);
 }
 
 function setDetailChrome(entry) {
@@ -110,8 +121,9 @@ function setDetailChrome(entry) {
   requestAnimationFrame(markActiveNavigation);
 
   const heading = document.querySelector(".title .heading");
-  if (heading) heading.textContent = entry.kind === "project" ? "Selected work" : "Writing samples";
+  if (heading) heading.textContent = entry.kind === "project" ? "Projects" : "Articles";
   document.title = `Andrew Zellinger • ${entry.title}`;
+  setShareMetadata(document.title, entry.summary, entry.path);
   document.querySelector('link[rel="canonical"]')?.setAttribute("href", entry.path);
 }
 
@@ -129,6 +141,9 @@ function restoreCollectionChrome(detail = activeDetail) {
   const heading = document.querySelector(".title .heading");
   if (heading) heading.textContent = detail.collectionHeading;
   document.title = detail.collectionTitle;
+  setShareMetadata(document.title, detail.collectionCanonical === "/articles"
+    ? "Articles by Andrew Zellinger on product design, AI experience quality, and building systems: decisions, constraints, and lessons from hands-on work."
+    : "Selected commercial product design by Andrew Zellinger, spanning complex workflows, design systems, and AI products.", detail.collectionCanonical);
   document.querySelector('link[rel="canonical"]')?.setAttribute("href", detail.collectionCanonical);
 }
 
@@ -137,6 +152,8 @@ function discardPendingDetailRender({ restoreCollection = false } = {}) {
   if (!pending) return;
   pendingDetailRender = null;
   pending.sectionMotion?.destroy();
+  pending.sourceVisual?.remove();
+  pending.sourceCopyVisual?.remove();
   pending.view?.remove();
   if (!restoreCollection) return;
   if (activeDetail) destroyDetailView(activeDetail);
@@ -177,17 +194,19 @@ function mediaMarkup(entry) {
   const source = entry.media?.src
     ? ` style="--portfolio-media-image: url('${escapeHtml(entry.media.src)}')"`
     : "";
-  return `<div class="media-background-holder landscape${projectClass} detail-unit__media detail-unit__media--placeholder" role="img" aria-label="${escapeHtml(label)}"${source}>
+  const accessibleMedia = entry.media?.decorative ? 'aria-hidden="true"' : `role="img" aria-label="${escapeHtml(label)}"`;
+  return `<div class="media-background-holder landscape${projectClass} detail-unit__media detail-unit__media--placeholder" ${accessibleMedia}${source}>
     <span class="detail-unit__media-shade" aria-hidden="true"></span>
   </div>`;
 }
 
 function projectSectionsMarkup(entry) {
   return `<div class="detail-unit__sections detail-unit__sections--project" data-detail-expansion-body>
-    ${entry.sections.map((section) => `<section class="detail-unit__section detail-unit__section--project detail-unit__section--project-${section.label.toLowerCase()}">
-      <div class="detail-unit__section-label">${escapeHtml(section.label)}</div>
+    ${entry.sections.map((section) => `<section class="detail-unit__section detail-unit__section--project detail-unit__section--project-${section.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}">
+      <h3 class="detail-unit__section-label">${escapeHtml(section.label)}</h3>
       <div class="detail-unit__section-body detail-unit__section-body--project">
         ${sectionParagraphs(section).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+        ${section.items?.length ? `<ul class="detail-unit__decisions">${section.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
       </div>
     </section>`).join("")}
   </div>`;
@@ -216,8 +235,42 @@ function projectLockupMarkup(entry) {
 
 function articleBodyBlockMarkup(block) {
   if (typeof block === "string") return `<p>${escapeHtml(block)}</p>`;
-  if (block?.type === "heading") return `<h3>${escapeHtml(block.text)}</h3>`;
+  if (block?.type === "quote") return `<blockquote class="detail-unit__quote"><p>${escapeHtml(block.text)}</p></blockquote>`;
+  if (block?.type === "list") {
+    const tag = block.ordered ? "ol" : "ul";
+    return `<${tag}>${block.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</${tag}>`;
+  }
   return `<p>${escapeHtml(block?.text ?? "")}</p>`;
+}
+
+function articleBodyMarkup(entry) {
+  const groups = [];
+  let current = { heading: null, blocks: [] };
+
+  entry.body.forEach((block) => {
+    if (block?.type !== "heading") {
+      current.blocks.push(block);
+      return;
+    }
+
+    if (current.heading || current.blocks.length) groups.push(current);
+    current = { heading: block.text, blocks: [] };
+  });
+  if (current.heading || current.blocks.length) groups.push(current);
+
+  return `<div class="detail-unit__article-body">
+    ${groups.map((group) => {
+      const content = group.blocks.map(articleBodyBlockMarkup).join("");
+      if (!group.heading) {
+        return `<div class="detail-unit__article-opening">${content}</div>`;
+      }
+      return `<section class="detail-unit__article-section">
+        <h3>${escapeHtml(group.heading)}</h3>
+        ${content ? `<div class="detail-unit__article-section-body">${content}</div>` : ""}
+      </section>`;
+    }).join("")}
+    ${entry.relatedProject ? `<p class="detail-unit__related">Related work: <a href="${escapeHtml(entry.relatedProject.path)}">${escapeHtml(entry.relatedProject.title)}</a></p>` : ""}
+  </div>`;
 }
 
 function unitMarkup(entry, index, entries, hidden) {
@@ -241,16 +294,16 @@ function unitMarkup(entry, index, entries, hidden) {
     </article>`;
   }
 
-  const body = `<div class="detail-unit__article-body">
-      ${entry.body.map(articleBodyBlockMarkup).join("")}
-    </div>`;
+  const body = articleBodyMarkup(entry);
 
   return `<article class="detail-unit" data-detail-index="${index}" data-detail-slug="${entry.slug}"${id}>
     ${mediaMarkup(entry)}
     <div class="detail-unit__copy detail-unit__copy--${entry.kind}" data-detail-motion-copy>
-      <h2 class="${titleClass}" data-detail-motion-title tabindex="-1">${escapeHtml(entry.title)}</h2>
-      <div class="${metaClass}" data-detail-motion-meta>${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
-      <p class="${ledeClass}" data-detail-motion-lede>${escapeHtml(lede)}</p>
+      <div class="detail-unit__article-header" data-article-detail-header>
+        <h2 class="${titleClass}" data-detail-motion-title tabindex="-1">${escapeHtml(entry.title)}</h2>
+        <div class="${metaClass}" data-detail-motion-meta>${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
+        <p class="${ledeClass}" data-detail-motion-lede>${escapeHtml(lede)}</p>
+      </div>
       ${body}
     </div>
   </article>`;
@@ -314,65 +367,6 @@ function killTransition() {
   activeTransition = null;
 }
 
-function runEntranceTransition(sourceVisual, sourceRect, targetUnit, reduceMotion) {
-  const target = targetUnit.querySelector(".detail-unit__media");
-  const copy = targetUnit.querySelector(".detail-unit__copy");
-  if (!sourceVisual || !sourceRect || !target || !copy || reduceMotion || !matchMedia(DESKTOP_QUERY).matches) {
-    target?.style.removeProperty("visibility");
-    return;
-  }
-
-  killTransition();
-  const targetRect = target.getBoundingClientRect();
-  const overlay = sourceVisual.cloneNode(true);
-  overlay.classList.add("detail-transition-media");
-  overlay.removeAttribute("role");
-  overlay.removeAttribute("aria-label");
-  overlay.setAttribute("aria-hidden", "true");
-  Object.assign(overlay.style, {
-    left: `${targetRect.left}px`,
-    top: `${targetRect.top}px`,
-    width: `${targetRect.width}px`,
-    height: `${targetRect.height}px`,
-  });
-  document.body.append(overlay);
-  target.style.visibility = "hidden";
-  gsap.set(overlay, {
-    x: sourceRect.left - targetRect.left,
-    y: sourceRect.top - targetRect.top,
-    scaleX: sourceRect.width / targetRect.width,
-    scaleY: sourceRect.height / targetRect.height,
-    transformOrigin: "0 0",
-  });
-  gsap.set(copy, { autoAlpha: 0, y: 24 });
-
-  const finish = () => {
-    target.style.removeProperty("visibility");
-    overlay.remove();
-    if (activeTransition?.overlay === overlay) activeTransition = null;
-  };
-  const timeline = gsap.timeline({ onComplete: finish });
-  timeline
-    .to(overlay, {
-      x: 0,
-      y: 0,
-      scaleX: 1,
-      scaleY: 1,
-      duration: .72,
-      ease: "power3.inOut",
-    })
-    .set(target, { visibility: "visible" })
-    .to(copy, {
-      autoAlpha: 1,
-      y: 0,
-      duration: .42,
-      ease: "power2.out",
-      clearProps: "transform,opacity,visibility",
-    }, "-=.18");
-
-  activeTransition = { timeline, overlay, target };
-}
-
 function updateActiveEntry(entries, units) {
   const marker = window.scrollY + DETAIL_TOP_INSET + 2;
   let activeUnit = units[0];
@@ -384,6 +378,7 @@ function updateActiveEntry(entries, units) {
   replaceDetailHistory(entry);
   document.documentElement.dataset.detailActiveSlug = entry.slug;
   document.title = `Andrew Zellinger • ${entry.title}`;
+  setShareMetadata(document.title, entry.summary, entry.path);
 }
 
 function setupDetailScroll(view, entries, circular, reduceMotion, {
@@ -469,6 +464,7 @@ function destroyDetailView(detail = activeDetail) {
 
 async function renderDetail(entry, {
   sourceVisual = null,
+  sourceCopyVisual = null,
   sourceRect = null,
   sourceCopyRect = null,
 } = {}) {
@@ -495,9 +491,19 @@ async function renderDetail(entry, {
   const host = document.querySelector(".wrapper");
   host.insertAdjacentHTML("beforeend", viewMarkup(entries, circular));
   const view = host.querySelector(".detail-view:last-child");
+  const sourceSet = view.querySelector('[data-detail-set="source"]');
+  const selectedIndex = entries.findIndex((candidate) => candidate.slug === entry.slug);
+  const selectedUnit = sourceSet.querySelector(`.detail-unit[data-detail-index="${selectedIndex}"]`);
+  const animateFromCard = circular
+    && Boolean(sourceVisual)
+    && Number.isFinite(sourceRect?.top);
+  if (entry.kind === "article" && animateFromCard) {
+    selectedUnit.querySelector(".detail-unit__media").style.visibility = "hidden";
+    gsap.set(selectedUnit.querySelector("[data-article-detail-header]"), { autoAlpha: 0 });
+  }
   const sectionMotion = createDetailSectionMotion({
     view,
-    enabled: entry.kind === "project" && circular,
+    enabled: circular,
   });
   const pending = {
     operation,
@@ -507,18 +513,14 @@ async function renderDetail(entry, {
     collectionTitle,
     collectionCanonical,
     collectionNodes: nodes,
+    sourceVisual: sourceVisual?.isConnected ? sourceVisual : null,
+    sourceCopyVisual: sourceCopyVisual?.isConnected ? sourceCopyVisual : null,
   };
   pendingDetailRender = pending;
   document.documentElement.dataset.detailMode = circular ? "circular" : "static";
   await nextFrame();
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
-  const sourceSet = view.querySelector('[data-detail-set="source"]');
-  const selectedIndex = entries.findIndex((candidate) => candidate.slug === entry.slug);
-  const selectedUnit = sourceSet.querySelector(`.detail-unit[data-detail-index="${selectedIndex}"]`);
-  const animateFromCard = entry.kind === "project"
-    && circular
-    && Number.isFinite(sourceRect?.top);
   const expandedTop = DETAIL_TOP_INSET;
   setScroll(documentTop(selectedUnit) - expandedTop);
   await nextFrame();
@@ -599,9 +601,28 @@ async function renderDetail(entry, {
     return;
   }
 
-  runEntranceTransition(sourceVisual, sourceRect, selectedUnit, reduceMotion);
-  sectionMotion.start();
-  focusTarget?.focus({ preventScroll: true });
+  const targetMedia = selectedUnit.querySelector(".detail-unit__media");
+  const targetHeader = selectedUnit.querySelector("[data-article-detail-header]");
+  let transition = null;
+  transition = runRouteTransition({
+    direction: "enter",
+    mediaVisual: sourceVisual,
+    mediaFrom: sourceRect,
+    mediaTo: elementRect(targetMedia),
+    nativeTarget: targetMedia,
+    nativeCopy: targetHeader,
+    sourceCopyVisual,
+    copyFrom: sourceCopyRect,
+    copyTo: elementRect(targetHeader),
+    copyMode: "crossfade",
+    reduceMotion,
+    onComplete: () => {
+      if (activeTransition === transition) activeTransition = null;
+      sectionMotion.start();
+      if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
+    },
+  });
+  activeTransition = transition;
 }
 
 async function restoreCollection(state) {
@@ -620,6 +641,7 @@ async function restoreCollection(state) {
     && !previous.reduceMotion
     && Boolean(returnSlug)
     && Boolean(activeUnit);
+  const isArticle = previous.view.classList.contains("detail-view--article");
 
   if (canReverse) {
     const collapse = runVerticalExpansion({
@@ -633,6 +655,17 @@ async function restoreCollection(state) {
     if (activeTransition === collapse) activeTransition = null;
   }
 
+  if (isArticle) {
+    const exit = runArticleExitTransition({
+      target: previous.view,
+      reduceMotion: previous.reduceMotion,
+    });
+    activeTransition = exit;
+    await exit.finished;
+    if (operation !== routeOperation) return;
+    if (activeTransition === exit) activeTransition = null;
+  }
+
   const detailMedia = canReverse ? activeUnit.querySelector(".detail-unit__media") : null;
   const returnMediaRect = elementRect(detailMedia);
   const mediaIsVisible = returnMediaRect
@@ -643,9 +676,17 @@ async function restoreCollection(state) {
     ? holdRouteVisual(detailMedia.cloneNode(true), "detail-transition-media", returnMediaRect)
     : null;
   const collectionField = previous.collectionNodes.find((node) => (
-    node.matches?.(".works-motion-field")
+    node.matches?.(".works-motion-field, .articles-index")
   ));
-  if (canReverse && collectionField) gsap.set(collectionField, { autoAlpha: 0 });
+  if (!collectionField) {
+    returnMediaVisual?.remove();
+    previous.view.style.visibility = "hidden";
+    destroyDetailView(previous);
+    restoreCollectionChrome(previous);
+    window.location.replace(previous.collectionCanonical);
+    return;
+  }
+  if ((canReverse || isArticle) && collectionField) gsap.set(collectionField, { autoAlpha: 0 });
 
   previous.view.style.visibility = "hidden";
   destroyDetailView(previous);
@@ -696,6 +737,8 @@ async function restoreCollection(state) {
     mediaTo: target.rect,
     nativeTarget: target.media,
     revealTarget: collectionField,
+    revealDuration: isArticle ? .42 : .72,
+    revealOffset: isArticle ? .04 : .18,
     reduceMotion: previous.reduceMotion,
     onComplete: () => {
       if (activeTransition === transition) activeTransition = null;
@@ -715,9 +758,21 @@ function openDetail(link) {
   const sourceRect = rect
     ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height }
     : null;
-  const sourceVisual = sourceMedia?.cloneNode(true) ?? null;
-  const sourceCopy = link.querySelector("[data-project-card-copy]");
+  const sourceCopy = link.querySelector("[data-project-card-copy], .articles-entry__body");
   const sourceCopyRect = elementRect(sourceCopy);
+  const sourceVisual = sourceMedia?.cloneNode(true) ?? null;
+  const canAnimateArticle = entry.kind === "article"
+    && sourceRect
+    && matchMedia(DESKTOP_QUERY).matches
+    && !shouldReduceMotion();
+  const transitionVisual = entry.kind === "article"
+    && sourceVisual
+    && canAnimateArticle
+    ? holdRouteVisual(sourceVisual, "detail-transition-media", sourceRect)
+    : sourceVisual;
+  const sourceCopyVisual = canAnimateArticle && sourceCopy && sourceCopyRect
+    ? holdRouteVisual(sourceCopy.cloneNode(true), "article-transition-copy", sourceCopyRect)
+    : null;
   const sourceRoute = normalizedPath();
   const sourceScrollY = window.scrollY;
   const collectionState = {
@@ -745,7 +800,8 @@ function openDetail(link) {
     entry.path,
   );
   renderDetail(entry, {
-    sourceVisual,
+    sourceVisual: transitionVisual,
+    sourceCopyVisual,
     sourceRect,
     sourceCopyRect,
   });
@@ -798,6 +854,40 @@ function onDocumentKeyDown(event) {
   openDetail(link);
 }
 
+function restoreOrphanedCollection(state) {
+  const path = normalizedPath();
+  const nodes = collectionNodes();
+  const hasStaleDetailState = document.documentElement.classList.contains("detail-route")
+    || nodes.some((node) => node.hidden)
+    || Boolean(document.querySelector(".detail-view"));
+  if (!hasStaleDetailState) return;
+
+  const expectedRoot = path === "/articles"
+    ? document.querySelector(".articles-index")
+    : document.querySelector(".works-motion-field");
+  if (!expectedRoot || document.querySelector(".detail-view")) {
+    window.location.replace(path);
+    return;
+  }
+
+  const operation = ++routeOperation;
+  killTransition();
+  nodes.forEach((node) => { node.hidden = false; });
+  gsap.set(nodes, { clearProps: "opacity,visibility" });
+
+  const project = path === "/projects";
+  restoreCollectionChrome(collectionChromeFor({
+    kind: project ? "project" : "article",
+    collectionPath: path,
+  }));
+  window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
+
+  const scrollY = state?.[COLLECTION_STATE_KEY]?.scrollY ?? 0;
+  requestAnimationFrame(() => {
+    if (operation === routeOperation) setScroll(scrollY);
+  });
+}
+
 function onPopState(event) {
   const entry = detailFromPath(window.location.pathname);
   if (entry) {
@@ -814,6 +904,7 @@ function onPopState(event) {
     restoreCollection(event.state);
     return;
   }
+  restoreOrphanedCollection(event.state);
 }
 
 function initializeDetailState() {

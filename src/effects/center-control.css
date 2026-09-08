@@ -1,141 +1,192 @@
-.glass-nav-shell {
-  --glass-nav-menu-inset: 32px;
-  --glass-nav-menu-icon-gap: 24px;
-  --glass-nav-close-height: 44px;
-  --glass-nav-menu-optical-y: 8px;
-  width: 164px;
-  height: 164px;
+.center-nav-shell {
+  --center-nav-closed-size: 100px;
+  --center-nav-menu-width: 280px;
+  --center-nav-menu-height: 320px;
+  width: 360px;
+  height: 380px;
   align-self: center;
   margin-inline: auto;
-  pointer-events: auto;
-  overflow: hidden;
-  border-radius: 50%;
-  transition:
-    width .58s cubic-bezier(.2,.8,.2,1),
-    height .58s cubic-bezier(.2,.8,.2,1),
-    border-radius .58s cubic-bezier(.2,.8,.2,1);
+  pointer-events: none;
+  overflow: visible;
+  background: transparent !important;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   isolation: isolate;
 }
 
-.glass-nav-shell.glass-nav-shell--open {
-  width: 240px;
-  height: 320px;
-  border-radius: 28px;
+.center-gooey-host {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.glass-nav-shell .nav_toggle,
-html.detail-route .glass-nav-shell .nav_toggle,
-html.detail-route .glass-nav-shell .nav_toggle.active {
-  inset: 0;
+.center-gooey-group {
   width: 100%;
   height: 100%;
-  margin: 0;
-  border: 0;
-  border-radius: inherit;
-  background: transparent !important;
-  transform: none !important;
-  transition: height .58s cubic-bezier(.2,.8,.2,1);
+  overflow: visible;
 }
 
-.glass-nav-shell--open .nav_toggle {
-  top: auto;
-  bottom: var(--glass-nav-menu-inset);
-  height: var(--glass-nav-close-height);
-  border-radius: 0;
+.center-gooey-base-item {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
 }
 
-.glass-nav-shell .nav_menu {
+.center-gooey-base-item {
+  width: var(--center-nav-closed-size);
+  height: var(--center-nav-closed-size);
+  margin-top: calc(var(--center-nav-closed-size) / -2);
+  margin-left: calc(var(--center-nav-closed-size) / -2);
+}
+
+.center-gooey-base-surface,
+.center-gooey-menu-panel-surface {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.center-gooey-base-surface {
+  border-radius: 999px;
+}
+
+.center-gooey-menu-panel-surface {
   position: absolute;
-  top: 0;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  will-change: width, height, border-radius, transform;
+}
+
+.center-nav-shell .nav_toggle,
+html.detail-route .center-nav-shell .nav_toggle,
+html.detail-route .center-nav-shell .nav_toggle.active {
+  position: absolute;
+  top: 50%;
   right: auto;
   bottom: auto;
   left: 50%;
+  width: var(--center-nav-closed-size);
+  height: var(--center-nav-closed-size);
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff !important;
+  transform: translate(-50%, -50%) !important;
+  transition: none;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.center-nav-shell.center-nav-shell--gooey-ready .nav_toggle,
+html.detail-route .center-nav-shell.center-nav-shell--gooey-ready .nav_toggle,
+html.detail-route .center-nav-shell.center-nav-shell--gooey-ready .nav_toggle.active {
+  background: transparent !important;
+}
+
+.center-nav-shell .nav_menu,
+.center-nav-shell .nav_menu.show {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
+  border-radius: 0;
   background: transparent !important;
-  transform: translateX(-50%) !important;
-  transition: opacity .25s ease .06s;
+  transform: none !important;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.glass-nav-shell .nav_menu.show {
-  transform: translateX(-50%) !important;
+.center-nav-shell--closing .nav_menu {
+  opacity: 1;
 }
 
-.glass-nav-shell .glass-nav-menu-list {
-  position: relative;
-  top: var(--glass-nav-menu-optical-y);
-  width: 100%;
-  height: calc(100% - var(--glass-nav-menu-inset) - var(--glass-nav-close-height));
-  padding-inline: var(--glass-nav-menu-inset);
+.center-nav-shell .center-nav-menu-list {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--center-nav-menu-width);
+  height: var(--center-nav-menu-height);
+  padding: 64px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 13px;
+  gap: 20px;
   animation: none !important;
-  transform: none !important;
+  transform: translate(-50%, calc(-50% - 238px)) !important;
 }
 
-.glass-nav-shell .glass-nav-link {
+.center-nav-shell .center-nav-link {
   position: relative;
   width: 100%;
-  color: rgba(255,255,255,.78);
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0,0,0,.68);
   font-family: "Geist", sans-serif;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   font-synthesis: none;
-  line-height: 24px;
+  line-height: 20px;
   letter-spacing: .04em;
   text-align: center;
   text-transform: uppercase;
-  text-shadow: 0 1px 5px rgba(0,0,0,.5);
-  opacity: 0;
-  transform: translateY(7px);
-  transition: opacity .22s ease, transform .32s cubic-bezier(.2,.8,.2,1), color .2s ease;
-}
-
-.glass-nav-shell--open .glass-nav-link {
+  text-shadow: none;
   opacity: 1;
-  transform: translateY(0);
+  visibility: hidden;
+  transform: none;
+  transition: color .2s ease;
+  pointer-events: none;
 }
 
-.glass-nav-shell--open .glass-nav-link:nth-child(2) { transition-delay: .035s; }
-.glass-nav-shell--open .glass-nav-link:nth-child(3) { transition-delay: .07s; }
-.glass-nav-shell--open .glass-nav-link:nth-child(4) { transition-delay: .105s; }
-
-.glass-nav-shell .glass-nav-link:hover,
-.glass-nav-shell .glass-nav-link.w--current {
-  color: #fff;
+.center-nav-shell[data-nav-link-stage="1"] .center-nav-link:nth-child(-n + 1),
+.center-nav-shell[data-nav-link-stage="2"] .center-nav-link:nth-child(-n + 2),
+.center-nav-shell[data-nav-link-stage="3"] .center-nav-link:nth-child(-n + 3),
+.center-nav-shell[data-nav-link-stage="4"] .center-nav-link:nth-child(-n + 4) {
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.glass-nav-shell .nav_icon {
+.center-nav-shell .center-nav-link:hover,
+.center-nav-shell .center-nav-link.w--current {
+  color: #000;
+}
+
+.center-nav-shell .nav_icon {
   transform: none;
 }
 
-.glass-nav-shell .nav_icon-plus {
+.center-nav-shell .nav_icon-plus {
   display: block;
   width: 36px;
   height: 36px;
   flex: 0 0 36px;
   transform: rotate(0deg);
   transform-origin: 50% 50%;
-  transition: transform .32s cubic-bezier(.2,.8,.2,1);
+  transition: none;
 }
 
-.glass-nav-shell--open .nav_icon-plus,
-html.detail-route .glass-nav-shell .nav_icon-plus {
+html.detail-route .center-nav-shell .nav_icon-plus {
   transform: rotate(45deg);
 }
 
-@media screen and (max-width: 991px) {
-  .glass-nav-shell {
-    width: 96px;
-    height: 96px;
+@media (prefers-reduced-motion: reduce) {
+  .center-gooey-menu-panel-surface {
+    will-change: auto;
   }
+}
 
-  .glass-nav-shell.glass-nav-shell--open {
-    width: 240px;
-    height: 320px;
+@media screen and (max-width: 991px) {
+  .center-nav-shell {
+    --center-nav-closed-size: 96px;
   }
 }
