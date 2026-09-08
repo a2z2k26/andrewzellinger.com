@@ -180,7 +180,7 @@ const placeholderStyles = `
   </style>
   <style id="local-index-page-spacing">
     html.works-motion-route {
-      --works-card-gap: 72px;
+      --works-card-gap: 32px;
     }
     html.works-motion-route body,
     html.index-route body {

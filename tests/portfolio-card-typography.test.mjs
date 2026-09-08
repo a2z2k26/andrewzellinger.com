@@ -9,7 +9,7 @@ async function read(relativePath) {
 }
 
 function assertPortfolioTreatment(source, label) {
-  assert.match(source, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*72px;/s, `${label} must define the 72px Projects card gap`);
+  assert.match(source, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*32px;/s, `${label} must define the 32px Projects card gap`);
   assert.match(source, /\.works-motion-field\s*\{[^}]*row-gap:\s*var\(--works-card-gap\);/s, `${label} must apply the card gap to the static field`);
   assert.match(source, /\.works-motion-track,[\s\S]*?\.works-motion-set\s*\{[^}]*row-gap:\s*var\(--works-card-gap\);/s, `${label} must apply the card gap inside and between loop sets`);
   assert.match(source, /\.works-media-spacing\s*\{[^}]*margin-bottom:\s*32px;/s, `${label} must keep a 32px image-to-copy gap`);

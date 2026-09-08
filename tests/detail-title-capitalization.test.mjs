@@ -127,7 +127,7 @@ test("expanded projects balance their detail spacing while article details stay 
   assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*calc\(\(100% - var\(--structure--grid-row-gap\)\) \/ 3 - var\(--detail-project-section-body-shift\)\)\)\s*minmax\(0,\s*1fr\);/s);
   assert.match(runtime, /detail-set detail-set--\$\{name\} detail-set--\$\{kind\}/);
   assert.match(runtime, /detail-view detail-view--\$\{kind\}/);
-  assert.match(styles, /--detail-project-inter-unit-gap:\s*144px;/);
+  assert.match(styles, /--detail-project-inter-unit-gap:\s*72px;/);
   assert.match(styles, /--detail-article-inter-unit-gap:\s*64px;/);
   assert.match(styles, /\.detail-set\.detail-set--project\s*\{[^}]*gap:\s*var\(--detail-project-inter-unit-gap\);/s);
   assert.match(styles, /\.detail-view--project \.detail-sets\s*\{[^}]*gap:\s*var\(--detail-project-inter-unit-gap\);/s);
