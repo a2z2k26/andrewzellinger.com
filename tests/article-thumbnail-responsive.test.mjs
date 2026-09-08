@@ -27,9 +27,12 @@ test("Articles use the Projects-like title, metadata, excerpt hierarchy", async 
   assert.equal(html.match(/articles-entry__title heading-style-h2 new/g)?.length, 11);
   assert.equal(html.match(/articles-entry__meta display-inlineflex categories works-meta-spacing/g)?.length, 11);
   assert.equal(html.match(/articles-entry__excerpt works-project-description/g)?.length, 11);
-  assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*margin:\s*0;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;[^}]*font-weight:\s*400;/s);
+  assert.equal(html.match(/<span class="articles-entry__cta">View article<\/span>/g)?.length, 11);
+  assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*max-width:\s*80%;[^}]*margin:\s*0;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;[^}]*font-weight:\s*400;/s);
+  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__title\s*\{\s*max-width:\s*80%;\s*\}/s);
   assert.match(html, /\.articles-entry__meta\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;[^}]*margin-top:\s*16px;[^}]*margin-bottom:\s*var\(--space--desktop-medium\);[^}]*gap:\s*24px;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap;/s);
   assert.match(html, /\.articles-entry__excerpt\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*opacity:\s*1;[^}]*margin-top:\s*0;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*uppercase;[^}]*overflow:\s*hidden;[^}]*display:\s*-webkit-box;[^}]*-webkit-box-orient:\s*vertical;[^}]*-webkit-line-clamp:\s*2;/s);
+  assert.match(html, /\.articles-entry__cta\s*\{[^}]*margin-top:\s*16px;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;[^}]*text-decoration:\s*none;[^}]*display:\s*inline-block;/s);
 });
 
 test("Articles rows keep route-specific editorial spacing", async () => {

@@ -21,6 +21,7 @@ function articleMarkup(entry) {
             ${entry.meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
           </div>
           <p class="articles-entry__excerpt works-project-description">${escapeHtml(entry.summary)}</p>
+          <span class="articles-entry__cta">View article</span>
         </div>
       </article>
     </a>

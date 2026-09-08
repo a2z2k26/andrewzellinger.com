@@ -874,7 +874,7 @@ export const ARTICLE_DETAILS = Object.freeze([
   article({
     index: 8,
     slug: "design-principles-that-actually-shape-the-product",
-    title: "Design Principles That Actually Shape the Product",
+    title: "Design Principles That Shape the Product",
     meta: ["Andrew Zellinger"],
     summary: "How research-grounded design principles resolve real trade-offs, survive delivery pressure, and actively shape product decisions.",
     body: designPrinciplesBody,
@@ -882,7 +882,7 @@ export const ARTICLE_DETAILS = Object.freeze([
   article({
     index: 9,
     slug: "lessons-from-fifteen-years-of-embedded-product-design",
-    title: "Lessons from Fifteen Years of Embedded Product Design",
+    title: "Lessons from Embedded Product Design",
     meta: ["Andrew Zellinger"],
     summary: "Six hard-earned lessons from fifteen years of embedded product design, from research artifacts to product coherence and pilots.",
     body: embeddedProductDesignLessonsBody,
