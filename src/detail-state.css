@@ -323,9 +323,25 @@ html[data-detail-boundary-motion="active"] [data-detail-motion-lede] {
 }
 
 .detail-unit__section--project {
+  --detail-section-rule-progress: 1;
   grid-template-columns: minmax(0, calc((100% - var(--structure--grid-row-gap)) / 3 - var(--detail-project-section-body-shift))) minmax(0, 1fr);
   align-items: baseline;
+  border-top-color: transparent;
   padding-top: var(--detail-project-section-copy-edge-gap);
+  position: relative;
+}
+
+.detail-unit__section--project::before {
+  content: "";
+  pointer-events: none;
+  height: 1px;
+  background: rgba(255, 255, 255, .16);
+  position: absolute;
+  top: -1px;
+  right: 0;
+  left: 0;
+  transform: scaleX(var(--detail-section-rule-progress));
+  transform-origin: left center;
 }
 
 .detail-unit__section--project-context,

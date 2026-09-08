@@ -99,7 +99,7 @@ test("project details retain one primary media surface and omit Process media", 
   );
 });
 
-test("expanded projects use collection spacing while article details stay unchanged", async () => {
+test("expanded projects balance their detail spacing while article details stay unchanged", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 

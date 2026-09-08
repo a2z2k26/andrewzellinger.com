@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import "./detail-state.css";
 import { createBoundaryMotion } from "./detail-boundary-motion.js";
+import { createDetailSectionMotion } from "./detail-section-motion.js";
 import {
   holdRouteVisual,
   runRouteTransition,
@@ -126,6 +127,7 @@ function discardPendingDetailRender({ restoreCollection = false } = {}) {
   const pending = pendingDetailRender;
   if (!pending) return;
   pendingDetailRender = null;
+  pending.sectionMotion?.destroy();
   pending.view?.remove();
   if (!restoreCollection) return;
   pending.collectionNodes.forEach((node) => { node.hidden = false; });
@@ -438,6 +440,7 @@ function currentEntry(entries) {
 
 function destroyDetailView() {
   if (!activeDetail) return;
+  activeDetail.sectionMotion?.destroy();
   activeDetail.scrollRuntime?.destroy();
   activeDetail.resizeCall?.kill();
   window.removeEventListener("resize", activeDetail.onResize);
@@ -475,9 +478,14 @@ async function renderDetail(entry, {
   const host = document.querySelector(".wrapper");
   host.insertAdjacentHTML("beforeend", viewMarkup(entries, circular));
   const view = host.querySelector(".detail-view:last-child");
+  const sectionMotion = createDetailSectionMotion({
+    view,
+    enabled: entry.kind === "project" && circular,
+  });
   const pending = {
     operation,
     view,
+    sectionMotion,
     collectionHeading,
     collectionTitle,
     collectionCanonical,
@@ -504,6 +512,7 @@ async function renderDetail(entry, {
     entries,
     circular,
     reduceMotion,
+    sectionMotion,
     animateFromCard ? {
       initialUnit: selectedUnit,
     } : {},
@@ -565,6 +574,7 @@ async function renderDetail(entry, {
       reduceMotion,
       onComplete: () => {
         if (activeTransition === transition) activeTransition = null;
+        sectionMotion.start();
         if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
       },
     });
@@ -573,6 +583,7 @@ async function renderDetail(entry, {
   }
 
   runEntranceTransition(sourceVisual, sourceRect, selectedUnit, reduceMotion);
+  sectionMotion.start();
   focusTarget?.focus({ preventScroll: true });
 }
 
