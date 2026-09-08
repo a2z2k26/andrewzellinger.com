@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import "./detail-state.css";
+import { createBoundaryMotion } from "./detail-boundary-motion.js";
 import {
   ARTICLE_DETAILS,
   CASE_STUDIES,
@@ -144,7 +145,9 @@ function mediaMarkup(entry) {
   const source = entry.media?.src
     ? ` style="--portfolio-media-image: url('${escapeHtml(entry.media.src)}')"`
     : "";
-  return `<div class="media-background-holder landscape detail-unit__media detail-unit__media--placeholder" role="img" aria-label="${escapeHtml(label)}"${source}></div>`;
+  return `<div class="media-background-holder landscape detail-unit__media detail-unit__media--placeholder" role="img" aria-label="${escapeHtml(label)}"${source}>
+    <span class="detail-unit__media-shade" aria-hidden="true"></span>
+  </div>`;
 }
 
 function unitMarkup(entry, index, entries, hidden) {
@@ -176,10 +179,10 @@ function unitMarkup(entry, index, entries, hidden) {
 
   return `<article class="detail-unit" data-detail-index="${index}" data-detail-slug="${entry.slug}"${id}>
     ${mediaMarkup(entry)}
-    <div class="detail-unit__copy detail-unit__copy--${entry.kind}">
-      <h2 class="${titleClass}" tabindex="-1">${escapeHtml(entry.title)}</h2>
-      <div class="${metaClass}">${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
-      <p class="${ledeClass}">${escapeHtml(lede)}</p>
+    <div class="detail-unit__copy detail-unit__copy--${entry.kind}" data-detail-motion-copy>
+      <h2 class="${titleClass}" data-detail-motion-title tabindex="-1">${escapeHtml(entry.title)}</h2>
+      <div class="${metaClass}" data-detail-motion-meta>${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
+      <p class="${ledeClass}" data-detail-motion-lede>${escapeHtml(lede)}</p>
       ${body}
     </div>
   </article>`;
@@ -293,7 +296,7 @@ function updateActiveEntry(entries, units) {
   document.title = `Andrew Zellinger • ${entry.title}`;
 }
 
-function setupDetailScroll(view, entries, circular) {
+function setupDetailScroll(view, entries, circular, reduceMotion) {
   const sourceSet = view.querySelector('[data-detail-set="source"]');
   const afterSet = view.querySelector('[data-detail-set="after"]');
   const units = [...view.querySelectorAll(".detail-unit")];
@@ -301,10 +304,12 @@ function setupDetailScroll(view, entries, circular) {
   let cycleDistance = 0;
   let wrapping = false;
   let scrollFrame = 0;
+  const boundaryMotion = createBoundaryMotion({ view, circular, reduceMotion });
 
   const measure = () => {
     sourceTop = documentTop(sourceSet);
     cycleDistance = circular && afterSet ? documentTop(afterSet) - sourceTop : 0;
+    boundaryMotion.measure();
   };
 
   const handleScrollFrame = () => {
@@ -315,16 +320,25 @@ function setupDetailScroll(view, entries, circular) {
       const upperBoundary = lowerBoundary + cycleDistance;
       if (currentY < lowerBoundary) {
         wrapping = true;
+        boundaryMotion.clear();
         currentY += cycleDistance;
         setScroll(currentY);
-        requestAnimationFrame(() => { wrapping = false; });
+        requestAnimationFrame(() => {
+          wrapping = false;
+          boundaryMotion.render();
+        });
       } else if (currentY >= upperBoundary) {
         wrapping = true;
+        boundaryMotion.clear();
         currentY -= cycleDistance;
         setScroll(currentY);
-        requestAnimationFrame(() => { wrapping = false; });
+        requestAnimationFrame(() => {
+          wrapping = false;
+          boundaryMotion.render();
+        });
       }
     }
+    boundaryMotion.render();
     updateActiveEntry(entries, units);
   };
 
@@ -333,10 +347,13 @@ function setupDetailScroll(view, entries, circular) {
   };
 
   measure();
+  boundaryMotion.render();
   window.addEventListener("scroll", onScroll, { passive: true });
   return {
     measure,
+    boundaryMotion,
     destroy() {
+      boundaryMotion.destroy();
       window.removeEventListener("scroll", onScroll);
       if (scrollFrame) cancelAnimationFrame(scrollFrame);
     },
@@ -389,7 +406,7 @@ async function renderDetail(entry, { sourceVisual = null, sourceRect = null } = 
   setScroll(documentTop(selectedUnit) - DETAIL_TOP_INSET);
   await nextFrame();
 
-  const scrollRuntime = setupDetailScroll(view, entries, circular);
+  const scrollRuntime = setupDetailScroll(view, entries, circular, reduceMotion);
   let resizeCall = null;
   const rerenderForEnvironment = () => {
     const nextCircular = matchMedia(DESKTOP_QUERY).matches && !shouldReduceMotion();
