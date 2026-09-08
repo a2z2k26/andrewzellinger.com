@@ -820,7 +820,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "company-of-one",
     title: "Company of One",
     meta: ["Andrew Zellinger", "Jun 2nd 2026"],
-    summary: "I spent years building agent systems the wrong way before I built one that works. This is the story of the one that works — a 24/7 harness I built from scratch — and the single conviction underneath it: a system whose behavior you can actually predict is what lets you deploy capable agents, instead of just hoping they behave.",
+    summary: "Why predictable, priced, and verifiable agent systems outperform emergence.",
     body: companyOfOneBody,
   }),
   article({
@@ -828,7 +828,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "a-free-surf-lesson",
     title: "A Free Surf Lesson",
     meta: ["Andrew Zellinger", "Jan 9th 2026"],
-    summary: "Good taste alone won't save you from the crashing wave. Judgement alone isn't enough to thrive in the age of AI. There's a narrative gaining traction in design and technology circles. It goes something like this: as AI commoditizes execution, human taste becomes the ultimate differentiator. The ability to discern good from bad, to curate rather than create, to know what should exist—this is what will separate professionals who thrive from those who get automated into irrelevance.",
+    summary: "Why taste needs systems, strategy, and execution to create real impact.",
     body: aFreeSurfLessonBody,
   }),
   article({
@@ -836,7 +836,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "showing-my-teeth",
     title: "Showing My Teeth",
     meta: ["Andrew Zellinger", "Mar 28th 2026"],
-    summary: "Two years after COVID hit New York, I packed everything and moved to Colorado — out of the cityscape, closer to the mountains.",
+    summary: "A personal account of loss, survival, and choosing integrity in design.",
     body: showingMyTeethBody,
   }),
   article({
@@ -844,7 +844,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "intention-deficit-disorder",
     title: "Intention Deficit Disorder",
     meta: ["Andrew Zellinger", "May 16th 2026"],
-    summary: "Intention debt is the new UX debt, there I said it. When AI repeatedly misreads what people mean, the product gets worse in ways your design system will never catch. For years, designers have had language for the slow accumulation of product mess. UX debt. It is the confusing setting that never got renamed. The onboarding step everyone knows is too long. The modal added to fix a launch problem that somehow became permanent. The flow that made sense three strategies ago. The inconsistency users trip over because every team solved the same problem slightly differently. UX debt is not always dramatic. That is why it survives. It hides inside reasonable compromises. We will clean it up later. We just need the release out. This edge case is rare. The user can figure it out. The tooltip explains it. Support can handle it. We know it is not ideal, but it works. Then, eventually, the product feels heavier than it should. Every improvement takes longer. Every new feature has to route around old decisions. Users feel the drag even when they cannot name it. AI products have their own version of this.",
+    summary: "How AI products accumulate intent debt, and how teams can prevent it.",
     body: intentionDeficitDisorderBody,
   }),
   article({
@@ -852,7 +852,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "two-dollar-bill",
     title: "Two-Dollar Bill",
     meta: ["Andrew Zellinger", "May 16th 2026"],
-    summary: "Here's what week two taught me about trusting an autonomous system. Every agent demo ends before week two. Week two is where you find out what your system actually costs — and whether it's telling you the truth about it. I want to start with a two-dollar mistake, because it's the most honest thing I can say about running autonomous agents, and almost nobody writes the honest version. One run of my board of directors — a panel of agents that deliberates on a hard question and votes — cost about two dollars. Once. That's the whole incident. It didn't crash the system. It didn't leak data. It cost two dollars instead of the four cents it should have, and it taught me more about building agent systems than most of the architecture did.",
+    summary: "What a two-dollar mistake revealed about trust, cost, and agent autonomy.",
     body: twoDollarBillBody,
   }),
   article({
@@ -860,7 +860,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "you-always-let-yourself-win",
     title: "You Always Let Yourself Win",
     meta: ["Andrew Zellinger", "May 16th 2026"],
-    summary: "Designers need evals, not just prompts. Prompting gets you a result; evals decide whether that result is worth shipping.",
+    summary: "Why designers need evals to define and protect quality in AI products.",
     body: youAlwaysLetYourselfWinBody,
   }),
   article({
@@ -868,7 +868,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "cut-defer-or-build",
     title: "Cut, Defer or Build",
     meta: ["Andrew Zellinger"],
-    summary: "Every 0-1 engagement reaches a point where the vision outruns the budget. You've mapped the future state, the client has seen it, everyone is excited, and someone finally has to decide what actually gets designed in the weeks that remain.",
+    summary: "A framework for deciding what an MVP should cut, defer, or build.",
     body: cutDeferOrBuildBody,
   }),
   article({
@@ -876,7 +876,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "design-principles-that-actually-shape-the-product",
     title: "Design Principles That Actually Shape the Product",
     meta: ["Andrew Zellinger"],
-    summary: "Most design principles die in the deck they were born in. They're written at the wrong altitude, agreed to by everyone, and then never invoked in an actual decision. \"Be delightful.\" \"Put the user first.\" Nobody disagrees, which is exactly the problem. A principle that nothing can violate isn't steering anything.",
+    summary: "How useful design principles turn research into concrete product decisions.",
     body: designPrinciplesBody,
   }),
   article({
@@ -884,7 +884,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "lessons-from-fifteen-years-of-embedded-product-design",
     title: "Lessons from Fifteen Years of Embedded Product Design",
     meta: ["Andrew Zellinger"],
-    summary: "TL;DR. I embed with early and mid-stage startups and help them get from zero to one. Six lessons that changed how I work, most of them learned the expensive way.",
+    summary: "Six lessons from fifteen years of embedded product design under pressure.",
     body: embeddedProductDesignLessonsBody,
   }),
   article({
@@ -892,7 +892,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "the-constraint-was-the-brief",
     title: "The Constraint Was the Brief",
     meta: ["Andrew Zellinger"],
-    summary: "An audio company wanted to enter the sleep market.",
+    summary: "How severe constraints can clarify the brief and produce a better product.",
     body: constraintWasTheBriefBody,
   }),
   article({
@@ -900,7 +900,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "what-makes-a-real-mvp",
     title: "What Makes a Real MVP?",
     meta: ["Andrew Zellinger"],
-    summary: "I've spent most of my career building zero-to-one products for startups, which means I've spent most of my career arguing about what belongs in a first version. The argument is never really about features. It's about what \"viable\" means.",
+    summary: "Why a real MVP is the smallest complete journey users can finish.",
     body: realMvpBody,
   }),
 ]);

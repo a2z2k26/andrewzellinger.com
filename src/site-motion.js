@@ -1,4 +1,5 @@
 import { gsap } from "gsap";
+import { ARTICLE_DETAILS } from "./article-content.js";
 import { PROJECTS } from "./project-content.js";
 import "./site-fonts.css";
 import "./effects/center-control.css";
@@ -455,7 +456,7 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
       : isArticles
         ? {
           dataset: "articlesMotion",
-          expectedCount: 10,
+          expectedCount: ARTICLE_DETAILS.length,
           fieldSelector: ".articles-index__list",
           sourceContainerSelector: ".articles-entry-list",
           itemSelector: ARTICLE_CARD_SELECTOR,

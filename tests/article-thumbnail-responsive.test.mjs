@@ -29,7 +29,7 @@ test("Articles use the Projects-like title, metadata, excerpt hierarchy", async 
   assert.equal(html.match(/articles-entry__excerpt works-project-description/g)?.length, 11);
   assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*margin:\s*0;[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;[^}]*font-weight:\s*400;/s);
   assert.match(html, /\.articles-entry__meta\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;[^}]*margin-top:\s*16px;[^}]*margin-bottom:\s*var\(--space--desktop-medium\);[^}]*gap:\s*24px;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap;/s);
-  assert.match(html, /\.articles-entry__excerpt\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*opacity:\s*1;[^}]*margin-top:\s*0;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(html, /\.articles-entry__excerpt\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*opacity:\s*1;[^}]*margin-top:\s*0;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*uppercase;[^}]*overflow:\s*hidden;[^}]*display:\s*-webkit-box;[^}]*-webkit-box-orient:\s*vertical;[^}]*-webkit-line-clamp:\s*2;/s);
 });
 
 test("Articles rows keep route-specific editorial spacing", async () => {
@@ -45,4 +45,12 @@ test("Articles rows keep route-specific editorial spacing", async () => {
   assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__meta\.works-meta-spacing\s*\{[^}]*margin-bottom:\s*12px;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin-top:\s*24px;[^}]*margin-bottom:\s*var\(--space--tablet-medium\);/s);
   assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin-top:\s*32px;[^}]*margin-bottom:\s*var\(--space--smartphone-medium\);/s);
+});
+
+test("Articles motion derives its card-count guard from the shared article records", async () => {
+  const motion = await readFile(new URL("../src/site-motion.js", import.meta.url), "utf8");
+
+  assert.match(motion, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js";/);
+  assert.match(motion, /dataset:\s*"articlesMotion",[\s\S]*?expectedCount:\s*ARTICLE_DETAILS\.length,/);
+  assert.doesNotMatch(motion, /dataset:\s*"articlesMotion",[\s\S]*?expectedCount:\s*10,/);
 });
