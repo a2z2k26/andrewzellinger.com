@@ -92,7 +92,7 @@ function setDetailChrome(entry) {
   requestAnimationFrame(markActiveNavigation);
 
   const heading = document.querySelector(".title .heading");
-  if (heading) heading.textContent = entry.kind === "project" ? "Selected Work" : "Writing Samples";
+  if (heading) heading.textContent = entry.kind === "project" ? "Selected work" : "Writing samples";
   document.title = `Andrew Zellinger • ${entry.title}`;
   document.querySelector('link[rel="canonical"]')?.setAttribute("href", entry.path);
 }
@@ -362,7 +362,7 @@ async function renderDetail(entry, { sourceVisual = null, sourceRect = null } = 
 
   const collectionHeading = activeDetail?.collectionHeading
     ?? document.querySelector(".title .heading")?.textContent
-    ?? (entry.kind === "project" ? "Selected Work" : "Writing Samples");
+    ?? (entry.kind === "project" ? "Selected work" : "Writing samples");
   const collectionTitle = activeDetail?.collectionTitle ?? document.title;
   const collectionCanonical = activeDetail?.collectionCanonical
     ?? document.querySelector('link[rel="canonical"]')?.getAttribute("href")

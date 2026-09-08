@@ -21,6 +21,11 @@ import { PROJECT_NARRATIVES } from "./project-narratives.js";
  * - turner-tv: https://www.notion.so/3120ab715bfa808487d3f7b482e70ff4
  * - mcdonalds: https://www.notion.so/3120ab715bfa8089a477c83e25297527
  * - northwestern-mutual: https://www.notion.so/3120ab715bfa803b8e1fdc7aa518d651
+ * - andrew-eccles: user-supplied project recollection; no Notion source supplied
+ * - modern-age: user-supplied project recollection; no Notion source supplied
+ * - pi-app: user-supplied project recollection; no Notion source supplied
+ * - obagi: user-supplied project recollection; no Notion source supplied
+ * - gero-app: user-supplied project recollection; no Notion source supplied
  */
 
 /** @typedef {{ label: string, paragraphs: readonly string[] }} ProjectSection */
@@ -317,7 +322,7 @@ const projectRecords = [
     "slug": "fi-smart-collar",
     "path": "/case-studies/fi-smart-collar/",
     "collectionPath": "/projects",
-    "title": "Fi Smart Collar",
+    "title": "Fi Collar",
     "headline": "Enhancing Dog Tracking",
     "metadata": {
       "client": "Fi",
@@ -602,7 +607,7 @@ const projectRecords = [
     "slug": "foursquare",
     "path": "/case-studies/foursquare/",
     "collectionPath": "/projects",
-    "title": "Foursquare",
+    "title": "Foursquare Brand",
     "headline": "Rebranding Foursquare",
     "metadata": {
       "client": "Foursquare",
@@ -675,7 +680,8 @@ const projectRecords = [
     ],
     "summary": "The company has continued to grow and acquire new properties, all supported by a single core design system.",
     "media": {
-      "label": "Temporary neutral image for Live Auctioneers"
+      "label": "Live Auctioneers website project image",
+      "src": "/images/projects/liveauctioneers-screen.png"
     },
     "sections": [
       {
@@ -783,8 +789,8 @@ const projectRecords = [
     ],
     "summary": "Here's how P&G answered the call from the next generation of beauty consumers who are increasingly conscious about the impact of their choices on the environment and society.",
     "media": {
-      "label": "Proctor & Gamble tablet experience project image",
-      "src": "/images/projects/pandg-tablets.png"
+      "label": "Proctor & Gamble digital experience project image",
+      "src": "/images/projects/proctor-screen.png"
     },
     "sections": [
       {
@@ -913,7 +919,7 @@ const projectRecords = [
     "summary": "Reuters wanted to rethink how people consume video news. The premise was simple and radical: most news apps dump a feed on you and let you drown. Reuters TV asked a different question — how much time do you actually have?",
     "media": {
       "label": "Reuters TV project scene image",
-      "src": "/images/projects/reuters-tv-scene.png"
+      "src": "/images/projects/reuters-screen.png"
     },
     "sections": [
       {
@@ -953,7 +959,7 @@ const projectRecords = [
     "slug": "price-waterhouse-coopers",
     "path": "/case-studies/price-waterhouse-coopers/",
     "collectionPath": "/projects",
-    "title": "Price Waterhouse Coopers",
+    "title": "PwC Audit",
     "headline": "Streamlining PwC's financial auditing process",
     "metadata": {
       "client": "PwC",
@@ -1275,23 +1281,24 @@ const projectRecords = [
     "slug": "turner-tv",
     "path": "/case-studies/turner-tv/",
     "collectionPath": "/projects",
-    "title": "Turner TV",
+    "title": "Turner Media",
     "headline": "Designing the Future of Streaming",
     "metadata": {
-      "client": "Turner Broadcasting",
+      "client": "TURNER",
       "studio": "Philosophie",
       "year": "2019",
       "role": "UX Design, Workshop Facilitation"
     },
     "meta": [
-      "Turner Broadcasting",
+      "TURNER",
       "Philosophie",
       "2019",
       "UX Design, Workshop Facilitation"
     ],
     "summary": "By 2019, Turner Broadcasting was deep into its streaming pivot. Netflix had rewritten the rules, and legacy media companies were scrambling to figure out direct-to-consumer.",
     "media": {
-      "label": "Temporary neutral image for Turner TV"
+      "label": "Turner TV streaming interface project image",
+      "src": "/images/projects/turner-media-screen.png"
     },
     "sections": [
       {
@@ -1332,7 +1339,7 @@ const projectRecords = [
     "slug": "mcdonalds",
     "path": "/case-studies/mcdonalds/",
     "collectionPath": "/projects",
-    "title": "McDonalds",
+    "title": "McDonalds Kiosk",
     "headline": "McDonald's In-Restaurant Kiosk Experience",
     "metadata": {
       "client": "McDonald's",
@@ -1349,7 +1356,7 @@ const projectRecords = [
     "summary": "McDonald's was in the middle of \"Experience of the Future\" — one of the most ambitious digital transformations in QSR history. Self-order kiosks were rolling out to thousands of locations globally, but the first version of the kiosk application had clear UX problems.",
     "media": {
       "label": "McDonald's self-order kiosk project image",
-      "src": "/images/projects/mcdonalds.png"
+      "src": "/images/projects/mcdonalds-kiosk.png"
     },
     "sections": [
       {
@@ -1389,7 +1396,7 @@ const projectRecords = [
     "slug": "northwestern-mutual",
     "path": "/case-studies/northwestern-mutual/",
     "collectionPath": "/projects",
-    "title": "Northwestern Mutual",
+    "title": "NW Mutual",
     "headline": "Designing Financial Planning",
     "metadata": {
       "client": "Northwestern Mutual",
@@ -1405,7 +1412,8 @@ const projectRecords = [
     ],
     "summary": "Northwestern Mutual had just acquired LearnVest for $250 million — a bet that a 158-year-old insurance company could modernize its financial planning experience by absorbing a fintech startup with 1.5 million registered users.",
     "media": {
-      "label": "Temporary neutral image for Northwestern Mutual"
+      "label": "Northwestern Mutual predictive planning project image",
+      "src": "/images/projects/nwmutual-screen.png"
     },
     "sections": [
       {
@@ -1448,13 +1456,13 @@ const projectRecords = [
     "title": "Amazon Fire TV",
     "headline": "Amazon Fire TV",
     "metadata": {
-      "client": "Amazon Fire TV",
+      "client": "AMAZON",
       "studio": "Sketch",
       "year": "2024 — 2025",
       "role": "Design Lead"
     },
     "meta": [
-      "Amazon Fire TV",
+      "AMAZON",
       "Sketch",
       "2024 — 2025",
       "Design Lead"
@@ -1484,10 +1492,282 @@ const projectRecords = [
         ]
       }
     ]
+  },
+  {
+    "kind": "project",
+    "slug": "andrew-eccles",
+    "path": "/case-studies/andrew-eccles/",
+    "collectionPath": "/projects",
+    "title": "Andrew Eccles",
+    "headline": "A Portfolio Built Around the Work",
+    "metadata": {
+      "client": "Andrew Eccles",
+      "studio": "Crate",
+      "year": "2016",
+      "role": "UX/UI Design"
+    },
+    "meta": [
+      "Andrew Eccles",
+      "Crate",
+      "2016",
+      "UX/UI Design"
+    ],
+    "summary": "An image-led portfolio website that gave commercial photographer Andrew Eccles a flexible framework for presenting work across entertainment, music, film, and sports.",
+    "media": {
+      "label": "Andrew Eccles website project image",
+      "src": "/images/projects/andrew-eccles-screen.png"
+    },
+    "sections": [
+      {
+        "label": "Context",
+        "paragraphs": [
+          "In 2016, commercial photographer Andrew Eccles worked with Crate to create a portfolio website for work spanning entertainment, music, film, and sports. The site needed to present recognizable subjects without allowing celebrity to overwhelm the photography. It also had to support how prospective clients, agencies, and editors review portfolios: quickly, visually, and across varied image formats. The challenge was creating enough structure to make a large archive navigable while keeping the interface quiet and image-led."
+        ]
+      },
+      {
+        "label": "Work",
+        "paragraphs": [
+          "I worked with Crate and directly with Andrew on UX and interface design. My role focused on organizing content, defining browsing paths, and translating the character of his work into a responsive system. That meant balancing Andrew's point of view with practical portfolio needs: clear groupings, predictable navigation, and layouts that could accommodate portraits, editorial series, and commercial assignments without forcing every image into the same presentation. The design direction treated the website as a flexible viewing environment rather than a conventional marketing site. Large photography carried the experience, while typography and controls were deliberately restrained. We explored how visitors could move between bodies of work, understand the context of an assignment, and continue browsing without repeatedly returning to an index. Page templates were structured around sequencing and pacing, allowing individual images to hold attention while still feeling connected to a broader series. Responsive behavior was especially important because tight mobile crops could change the impact of a portrait. The layouts therefore prioritized image integrity, useful focal points, and simple transitions between overview and detail states."
+        ]
+      },
+      {
+        "label": "Outcome",
+        "paragraphs": [
+          "The resulting portfolio direction gave Andrew a coherent framework for presenting commercial and editorial photography to different audiences. It brought a varied archive into one visual system without making the work feel mechanically uniform. The site could foreground the personality of each shoot while maintaining a consistent browsing experience and provide a practical foundation for publishing new work as the portfolio evolved. The project reinforced that portfolio design is an exercise in restraint. The interface has to provide orientation, but it should never compete with the work it presents. Designing around photographs with different proportions, subjects, and emotional tones required a system that was disciplined without becoming rigid. The strongest decisions made the website recede while helping each series land with clarity."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "project",
+    "slug": "modern-age",
+    "path": "/case-studies/modern-age/",
+    "collectionPath": "/projects",
+    "title": "Modern Age",
+    "headline": "Connecting Digital Discovery to In-Person Care",
+    "metadata": {
+      "client": "Modern Age",
+      "studio": "Direct with client",
+      "year": "2021",
+      "role": "Design Lead"
+    },
+    "meta": [
+      "Modern Age",
+      "Direct with client",
+      "2021",
+      "Design Lead"
+    ],
+    "summary": "A connected digital journey that helped Modern Age customers discover services, find a physical location, book appointments, and complete checkout with confidence.",
+    "media": {
+      "label": "Modern Age website project image",
+      "src": "/images/projects/modern-age-screen.png"
+    },
+    "sections": [
+      {
+        "label": "Context",
+        "paragraphs": [
+          "In 2021, Modern Age was building a technology-enabled service that connected its digital experience with in-person therapeutic care. The website had to do more than explain the offering: it needed to help prospective customers understand available services, find an appropriate brick-and-mortar location, book an appointment, and complete checkout with confidence. As the startup expanded, those journeys accumulated new decisions and promotional messages, creating a need for clearer structure across discovery, scheduling, and conversion."
+        ]
+      },
+      {
+        "label": "Work",
+        "paragraphs": [
+          "I joined the startup directly as Design Lead and worked across the website and supporting customer journeys. My role included shaping new product features, improving location discovery, refining appointment booking and checkout, and designing ancillary experiences such as the chatbot and promotional modules. I collaborated with the internal team to translate evolving business needs into flows and interface patterns that could be implemented incrementally without making the customer experience feel fragmented. The work focused on reducing uncertainty at the moments where a customer had to move from interest to action. Location pages and find-a-location pathways were organized to make proximity, services, and next steps easier to understand. Booking and checkout flows were reviewed as connected parts of one journey, with attention to sequence, form requirements, and the information customers needed before committing to an appointment. The chatbot was designed as a supporting guide rather than a replacement for the primary navigation, helping answer common questions and direct visitors toward relevant services or locations. I also helped create a flexible promotional component system for the main website and social channels. Those modules gave the team a consistent way to rotate offers and timely messages without rebuilding the surrounding experience for each campaign."
+        ]
+      },
+      {
+        "label": "Outcome",
+        "paragraphs": [
+          "The resulting design work connected Modern Age's marketing site more directly to its physical service experience. Customers had clearer paths from learning about the company to locating a clinic, selecting an appointment, and completing checkout. The reusable chatbot and promotional patterns also gave the startup additional ways to support questions and communicate changing offers while maintaining a coherent visual and interaction system. Working inside an early-stage company required balancing immediate growth needs with the foundations of a durable product. Conversion improvements could not be isolated from trust, especially when a digital journey ended in an in-person therapeutic service. The project reinforced the value of treating content, location discovery, scheduling, and checkout as one continuous experience rather than a collection of independent features."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "project",
+    "slug": "pi-app",
+    "path": "/case-studies/pi-app/",
+    "collectionPath": "/projects",
+    "title": "Positive Brand",
+    "headline": "From Philosophy to Brand and Product",
+    "metadata": {
+      "client": "Positive Intelligence",
+      "studio": "Direct with founder",
+      "year": "2018",
+      "role": "Brand & Product Design"
+    },
+    "meta": [
+      "Positive Intelligence",
+      "Direct with founder",
+      "2018",
+      "Brand & Product Design"
+    ],
+    "summary": "A brand foundation and rapid MVP that translated the Positive Intelligence philosophy into a structured, approachable digital practice.",
+    "media": {
+      "label": "P.I. App mobile product project image",
+      "src": "/images/projects/positiveintelligence-screen.png"
+    },
+    "sections": [
+      {
+        "label": "Context",
+        "paragraphs": [
+          "Positive Intelligence needed an initial brand and product expression that could translate its founder's published philosophy into a practical digital experience. The program presented a framework for recognizing unproductive mental patterns and building more constructive habits, but the first application had to turn that body of teaching into something people could understand and use over time. The opportunity was twofold: establish a recognizable identity for the company, then rapidly prototype an MVP that made the practice feel approachable, structured, and credible."
+        ]
+      },
+      {
+        "label": "Work",
+        "paragraphs": [
+          "I worked directly with the founder across brand and product design. I created the initial logo and typography direction, then carried those foundations into the first application prototype. My role connected identity, interface, and experience design, allowing the product to develop with one coherent visual language rather than treating branding as a separate layer applied after the functionality had been defined. The identity work focused on expressing optimism and personal development without relying on the visual clichés common to self-help products. The logo, type system, and core interface language established a foundation that could feel encouraging while still supporting serious instructional content. For the MVP, I translated the Positive Intelligence philosophy into a sequence of manageable interactions. The experience needed to introduce key ideas, give users a clear sense of progression, and create repeatable moments for study and practice. Rapid prototypes explored how lessons, prompts, exercises, and progress cues could fit together without turning the application into a dense course platform. Navigation and content hierarchy were kept straightforward so the founder's teaching remained central, while the brand system gave the product a consistent tone across onboarding and recurring use."
+        ]
+      },
+      {
+        "label": "Outcome",
+        "paragraphs": [
+          "The work produced an initial brand foundation and a V1 product concept that demonstrated how the Positive Intelligence program could operate as a guided digital practice. The prototype gave the founder and team a concrete model for organizing the material, introducing users to the philosophy, and supporting continued engagement beyond the original published content. This project showed how closely brand and product behavior can reinforce each other at the beginning of a company. A logo could establish recognition, but the product earned coherence through pacing, language, and repeated interaction. Designing both together made it possible to test the promise of the brand inside the experience itself and keep a broad philosophy grounded in clear, usable moments."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "project",
+    "slug": "obagi",
+    "path": "/case-studies/obagi/",
+    "collectionPath": "/projects",
+    "title": "Obagi Care",
+    "headline": "A Two-Sided Skincare Commerce Experience",
+    "metadata": {
+      "client": "Obagi",
+      "studio": "Direct with client",
+      "year": "2020",
+      "role": "UX Design Director"
+    },
+    "meta": [
+      "Obagi",
+      "Direct with client",
+      "2020",
+      "UX Design Director"
+    ],
+    "summary": "A redesigned skincare experience that unified Obagi's brand, direct ecommerce, product education, and clinician-guided appointment pathways.",
+    "media": {
+      "label": "Obagi skincare website project image",
+      "src": "/images/projects/obagi-screen.png"
+    },
+    "sections": [
+      {
+        "label": "Context",
+        "paragraphs": [
+          "Obagi wanted to redesign its primary website and rethink how its therapeutic skincare brand appeared online. The experience served two related but distinct customer journeys. Some products could be researched and purchased directly through ecommerce, while prescription-dependent products required a consultation with a qualified clinician. The website therefore had to communicate the brand, educate customers, support product discovery, and route people toward either checkout or professional care without making the distinction feel confusing or fragmented."
+        ]
+      },
+      {
+        "label": "Work",
+        "paragraphs": [
+          "Working directly with Obagi as UX Design Director, I oversaw the experience-design effort for the redesign. My role covered research planning, information architecture, user flows, ecommerce and appointment pathways, and the production of UX artifacts used to define the site. I guided the team in translating the refreshed brand direction into an experience that could support both commercial goals and the additional responsibility that comes with clinician-guided products. Research and journey planning focused on the questions customers needed answered before choosing a path: what a product addressed, whether professional consultation was required, and what the next step involved. We mapped the direct-purchase journey from education and product comparison through cart and checkout, then designed a parallel clinician pathway for finding care and booking an appointment. Shared navigation, product language, and visual cues kept those experiences connected while making their different requirements explicit. The redesign also introduced supporting micro-experiences intended to deepen product understanding and encourage return visits. Educational modules, promotional placements, and reusable content patterns could surface routines, ingredients, and related products without interrupting the primary task. Throughout the work, the UX system had to accommodate a broad catalog while preserving a premium, clinically informed brand presence."
+        ]
+      },
+      {
+        "label": "Outcome",
+        "paragraphs": [
+          "The resulting direction unified Obagi's brand, commerce, and clinician pathways within one website framework. Customers could move from learning about a concern to understanding a product and taking the appropriate next step, whether that meant purchasing directly or seeking a consultation. Reusable educational and promotional components gave the internal team a foundation for ongoing campaigns and product storytelling. The central lesson was that two-sided commerce depends on transparent routing. Hiding the difference between direct and prescription products would create friction later, while overemphasizing it could make the experience feel clinical and difficult. The design needed to introduce the distinction at the right moment, preserve momentum, and treat professional guidance as part of the service rather than an obstacle to conversion."
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "project",
+    "slug": "gero-app",
+    "path": "/case-studies/gero-app/",
+    "collectionPath": "/projects",
+    "title": "Gero Timer",
+    "headline": "A Pomodoro Companion for Your Wrist",
+    "metadata": {
+      "client": "USTWO",
+      "studio": "ustwo",
+      "year": "2015",
+      "role": "UI/UX Design"
+    },
+    "meta": [
+      "USTWO",
+      "ustwo",
+      "2015",
+      "UI/UX Design"
+    ],
+    "summary": "A Pomodoro companion for your wrist, designed natively for Apple Watch to keep focused work and short breaks in rhythm throughout the day.",
+    "media": {
+      "label": "Gero App smartwatch fitness project image",
+      "src": "/images/projects/gero-screen.png"
+    },
+    "sections": [
+      {
+        "label": "Context",
+        "paragraphs": [
+          "When Apple Watch launched, ustwo wanted to be among the first studios to ship something meaningful on the platform — not a tech demo, but a real product. Gero (pronounced \"jeer-oh,\" Latin for \"to produce\") was the result: a pomodoro time management app designed natively for Apple Watch with a companion iPhone app. The idea was to take the pomodoro technique — 25-minute work sprints followed by short breaks — and move it from a phone timer you ignore to something on your wrist that keeps you in rhythm throughout the day."
+        ]
+      },
+      {
+        "label": "What I Did",
+        "paragraphs": [
+          "I designed the smartwatch and mobile app interfaces. The core challenge was fitting a workflow that typically lives on a full screen — timers, session counts, break indicators — into the constraints of a watch face. Every interaction had to be glanceable and non-disruptive. The design language drew from a zen mentality — elegant simplicity, nothing that would compete with the focused work the app was supposed to protect. On the phone side, the companion app handled customization — sprint lengths, break durations — so the watch could stay minimal."
+        ]
+      },
+      {
+        "label": "The Work",
+        "paragraphs": [
+          "Gero was one of ustwo's first experiments with WatchKit, and the design pushed what the early SDK could do. The interface used subtle transitions and fluid animations crafted frame by frame to feel natural on the wrist — not flashy, but alive. The app faded into the background during sprints and surfaced only to signal cycle changes with non-intrusive sounds. The goal was to build a subconscious habit rather than demand attention. The hardest part was restraint. A pomodoro app can easily become over-featured — stats dashboards, historical tracking, gamification. Gero deliberately avoided all of that. Start a sprint. Work. Take a break. Repeat. The design had to trust the technique and get out of the way."
+        ]
+      },
+      {
+        "label": "What Happened",
+        "paragraphs": [
+          "Gero shipped as one of the early Apple Watch productivity apps and was featured on Product Hunt. It demonstrated that wearable apps could be more than notification mirrors — they could facilitate real behavioral patterns. For ustwo, it served as both a shipped product and a public case study in designing for a brand new platform with severe constraints."
+        ]
+      },
+      {
+        "label": "Looking Back",
+        "paragraphs": [
+          "Designing for the first generation of Apple Watch was like designing with your hands tied — tiny screen, limited SDK, no established patterns. But that constraint forced clarity. You couldn't rely on any of the usual crutches. Every pixel had to justify itself. That discipline carried forward into everything I designed after."
+        ]
+      }
+    ]
   }
 ];
 
-export const PROJECTS = Object.freeze(projectRecords.map((project) => {
+const projectDisplayOrder = Object.freeze([
+  "audible-sleep",
+  "turner-tv",
+  "obagi",
+  "wework-studio",
+  "android-wear",
+  "live-auctioneers",
+  "andrew-eccles",
+  "proctor-and-gamble",
+  "modern-age",
+  "fi-smart-collar",
+  "thompson-reuters",
+  "gero-app",
+  "foursquare",
+  "amazon-fire-tv",
+  "price-waterhouse-coopers",
+  "northwestern-mutual",
+  "mcdonalds",
+  "avantos",
+  "pi-app",
+]);
+
+const projectsBySlug = new Map(projectRecords.map((project) => [project.slug, project]));
+const orderedProjectRecords = projectDisplayOrder.map((slug) => {
+  const project = projectsBySlug.get(slug);
+  if (!project) {
+    throw new Error("Missing project record for display-order slug " + slug);
+  }
+  return project;
+});
+
+if (orderedProjectRecords.length !== projectRecords.length) {
+  throw new Error("Project display order must include every project exactly once");
+}
+
+export const PROJECTS = Object.freeze(orderedProjectRecords.map((project) => {
   const publishedNarrative = PROJECT_NARRATIVES[project.slug];
   if (!publishedNarrative) {
     throw new Error("Missing published narrative for " + project.slug);

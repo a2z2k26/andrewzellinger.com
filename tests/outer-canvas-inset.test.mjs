@@ -25,7 +25,7 @@ test("Index image gaps follow the outer inset while Projects uses its own 24px c
   assert.match(index, /html\.index-route \.index-motion-field\s*\{[^}]*row-gap:\s*var\(--index-image-gap\);/s);
   assert.match(index, /html\.index-route \.index-motion-track\s*\{[^}]*row-gap:\s*var\(--index-image-gap\);/s);
   assert.match(index, /html\.index-route \.index-motion-set\s*\{[^}]*row-gap:\s*var\(--index-image-gap\);/s);
-  assert.match(index, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*24px;/s);
+  assert.match(index, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*72px;/s);
   assert.match(index, /html\.works-motion-route \.works-motion-track,[\s\S]*?row-gap:\s*var\(--works-card-gap\);/);
   assert.match(details, /\.detail-sets\s*\{[^}]*gap:\s*var\(--structure--gutter-width\);/s);
 });

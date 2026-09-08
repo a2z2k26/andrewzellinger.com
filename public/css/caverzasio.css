@@ -1809,6 +1809,7 @@ figcaption {
 
 .heading {
   letter-spacing: -.02em;
+  text-transform: none;
 }
 
 #h {

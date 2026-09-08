@@ -4,7 +4,8 @@
   --detail-project-section-copy-edge-gap: 52px;
   --detail-project-section-label-inset: 28px;
   --detail-project-section-body-shift: 80px;
-  --detail-project-inter-unit-gap: 64px;
+  --detail-project-inter-unit-gap: 144px;
+  --detail-article-inter-unit-gap: 64px;
 }
 
 .portfolio-detail-link {
@@ -88,10 +89,13 @@ html.detail-route .articles-index {
   gap: var(--detail-project-inter-unit-gap);
 }
 
-.detail-set.detail-set--article,
-.detail-view--project .detail-sets,
-.detail-view--article .detail-sets {
+.detail-view--project .detail-sets {
   gap: var(--detail-project-inter-unit-gap);
+}
+
+.detail-set.detail-set--article,
+.detail-view--article .detail-sets {
+  gap: var(--detail-article-inter-unit-gap);
 }
 
 .detail-set[aria-hidden="true"] {

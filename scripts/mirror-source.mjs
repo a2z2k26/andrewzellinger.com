@@ -180,7 +180,7 @@ const placeholderStyles = `
   </style>
   <style id="local-index-page-spacing">
     html.works-motion-route {
-      --works-card-gap: 24px;
+      --works-card-gap: 72px;
     }
     html.works-motion-route body,
     html.index-route body {
@@ -223,8 +223,8 @@ const placeholderStyles = `
     }
     html.works-motion-route .works-motion-card .heading-style-h2.new {
       font-family: var(--fonts--family-display);
-      font-size: 22px;
-      line-height: 20px;
+      font-size: 24px;
+      line-height: 24px;
       font-weight: 400;
       letter-spacing: .01em;
       text-transform: none;
@@ -239,12 +239,17 @@ const placeholderStyles = `
       text-transform: uppercase;
     }
     html.works-motion-route .works-motion-card .works-project-description {
+      display: -webkit-box;
+      overflow: hidden;
       font-family: "Geist", sans-serif;
       font-size: 13px;
       font-weight: 400;
       line-height: 22px;
       letter-spacing: 0;
       text-transform: uppercase;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
     }
     html.works-motion-route .works-motion-track,
     html.works-motion-route .works-motion-set {
@@ -395,7 +400,7 @@ const placeholderStyles = `
       indexLink?.classList.remove("w--current");
       projectsLink?.setAttribute("aria-current", "page");
       projectsLink?.classList.add("w--current");
-      if (heading) heading.textContent = "Selected Work";
+      if (heading) heading.textContent = "Selected work";
       document.title = "Andrew Zellinger • Projects";
       document.querySelector('meta[property="og:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
       document.querySelector('meta[property="twitter:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
@@ -551,7 +556,7 @@ function transformHtml(source, sourceFile) {
         .replace(/\s+w--current\b/i, "")
         .replace(
           /<div>[^<]*<\/div>/i,
-          '<div>ANDREW ZELLINGER</div>',
+          '<div>A. ZELLINGER</div>',
         ),
     )
     .replace(/<div id="h">00:00(?::00)?<\/div>/g, '<div id="h">NYC 00:00:00</div>')
@@ -585,7 +590,7 @@ function transformHtml(source, sourceFile) {
     );
     html = html.replace(
       /<h1 class="heading">Selected works<\/h1>/i,
-      '<h1 class="heading"><span class="home-title-desktop">Product Designer</span><span class="home-title-mobile">Designer</span></h1>',
+      '<h1 class="heading"><span class="home-title-desktop">Product designer</span><span class="home-title-mobile">Designer</span></h1>',
     );
     html = html
       .replace(/<title>[^<]*<\/title>/i, "<title>Andrew Zellinger • Designer</title>")
@@ -608,7 +613,7 @@ function transformHtml(source, sourceFile) {
       .replace(/<meta content="[^"]*" property="twitter:title">/i, '<meta content="Andrew Zellinger • History" property="twitter:title">')
       .replace(/<meta content="[^"]*" property="twitter:description">/i, `<meta content="${biographyDescription}" property="twitter:description">`)
       .replace(/Fabio Caverzasio • Art Director &amp; Web Designer/g, "Andrew Zellinger • History")
-      .replace('<h1 class="heading">Info</h1>', '<h1 class="heading">A Brief History</h1>')
+      .replace('<h1 class="heading">Info</h1>', '<h1 class="heading">A brief history</h1>')
       .replace(/<meta content="summary_large_image" name="twitter:card">/i, '<meta content="summary_large_image" name="twitter:card">\n  <link rel="canonical" href="/history">')
       .replace(
         /<div class="media-background-holder landscape"><img\b[^>]*class="media-background-image about"[^>]*><\/div>/i,

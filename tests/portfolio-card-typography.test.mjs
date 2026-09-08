@@ -9,14 +9,15 @@ async function read(relativePath) {
 }
 
 function assertPortfolioTreatment(source, label) {
-  assert.match(source, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*24px;/s, `${label} must define the 24px Projects card gap`);
+  assert.match(source, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*72px;/s, `${label} must define the 72px Projects card gap`);
   assert.match(source, /\.works-motion-field\s*\{[^}]*row-gap:\s*var\(--works-card-gap\);/s, `${label} must apply the card gap to the static field`);
   assert.match(source, /\.works-motion-track,[\s\S]*?\.works-motion-set\s*\{[^}]*row-gap:\s*var\(--works-card-gap\);/s, `${label} must apply the card gap inside and between loop sets`);
   assert.match(source, /\.works-media-spacing\s*\{[^}]*margin-bottom:\s*32px;/s, `${label} must keep a 32px image-to-copy gap`);
   assert.match(source, /@media screen and \(min-width:\s*992px\)\s*\{\s*html\.works-motion-route \.works-motion-card \.works-meta-spacing\s*\{[^}]*margin-bottom:\s*12px;/s, `${label} must keep the 12px tag-to-description gap desktop-only`);
-  assert.match(source, /\.heading-style-h2\.new\s*\{[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*22px;[^}]*line-height:\s*20px;[^}]*letter-spacing:\s*\.01em;[^}]*text-transform:\s*none;/s, `${label} must define the project-title treatment`);
+  assert.match(source, /\.heading-style-h2\.new\s*\{[^}]*font-family:\s*var\(--fonts--family-display\);[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*\.01em;[^}]*text-transform:\s*none;/s, `${label} must define the project-title treatment`);
   assert.match(source, /\.display-inlineflex\.categories\s*\{[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;/s, `${label} must define the tag treatment`);
   assert.match(source, /\.works-project-description\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;[^}]*text-transform:\s*uppercase;/s, `${label} must define the description treatment`);
+  assert.match(source, /\.works-project-description\s*\{[^}]*display:\s*-webkit-box;[^}]*overflow:\s*hidden;[^}]*-webkit-box-orient:\s*vertical;[^}]*-webkit-line-clamp:\s*2;[^}]*line-clamp:\s*2;/s, `${label} must cap project descriptions at two rendered lines`);
   assert.match(source, /margin-bottom space-small works-media-spacing/, `${label} must apply the semantic media-spacing hook`);
   assert.match(source, /margin-bottom space-medium works-meta-spacing/, `${label} must apply the semantic metadata-spacing hook`);
   assert.match(source, /makeElement\("p",\s*"works-project-description",\s*projectCardDescription\(project\)\)/, `${label} must apply the shared description through its semantic hook`);

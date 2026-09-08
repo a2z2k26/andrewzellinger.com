@@ -46,7 +46,7 @@ test("Article Detail renders semantic paragraphs without fixed section labels", 
 test("details keep their current collection navigation and visible headings active", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
 
-  assert.match(runtime, /entry\.kind === "project" \? "Selected Work" : "Writing Samples"/);
+  assert.match(runtime, /entry\.kind === "project" \? "Selected work" : "Writing samples"/);
   assert.match(runtime, /const activeCollection = entry\.kind === "project" \? "\/projects" : "\/articles"/);
   assert.match(runtime, /document\.querySelectorAll\("\.nav_menu a"\)/);
   assert.match(runtime, /\.setAttribute\("aria-current", "page"\)/);

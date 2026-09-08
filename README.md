@@ -4,7 +4,7 @@ Faithful local implementation of `https://www.caverzasio.ch/`, isolated from the
 
 ## Routes
 
-- `/` (canonical Index/home with the responsive “Product Designer” / “Designer” heading)
+- `/` (canonical Index/home with the responsive “Product designer” / “Designer” heading)
 - `/projects`
 - `/articles`
 - `/history`

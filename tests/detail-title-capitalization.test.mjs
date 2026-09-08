@@ -10,19 +10,24 @@ import {
 
 const expectedTitles = [
   "Audible Sleep",
-  "Android Wear",
-  "Fi Smart Collar",
+  "Turner Media",
+  "Obagi Care",
   "WeWork Studio",
-  "Foursquare",
+  "Android Wear",
   "Live Auctioneers",
+  "Andrew Eccles",
   "Proctor & Gamble",
+  "Modern Age",
+  "Fi Collar",
   "Thompson Reuters",
-  "Price Waterhouse Coopers",
-  "Avantos",
-  "Turner TV",
-  "McDonalds",
-  "Northwestern Mutual",
+  "Gero Timer",
+  "Foursquare Brand",
   "Amazon Fire TV",
+  "PwC Audit",
+  "NW Mutual",
+  "McDonalds Kiosk",
+  "Avantos",
+  "Positive Brand",
 ];
 
 test("case-study titles retain canonical project capitalization", () => {
@@ -32,7 +37,7 @@ test("case-study titles retain canonical project capitalization", () => {
 test("detail routes retain their collection's visible page headings", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
 
-  assert.match(runtime, /heading\.textContent = entry\.kind === "project" \? "Selected Work" : "Writing Samples"/);
+  assert.match(runtime, /heading\.textContent = entry\.kind === "project" \? "Selected work" : "Writing samples"/);
   assert.doesNotMatch(runtime, /entry\.kind === "project" \? "Case study"/);
 });
 
@@ -40,7 +45,7 @@ test("Projects cards and case-study headers share one metadata projection", () =
   for (const project of PROJECTS) {
     assert.deepEqual(
       projectCardTags(project),
-      [project.metadata.client, project.metadata.role, project.metadata.year],
+      [project.metadata.client, project.metadata.role, project.metadata.year].filter(Boolean),
       project.slug,
     );
     assert.equal(projectCardDescription(project), project.summary, project.slug);
@@ -119,7 +124,9 @@ test("project detail spacing increases remain semantic and article-safe", async 
   assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*calc\(\(100% - var\(--structure--grid-row-gap\)\) \/ 3 - var\(--detail-project-section-body-shift\)\)\)\s*minmax\(0,\s*1fr\);/s);
   assert.match(runtime, /detail-set detail-set--\$\{name\} detail-set--\$\{kind\}/);
   assert.match(runtime, /detail-view detail-view--\$\{kind\}/);
-  assert.match(styles, /--detail-project-inter-unit-gap:\s*64px;/);
+  assert.match(styles, /--detail-project-inter-unit-gap:\s*144px;/);
+  assert.match(styles, /--detail-article-inter-unit-gap:\s*64px;/);
   assert.match(styles, /\.detail-set\.detail-set--project\s*\{[^}]*gap:\s*var\(--detail-project-inter-unit-gap\);/s);
-  assert.match(styles, /\.detail-set\.detail-set--article,\s*\.detail-view--project \.detail-sets,\s*\.detail-view--article \.detail-sets\s*\{[^}]*gap:\s*var\(--detail-project-inter-unit-gap\);/s);
+  assert.match(styles, /\.detail-view--project \.detail-sets\s*\{[^}]*gap:\s*var\(--detail-project-inter-unit-gap\);/s);
+  assert.match(styles, /\.detail-set\.detail-set--article,\s*\.detail-view--article \.detail-sets\s*\{[^}]*gap:\s*var\(--detail-article-inter-unit-gap\);/s);
 });

@@ -36,7 +36,7 @@
   </style>
   <style id="local-index-page-spacing">
     html.works-motion-route {
-      --works-card-gap: 24px;
+      --works-card-gap: 72px;
     }
     html.works-motion-route body,
     html.index-route body {
@@ -79,8 +79,8 @@
     }
     html.works-motion-route .works-motion-card .heading-style-h2.new {
       font-family: var(--fonts--family-display);
-      font-size: 22px;
-      line-height: 20px;
+      font-size: 24px;
+      line-height: 24px;
       font-weight: 400;
       letter-spacing: .01em;
       text-transform: none;
@@ -95,12 +95,17 @@
       text-transform: uppercase;
     }
     html.works-motion-route .works-motion-card .works-project-description {
+      display: -webkit-box;
+      overflow: hidden;
       font-family: "Geist", sans-serif;
       font-size: 13px;
       font-weight: 400;
       line-height: 22px;
       letter-spacing: 0;
       text-transform: uppercase;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
     }
     html.works-motion-route .works-motion-track,
     html.works-motion-route .works-motion-set {
@@ -251,7 +256,7 @@
       indexLink?.classList.remove("w--current");
       projectsLink?.setAttribute("aria-current", "page");
       projectsLink?.classList.add("w--current");
-      if (heading) heading.textContent = "Selected Work";
+      if (heading) heading.textContent = "Selected work";
       document.title = "Andrew Zellinger • Projects";
       document.querySelector('meta[property="og:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
       document.querySelector('meta[property="twitter:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
@@ -772,7 +777,7 @@ body .swiper-pagination {
       <div class="nav">
         <div class="container-xlarge">
           <a href="/" class="nav_brand w-inline-block">
-            <div>ANDREW ZELLINGER</div>
+            <div>A. ZELLINGER</div>
           </a>
         </div>
         <div class="container-xlarge nav_container">
@@ -799,7 +804,7 @@ body .swiper-pagination {
       </div>
       <div class="title">
         <div class="container-xlarge">
-          <h1 class="heading"><span class="home-title-desktop">Product Designer</span><span class="home-title-mobile">Designer</span></h1>
+          <h1 class="heading"><span class="home-title-desktop">Product designer</span><span class="home-title-mobile">Designer</span></h1>
         </div>
       </div>
       <div data-project-content-anchor></div>

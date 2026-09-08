@@ -40,14 +40,14 @@ test("canonical page headings and metadata use the final map", async () => {
   const articles = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
   const biography = await readFile(new URL("../info/index.html", import.meta.url), "utf8");
 
-  assert.match(home, /<h1 class="heading"><span class="home-title-desktop">Product Designer<\/span><span class="home-title-mobile">Designer<\/span><\/h1>/);
+  assert.match(home, /<h1 class="heading"><span class="home-title-desktop">Product designer<\/span><span class="home-title-mobile">Designer<\/span><\/h1>/);
   assert.match(home, /if \(pagePath !== "\/projects"\) return;/);
-  assert.match(home, /heading\.textContent = "Selected Work"/);
+  assert.match(home, /heading\.textContent = "Selected work"/);
   assert.match(home, /<title>Andrew Zellinger • Designer<\/title>/);
   assert.match(home, /<link rel="canonical" href="\/">/);
-  assert.match(articles, /<h1 class="heading">Writing Samples<\/h1>/);
+  assert.match(articles, /<h1 class="heading">Writing samples<\/h1>/);
   assert.match(articles, /<link rel="canonical" href="\/articles">/);
-  assert.match(biography, /<h1 class="heading">A Brief History<\/h1>/);
+  assert.match(biography, /<h1 class="heading">A brief history<\/h1>/);
   assert.match(biography, /<title>Andrew Zellinger • History<\/title>/);
   assert.match(biography, /<link rel="canonical" href="\/history">/);
 });
@@ -70,9 +70,9 @@ test("the mirror generator preserves canonical routes and route-specific page na
   assert.ok(generator.includes('href="/" class="nav_link">Home</a>'));
   assert.ok(generator.includes('href="/history"'));
   assert.doesNotMatch(generator, />Index<\/a>/);
-  assert.match(generator, /heading\.textContent = "Selected Work"/);
-  assert.match(generator, /<span class=\"home-title-desktop\">Product Designer<\/span><span class=\"home-title-mobile\">Designer<\/span>/);
-  assert.match(generator, /<h1 class="heading">A Brief History<\/h1>/);
+  assert.match(generator, /heading\.textContent = "Selected work"/);
+  assert.match(generator, /<span class=\"home-title-desktop\">Product designer<\/span><span class=\"home-title-mobile\">Designer<\/span>/);
+  assert.match(generator, /<h1 class="heading">A brief history<\/h1>/);
 });
 
 test("the shared identity uses the approved page-title size and logo treatment", async () => {
@@ -82,6 +82,7 @@ test("the shared identity uses the approved page-title size and logo treatment",
 
   assert.match(styles, /--typography-desktop--h1-size:\s*62px;/);
   assert.match(styles, /--typography-desktop--h1-line:\s*62px;/);
+  assert.match(styles, /\.heading\s*\{[^}]*text-transform:\s*none;/s);
   assert.equal(packageManifest.dependencies.geist, "^1.7.2");
   assert.match(fontStyles, /@font-face\s*\{[^}]*font-family:\s*"Geist";[^}]*node_modules\/geist\/dist\/fonts\/geist-sans\/Geist-Medium\.woff2[^}]*font-weight:\s*500;/s);
   assert.match(styles, /\.nav_brand\s*\{[^}]*font-family:\s*"Geist", sans-serif;[^}]*font-weight:\s*500;[^}]*font-synthesis:\s*none;/s);
@@ -91,8 +92,8 @@ test("the shared identity uses the approved page-title size and logo treatment",
 
   for (const templatePath of templatePaths) {
     const html = await readFile(new URL(templatePath, import.meta.url), "utf8");
-    assert.match(html, /<a href="\/" class="nav_brand w-inline-block">\s*<div>ANDREW ZELLINGER<\/div>\s*<\/a>/s);
-    assert.doesNotMatch(html, />A\. ZELLINGER</);
+    assert.match(html, /<a href="\/" class="nav_brand w-inline-block">\s*<div>A\. ZELLINGER<\/div>\s*<\/a>/s);
+    assert.doesNotMatch(html, />ANDREW ZELLINGER</);
     assert.doesNotMatch(html, /nav_brand-(?:desktop|mobile)/);
   }
 });
