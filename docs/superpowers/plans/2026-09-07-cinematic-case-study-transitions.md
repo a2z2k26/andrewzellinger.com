@@ -322,6 +322,7 @@ git commit -m "Add scroll-driven case-study boundaries"
 - Create: `src/detail-route-transition.js`
 - Modify: `src/detail-state.js`
 - Modify: `src/detail-state.css`
+- Modify: `src/site-motion.js`
 - Modify: `index.html`
 - Modify: `scripts/mirror-source.mjs`
 - Create: `tests/detail-route-transition.test.mjs`
@@ -352,6 +353,13 @@ test("project route transitions share media in both directions", async () => {
   assert.match(transition, /aria-hidden/);
   assert.match(transition, /cancel\(\)/);
   assert.match(collection, /dataset\.projectCardCopy/);
+});
+
+test("the collection loop preserves its phase across detail navigation", async () => {
+  const motion = await readFile(new URL("../src/site-motion.js", import.meta.url), "utf8");
+  assert.match(motion, /loopSnapshots/);
+  assert.match(motion, /phase/);
+  assert.match(motion, /initialSnapshot/);
 });
 ```
 
@@ -421,7 +429,11 @@ Pass both clones and the source rectangle into `renderDetail`. Limit the cinemat
 
 Replace the immediate title focus with the transition completion callback. Fallback and reduced-motion paths focus on the next animation frame. Cancelled entrances must never focus a removed element.
 
-- [ ] **Step 7: Implement reverse restoration**
+- [ ] **Step 7: Preserve the collection loop phase**
+
+Store the Projects loop's normalized transform phase and direction before its detail-route teardown. Pass that snapshot back into `createContentLoop` when the collection route resumes so the originating card returns to the same screen position. Recalculate the stored phase against the new loop distance after resize; do not persist pixel offsets.
+
+- [ ] **Step 8: Implement reverse restoration**
 
 Before destroying the detail view, capture the active source-set unit's media clone and rectangle. Restore collection nodes, dispatch the existing route-change event, set the saved scroll position, and wait two animation frames. Resolve the visible card with:
 
@@ -433,7 +445,7 @@ const originCard = [...document.querySelectorAll(
 
 If the card and its media rectangle exist, run the transition with `direction: "return"`. Otherwise restore focus and native visibility immediately. Resume the collection loop and focus the card only after the overlay lands.
 
-- [ ] **Step 8: Add route-overlay styling**
+- [ ] **Step 9: Add route-overlay styling**
 
 ```css
 .detail-transition-media,
@@ -457,16 +469,16 @@ If the card and its media rectangle exist, run the transition with `direction: "
 
 Clear every inline motion property after completion. Preserve the existing reduced-motion rule that prevents overlay display.
 
-- [ ] **Step 9: Run focused route tests**
+- [ ] **Step 10: Run focused route tests**
 
 Run: `node --test tests/detail-route-transition.test.mjs tests/detail-title-capitalization.test.mjs tests/article-detail-system.test.mjs`
 
 Expected: all tests pass.
 
-- [ ] **Step 10: Commit shared route transitions**
+- [ ] **Step 11: Commit shared route transitions**
 
 ```bash
-git add src/detail-route-transition.js src/detail-state.js src/detail-state.css index.html scripts/mirror-source.mjs tests/detail-route-transition.test.mjs
+git add docs/superpowers/plans/2026-09-07-cinematic-case-study-transitions.md src/detail-route-transition.js src/detail-state.js src/detail-state.css src/site-motion.js index.html scripts/mirror-source.mjs tests/detail-route-transition.test.mjs
 git commit -m "Add reversible project detail transitions"
 ```
 

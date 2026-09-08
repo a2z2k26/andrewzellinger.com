@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import "./detail-state.css";
 import { createBoundaryMotion } from "./detail-boundary-motion.js";
+import { holdRouteVisual, runRouteTransition } from "./detail-route-transition.js";
 import {
   ARTICLE_DETAILS,
   CASE_STUDIES,
@@ -217,7 +218,37 @@ function setScroll(top) {
   window.scrollTo({ top: Math.max(0, top), left: 0, behavior: "auto" });
 }
 
+function elementRect(element) {
+  const rect = element?.getBoundingClientRect();
+  if (!rect || rect.width <= 0 || rect.height <= 0) return null;
+  return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+}
+
+function headerVisual(unit) {
+  const copy = unit?.querySelector(".detail-unit__copy")?.cloneNode(true);
+  copy?.querySelector(".detail-unit__sections, .detail-unit__article-body")?.remove();
+  return copy ?? null;
+}
+
+function headerRect(unit) {
+  const copy = unit?.querySelector(".detail-unit__copy");
+  const copyRect = copy?.getBoundingClientRect();
+  const ledeRect = unit?.querySelector("[data-detail-motion-lede]")?.getBoundingClientRect();
+  if (!copyRect || !ledeRect || copyRect.width <= 0) return null;
+  return {
+    left: copyRect.left,
+    top: copyRect.top,
+    width: copyRect.width,
+    height: Math.max(1, ledeRect.bottom - copyRect.top),
+  };
+}
+
 function killTransition() {
+  if (activeTransition?.cancel) {
+    activeTransition.cancel();
+    activeTransition = null;
+    return;
+  }
   activeTransition?.timeline?.kill();
   activeTransition?.target?.style.removeProperty("visibility");
   activeTransition?.overlay?.remove();
@@ -374,7 +405,12 @@ function destroyDetailView() {
   activeDetail.view.remove();
 }
 
-async function renderDetail(entry, { sourceVisual = null, sourceRect = null } = {}) {
+async function renderDetail(entry, {
+  sourceVisual = null,
+  sourceRect = null,
+  sourceCopyVisual = null,
+  sourceCopyRect = null,
+} = {}) {
   if (activeDetail) destroyDetailView();
 
   const collectionHeading = activeDetail?.collectionHeading
@@ -442,15 +478,68 @@ async function renderDetail(entry, { sourceVisual = null, sourceRect = null } = 
     collectionNodes: nodes,
     sourceScrollY: history.state?.[DETAIL_STATE_KEY]?.sourceScrollY ?? 0,
     originSlug: history.state?.[DETAIL_STATE_KEY]?.originSlug ?? entry.slug,
+    sourceRect,
   };
 
+  const focusTarget = selectedUnit.querySelector(".detail-unit__title");
+  if (entry.kind === "project") {
+    const targetMedia = selectedUnit.querySelector(".detail-unit__media");
+    let transition = null;
+    transition = runRouteTransition({
+      direction: "enter",
+      mediaVisual: sourceVisual,
+      mediaFrom: sourceRect,
+      mediaTo: elementRect(targetMedia),
+      copyVisual: sourceCopyVisual,
+      copyRect: sourceCopyRect,
+      nativeTarget: targetMedia,
+      detailHeader: {
+        titles: [...selectedUnit.querySelectorAll("[data-detail-motion-title]")],
+        meta: selectedUnit.querySelector("[data-detail-motion-meta]"),
+        lede: selectedUnit.querySelector("[data-detail-motion-lede]"),
+      },
+      reduceMotion,
+      onComplete: () => {
+        if (activeTransition === transition) activeTransition = null;
+        if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
+      },
+    });
+    activeTransition = transition;
+    return;
+  }
+
   runEntranceTransition(sourceVisual, sourceRect, selectedUnit, reduceMotion);
-  selectedUnit.querySelector(".detail-unit__title")?.focus({ preventScroll: true });
+  focusTarget?.focus({ preventScroll: true });
 }
 
-function restoreCollection(state) {
+async function restoreCollection(state) {
   if (!activeDetail) return;
   const previous = activeDetail;
+  killTransition();
+  previous.scrollRuntime?.boundaryMotion?.clear();
+
+  const saved = state?.[COLLECTION_STATE_KEY];
+  const scrollY = saved?.scrollY ?? previous.sourceScrollY ?? 0;
+  const originSlug = saved?.originSlug ?? previous.originSlug;
+  const activeSlug = document.documentElement.dataset.detailActiveSlug;
+  const activeUnit = previous.view.querySelector(
+    `[data-detail-set="source"] .detail-unit[data-detail-slug="${activeSlug}"]`,
+  );
+  const canReverse = previous.view.classList.contains("detail-view--project")
+    && !previous.reduceMotion
+    && activeSlug === originSlug
+    && Boolean(activeUnit);
+  const detailMedia = canReverse ? activeUnit.querySelector(".detail-unit__media") : null;
+  const returnMediaRect = elementRect(detailMedia);
+  const returnCopyRect = canReverse ? headerRect(activeUnit) : null;
+  const returnMediaVisual = returnMediaRect
+    ? holdRouteVisual(detailMedia.cloneNode(true), "detail-transition-media", returnMediaRect)
+    : null;
+  const returnCopyVisual = returnCopyRect
+    ? holdRouteVisual(headerVisual(activeUnit), "detail-transition-copy", returnCopyRect)
+    : null;
+
+  previous.view.style.visibility = "hidden";
   destroyDetailView();
   activeDetail = previous;
   previous.collectionNodes.forEach((node) => { node.hidden = false; });
@@ -458,15 +547,47 @@ function restoreCollection(state) {
   activeDetail = null;
   window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
 
-  const saved = state?.[COLLECTION_STATE_KEY];
-  const scrollY = saved?.scrollY ?? previous.sourceScrollY ?? 0;
-  const originSlug = saved?.originSlug ?? previous.originSlug;
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    setScroll(scrollY);
-    [...document.querySelectorAll(`[data-detail-slug="${originSlug}"]`)]
-      .find((element) => !element.closest("[aria-hidden='true']"))
-      ?.focus({ preventScroll: true });
-  }));
+  await nextFrame();
+  setScroll(scrollY);
+  await nextFrame();
+
+  const candidateLinks = [...document.querySelectorAll(
+    `[data-portfolio-detail-link][data-detail-slug="${originSlug}"]`,
+  )];
+  const focusTarget = candidateLinks.find((link) => !link.closest("[aria-hidden='true']"));
+  const targetTop = previous.sourceRect?.top ?? returnMediaRect?.top ?? 0;
+  const candidates = candidateLinks.map((link) => {
+    const media = link.querySelector(".media-background-holder");
+    return { link, media, rect: elementRect(media) };
+  }).filter(({ rect }) => rect).sort((a, b) => (
+    Math.abs(a.rect.top - targetTop) - Math.abs(b.rect.top - targetTop)
+  ));
+  const target = candidates[0];
+
+  if (!returnMediaVisual || !returnMediaRect || !target) {
+    returnMediaVisual?.remove();
+    returnCopyVisual?.remove();
+    focusTarget?.focus({ preventScroll: true });
+    return;
+  }
+
+  let transition = null;
+  transition = runRouteTransition({
+    direction: "return",
+    mediaVisual: returnMediaVisual,
+    mediaFrom: returnMediaRect,
+    mediaTo: target.rect,
+    copyVisual: returnCopyVisual,
+    copyRect: returnCopyRect,
+    nativeTarget: target.media,
+    destinationCopy: target.link.querySelector("[data-project-card-copy]"),
+    reduceMotion: previous.reduceMotion,
+    onComplete: () => {
+      if (activeTransition === transition) activeTransition = null;
+      focusTarget?.focus({ preventScroll: true });
+    },
+  });
+  activeTransition = transition;
 }
 
 function openDetail(link) {
@@ -480,6 +601,9 @@ function openDetail(link) {
     ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height }
     : null;
   const sourceVisual = sourceMedia?.cloneNode(true) ?? null;
+  const sourceCopy = link.querySelector("[data-project-card-copy]");
+  const sourceCopyRect = elementRect(sourceCopy);
+  const sourceCopyVisual = sourceCopy?.cloneNode(true) ?? null;
   const sourceRoute = normalizedPath();
   const sourceScrollY = window.scrollY;
   const collectionState = {
@@ -506,7 +630,12 @@ function openDetail(link) {
     "",
     entry.path,
   );
-  renderDetail(entry, { sourceVisual, sourceRect });
+  renderDetail(entry, {
+    sourceVisual,
+    sourceRect,
+    sourceCopyVisual,
+    sourceCopyRect,
+  });
 }
 
 function closeDetail() {

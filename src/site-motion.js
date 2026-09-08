@@ -23,6 +23,7 @@ const FORCE_REDUCED_MOTION = import.meta.env.DEV
   && new URLSearchParams(window.location.search).get("motion") === "reduce";
 
 let destroyActiveRuntime = null;
+const loopSnapshots = new Map();
 
 function currentPath() {
   return window.location.pathname.replace(/\/$/, "");
@@ -182,6 +183,7 @@ function createContentLoop(logicalItems, {
   itemSelector,
   namespace,
   sourceContainerSelector,
+  initialSnapshot,
 }) {
   const field = document.querySelector(fieldSelector);
   const sourceContainer = sourceContainerSelector
@@ -238,9 +240,16 @@ function createContentLoop(logicalItems, {
   let resizeCall = null;
   let settleCall = null;
   let decayTween = null;
-  let direction = -1;
+  let direction = initialSnapshot?.direction > 0 ? 1 : -1;
   let distance = 0;
+  let pendingPhase = Number.isFinite(initialSnapshot?.phase) ? initialSnapshot.phase : null;
   const speedState = { multiplier: 1 };
+
+  const currentPhase = () => {
+    if (!distance) return 0;
+    const y = Number(gsap.getProperty(track, "y")) || 0;
+    return (((y % distance) + distance) % distance) / distance;
+  };
 
   const applySpeed = () => {
     loopTween?.timeScale(speedState.multiplier);
@@ -289,6 +298,7 @@ function createContentLoop(logicalItems, {
 
   const buildLoop = () => {
     loopTween?.kill();
+    if (distance) pendingPhase = currentPhase();
     gsap.set(track, { y: 0 });
     const setGap = Number.parseFloat(getComputedStyle(track).rowGap) || 0;
     distance = sourceSet.getBoundingClientRect().height + setGap;
@@ -297,7 +307,9 @@ function createContentLoop(logicalItems, {
     const duration = distance / LOOP_SPEED_PX_PER_SECOND;
     track.dataset.loopDistance = String(distance);
     track.dataset.loopDuration = String(duration);
-    gsap.set(track, { y: -distance });
+    const initialY = pendingPhase === null ? -distance : (pendingPhase * distance) - distance;
+    pendingPhase = null;
+    gsap.set(track, { y: initialY });
     startSegment();
   };
 
@@ -347,6 +359,12 @@ function createContentLoop(logicalItems, {
       resizeCall?.kill();
       settleCall?.kill();
       decayTween?.kill();
+      if (distance) {
+        loopSnapshots.set(namespace, {
+          phase: currentPhase(),
+          direction,
+        });
+      }
       loopTween?.kill();
       gsap.set(track, { clearProps: "transform" });
       if (sourceContainer) {
@@ -441,7 +459,10 @@ export function initSiteMotion({ reduceMotion } = {}) {
       if (useNativeScrolling) return;
 
       const contentLoop = routeLoop && logicalItems.length === routeLoop.expectedCount
-        ? createContentLoop(logicalItems, routeLoop)
+        ? createContentLoop(logicalItems, {
+          ...routeLoop,
+          initialSnapshot: loopSnapshots.get(routeLoop.namespace),
+        })
         : { setDirection() {}, handleInput() {}, destroy() {} };
       const stopSmoothScrolling = createSmoothScrolling(contentLoop.handleInput);
       const stopDirectionObserver = routeLoop

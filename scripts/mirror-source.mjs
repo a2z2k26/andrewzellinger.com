@@ -440,6 +440,7 @@ const placeholderStyles = `
       mediaSpacing.append(media);
 
       const copySpacing = makeElement("div", "margin-bottom space-medium");
+      copySpacing.dataset.projectCardCopy = "";
       const grid = makeElement("div", "grid _3-col");
       const title = makeElement("h2", "heading-style-h2 new", project.title);
       const details = makeElement("div");

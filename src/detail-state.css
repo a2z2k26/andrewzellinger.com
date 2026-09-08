@@ -315,13 +315,23 @@ html[data-detail-boundary-motion="active"] [data-detail-motion-lede] {
   margin-top: var(--space--desktop-small);
 }
 
+.detail-transition-media,
+.detail-transition-copy {
+  pointer-events: none;
+  position: fixed !important;
+}
+
 .detail-transition-media {
   z-index: 120;
-  pointer-events: none;
   background-color: #2b2b2b;
   overflow: hidden;
-  position: fixed !important;
   will-change: transform;
+}
+
+.detail-transition-copy {
+  z-index: 121;
+  overflow: hidden;
+  will-change: transform, opacity;
 }
 
 .detail-transition-media img {
@@ -383,7 +393,8 @@ html[data-detail-boundary-motion="active"] [data-detail-motion-lede] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .detail-transition-media {
+  .detail-transition-media,
+  .detail-transition-copy {
     display: none !important;
   }
 
