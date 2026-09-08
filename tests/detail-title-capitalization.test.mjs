@@ -70,6 +70,19 @@ test("project details reuse the Projects lockup while articles retain the editor
   assert.match(styles, /\.detail-unit__lede--article\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*0;[^}]*text-transform:\s*uppercase;/s);
 });
 
+test("project detail lockups do not inherit all-sided spacing utilities", async () => {
+  const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+  const projectLockup = runtime.slice(
+    runtime.indexOf("function projectLockupMarkup"),
+    runtime.indexOf("function articleBodyMarkup"),
+  );
+
+  assert.doesNotMatch(projectLockup, /margin-bottom space-(?:small|medium)/);
+  assert.match(projectLockup, /class="works-media-spacing"/);
+  assert.match(projectLockup, /class="works-meta-spacing"/);
+  assert.match(projectLockup, /class="works-description-spacing"/);
+});
+
 test("detail headers render exactly one collection description", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
 

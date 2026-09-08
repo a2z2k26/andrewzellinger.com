@@ -197,15 +197,15 @@ function projectLockupMarkup(entry) {
   const meta = projectCardTags(entry);
   const lede = projectCardDescription(entry);
   return `<div class="detail-unit__project-lockup">
-    <div class="margin-bottom space-small works-media-spacing">${mediaMarkup(entry)}</div>
-    <div class="margin-bottom space-medium detail-unit__copy detail-unit__copy--project" data-project-card-copy data-detail-motion-copy>
+    <div class="works-media-spacing">${mediaMarkup(entry)}</div>
+    <div class="detail-unit__copy detail-unit__copy--project" data-project-card-copy data-detail-motion-copy>
       <div class="grid _3-col">
         <h2 class="heading-style-h2 new detail-unit__title detail-unit__title--project" data-detail-motion-title tabindex="-1">${escapeHtml(entry.title)}</h2>
         <div class="detail-unit__project-details">
-          <div class="margin-bottom space-medium works-meta-spacing">
+          <div class="works-meta-spacing">
             <div class="display-inlineflex categories detail-unit__meta detail-unit__meta--project" data-detail-motion-meta>${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
           </div>
-          <div class="margin-bottom space-medium works-description-spacing">
+          <div class="works-description-spacing">
             <p class="works-project-description detail-unit__lede detail-unit__lede--project" data-detail-motion-lede>${escapeHtml(lede)}</p>
           </div>
         </div>
