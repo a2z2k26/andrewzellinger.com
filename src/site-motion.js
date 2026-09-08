@@ -1,7 +1,6 @@
 import { gsap } from "gsap";
 import { PROJECTS } from "./project-content.js";
 import "./site-fonts.css";
-import "./effects/glass-surface.js";
 import "./effects/center-control.css";
 import "./effects/center-glass-lens.js";
 

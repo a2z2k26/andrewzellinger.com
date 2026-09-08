@@ -16,9 +16,14 @@ test("clamp01 and rangeProgress clamp reversible progress", () => {
 });
 
 test("boundaryProgress maps the next media through the transition window", () => {
-  assert.equal(boundaryProgress(900, 1000), 0);
-  assert.equal(boundaryProgress(500, 1000), .5);
+  assert.equal(boundaryProgress(1000, 1000), 0);
+  assert.equal(boundaryProgress(550, 1000), .5);
   assert.equal(boundaryProgress(100, 1000), 1);
+});
+
+test("boundary motion engages as soon as incoming media crosses the viewport edge", () => {
+  assert.equal(boundaryProgress(1000, 1000), 0);
+  assert.ok(boundaryProgress(999, 1000) > 0);
 });
 
 test("motionFrame resolves outgoing and incoming media and copy", () => {

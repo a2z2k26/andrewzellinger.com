@@ -8,8 +8,14 @@ import {
   GLASS_BANDS_ENABLED,
 } from "../src/effects/glass-band.js";
 
-test("top and bottom glass bands are active with the restrained height", () => {
-  assert.equal(GLASS_BANDS_ENABLED, true);
+test("top and bottom glass bands are disabled site-wide", async () => {
+  const siteEntry = await readFile(
+    new URL("../src/site-motion.js", import.meta.url),
+    "utf8",
+  );
+
+  assert.equal(GLASS_BANDS_ENABLED, false);
+  assert.doesNotMatch(siteEntry, /effects\/glass-surface\.js/);
   assert.equal(GLASS.band, 0.08);
   assert.equal(GLASS.curve, 1);
   assert.equal(GLASS.strength, 1.5);

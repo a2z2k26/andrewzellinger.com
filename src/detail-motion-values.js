@@ -9,7 +9,7 @@ export function rangeProgress(value, start, end) {
 
 export function boundaryProgress(nextMediaTop, viewportHeight) {
   const height = Math.max(1, viewportHeight);
-  const start = height * .9;
+  const start = height;
   const end = height * .1;
   return clamp01((start - nextMediaTop) / (start - end));
 }

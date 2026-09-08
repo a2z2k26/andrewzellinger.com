@@ -10,7 +10,7 @@ import * as THREE from "three";
 
 // Reversible global switch for the viewport-edge bands only. The separate
 // center navigation lens does not read this flag.
-export const GLASS_BANDS_ENABLED = true;
+export const GLASS_BANDS_ENABLED = false;
 
 export const GLASS = {
   band: 0.08,
