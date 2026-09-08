@@ -36,7 +36,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(companyOfOne.slug, "company-of-one");
   assert.equal(companyOfOne.title, "Company of One");
   assert.deepEqual(companyOfOne.meta, ["Andrew Zellinger", "Jun 2nd 2026"]);
-  assert.equal(companyOfOne.summary, "Why predictable, priced, and verifiable agent systems outperform emergence.");
+  assert.equal(companyOfOne.summary, "A case for deterministic agent orchestration, hard quality gates, and cost controls that make capable systems safe to operate.");
   assert.equal(companyOfOne.body.filter((block) => block.type === "heading").length, 8);
   assert.equal(companyOfOne.body.filter((block) => block.type === "paragraph").length, 16);
   assert.equal(companyOfOne.body[0].text, "At its worst, my agents waited in line");
@@ -45,7 +45,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(aFreeSurfLesson.slug, "a-free-surf-lesson");
   assert.equal(aFreeSurfLesson.title, "A Free Surf Lesson");
   assert.deepEqual(aFreeSurfLesson.meta, ["Andrew Zellinger", "Jan 9th 2026"]);
-  assert.equal(aFreeSurfLesson.summary, "Why taste needs systems, strategy, and execution to create real impact.");
+  assert.equal(aFreeSurfLesson.summary, "Taste still matters in the age of AI, but only when systems literacy, strategy, and execution turn judgment into impact.");
   assert.equal(aFreeSurfLesson.body.filter((block) => block.type === "heading").length, 8);
   assert.equal(aFreeSurfLesson.body.filter((block) => block.type === "paragraph").length, 16);
   assert.equal(aFreeSurfLesson.body[0].text, "It's a comforting story. It's also incomplete");
@@ -54,7 +54,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(showingMyTeeth.slug, "showing-my-teeth");
   assert.equal(showingMyTeeth.title, "Showing My Teeth");
   assert.deepEqual(showingMyTeeth.meta, ["Andrew Zellinger", "Mar 28th 2026"]);
-  assert.equal(showingMyTeeth.summary, "A personal account of loss, survival, and choosing integrity in design.");
+  assert.equal(showingMyTeeth.summary, "A personal account of professional loss, family crisis, survival, and choosing integrity when the design industry turns hostile.");
   assert.equal(showingMyTeeth.body.filter((block) => block.type === "heading").length, 6);
   assert.equal(showingMyTeeth.body.filter((block) => block.type === "paragraph").length, 24);
   assert.equal(showingMyTeeth.body[0].text, "I got fired on the day I left Denver");
@@ -63,7 +63,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(intentionDeficitDisorder.slug, "intention-deficit-disorder");
   assert.equal(intentionDeficitDisorder.title, "Intention Deficit Disorder");
   assert.deepEqual(intentionDeficitDisorder.meta, ["Andrew Zellinger", "May 16th 2026"]);
-  assert.equal(intentionDeficitDisorder.summary, "How AI products accumulate intent debt, and how teams can prevent it.");
+  assert.equal(intentionDeficitDisorder.summary, "How AI products accumulate intent debt when they misread users, and how design teams can identify, measure, and prevent it.");
   assert.equal(intentionDeficitDisorder.body.filter((block) => block.type === "heading").length, 11);
   assert.equal(intentionDeficitDisorder.body.filter((block) => block.type === "paragraph").length, 47);
   assert.equal(intentionDeficitDisorder.body[0].text, "I call it intention deficit");
@@ -72,7 +72,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(twoDollarBill.slug, "two-dollar-bill");
   assert.equal(twoDollarBill.title, "Two-Dollar Bill");
   assert.deepEqual(twoDollarBill.meta, ["Andrew Zellinger", "May 16th 2026"]);
-  assert.equal(twoDollarBill.summary, "What a two-dollar mistake revealed about trust, cost, and agent autonomy.");
+  assert.equal(twoDollarBill.summary, "What a two-dollar agent mistake revealed about cost visibility, operational trust, and why autonomous systems must earn freedom.");
   assert.equal(twoDollarBill.body.filter((block) => block.type === "heading").length, 6);
   assert.equal(twoDollarBill.body.filter((block) => block.type === "paragraph").length, 26);
   assert.match(twoDollarBill.body[0].text, /^Because here's what two dollars represents/);
@@ -81,7 +81,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(youAlwaysLetYourselfWin.slug, "you-always-let-yourself-win");
   assert.equal(youAlwaysLetYourselfWin.title, "You Always Let Yourself Win");
   assert.deepEqual(youAlwaysLetYourselfWin.meta, ["Andrew Zellinger", "May 16th 2026"]);
-  assert.equal(youAlwaysLetYourselfWin.summary, "Why designers need evals to define and protect quality in AI products.");
+  assert.equal(youAlwaysLetYourselfWin.summary, "Why designers need evals to define product quality, expose weak outputs, and keep AI experiences useful, clear, and trustworthy.");
   assert.equal(youAlwaysLetYourselfWin.body.filter((block) => block.type === "heading").length, 10);
   assert.equal(youAlwaysLetYourselfWin.body.filter((block) => block.type === "paragraph").length, 54);
   assert.match(youAlwaysLetYourselfWin.body[0].text, /^Every AI product team hits the same moment/);
@@ -118,7 +118,7 @@ test("article records use one shared index/detail source with flexible ordered b
   assert.equal(realMvp.body.filter((block) => block.type === "paragraph").length, 21);
 
   for (const article of ARTICLE_DETAILS) {
-    assert.ok(article.summary.length <= 75, `${article.title} summary should stay compact`);
+    assert.ok(article.summary.length >= 110 && article.summary.length <= 130, `${article.title} summary should fill two desktop lines without becoming an excerpt`);
     assert.match(article.summary, /\.$/, `${article.title} summary should be one complete sentence`);
   }
 

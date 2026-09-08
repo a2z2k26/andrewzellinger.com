@@ -820,7 +820,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "company-of-one",
     title: "Company of One",
     meta: ["Andrew Zellinger", "Jun 2nd 2026"],
-    summary: "Why predictable, priced, and verifiable agent systems outperform emergence.",
+    summary: "A case for deterministic agent orchestration, hard quality gates, and cost controls that make capable systems safe to operate.",
     body: companyOfOneBody,
   }),
   article({
@@ -828,7 +828,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "a-free-surf-lesson",
     title: "A Free Surf Lesson",
     meta: ["Andrew Zellinger", "Jan 9th 2026"],
-    summary: "Why taste needs systems, strategy, and execution to create real impact.",
+    summary: "Taste still matters in the age of AI, but only when systems literacy, strategy, and execution turn judgment into impact.",
     body: aFreeSurfLessonBody,
   }),
   article({
@@ -836,7 +836,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "showing-my-teeth",
     title: "Showing My Teeth",
     meta: ["Andrew Zellinger", "Mar 28th 2026"],
-    summary: "A personal account of loss, survival, and choosing integrity in design.",
+    summary: "A personal account of professional loss, family crisis, survival, and choosing integrity when the design industry turns hostile.",
     body: showingMyTeethBody,
   }),
   article({
@@ -844,7 +844,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "intention-deficit-disorder",
     title: "Intention Deficit Disorder",
     meta: ["Andrew Zellinger", "May 16th 2026"],
-    summary: "How AI products accumulate intent debt, and how teams can prevent it.",
+    summary: "How AI products accumulate intent debt when they misread users, and how design teams can identify, measure, and prevent it.",
     body: intentionDeficitDisorderBody,
   }),
   article({
@@ -852,7 +852,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "two-dollar-bill",
     title: "Two-Dollar Bill",
     meta: ["Andrew Zellinger", "May 16th 2026"],
-    summary: "What a two-dollar mistake revealed about trust, cost, and agent autonomy.",
+    summary: "What a two-dollar agent mistake revealed about cost visibility, operational trust, and why autonomous systems must earn freedom.",
     body: twoDollarBillBody,
   }),
   article({
@@ -860,7 +860,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "you-always-let-yourself-win",
     title: "You Always Let Yourself Win",
     meta: ["Andrew Zellinger", "May 16th 2026"],
-    summary: "Why designers need evals to define and protect quality in AI products.",
+    summary: "Why designers need evals to define product quality, expose weak outputs, and keep AI experiences useful, clear, and trustworthy.",
     body: youAlwaysLetYourselfWinBody,
   }),
   article({
@@ -868,7 +868,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "cut-defer-or-build",
     title: "Cut, Defer or Build",
     meta: ["Andrew Zellinger"],
-    summary: "A framework for deciding what an MVP should cut, defer, or build.",
+    summary: "A practical framework for deciding what an early product should cut, defer, or build when ambition outruns time and budget.",
     body: cutDeferOrBuildBody,
   }),
   article({
@@ -876,7 +876,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "design-principles-that-actually-shape-the-product",
     title: "Design Principles That Actually Shape the Product",
     meta: ["Andrew Zellinger"],
-    summary: "How useful design principles turn research into concrete product decisions.",
+    summary: "How research-grounded design principles resolve real trade-offs, survive delivery pressure, and actively shape product decisions.",
     body: designPrinciplesBody,
   }),
   article({
@@ -884,7 +884,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "lessons-from-fifteen-years-of-embedded-product-design",
     title: "Lessons from Fifteen Years of Embedded Product Design",
     meta: ["Andrew Zellinger"],
-    summary: "Six lessons from fifteen years of embedded product design under pressure.",
+    summary: "Six hard-earned lessons from fifteen years of embedded product design, from research artifacts to product coherence and pilots.",
     body: embeddedProductDesignLessonsBody,
   }),
   article({
@@ -892,7 +892,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "the-constraint-was-the-brief",
     title: "The Constraint Was the Brief",
     meta: ["Andrew Zellinger"],
-    summary: "How severe constraints can clarify the brief and produce a better product.",
+    summary: "How treating severe constraints as the brief can clarify the problem, reject familiar patterns, and produce a better product.",
     body: constraintWasTheBriefBody,
   }),
   article({
@@ -900,7 +900,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "what-makes-a-real-mvp",
     title: "What Makes a Real MVP?",
     meta: ["Andrew Zellinger"],
-    summary: "Why a real MVP is the smallest complete journey users can finish.",
+    summary: "Why a real MVP is not the smallest demo, but the smallest complete journey a user can finish clearly and with confidence.",
     body: realMvpBody,
   }),
 ]);
