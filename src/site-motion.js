@@ -1,6 +1,13 @@
 import { gsap } from "gsap";
 import { ARTICLE_DETAILS } from "./article-content.js";
 import { PROJECTS } from "./project-content.js";
+import {
+  isMotionPaused,
+  isMotionInputPaused,
+  isUserMotionPaused,
+  setMotionPause,
+  subscribeMotionPause,
+} from "./elevation/motion-pause.js";
 import "./site-fonts.css";
 import "./effects/center-control.css";
 import "./effects/center-control.js";
@@ -23,6 +30,8 @@ const FORCE_REDUCED_MOTION = import.meta.env.DEV
   && new URLSearchParams(window.location.search).get("motion") === "reduce";
 
 let destroyActiveRuntime = null;
+let activeCollectionLoop = null;
+let pendingRailSweepArrival = false;
 const loopSnapshots = new Map();
 
 function currentPath() {
@@ -45,6 +54,7 @@ function createSmoothScrolling(onInput = () => {}) {
   let scrollTween = null;
   let isWritingScroll = false;
   let previousTouch = null;
+  let inputWasPaused = isMotionInputPaused();
 
   const stopTween = () => {
     scrollTween?.kill();
@@ -54,7 +64,18 @@ function createSmoothScrolling(onInput = () => {}) {
     desiredY = window.scrollY;
   };
 
+  const syncInputPause = () => {
+    const inputIsPaused = isMotionInputPaused();
+    if (inputIsPaused || inputWasPaused) {
+      stopTween();
+      previousTouch = null;
+    }
+    inputWasPaused = inputIsPaused;
+  };
+  const unsubscribePause = subscribeMotionPause(syncInputPause);
+
   const smoothTo = (nextY) => {
+    if (isMotionInputPaused()) return;
     desiredY = clampScroll(nextY);
     scrollTween?.kill();
     proxy.y = window.scrollY;
@@ -82,6 +103,10 @@ function createSmoothScrolling(onInput = () => {}) {
         : 1;
     const delta = event.deltaY * unit;
     if (!delta) return;
+    if (isMotionInputPaused()) {
+      event.preventDefault();
+      return;
+    }
     onInput({
       direction: delta > 0 ? 1 : -1,
       magnitude: Math.abs(delta),
@@ -119,6 +144,7 @@ function createSmoothScrolling(onInput = () => {}) {
     };
     if (!(event.key in destinations)) return;
     event.preventDefault();
+    if (isMotionInputPaused()) return;
     onInput({
       direction: destinations[event.key].direction,
       magnitude: Math.abs(destinations[event.key].y - desiredY),
@@ -129,11 +155,21 @@ function createSmoothScrolling(onInput = () => {}) {
 
   const onTouchStart = (event) => {
     stopTween();
+    if (isMotionInputPaused()) {
+      previousTouch = null;
+      return;
+    }
     const touch = event.touches[0];
     previousTouch = touch ? { x: touch.clientX, y: touch.clientY } : null;
   };
 
   const onTouchMove = (event) => {
+    if (event.touches.length > 1) return;
+    if (isMotionInputPaused()) {
+      if (event.cancelable) event.preventDefault();
+      previousTouch = null;
+      return;
+    }
     const touch = event.touches[0];
     if (!touch || !previousTouch) return;
     const delta = previousTouch.y - touch.clientY;
@@ -162,11 +198,14 @@ function createSmoothScrolling(onInput = () => {}) {
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("touchstart", onTouchStart, { passive: true });
-  window.addEventListener("touchmove", onTouchMove, { passive: true });
+  // Installed only for enhanced desktop scrolling; native mobile routes never
+  // mount this listener. Keep single-touch input still while snapshots are held.
+  window.addEventListener("touchmove", onTouchMove, { passive: false });
   window.addEventListener("touchend", onTouchEnd, { passive: true });
   window.addEventListener("touchcancel", onTouchEnd, { passive: true });
 
   return () => {
+    unsubscribePause();
     stopTween();
     window.removeEventListener("wheel", onWheel);
     window.removeEventListener("keydown", onKeyDown);
@@ -253,6 +292,8 @@ function createContentLoop(logicalItems, {
   let pendingPhase = Number.isFinite(initialSnapshot?.phase) ? initialSnapshot.phase : null;
   let pendingAnchor = initialAnchor?.anchorSlug ? initialAnchor : null;
   const speedState = { multiplier: 1 };
+  const focusReason = `${namespace}:focus`;
+  let destroyed = false;
 
   const currentPhase = () => {
     if (!distance) return 0;
@@ -262,8 +303,24 @@ function createContentLoop(logicalItems, {
 
   const applySpeed = () => {
     loopTween?.timeScale(speedState.multiplier);
+    track.dataset.loopPaused = String(isMotionPaused());
     track.dataset.loopSpeedMultiplier = speedState.multiplier.toFixed(3);
-    track.dataset.loopSpeed = (LOOP_SPEED_PX_PER_SECOND * speedState.multiplier).toFixed(1);
+    track.dataset.loopSpeed = (isMotionPaused() ? 0 : LOOP_SPEED_PX_PER_SECOND * speedState.multiplier).toFixed(1);
+  };
+
+  const applyPause = () => {
+    if (destroyed) return;
+    if (isMotionPaused()) {
+      settleCall?.kill();
+      settleCall = null;
+      decayTween?.kill();
+      decayTween = null;
+      speedState.multiplier = 1;
+    }
+    // Pause the current tween, rather than reconstructing its phase or endpoint.
+    loopTween?.paused(isMotionPaused());
+    startCall?.paused(isMotionPaused());
+    applySpeed();
   };
 
   const beginSpeedDecay = () => {
@@ -295,6 +352,8 @@ function createContentLoop(logicalItems, {
       y: direction > 0 ? 0 : -2 * distance,
       duration: Math.abs((direction > 0 ? 0 : -2 * distance) - startY) / LOOP_SPEED_PX_PER_SECOND,
       ease: "none",
+      paused: isMotionPaused(),
+      onUpdate: () => window.dispatchEvent(new CustomEvent('portfolio:loop-progress')),
       onComplete: () => {
         gsap.set(track, { y: -distance });
         startSegment();
@@ -343,12 +402,29 @@ function createContentLoop(logicalItems, {
         startCall = null;
         startSegment();
       });
+      startCall.paused(isMotionPaused());
     } else {
       startSegment();
     }
   };
 
+  const resetForArrival = () => {
+    if (destroyed) return;
+    // The incoming rail travels upward; autoplay must continue that direction,
+    // even when a cached snapshot last moved downward. Keep its visible phase.
+    settleCall?.kill();
+    settleCall = null;
+    decayTween?.kill();
+    decayTween = null;
+    startCall?.kill();
+    startCall = null;
+    direction = -1;
+    speedState.multiplier = 1;
+    startSegment();
+  };
+
   const setDirection = (nextDirection) => {
+    if (isMotionInputPaused()) return;
     const normalizedDirection = nextDirection > 0 ? 1 : -1;
     if (normalizedDirection === direction) return;
     direction = normalizedDirection;
@@ -356,6 +432,7 @@ function createContentLoop(logicalItems, {
   };
 
   const handleInput = ({ direction: nextDirection, magnitude = 0, source, x, y }) => {
+    if (isMotionInputPaused()) return;
     setDirection(nextDirection);
 
     const fieldBounds = field.getBoundingClientRect();
@@ -364,6 +441,19 @@ function createContentLoop(logicalItems, {
       && x >= fieldBounds.left && x <= fieldBounds.right
       && y >= fieldBounds.top && y <= fieldBounds.bottom;
     if (!isKeyboardInput && !isWithinField) return;
+
+    if (isUserMotionPaused()) {
+      if (!distance) return;
+      // Direct input remains useful while paused, but introduces no inertia or
+      // ambient restart. Normalize into the two-set runway at the same phase.
+      const currentY = Number(gsap.getProperty(track, "y")) || 0;
+      const delta = direction * Math.abs(magnitude);
+      const nextY = ((((currentY + delta) % distance) + distance) % distance) - distance;
+      gsap.set(track, { y: nextY });
+      window.dispatchEvent(new CustomEvent('portfolio:loop-progress'));
+      startSegment();
+      return;
+    }
 
     const impulseMultiplier = gsap.utils.clamp(
       LOOP_MIN_IMPULSE_MULTIPLIER,
@@ -383,13 +473,33 @@ function createContentLoop(logicalItems, {
     resizeCall = gsap.delayedCall(0.18, buildLoop);
   };
 
+  const onFocusIn = () => setMotionPause(focusReason, true);
+  const onFocusOut = (event) => {
+    if (event.relatedTarget && field.contains(event.relatedTarget)) return;
+    queueMicrotask(() => {
+      if (!destroyed) setMotionPause(focusReason, field.contains(document.activeElement));
+    });
+  };
+  setMotionPause(focusReason, field.contains(document.activeElement));
+  const unsubscribePause = subscribeMotionPause(applyPause);
+  field.addEventListener("focusin", onFocusIn);
+  field.addEventListener("focusout", onFocusOut);
+
   buildLoop();
+  applyPause();
   window.addEventListener("resize", onResize, { passive: true });
 
   return {
     setDirection,
     handleInput,
+    resetForArrival,
     destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      unsubscribePause();
+      field.removeEventListener("focusin", onFocusIn);
+      field.removeEventListener("focusout", onFocusOut);
+      setMotionPause(focusReason, false);
       window.removeEventListener("resize", onResize);
       resizeCall?.kill();
       settleCall?.kill();
@@ -492,11 +602,16 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
           initialAnchor,
         })
         : { setDirection() {}, handleInput() {}, destroy() {} };
+      if (routeLoop) {
+        activeCollectionLoop = contentLoop;
+        applyPendingRailSweepArrival();
+      }
       const stopSmoothScrolling = createSmoothScrolling(contentLoop.handleInput);
       const stopDirectionObserver = routeLoop
         ? createScrollDirectionObserver(contentLoop.setDirection)
         : () => {};
       return () => {
+        if (activeCollectionLoop === contentLoop) activeCollectionLoop = null;
         stopDirectionObserver();
         contentLoop.destroy();
         stopSmoothScrolling();
@@ -504,13 +619,17 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
     },
   );
 
+  let destroyed = false;
   const destroy = () => {
+    if (destroyed) return;
+    destroyed = true;
     media.revert();
     delete document.documentElement.dataset.smoothScroll;
     delete document.documentElement.dataset.indexMotion;
     delete document.documentElement.dataset.worksMotion;
     delete document.documentElement.dataset.articlesMotion;
     window.removeEventListener("pagehide", destroy);
+    if (destroyActiveRuntime === destroy) destroyActiveRuntime = null;
   };
 
   window.addEventListener("pagehide", destroy, { once: true });
@@ -518,8 +637,23 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
   return destroy;
 }
 
+function applyPendingRailSweepArrival() {
+  const hasArrival = pendingRailSweepArrival || document.documentElement.dataset.railSweep === "up";
+  if (!hasArrival || !activeCollectionLoop?.resetForArrival) return;
+  activeCollectionLoop.resetForArrival();
+  pendingRailSweepArrival = false;
+}
+
+function onRailSweepArrival() {
+  if (currentPath() !== WORKS_PATH && currentPath() !== ARTICLES_PATH) return;
+  // pagereveal can arrive before startup, after startup, or around bfcache
+  // restoration. Consume only after a live collection loop can accept it.
+  pendingRailSweepArrival = true;
+  applyPendingRailSweepArrival();
+}
+
 function startWhenReady() {
-  if (document.readyState !== "complete") {
+  if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => initSiteMotion(), { once: true });
   } else {
     initSiteMotion();
@@ -527,6 +661,10 @@ function startWhenReady() {
 }
 
 startWhenReady();
+window.addEventListener("portfolio:rail-sweep-arrival", onRailSweepArrival);
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted && !destroyActiveRuntime) initSiteMotion();
+});
 window.addEventListener("portfolio:routechange", (event) => {
   initSiteMotion({ initialAnchor: event.detail });
 });

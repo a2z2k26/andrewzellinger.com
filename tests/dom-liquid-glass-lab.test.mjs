@@ -27,7 +27,7 @@ test("shared DOM liquid-glass lens follows the refractive tutorial model", async
   assert.doesNotMatch(band, /uLens|plusMaterial|plusControls/);
 });
 
-test("opaque center control retains its reversible panel sequence with responsive geometry", async () => {
+test("white center control retains its reversible panel sequence with responsive geometry", async () => {
   const styles = await readFile(new URL("../src/effects/center-control.css", import.meta.url), "utf8");
   const runtime = await readFile(new URL("../src/effects/center-control.js", import.meta.url), "utf8");
   const surface = await readFile(new URL("../src/effects/center-gooey-surface.jsx", import.meta.url), "utf8");
@@ -43,6 +43,7 @@ test("opaque center control retains its reversible panel sequence with responsiv
   assert.match(surface, /blur=\{6\}/);
   assert.match(surface, /contrast=\{18\}/);
   assert.match(surface, /fill="#fff"/);
+  assert.doesNotMatch(surface, /center-nav-glass-surface|center-glass-material|center-refractive-gooey/);
   assert.match(surface, /<Liquid\.Item\s+observe>/);
   assert.doesNotMatch(surface, /morph=\{/);
   assert.match(surface, /className="center-gooey-menu-panel-surface"/);
@@ -54,15 +55,15 @@ test("opaque center control retains its reversible panel sequence with responsiv
   assert.match(styles, /\.center-nav-shell \.nav_menu,[\s\S]*?inset:\s*0;[^}]*transform:\s*none !important;[^}]*pointer-events:\s*none;/s);
   assert.match(styles, /\.center-nav-shell \.center-nav-menu-list\s*\{[^}]*width:\s*var\(--center-nav-menu-width\);[^}]*height:\s*var\(--center-nav-menu-height\);[^}]*padding:\s*64px 40px;[^}]*flex-direction:\s*column;[^}]*gap:\s*20px;[^}]*transform:\s*translate\(-50%, calc\(-50% - 238px\)\) !important;/s);
   assert.doesNotMatch(styles, /data-nav-morph-step/);
-  assert.match(styles, /\.center-nav-shell \.center-nav-link\s*\{[^}]*width:\s*100%;[^}]*height:\s*24px;[^}]*color:\s*rgba\(0,0,0,\.68\);[^}]*font-family:\s*"Geist", sans-serif;[^}]*font-size:\s*16px;[^}]*font-weight:\s*500;[^}]*font-synthesis:\s*none;[^}]*line-height:\s*20px;[^}]*text-align:\s*center;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(styles, /\.center-nav-shell \.center-nav-link\s*\{[^}]*width:\s*100%;[^}]*height:\s*24px;[^}]*color:\s*#000;[^}]*font-family:\s*"Geist", sans-serif;[^}]*font-size:\s*16px;[^}]*font-weight:\s*500;[^}]*font-synthesis:\s*none;[^}]*line-height:\s*20px;[^}]*text-align:\s*center;[^}]*text-transform:\s*uppercase;/s);
   assert.match(styles, /\.center-nav-shell\[data-nav-link-stage="1"\][\s\S]*?\.center-nav-shell\[data-nav-link-stage="4"\][^}]*\{[^}]*visibility:\s*visible;[^}]*pointer-events:\s*auto;/s);
   assert.doesNotMatch(styles, /\.center-nav-shell \.center-nav-link\s*\{[^}]*transition:[^}]*opacity/s);
   assert.match(runtime, /center-nav-menu-list/);
   assert.match(runtime, /mountCenterGooeySurface/);
   assert.match(runtime, /import\("\.\/center-gooey-surface\.jsx"\)/);
-  assert.match(runtime, /panel\.animate\(scaleMorphFrames\(MENU_MORPH_KEYFRAMES, geometry\.scale\)/);
+  assert.match(runtime, /panel\.animate\(fitMorphFrames\(MENU_MORPH_KEYFRAMES, geometry\)/);
   assert.match(runtime, /menuList\.animate\(scaleMorphFrames\(MENU_LIST_KEYFRAMES, geometry\.scale\)/);
-  assert.match(runtime, /playbackRate\s*=\s*isOpen \? 1 : -1/);
+  assert.match(runtime, /playToward\(animation, isOpen, MENU_MORPH_DURATION_MS, reducedMotion\)/);
   assert.match(runtime, /const progress = currentTime \/ MENU_MORPH_DURATION_MS/);
   assert.doesNotMatch(runtime, /runMorphSequence|morphTimers|MORPH_STEP_MS|MORPH_SETTLE_MS|CLOSE_LABEL_RELEASE_MS/);
   assert.match(runtime, /center-nav-shell--labels-ready/);
@@ -73,6 +74,21 @@ test("opaque center control retains its reversible panel sequence with responsiv
   assert.match(runtime, /menuObserver\.observe/);
   assert.doesNotMatch(runtime, /mountDomGlassLens|dom-glass-lens|plusMaterial|backdrop-filter/);
   assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*?\.center-nav-shell\s*\{[^}]*--center-nav-closed-size:\s*96px;/s);
+});
+
+test("preserved glass trial uses one live liquid mask with nonzero bounds and full-opacity foreground", async () => {
+  const [styles, surface] = await Promise.all(['center-control.css', 'center-refractive-gooey-surface.jsx']
+    .map(file => readFile(new URL(`../src/effects/${file}`, import.meta.url), 'utf8')));
+  assert.match(styles, /--center-nav-glass-fill:\s*rgba\(190, 200, 205, 0\)/);
+  assert.match(styles, /--center-nav-glass-blur:\s*1px/);
+  assert.match(surface, /--center-nav-glass-fill': `rgba\(190, 200, 205, \$\{settings.frost\}\)`/);
+  assert.match(styles, /\.center-nav-glass-surface\s*\{[^}]*inset:\s*-240px;[^}]*backdrop-filter:\s*blur\(var\(--center-nav-glass-blur\)\);[^}]*-webkit-backdrop-filter:/s);
+  // Percent bounds resolved to zero in the zero-sized SVG definitions host.
+  assert.match(surface, /maskUnits="userSpaceOnUse" x="0" y="0" width="840" height="860"/);
+  assert.match(surface, /<use href=\{`#\$\{silhouetteId\}`\} transform="translate\(240 240\)"/);
+  assert.match(surface, /maskImage: `url\(#\$\{maskId\}\)`/);
+  assert.match(styles, /\.center-gooey-group--glass-mask > \[data-gooey-svg\] \{ opacity: 0; \}/);
+  assert.doesNotMatch(styles, /\.center-nav-shell\s*\{[^}]*opacity:\s*0\.3/s);
 });
 
 test("all center-control states use one black 36px SVG plus/X icon", async () => {

@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "Geist Portrait";
+  src: url("../../node_modules/geist/dist/fonts/geist-sans/Geist-SemiBold.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+
+/* One image-sized mask. Letters may bleed through its edges; they cannot
+   spill into the left column or create a scrollable box inside the photo. */
+.portrait-artwork-stage { isolation: isolate; overflow: clip !important; }
+.portrait-artwork-stage.portrait-study-stage--history { position: relative; }
+.portrait-artwork-layer {
+  position: absolute; inset: 0; z-index: 3; overflow: hidden;
+  color: var(--swatches--accent-1); mix-blend-mode: overlay;
+  pointer-events: none; user-select: none;
+}
+.portrait-artwork-glyph {
+  display: block; position: absolute; transform: translate(-50%, -50%);
+  font-family: "Geist Portrait", "Geist", sans-serif;
+  font-weight: 600; font-synthesis: none;
+  font-size: calc(var(--portrait-artwork-size) * var(--portrait-mark-scale));
+  line-height: .85; letter-spacing: 0; text-transform: none;
+}
+/* Match the approved Monument's original grid centering exactly. */
+.portrait-artwork-layer--history { display: grid; place-items: center; }
+.portrait-artwork-layer--history .portrait-artwork-glyph { position: static; transform: none; }

@@ -227,7 +227,7 @@
       indexLink?.classList.remove("w--current");
       projectsLink?.setAttribute("aria-current", "page");
       projectsLink?.classList.add("w--current");
-      if (heading) heading.textContent = "Projects";
+      if (heading && heading.textContent !== "Projects") heading.textContent = "Projects";
       document.title = "Andrew Zellinger • Projects";
       document.querySelector('meta[property="og:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
       document.querySelector('meta[property="twitter:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
@@ -320,7 +320,7 @@
       initializeProjectRoute();
     }
   </script>
-  <script type="module" src="/src/site-motion.js"></script>
+  <script type="module" blocking="render" src="/src/site-motion.js"></script>
   <script type="module" src="/src/detail-state.js"></script>
 </head>
 <body>
@@ -744,7 +744,7 @@ body .swiper-pagination {
       <div class="nav">
         <div class="container-xlarge">
           <a href="/" class="nav_brand w-inline-block">
-            <div>ZELLINGER</div>
+            <div>ANDREW ZELLINGER</div>
           </a>
         </div>
         <div class="container-xlarge nav_container">

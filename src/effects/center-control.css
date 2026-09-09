@@ -2,6 +2,8 @@
   --center-nav-closed-size: 100px;
   --center-nav-menu-width: 280px;
   --center-nav-menu-height: 320px;
+  --center-nav-glass-fill: rgba(190, 200, 205, 0);
+  --center-nav-glass-blur: 1px;
   width: 360px;
   height: 380px;
   align-self: center;
@@ -28,6 +30,33 @@
   height: 100%;
   overflow: visible;
 }
+
+.center-glass-mask-defs { position: absolute; pointer-events: none; }
+.center-nav-glass-surface {
+  position: absolute;
+  inset: -240px;
+  pointer-events: none;
+  background: var(--center-nav-glass-fill);
+  backdrop-filter: blur(var(--center-nav-glass-blur));
+  -webkit-backdrop-filter: blur(var(--center-nav-glass-blur));
+}
+/* Refraction is progressive enhancement; retain clear, lightly blurred glass
+   where SVG backdrop filter syntax is unavailable. */
+@supports (backdrop-filter: url("#center-glass")) {
+  .center-nav-glass-surface {
+    backdrop-filter: var(--center-nav-refraction) blur(var(--center-nav-material-blur)) saturate(1.08) contrast(1.08);
+    -webkit-backdrop-filter: var(--center-nav-refraction) blur(var(--center-nav-material-blur)) saturate(1.08) contrast(1.08);
+  }
+}
+.center-nav-glass-highlights {
+  position: absolute;
+  inset: -240px;
+  overflow: visible;
+  pointer-events: none;
+}
+/* Hide only the SVG paint. Its live geometry still supplies the glass mask;
+   neither the DOM icon nor the menu links inherit transparency or blur. */
+.center-gooey-group--glass-mask > [data-gooey-svg] { opacity: 0; }
 
 .center-gooey-base-item {
   position: absolute !important;
@@ -89,6 +118,8 @@ html.detail-route .center-nav-shell .nav_toggle.active {
 html.detail-route .center-nav-shell.center-nav-shell--gooey-ready .nav_toggle,
 html.detail-route .center-nav-shell.center-nav-shell--gooey-ready .nav_toggle.active {
   background: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .center-nav-shell .nav_menu,
@@ -131,7 +162,7 @@ html.detail-route .center-nav-shell.center-nav-shell--gooey-ready .nav_toggle.ac
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(0,0,0,.68);
+  color: #000;
   font-family: "Geist", sans-serif;
   font-size: 16px;
   font-weight: 500;

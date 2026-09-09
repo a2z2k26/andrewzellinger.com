@@ -1,0 +1,34 @@
+/* The title's line box never moves. Only characters travel inside its masks. */
+html[data-design-edition="elevated"] .title .heading { font-kerning: none; }
+.page-title-char-mask {
+  display: inline-block;
+  vertical-align: top;
+  /* Ink extends beyond the tight .98 line box (notably Designer's g).
+     Equal negative margins preserve baseline, tracking and context geometry. */
+  padding: .14em .06em;
+  margin: -.14em -.06em;
+  view-transition-class: cf-title-character;
+}
+.page-title-char { display: inline-block; vertical-align: top; }
+html[data-counterflow]::view-transition-group(.cf-title-character) {
+  animation: none;
+  overflow: clip;
+  isolation: isolate;
+}
+html[data-counterflow]::view-transition-image-pair(.cf-title-character) {
+  height: 100%;
+  overflow: clip;
+  isolation: isolate;
+}
+html[data-counterflow]::view-transition-old(.cf-title-character),
+html[data-counterflow]::view-transition-new(.cf-title-character) {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: normal;
+  object-fit: fill;
+  animation: 1s linear both paused;
+}
+html[data-counterflow]::view-transition-old(.cf-title-character) { animation-name: cf-letter-exit; }
+html[data-counterflow]::view-transition-new(.cf-title-character) { animation-name: cf-letter-enter; }
+@keyframes cf-letter-exit { from { transform: translateY(0); } to { transform: translateY(110%); } }
+@keyframes cf-letter-enter { from { transform: translateY(-110%); } to { transform: translateY(0); } }

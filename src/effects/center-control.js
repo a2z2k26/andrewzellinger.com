@@ -1,4 +1,4 @@
-import { navigationGeometry, scaleMorphFrames } from "../elevation/nav-geometry.js";
+import { navigationGeometry, scaleMorphFrames, fitMorphFrames, playToward } from "../elevation/nav-geometry.js";
 
 let destroyCenterControl = null;
 
@@ -62,10 +62,6 @@ function initCenterControl() {
   const forceReducedMotion = import.meta.env.DEV && new URLSearchParams(location.search).get("motion") === "reduce";
   let reducedMotion = reduceQuery.matches || forceReducedMotion;
   const isDetailRoute = () => document.documentElement.classList.contains("detail-route");
-  const label = document.createElement("span");
-  label.className = "edition-nav-label";
-  label.setAttribute("aria-hidden", "true");
-  shell.append(label);
   menu.id ||= "primary-navigation";
   toggle.setAttribute("aria-controls", menu.id);
   let geometry = navigationGeometry(innerWidth, innerHeight);
@@ -74,8 +70,11 @@ function initCenterControl() {
     shell.style.setProperty("--center-nav-closed-size", `${geometry.buttonSize}px`);
     shell.style.setProperty("--center-nav-menu-width", `${geometry.panelWidth}px`);
     shell.style.setProperty("--center-nav-menu-height", `${geometry.panelHeight}px`);
+    shell.style.setProperty("--edition-control-bottom-gap", `${geometry.bottomInset}px`);
     shell.style.setProperty("--edition-menu-travel", `${geometry.travel}px`);
-    panelAnimation?.effect.setKeyframes(scaleMorphFrames(MENU_MORPH_KEYFRAMES, geometry.scale));
+    shell.style.setProperty("--edition-menu-padding", `${geometry.padding}px`);
+    shell.dataset.navPlacement = geometry.docked ? "docked" : "center";
+    panelAnimation?.effect.setKeyframes(fitMorphFrames(MENU_MORPH_KEYFRAMES, geometry));
     menuListAnimation?.effect.setKeyframes(scaleMorphFrames(MENU_LIST_KEYFRAMES, geometry.scale));
   };
   updateGeometry();
@@ -148,8 +147,7 @@ function initCenterControl() {
     }
 
     [panelAnimation, menuListAnimation].forEach((animation) => {
-      animation.playbackRate = isOpen ? 1 : -1;
-      animation.play();
+      playToward(animation, isOpen, MENU_MORPH_DURATION_MS, reducedMotion);
     });
     monitorProgress();
   };
@@ -161,7 +159,7 @@ function initCenterControl() {
       return;
     }
 
-    panelAnimation = panel.animate(scaleMorphFrames(MENU_MORPH_KEYFRAMES, geometry.scale), {
+    panelAnimation = panel.animate(fitMorphFrames(MENU_MORPH_KEYFRAMES, geometry), {
       duration: MENU_MORPH_DURATION_MS,
       fill: "both",
       easing: "linear",
@@ -202,7 +200,6 @@ function initCenterControl() {
     playTimeline(isOpen);
     menu.setAttribute("aria-hidden", String(!isOpen));
     toggle.setAttribute("aria-expanded", String(isOpen));
-    label.textContent = isDetailRoute() ? "Back" : isOpen ? "Close" : "Menu";
     applyProgressState();
     menu.querySelectorAll("a").forEach((anchor) => {
       anchor.tabIndex = isOpen ? 0 : -1;
@@ -257,7 +254,6 @@ function initCenterControl() {
     document.removeEventListener("pointerdown", onOutsidePointer);
     window.removeEventListener("resize", updateGeometry);
     reduceQuery.removeEventListener("change", onMotionPreferenceChange);
-    label.remove();
     gooeySurface?.destroy();
     toggle.querySelector(".nav_icon-plus")?.style.removeProperty("transform");
     delete shell.dataset.navLinkStage;
@@ -266,11 +262,17 @@ function initCenterControl() {
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => requestAnimationFrame(initCenterControl), { once: true });
+  document.addEventListener("DOMContentLoaded", initCenterControl, { once: true });
 } else {
-  requestAnimationFrame(initCenterControl);
+  initCenterControl();
 }
 
 // A bfcache return must restore the control after pagehide unmounts its renderer.
-window.addEventListener("pagehide", () => destroyCenterControl?.());
+window.addEventListener("pagehide", () => {
+  // Store a closed disclosure in bfcache. Re-entering must not replay an old
+  // open intent merely because the previous navigation began inside the menu.
+  document.querySelector('.nav_menu')?.classList.remove('show');
+  document.querySelector('.nav_toggle')?.classList.remove('active');
+  destroyCenterControl?.();
+});
 window.addEventListener("pageshow", (event) => { if (event.persisted) initCenterControl(); });

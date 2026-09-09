@@ -1,0 +1,62 @@
+@view-transition { navigation: auto; }
+
+/* Actual route surfaces own the large motion; child loop tracks retain sole
+   ownership of scrolling transforms. The seam, identity, clock and toggle stay. */
+@media (min-width: 992px) {
+  html[data-design-edition="elevated"]:not(.detail-route) .title,
+  html[data-design-edition="elevated"].detail-route[data-counterflow] .title {
+    width:50%; overflow:hidden;
+  }
+  html[data-design-edition="elevated"]:not(.detail-route) .title .container-xlarge,
+  html[data-design-edition="elevated"].detail-route[data-counterflow] .title .container-xlarge {
+    max-width:calc(100% - 60px);
+  }
+}
+html[data-counterflow]::view-transition { pointer-events:none; }
+html[data-counterflow]::view-transition-group(*) { animation-duration:var(--cf-duration); }
+html[data-counterflow]::view-transition-group(counterflow-media) {
+  overflow:clip;
+  isolation:isolate;
+  animation:none;
+}
+html[data-counterflow]::view-transition-group(counterflow-control),
+html[data-counterflow]::view-transition-group(counterflow-brand),
+html[data-counterflow]::view-transition-group(counterflow-clock) { z-index:4; animation:none; }
+html[data-counterflow]::view-transition-old(counterflow-control) {animation:cf-foundation-out 180ms ease both;}
+html[data-counterflow]::view-transition-new(counterflow-control) {animation:cf-foundation-in 180ms ease both;}
+html[data-counterflow]::view-transition-old(counterflow-brand),
+html[data-counterflow]::view-transition-old(counterflow-clock) {animation:none;opacity:0;}
+html[data-counterflow]::view-transition-new(counterflow-brand),
+html[data-counterflow]::view-transition-new(counterflow-clock) {animation:none;opacity:1;}
+html[data-counterflow]::view-transition-group(counterflow-context) {animation:none;}
+html[data-counterflow]::view-transition-old(counterflow-context) {animation:cf-foundation-out 100ms both;}
+html[data-counterflow]::view-transition-new(counterflow-context) {animation:cf-context-in var(--cf-duration) both;}
+@media (max-width:991px) {
+  html[data-counterflow]::view-transition-group(counterflow-media) {
+    animation:revert;
+    animation-duration:var(--cf-duration);
+    animation-timing-function:cubic-bezier(.76,0,.24,1);
+  }
+  html[data-counterflow]::view-transition-old(counterflow-media),
+  html[data-counterflow]::view-transition-new(counterflow-media) {height:auto !important;object-fit:contain !important;}
+}
+@keyframes cf-context-in {0%,80% {opacity:0;} 100% {opacity:1;}}
+html[data-design-edition="elevated"] .title h1:focus {outline:none;}
+html[data-counterflow]::view-transition-image-pair(counterflow-media) { isolation:isolate; }
+html[data-counterflow]::view-transition-old(counterflow-media),
+html[data-counterflow]::view-transition-new(counterflow-media) {
+  height:100%; width:100%; mix-blend-mode:normal;
+  object-fit:cover; object-position:center top;
+  animation-duration:var(--cf-duration);
+  animation-timing-function:cubic-bezier(.76,0,.24,1);
+  animation-fill-mode:both;
+}
+html[data-counterflow]::view-transition-old(counterflow-media) {animation-name:cf-media-out;animation-delay:var(--cf-right-delay);}
+html[data-counterflow]::view-transition-new(counterflow-media) {animation-name:cf-media-in;animation-delay:var(--cf-right-delay);}
+html[data-counterflow]::view-transition-old(root) {animation:cf-foundation-out var(--cf-duration) ease both;}
+html[data-counterflow]::view-transition-new(root) {animation:cf-foundation-in var(--cf-duration) ease both;}
+@keyframes cf-media-out {to {transform:translateY(var(--cf-right-out));}}
+@keyframes cf-media-in {from {transform:translateY(var(--cf-right-in));}}
+@keyframes cf-foundation-out {from {opacity:1;} to {opacity:0;}}
+@keyframes cf-foundation-in {from {opacity:0;} to {opacity:1;}}
+@media (prefers-reduced-motion:reduce) { @view-transition {navigation:none;} }

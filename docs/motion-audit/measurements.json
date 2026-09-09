@@ -1,0 +1,6375 @@
+{
+  "description": "Current-run actual viewport measurements; requested dimensions verified. Geometry checks only; responsive runtime rebuild completion is not inferred from these measurements.",
+  "records": [
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 5280
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 7410,
+        "line": "12px",
+        "position": "static",
+        "w": 272,
+        "x": 24,
+        "y": -2194
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 272,
+        "x": 24,
+        "y": -2285
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 128,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 7823,
+      "sw": 320,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": -2422
+      },
+      "w": 320
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 4617
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 6206,
+        "line": "12px",
+        "position": "static",
+        "w": 431,
+        "x": 24,
+        "y": -1653
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 431,
+        "x": 24,
+        "y": -1743
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 6619,
+      "sw": 479,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": -1881
+      },
+      "w": 479
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 4617
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 6207,
+        "line": "12px",
+        "position": "static",
+        "w": 432,
+        "x": 24,
+        "y": -1654
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 432,
+        "x": 24,
+        "y": -1744
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 6620,
+      "sw": 480,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": -1882
+      },
+      "w": 480
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 4433
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5910,
+        "line": "12px",
+        "position": "static",
+        "w": 551,
+        "x": 24,
+        "y": -1540
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "59.9px",
+        "h": 59,
+        "line": "58.702px",
+        "position": "static",
+        "w": 551,
+        "x": 24,
+        "y": -1635
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 6327,
+      "sw": 599,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 232,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": -1772
+      },
+      "w": 599
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 3823
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5425,
+        "line": "12px",
+        "position": "static",
+        "w": 552,
+        "x": 24,
+        "y": -1666
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "60px",
+        "h": 59,
+        "line": "58.8px",
+        "position": "static",
+        "w": 552,
+        "x": 24,
+        "y": -1766
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 5844,
+      "sw": 600,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 234,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": -1900
+      },
+      "w": 600
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 3454
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 4887,
+        "line": "12px",
+        "position": "static",
+        "w": 719,
+        "x": 24,
+        "y": -1497
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.7px",
+        "h": 75,
+        "line": "75.166px",
+        "position": "static",
+        "w": 719,
+        "x": 24,
+        "y": -1614
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 5322,
+      "sw": 767,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": -1747
+      },
+      "w": 767
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 3498
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 4980,
+        "line": "12px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": -1546
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": -1663
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 5415,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": -1796
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 3314
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 4831,
+        "line": "12px",
+        "position": "static",
+        "w": 943,
+        "x": 24,
+        "y": -1580
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "94px",
+        "h": 92,
+        "line": "92.12px",
+        "position": "static",
+        "w": 943,
+        "x": 24,
+        "y": -1714
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 464,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 5283,
+      "sw": 991,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 268,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": -1848
+      },
+      "w": 991
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 396,
+        "x": 24,
+        "y": 793
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 240,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5721,
+        "line": "12px",
+        "position": "static",
+        "w": 464,
+        "x": 504,
+        "y": -1824
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "68.448px",
+        "h": 67,
+        "line": "67.079px",
+        "position": "static",
+        "w": 388,
+        "x": 24,
+        "y": 486
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 456,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/history",
+      "sh": 5769,
+      "sw": 992,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 992,
+        "x": 0,
+        "y": 0
+      },
+      "w": 992
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 620,
+        "x": 24,
+        "y": 793
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 267,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5179,
+        "line": "12px",
+        "position": "static",
+        "w": 688,
+        "x": 728,
+        "y": -1824
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "99.36px",
+        "h": 97,
+        "line": "97.3728px",
+        "position": "static",
+        "w": 612,
+        "x": 24,
+        "y": 471
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 680,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/history",
+      "sh": 5227,
+      "sw": 1440,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1440,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1440
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 860,
+        "x": 24,
+        "y": 793
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 271,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 4993,
+        "line": "12px",
+        "position": "static",
+        "w": 928,
+        "x": 968,
+        "y": -1824
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "120px",
+        "h": 118,
+        "line": "117.6px",
+        "position": "static",
+        "w": 852,
+        "x": 24,
+        "y": 461
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 920,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/history",
+      "sh": 5041,
+      "sw": 1920,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1920,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1920
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 8672
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 8364,
+        "line": "12px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 272,
+        "x": 24,
+        "y": 140
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 128,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 8793,
+      "sw": 320,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": 0
+      },
+      "w": 320
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 9509
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 9201,
+        "line": "12px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 342,
+        "x": 24,
+        "y": 139
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 163,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 9630,
+      "sw": 390,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": 0
+      },
+      "w": 390
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 10597
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 10289,
+        "line": "12px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 431,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 10718,
+      "sw": 479,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": 0
+      },
+      "w": 479
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 10610
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 10301,
+        "line": "12px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 432,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 10731,
+      "sw": 480,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": 0
+      },
+      "w": 480
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 12121
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 11809,
+        "line": "12px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 232
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "59.9px",
+        "h": 59,
+        "line": "58.702px",
+        "position": "static",
+        "w": 551,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 12242,
+      "sw": 599,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 232,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": 0
+      },
+      "w": 599
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 12136
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 11821,
+        "line": "12px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 234
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "60px",
+        "h": 59,
+        "line": "58.8px",
+        "position": "static",
+        "w": 552,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 12257,
+      "sw": 600,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 234,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": 0
+      },
+      "w": 600
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 14267
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 13937,
+        "line": "12px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.7px",
+        "h": 75,
+        "line": "75.166px",
+        "position": "static",
+        "w": 719,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 14388,
+      "sw": 767,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": 0
+      },
+      "w": 767
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 13938
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 13607,
+        "line": "12px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 14059,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": 0
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 16780
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 16432,
+        "line": "12px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 268
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "94px",
+        "h": 92,
+        "line": "92.12px",
+        "position": "static",
+        "w": 943,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 464,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 16900,
+      "sw": 991,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 268,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": 0
+      },
+      "w": 991
+    },
+    {
+      "canvases": 0,
+      "clones": 2,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 396,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 240,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 952,
+        "line": "12px",
+        "position": "fixed",
+        "w": 464,
+        "x": 504,
+        "y": 24
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "68.448px",
+        "h": 67,
+        "line": "67.079px",
+        "position": "static",
+        "w": 388,
+        "x": 24,
+        "y": 486
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 456,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/projects",
+      "sh": 3032,
+      "sw": 992,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 992,
+        "x": 0,
+        "y": 0
+      },
+      "w": 992
+    },
+    {
+      "canvases": 0,
+      "clones": 2,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 620,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 267,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 952,
+        "line": "12px",
+        "position": "fixed",
+        "w": 688,
+        "x": 728,
+        "y": 24
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "99.36px",
+        "h": 97,
+        "line": "97.3728px",
+        "position": "static",
+        "w": 612,
+        "x": 24,
+        "y": 471
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 680,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/projects",
+      "sh": 3032,
+      "sw": 1440,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1440,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1440
+    },
+    {
+      "canvases": 0,
+      "clones": 2,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 860,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 271,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 952,
+        "line": "12px",
+        "position": "fixed",
+        "w": 928,
+        "x": 968,
+        "y": 24
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "120px",
+        "h": 118,
+        "line": "117.6px",
+        "position": "static",
+        "w": 852,
+        "x": 24,
+        "y": 461
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 920,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/projects",
+      "sh": 3032,
+      "sw": 1920,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1920,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1920
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 9509
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 9201,
+        "line": "12px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 228
+      },
+      "h": 844,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 342,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 163,
+        "y": 764
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 9630,
+      "sw": 390,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": 0
+      },
+      "w": 390
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 37204
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 37060,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 272,
+        "x": 24,
+        "y": -7
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 128,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 37473,
+      "sw": 320,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": -148
+      },
+      "w": 320
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 33987
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 33843,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 342,
+        "x": 24,
+        "y": -10
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 163,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 34257,
+      "sw": 390,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": -148
+      },
+      "w": 390
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 31656
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 31512,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 431,
+        "x": 24,
+        "y": -11
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 31926,
+      "sw": 479,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": -148
+      },
+      "w": 479
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 31669
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 31525,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 432,
+        "x": 24,
+        "y": -11
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 31938,
+      "sw": 480,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": -148
+      },
+      "w": 480
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 31063
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 30916,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": 84
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "59.9px",
+        "h": 59,
+        "line": "58.702px",
+        "position": "static",
+        "w": 551,
+        "x": 24,
+        "y": -11
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 31333,
+      "sw": 599,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 232,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": -148
+      },
+      "w": 599
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 30707
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 30557,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": 86
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "60px",
+        "h": 59,
+        "line": "58.8px",
+        "position": "static",
+        "w": 552,
+        "x": 24,
+        "y": -15
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 30976,
+      "sw": 600,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 234,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": -148
+      },
+      "w": 600
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 30004
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 29837,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": 102
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.7px",
+        "h": 75,
+        "line": "75.166px",
+        "position": "static",
+        "w": 719,
+        "x": 24,
+        "y": -15
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 30273,
+      "sw": 767,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": -148
+      },
+      "w": 767
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 31816
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 31650,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": 102
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": -15
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 32086,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": -148
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 32403
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 32217,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": 122
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "94px",
+        "h": 92,
+        "line": "92.12px",
+        "position": "static",
+        "w": 943,
+        "x": 24,
+        "y": -12
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 464,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 32670,
+      "sw": 991,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 268,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": -146
+      },
+      "w": 991
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 396,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 240,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 33711,
+        "line": "12px",
+        "position": "relative",
+        "w": 992,
+        "x": 0,
+        "y": -130
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "68.448px",
+        "h": 67,
+        "line": "67.079px",
+        "position": "static",
+        "w": 388,
+        "x": 24,
+        "y": 486
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 456,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 33743,
+      "sw": 992,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 992,
+        "x": 0,
+        "y": 0
+      },
+      "w": 992
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 620,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 267,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 32273,
+        "line": "12px",
+        "position": "relative",
+        "w": 1440,
+        "x": 0,
+        "y": -130
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "99.36px",
+        "h": 97,
+        "line": "97.3728px",
+        "position": "static",
+        "w": 612,
+        "x": 24,
+        "y": 471
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 680,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 32305,
+      "sw": 1440,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1440,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1440
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 860,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 271,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 33456,
+        "line": "12px",
+        "position": "relative",
+        "w": 1920,
+        "x": 0,
+        "y": -130
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "120px",
+        "h": 118,
+        "line": "117.6px",
+        "position": "static",
+        "w": 852,
+        "x": 24,
+        "y": 461
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 920,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 33488,
+      "sw": 1920,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1920,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1920
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 33990
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 33843,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": 82
+      },
+      "h": 844,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 342,
+        "x": 24,
+        "y": -8
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 163,
+        "y": 764
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 34257,
+      "sw": 390,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": -146
+      },
+      "w": 390
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 5629
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5337,
+        "line": "12px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 272,
+        "x": 24,
+        "y": 142
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 128,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 5750,
+      "sw": 320,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": 0
+      },
+      "w": 320
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 5794
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5502,
+        "line": "12px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 342,
+        "x": 24,
+        "y": 139
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 163,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 5915,
+      "sw": 390,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": 0
+      },
+      "w": 390
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 6380
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 6087,
+        "line": "12px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 431,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 6500,
+      "sw": 479,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": 0
+      },
+      "w": 479
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 6387
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 6095,
+        "line": "12px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 432,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 6508,
+      "sw": 480,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": 0
+      },
+      "w": 480
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 7230
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 6934,
+        "line": "12px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 232
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "59.9px",
+        "h": 59,
+        "line": "58.702px",
+        "position": "static",
+        "w": 551,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 7351,
+      "sw": 599,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 232,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": 0
+      },
+      "w": 599
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 3268
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 2970,
+        "line": "12px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 234
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "60px",
+        "h": 59,
+        "line": "58.8px",
+        "position": "static",
+        "w": 552,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 3389,
+      "sw": 600,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 234,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": 0
+      },
+      "w": 600
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 3406
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 3091,
+        "line": "12px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.7px",
+        "h": 75,
+        "line": "75.166px",
+        "position": "static",
+        "w": 719,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 3527,
+      "sw": 767,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": 0
+      },
+      "w": 767
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 3409
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 3095,
+        "line": "12px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 3530,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": 0
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 4162
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 3831,
+        "line": "12px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 268
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "94px",
+        "h": 92,
+        "line": "92.12px",
+        "position": "static",
+        "w": 943,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 464,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 4283,
+      "sw": 991,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 268,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": 0
+      },
+      "w": 991
+    },
+    {
+      "canvases": 0,
+      "clones": 2,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 396,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 240,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5000,
+        "line": "12px",
+        "position": "relative",
+        "w": 992,
+        "x": 0,
+        "y": 16
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "68.448px",
+        "h": 67,
+        "line": "67.079px",
+        "position": "static",
+        "w": 388,
+        "x": 24,
+        "y": 486
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 456,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/articles",
+      "sh": 5032,
+      "sw": 992,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 992,
+        "x": 0,
+        "y": 0
+      },
+      "w": 992
+    },
+    {
+      "canvases": 0,
+      "clones": 2,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 620,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 267,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5000,
+        "line": "12px",
+        "position": "relative",
+        "w": 1440,
+        "x": 0,
+        "y": 16
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "99.36px",
+        "h": 97,
+        "line": "97.3728px",
+        "position": "static",
+        "w": 612,
+        "x": 24,
+        "y": 471
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 680,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/articles",
+      "sh": 5032,
+      "sw": 1440,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1440,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1440
+    },
+    {
+      "canvases": 0,
+      "clones": 2,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 860,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 271,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 5000,
+        "line": "12px",
+        "position": "relative",
+        "w": 1920,
+        "x": 0,
+        "y": 16
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "120px",
+        "h": 118,
+        "line": "117.6px",
+        "position": "static",
+        "w": 852,
+        "x": 24,
+        "y": 461
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 920,
+        "y": 460
+      },
+      "mode": "gsap",
+      "path": "/articles",
+      "sh": 5032,
+      "sw": 1920,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1920,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1920
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 3409
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 3095,
+        "line": "12px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1024,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 944
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 3530,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": 0
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 66875
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 66732,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 272,
+        "x": 24,
+        "y": -7
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 128,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 67145,
+      "sw": 320,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": -148
+      },
+      "w": 320
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 57057
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 56913,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 342,
+        "x": 24,
+        "y": -9
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 163,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 57326,
+      "sw": 390,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": -148
+      },
+      "w": 390
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 49808
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 49664,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 431,
+        "x": 24,
+        "y": -10
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 50077,
+      "sw": 479,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": -148
+      },
+      "w": 479
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 49737
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 49593,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 432,
+        "x": 24,
+        "y": -11
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 50006,
+      "sw": 480,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": -148
+      },
+      "w": 480
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 44373
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 44225,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": 84
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "59.9px",
+        "h": 59,
+        "line": "58.702px",
+        "position": "static",
+        "w": 551,
+        "x": 24,
+        "y": -11
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 44642,
+      "sw": 599,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 232,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": -148
+      },
+      "w": 599
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 44435
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 44285,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": 86
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "60px",
+        "h": 59,
+        "line": "58.8px",
+        "position": "static",
+        "w": 552,
+        "x": 24,
+        "y": -15
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 44704,
+      "sw": 600,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 234,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": -148
+      },
+      "w": 600
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 44390
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 44224,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": 102
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.7px",
+        "h": 75,
+        "line": "75.166px",
+        "position": "static",
+        "w": 719,
+        "x": 24,
+        "y": -15
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 44659,
+      "sw": 767,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": -148
+      },
+      "w": 767
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 44397
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 44231,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": 102
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": -15
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 44667,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": -148
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 45821
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 45636,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": 122
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "94px",
+        "h": 92,
+        "line": "92.12px",
+        "position": "static",
+        "w": 943,
+        "x": 24,
+        "y": -12
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 464,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 46088,
+      "sw": 991,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 268,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": -146
+      },
+      "w": 991
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 396,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 240,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 48324,
+        "line": "12px",
+        "position": "relative",
+        "w": 992,
+        "x": 0,
+        "y": -130
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "68.448px",
+        "h": 67,
+        "line": "67.079px",
+        "position": "static",
+        "w": 388,
+        "x": 24,
+        "y": 486
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 456,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 48356,
+      "sw": 992,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 992,
+        "x": 0,
+        "y": 0
+      },
+      "w": 992
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 620,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 267,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 44280,
+        "line": "12px",
+        "position": "relative",
+        "w": 1440,
+        "x": 0,
+        "y": -130
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "99.36px",
+        "h": 97,
+        "line": "97.3728px",
+        "position": "static",
+        "w": 612,
+        "x": 24,
+        "y": 471
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 680,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 44312,
+      "sw": 1440,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1440,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1440
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 860,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 271,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 46003,
+        "line": "12px",
+        "position": "relative",
+        "w": 1920,
+        "x": 0,
+        "y": -130
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "120px",
+        "h": 118,
+        "line": "117.6px",
+        "position": "static",
+        "w": 852,
+        "x": 24,
+        "y": 461
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 920,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 46035,
+      "sw": 1920,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1920,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1920
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 44400
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 44231,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": 105
+      },
+      "h": 1024,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": -12
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 944
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 44667,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": -146
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 648
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 340,
+        "line": "12px",
+        "position": "relative",
+        "w": 272,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 272,
+        "x": 24,
+        "y": 140
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 128,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 320,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 320,
+        "x": 0,
+        "y": 0
+      },
+      "w": 320
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 736
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 428,
+        "line": "12px",
+        "position": "relative",
+        "w": 342,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 342,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 163,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 390,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 390,
+        "x": 0,
+        "y": 0
+      },
+      "w": 390
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 847
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 539,
+        "line": "12px",
+        "position": "relative",
+        "w": 431,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 431,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 479,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 479,
+        "x": 0,
+        "y": 0
+      },
+      "w": 479
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 848
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 540,
+        "line": "12px",
+        "position": "relative",
+        "w": 432,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 432,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 208,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 480,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 480,
+        "x": 0,
+        "y": 0
+      },
+      "w": 480
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 1001
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 689,
+        "line": "12px",
+        "position": "relative",
+        "w": 551,
+        "x": 24,
+        "y": 232
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "59.9px",
+        "h": 59,
+        "line": "58.702px",
+        "position": "static",
+        "w": 551,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1122,
+      "sw": 599,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 232,
+        "line": "12px",
+        "position": "relative",
+        "w": 599,
+        "x": 0,
+        "y": 0
+      },
+      "w": 599
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 1004
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 690,
+        "line": "12px",
+        "position": "relative",
+        "w": 552,
+        "x": 24,
+        "y": 234
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "60px",
+        "h": 59,
+        "line": "58.8px",
+        "position": "static",
+        "w": 552,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 268,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1125,
+      "sw": 600,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 234,
+        "line": "12px",
+        "position": "relative",
+        "w": 600,
+        "x": 0,
+        "y": 0
+      },
+      "w": 600
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 1229
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 899,
+        "line": "12px",
+        "position": "relative",
+        "w": 719,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.7px",
+        "h": 75,
+        "line": "75.166px",
+        "position": "static",
+        "w": 719,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1350,
+      "sw": 767,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 767,
+        "x": 0,
+        "y": 0
+      },
+      "w": 767
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 1231
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 900,
+        "line": "12px",
+        "position": "relative",
+        "w": 720,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.8px",
+        "h": 75,
+        "line": "75.264px",
+        "position": "static",
+        "w": 720,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 352,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1352,
+      "sw": 768,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 768,
+        "x": 0,
+        "y": 0
+      },
+      "w": 768
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 1526
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 1179,
+        "line": "12px",
+        "position": "relative",
+        "w": 943,
+        "x": 24,
+        "y": 268
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "94px",
+        "h": 92,
+        "line": "92.12px",
+        "position": "static",
+        "w": 943,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 464,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1647,
+      "sw": 991,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 268,
+        "line": "12px",
+        "position": "relative",
+        "w": 991,
+        "x": 0,
+        "y": 0
+      },
+      "w": 991
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 396,
+        "x": 24,
+        "y": 793
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 240,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 952,
+        "line": "12px",
+        "position": "fixed",
+        "w": 464,
+        "x": 504,
+        "y": 24
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "68.448px",
+        "h": 67,
+        "line": "67.079px",
+        "position": "static",
+        "w": 388,
+        "x": 24,
+        "y": 486
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 456,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 992,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 992,
+        "x": 0,
+        "y": 0
+      },
+      "w": 992
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 620,
+        "x": 24,
+        "y": 793
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 267,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 952,
+        "line": "12px",
+        "position": "fixed",
+        "w": 688,
+        "x": 728,
+        "y": 24
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "99.36px",
+        "h": 97,
+        "line": "97.3728px",
+        "position": "static",
+        "w": 612,
+        "x": 24,
+        "y": 471
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 680,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 1440,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1440,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1440
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 860,
+        "x": 24,
+        "y": 793
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 271,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 952,
+        "line": "12px",
+        "position": "fixed",
+        "w": 928,
+        "x": 968,
+        "y": 24
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "120px",
+        "h": 118,
+        "line": "117.6px",
+        "position": "static",
+        "w": 852,
+        "x": 24,
+        "y": 461
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 920,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 1920,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1920,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1920
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 540,
+        "x": 24,
+        "y": 411
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 258,
+        "x": 24,
+        "y": 490
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 552,
+        "line": "12px",
+        "position": "fixed",
+        "w": 608,
+        "x": 648,
+        "y": 24
+      },
+      "h": 600,
+      "h1": {
+        "display": "block",
+        "font": "88.32px",
+        "h": 87,
+        "line": "86.5536px",
+        "position": "static",
+        "w": 532,
+        "x": 24,
+        "y": 238
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 69,
+        "line": "12px",
+        "position": "absolute",
+        "w": 69,
+        "x": 605,
+        "y": 265
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 600,
+      "sw": 1280,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 600,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1280,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1280
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 796,
+        "x": 24,
+        "y": 1333
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 995,
+        "line": "12px",
+        "position": "relative",
+        "w": 796,
+        "x": 24,
+        "y": 258
+      },
+      "h": 390,
+      "h1": {
+        "display": "block",
+        "font": "84.4px",
+        "h": 83,
+        "line": "82.712px",
+        "position": "static",
+        "w": 796,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 390,
+        "y": 310
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1454,
+      "sw": 844,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 258,
+        "line": "12px",
+        "position": "relative",
+        "w": 844,
+        "x": 0,
+        "y": 0
+      },
+      "w": 844
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 49,
+        "line": "12px",
+        "position": "fixed",
+        "w": 540,
+        "x": 24,
+        "y": 211
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 258,
+        "x": 24,
+        "y": 290
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 352,
+        "line": "12px",
+        "position": "fixed",
+        "w": 608,
+        "x": 648,
+        "y": 24
+      },
+      "h": 400,
+      "h1": {
+        "display": "block",
+        "font": "88.32px",
+        "h": 87,
+        "line": "86.5536px",
+        "position": "static",
+        "w": 532,
+        "x": 24,
+        "y": 138
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 44,
+        "line": "12px",
+        "position": "absolute",
+        "w": 44,
+        "x": 618,
+        "y": 178
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 400,
+      "sw": 1280,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 400,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1280,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1280
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "flex",
+        "font": "12px",
+        "h": 78,
+        "line": "12px",
+        "position": "fixed",
+        "w": 620,
+        "x": 24,
+        "y": 764
+      },
+      "directory": {
+        "display": "flex",
+        "font": "10px",
+        "h": 36,
+        "line": "15px",
+        "position": "fixed",
+        "w": 267,
+        "x": 24,
+        "y": 890
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 2877,
+        "line": "12px",
+        "position": "relative",
+        "w": 1440,
+        "x": 0,
+        "y": 16
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "99.36px",
+        "h": 97,
+        "line": "97.3728px",
+        "position": "static",
+        "w": 612,
+        "x": 24,
+        "y": 471
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 80,
+        "line": "12px",
+        "position": "absolute",
+        "w": 80,
+        "x": 680,
+        "y": 460
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 2908,
+      "sw": 1440,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 1000,
+        "line": "12px",
+        "position": "fixed",
+        "w": 1440,
+        "x": 0,
+        "y": 0
+      },
+      "w": 1440
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 850
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 541,
+        "line": "12px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 433,
+        "x": 24,
+        "y": 140
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 209,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1000,
+      "sw": 481,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": 0
+      },
+      "w": 481
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 1232
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 901,
+        "line": "12px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.9px",
+        "h": 75,
+        "line": "75.362px",
+        "position": "static",
+        "w": 721,
+        "x": 24,
+        "y": 134
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 353,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/",
+      "sh": 1353,
+      "sw": 769,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": 0
+      },
+      "w": 769
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 10622
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 10314,
+        "line": "12px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 433,
+        "x": 24,
+        "y": 146
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 209,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 10743,
+      "sw": 481,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": 0
+      },
+      "w": 481
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 13951
+      },
+      "field": {
+        "display": "flex",
+        "font": "12px",
+        "h": 13620,
+        "line": "12px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.9px",
+        "h": 75,
+        "line": "75.362px",
+        "position": "static",
+        "w": 721,
+        "x": 24,
+        "y": 136
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 353,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/projects",
+      "sh": 14072,
+      "sw": 769,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": 0
+      },
+      "w": 769
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 6394
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 6102,
+        "line": "12px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 433,
+        "x": 24,
+        "y": 146
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 209,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 6515,
+      "sw": 481,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": 0
+      },
+      "w": 481
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 3413
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 3098,
+        "line": "12px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.9px",
+        "h": 75,
+        "line": "75.362px",
+        "position": "static",
+        "w": 721,
+        "x": 24,
+        "y": 137
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 353,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles",
+      "sh": 3533,
+      "sw": 769,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": 0
+      },
+      "w": 769
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 6473
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 6181,
+        "line": "12px",
+        "position": "static",
+        "w": 433,
+        "x": 24,
+        "y": 228
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 433,
+        "x": 24,
+        "y": 146
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 209,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 6594,
+      "sw": 481,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": 0
+      },
+      "w": 481
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 5295
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 4980,
+        "line": "12px",
+        "position": "static",
+        "w": 721,
+        "x": 24,
+        "y": 251
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.9px",
+        "h": 75,
+        "line": "75.362px",
+        "position": "static",
+        "w": 721,
+        "x": 24,
+        "y": 137
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 353,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/history",
+      "sh": 5416,
+      "sw": 769,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": 0
+      },
+      "w": 769
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 31633
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 31512,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": 57
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 433,
+        "x": 24,
+        "y": -27
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 209,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 31925,
+      "sw": 481,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": -171
+      },
+      "w": 481
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 31780
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 31637,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.9px",
+        "h": 75,
+        "line": "75.362px",
+        "position": "static",
+        "w": 721,
+        "x": 24,
+        "y": -35
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 353,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/case-studies/audible-sleep/",
+      "sh": 32072,
+      "sw": 769,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": -171
+      },
+      "w": 769
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 433,
+        "x": 24,
+        "y": 49617
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 49495,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": 57
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "56px",
+        "h": 55,
+        "line": "54.88px",
+        "position": "static",
+        "w": 433,
+        "x": 24,
+        "y": -27
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 209,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 49908,
+      "sw": 481,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 228,
+        "line": "12px",
+        "position": "relative",
+        "w": 481,
+        "x": 0,
+        "y": -171
+      },
+      "w": 481
+    },
+    {
+      "canvases": 0,
+      "clones": 0,
+      "context": {
+        "display": "none",
+        "font": "12px",
+        "h": 0,
+        "line": "12px",
+        "position": "fixed",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      "directory": {
+        "display": "grid",
+        "font": "10px",
+        "h": 121,
+        "line": "15px",
+        "position": "relative",
+        "w": 721,
+        "x": 24,
+        "y": 44382
+      },
+      "field": {
+        "display": "block",
+        "font": "12px",
+        "h": 44239,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": 80
+      },
+      "h": 1000,
+      "h1": {
+        "display": "block",
+        "font": "76.9px",
+        "h": 75,
+        "line": "75.362px",
+        "position": "static",
+        "w": 721,
+        "x": 24,
+        "y": -35
+      },
+      "menu": {
+        "display": "block",
+        "font": "12px",
+        "h": 64,
+        "line": "12px",
+        "position": "absolute",
+        "w": 64,
+        "x": 353,
+        "y": 920
+      },
+      "mode": "native",
+      "path": "/articles/the-constraint-was-the-brief/",
+      "sh": 44674,
+      "sw": 769,
+      "title": {
+        "display": "flex",
+        "font": "12px",
+        "h": 251,
+        "line": "12px",
+        "position": "relative",
+        "w": 769,
+        "x": 0,
+        "y": -171
+      },
+      "w": 769
+    }
+  ]
+}

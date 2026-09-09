@@ -3,6 +3,9 @@ import "./detail-state.css";
 import { createBoundaryMotion } from "./detail-boundary-motion.js";
 import { createDetailSectionMotion } from "./detail-section-motion.js";
 import {
+  captureReadingAnchor, restoreReadingAnchor, layoutTop, readingAnchorForNavigation,
+} from "./elevation/reading-anchor.js";
+import {
   holdRouteVisual,
   runArticleExitTransition,
   runRouteTransition,
@@ -31,6 +34,8 @@ let activeDetail = null;
 let activeTransition = null;
 let pendingDetailRender = null;
 let routeOperation = 0;
+let detailStateInitialized = false;
+let suspendedReadingAnchor = null;
 const FORCE_REDUCED_MOTION = import.meta.env.DEV
   && new URLSearchParams(window.location.search).get("motion") === "reduce";
 
@@ -122,7 +127,8 @@ function setDetailChrome(entry) {
   requestAnimationFrame(markActiveNavigation);
 
   const heading = document.querySelector(".title .heading");
-  if (heading) heading.textContent = entry.kind === "project" ? "Projects" : "Articles";
+  const pageTitle = entry.kind === "project" ? "Projects" : "Articles";
+  if (heading && heading.textContent !== pageTitle) heading.textContent = pageTitle;
   document.title = `Andrew Zellinger • ${entry.title}`;
   setShareMetadata(document.title, entry.summary, entry.path);
   document.querySelector('link[rel="canonical"]')?.setAttribute("href", entry.path);
@@ -140,7 +146,7 @@ function restoreCollectionChrome(detail = activeDetail) {
 
   if (!detail) return;
   const heading = document.querySelector(".title .heading");
-  if (heading) heading.textContent = detail.collectionHeading;
+  if (heading && heading.textContent !== detail.collectionHeading) heading.textContent = detail.collectionHeading;
   document.title = detail.collectionTitle;
   setShareMetadata(document.title, detail.collectionCanonical === "/articles"
     ? "Articles by Andrew Zellinger on product design, AI experience quality, and building systems: decisions, constraints, and lessons from hands-on work."
@@ -339,6 +345,42 @@ function setScroll(top) {
   window.scrollTo({ top: Math.max(0, top), left: 0, behavior: "auto" });
 }
 
+const READING_BLOCKS = [
+  ".detail-unit__title", ".detail-unit__lede", ".detail-unit__section-label",
+  ".detail-unit__section-body p", ".detail-unit__section-body li",
+  ".detail-unit__article-body p", ".detail-unit__article-body li", ".detail-unit__article-body h3",
+].join(", ");
+
+function readingBlocks(unit, scrollY = 0) {
+  return [...unit.querySelectorAll(READING_BLOCKS)].map((block, blockIndex) => ({
+    slug: unit.dataset.detailSlug,
+    blockIndex,
+    top: layoutTop(block) - scrollY,
+    height: block.offsetHeight,
+  }));
+}
+
+function captureDetailReadingAnchor(view) {
+  const units = [...view.querySelectorAll(".detail-unit")];
+  const marker = window.scrollY + detailTopInset();
+  let unit = units[0];
+  for (const candidate of units) {
+    if (layoutTop(candidate) > marker) break;
+    unit = candidate;
+  }
+  return unit ? captureReadingAnchor(readingBlocks(unit, window.scrollY), detailTopInset()) : null;
+}
+
+function restoreDetailReadingAnchor(view, anchor) {
+  const unit = [...view.querySelectorAll('[data-detail-set="source"] .detail-unit')]
+    .find((candidate) => candidate.dataset.detailSlug === anchor?.slug);
+  if (!unit) return false;
+  const top = restoreReadingAnchor(anchor, readingBlocks(unit), detailTopInset());
+  if (top === null) return false;
+  setScroll(top);
+  return true;
+}
+
 function elementRect(element) {
   const rect = element?.getBoundingClientRect();
   if (!rect || rect.width <= 0 || rect.height <= 0) return null;
@@ -427,6 +469,10 @@ function setupDetailScroll(view, entries, circular, reduceMotion, {
     }
     boundaryMotion.render();
     updateActiveEntry(entries, units);
+    // Keep the pre-resize semantic position, not coordinates after CSS reflow.
+    if (activeDetail?.view === view && !activeDetail.resizing) {
+      activeDetail.readingAnchor = captureDetailReadingAnchor(view);
+    }
   };
 
   const onScroll = () => {
@@ -451,7 +497,7 @@ function currentEntry(entries) {
   return detailFromPath(window.location.pathname) ?? entries[0];
 }
 
-function destroyDetailView(detail = activeDetail) {
+function suspendDetailView(detail = activeDetail) {
   if (!detail) return;
   detail.sectionMotion?.destroy();
   detail.scrollRuntime?.destroy();
@@ -459,6 +505,11 @@ function destroyDetailView(detail = activeDetail) {
   window.removeEventListener("resize", detail.onResize);
   detail.reduceMotionQuery.removeEventListener("change", detail.onMotionPreferenceChange);
   killTransition();
+}
+
+function destroyDetailView(detail = activeDetail) {
+  if (!detail) return;
+  suspendDetailView(detail);
   detail.view.remove();
   if (activeDetail === detail) activeDetail = null;
 }
@@ -468,6 +519,7 @@ async function renderDetail(entry, {
   sourceCopyVisual = null,
   sourceRect = null,
   sourceCopyRect = null,
+  readingAnchor = null,
 } = {}) {
   const operation = ++routeOperation;
   discardPendingDetailRender();
@@ -523,7 +575,9 @@ async function renderDetail(entry, {
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
   const expandedTop = detailTopInset();
-  setScroll(documentTop(selectedUnit) - expandedTop);
+  if (!restoreDetailReadingAnchor(view, readingAnchor)) {
+    setScroll(documentTop(selectedUnit) - expandedTop);
+  }
   await nextFrame();
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
@@ -538,15 +592,23 @@ async function renderDetail(entry, {
   );
   let resizeCall = null;
   const rerenderForEnvironment = () => {
+    if (activeDetail?.view !== view) return;
+    const readingAnchor = activeDetail.readingAnchor ?? captureDetailReadingAnchor(view);
     const nextCircular = matchMedia(DESKTOP_QUERY).matches && !shouldReduceMotion();
     if (nextCircular === activeDetail?.circular) {
+      restoreDetailReadingAnchor(view, readingAnchor);
       activeDetail?.scrollRuntime?.measure();
+      activeDetail.resizing = false;
+      activeDetail.readingAnchor = captureDetailReadingAnchor(view);
       return;
     }
-    const visibleEntry = currentEntry(entries);
-    renderDetail(visibleEntry);
+    const visibleEntry = entries.find((candidate) => candidate.slug === readingAnchor?.slug)
+      ?? currentEntry(entries);
+    renderDetail(visibleEntry, { readingAnchor });
   };
   const onResize = () => {
+    if (activeDetail?.view !== view) return;
+    activeDetail.resizing = true;
     resizeCall?.kill();
     resizeCall = gsap.delayedCall(.2, rerenderForEnvironment);
     if (activeDetail) activeDetail.resizeCall = resizeCall;
@@ -573,6 +635,8 @@ async function renderDetail(entry, {
     sourceScrollY: history.state?.[DETAIL_STATE_KEY]?.sourceScrollY ?? 0,
     originSlug: history.state?.[DETAIL_STATE_KEY]?.originSlug ?? entry.slug,
     sourceRect,
+    readingAnchor: captureDetailReadingAnchor(view),
+    resizing: false,
   };
   pendingDetailRender = null;
 
@@ -595,7 +659,7 @@ async function renderDetail(entry, {
       onComplete: () => {
         if (activeTransition === transition) activeTransition = null;
         sectionMotion.start();
-        if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
+        if (!readingAnchor && focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
       },
     });
     activeTransition = transition;
@@ -620,7 +684,7 @@ async function renderDetail(entry, {
     onComplete: () => {
       if (activeTransition === transition) activeTransition = null;
       sectionMotion.start();
-      if (focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
+      if (!readingAnchor && focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
     },
   });
   activeTransition = transition;
@@ -908,29 +972,84 @@ function onPopState(event) {
   restoreOrphanedCollection(event.state);
 }
 
-function initializeDetailState() {
+function initializeDetailState({ readingAnchor = null } = {}) {
+  if (detailStateInitialized) return;
+  detailStateInitialized = true;
   history.scrollRestoration = "manual";
   document.addEventListener("click", onDocumentClick, true);
   document.addEventListener("keydown", onDocumentKeyDown, true);
   window.addEventListener("popstate", onPopState);
-  window.addEventListener("pagehide", () => {
-    destroyDetailView();
-    document.removeEventListener("click", onDocumentClick, true);
-    document.removeEventListener("keydown", onDocumentKeyDown, true);
-    window.removeEventListener("popstate", onPopState);
-  }, { once: true });
 
   const entry = detailFromPath(window.location.pathname);
-  if (!entry) return;
+  if (!entry) {
+    // Back may have committed the collection URL just before the document was
+    // cached, while the asynchronous detail-close choreography was unfinished.
+    if (activeDetail && isCollectionPath()) {
+      const previous = activeDetail;
+      destroyDetailView(previous);
+      previous.collectionNodes.forEach((node) => { node.hidden = false; });
+      restoreCollectionChrome(previous);
+      window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
+      const operation = routeOperation;
+      requestAnimationFrame(() => {
+        if (operation === routeOperation && !activeDetail) {
+          setScroll(history.state?.[COLLECTION_STATE_KEY]?.scrollY ?? previous.sourceScrollY ?? 0);
+        }
+      });
+    }
+    return;
+  }
   const currentState = history.state?.[DETAIL_STATE_KEY];
+  readingAnchor ??= readingAnchorForNavigation(
+    currentState?.readingAnchor,
+    entry.slug,
+    performance.getEntriesByType("navigation")[0]?.type,
+  );
   replaceDetailHistory(entry, {
     sourceRoute: currentState?.sourceRoute ?? entry.collectionPath,
     sourceScrollY: currentState?.sourceScrollY ?? 0,
     originSlug: currentState?.originSlug ?? entry.slug,
     returnable: currentState?.returnable ?? false,
   });
-  renderDetail(entry);
+  renderDetail(entry, { readingAnchor });
 }
+
+function suspendDetailState(event) {
+  if (!detailStateInitialized) return;
+  detailStateInitialized = false;
+  routeOperation += 1;
+  const readingAnchor = activeDetail
+    ? activeDetail.readingAnchor ?? captureDetailReadingAnchor(activeDetail.view)
+    : null;
+  suspendedReadingAnchor = event.persisted ? readingAnchor : null;
+  if (readingAnchor && detailFromPath(window.location.pathname)?.slug === readingAnchor.slug) {
+    // History state survives a new document too; an in-memory bfcache snapshot
+    // alone cannot restore a Back navigation when the browser evicts the page.
+    try {
+      history.replaceState({
+        ...history.state,
+        [DETAIL_STATE_KEY]: { ...history.state?.[DETAIL_STATE_KEY], readingAnchor },
+      }, "", window.location.href);
+    } catch {
+      // A document already leaving the active lifecycle must still clean up.
+    }
+  }
+  discardPendingDetailRender();
+  // A cached document retains its last DOM paint; resume replaces it atomically.
+  if (event.persisted) suspendDetailView();
+  else destroyDetailView();
+  document.removeEventListener("click", onDocumentClick, true);
+  document.removeEventListener("keydown", onDocumentKeyDown, true);
+  window.removeEventListener("popstate", onPopState);
+}
+
+window.addEventListener("pagehide", suspendDetailState);
+window.addEventListener("pageshow", (event) => {
+  if (!event.persisted) return;
+  const readingAnchor = suspendedReadingAnchor;
+  suspendedReadingAnchor = null;
+  initializeDetailState({ readingAnchor });
+});
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeDetailState, { once: true });

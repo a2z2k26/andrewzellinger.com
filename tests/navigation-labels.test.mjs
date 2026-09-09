@@ -75,6 +75,28 @@ test("the mirror generator preserves canonical routes and route-specific page na
   assert.match(generator, /<h1 class="heading">History<\/h1>/);
 });
 
+test("elevated page titles use a fixed desktop size without changing compact typography", async () => {
+  const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  assert.match(styles, /html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 72px;\s*line-height: \.98;/);
+  assert.match(styles, /@media \(max-width: 991px\)[\s\S]*?\.title \.heading \{ font-size: clamp\(56px, 6\.9vw, 94px\); \}/);
+});
+
+test("desktop collection titles and History lead use 28px", async () => {
+  const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  assert.match(styles, /@media \(min-width: 992px\) \{\s*html\[data-design-edition="elevated"\] \.works-motion-card \.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.articles-entry__title\.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.biography-introduction__lead \{\s*font-size: 28px;\s*\}/);
+  assert.match(styles, /\.detail-unit__title \{ font-size: clamp\(30px, 3vw, 44px\);/);
+});
+
+test("desktop project copy restores its original split and detail titles match collection sizes", async () => {
+  const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  const desktop = styles.slice(styles.indexOf('@media (min-width: 992px) {'), styles.indexOf('@media (min-width: 992px) and'));
+  assert.match(desktop, /\.detail-unit__project-lockup \.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.detail-unit__title--article \{\s*font-size: 28px;/);
+  assert.match(desktop, /\.works-motion-card \.grid\._3-col \{\s*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);\s*column-gap: var\(--structure--grid-row-gap\);\s*align-items: start;/);
+  assert.match(desktop, /\.works-motion-card \.grid\._3-col > :nth-child\(2\) \{\s*grid-area: 1 \/ 2 \/ 2 \/ 4;\s*min-width: 0;\s*max-width: none;/);
+  // The shared compact defaults remain stacked; only the desktop override splits.
+  assert.match(styles, /\.detail-unit__project-lockup \.grid\._3-col \{\s*grid-template-columns: 1fr;/);
+});
+
 test("the shared identity uses the approved page-title size and logo treatment", async () => {
   const styles = await readFile(new URL("../public/css/caverzasio.css", import.meta.url), "utf8");
   const fontStyles = await readFile(new URL("../src/site-fonts.css", import.meta.url), "utf8");
@@ -94,8 +116,8 @@ test("the shared identity uses the approved page-title size and logo treatment",
 
   for (const templatePath of templatePaths) {
     const html = await readFile(new URL(templatePath, import.meta.url), "utf8");
-    assert.match(html, /<a href="\/" class="nav_brand w-inline-block">\s*<div>ZELLINGER<\/div>\s*<\/a>/s);
-    assert.doesNotMatch(html, />ANDREW ZELLINGER</);
+    assert.match(html, /<a href="\/" class="nav_brand w-inline-block">\s*<div>ANDREW ZELLINGER<\/div>\s*<\/a>/s);
+    assert.doesNotMatch(html, /nav_brand__initial/);
     assert.doesNotMatch(html, /nav_brand-(?:desktop|mobile)/);
   }
 });

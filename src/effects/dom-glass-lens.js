@@ -15,7 +15,7 @@ export const DOM_GLASS_DEFAULTS = Object.freeze({
   shadowBlur: 48,
 });
 
-function createDisplacementMap(falloffExponent, warpStrength) {
+export function createDisplacementMap(falloffExponent, warpStrength) {
   const canvas = document.createElement("canvas");
   canvas.width = MAP_SIZE;
   canvas.height = MAP_SIZE;

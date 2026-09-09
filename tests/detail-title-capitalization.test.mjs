@@ -37,7 +37,8 @@ test("case-study titles retain canonical project capitalization", () => {
 test("detail routes retain their collection's visible page headings", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
 
-  assert.match(runtime, /heading\.textContent = entry\.kind === "project" \? "Projects" : "Articles"/);
+  assert.match(runtime, /const pageTitle = entry\.kind === "project" \? "Projects" : "Articles"/);
+  assert.match(runtime, /heading\.textContent !== pageTitle\) heading\.textContent = pageTitle/);
   assert.doesNotMatch(runtime, /entry\.kind === "project" \? "Case study"/);
 });
 

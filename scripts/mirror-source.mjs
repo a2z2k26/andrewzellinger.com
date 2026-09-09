@@ -372,7 +372,7 @@ const placeholderStyles = `
       indexLink?.classList.remove("w--current");
       projectsLink?.setAttribute("aria-current", "page");
       projectsLink?.classList.add("w--current");
-      if (heading) heading.textContent = "Projects";
+      if (heading && heading.textContent !== "Projects") heading.textContent = "Projects";
       document.title = "Andrew Zellinger • Projects";
       document.querySelector('meta[property="og:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
       document.querySelector('meta[property="twitter:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
@@ -524,7 +524,7 @@ function transformHtml(source, sourceFile) {
         .replace(/\s+w--current\b/i, "")
         .replace(
           /<div>[^<]*<\/div>/i,
-          '<div>ZELLINGER</div>',
+          '<div>ANDREW ZELLINGER</div>',
         ),
     )
     .replace(/<div id="h">00:00(?::00)?<\/div>/g, '<div id="h">NYC 00:00:00</div>')
