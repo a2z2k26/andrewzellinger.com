@@ -44,7 +44,7 @@ test("biography contains the approved editorial structure and experience record"
   assert.ok(BIOGRAPHY.capabilities.clients.length >= 12);
   assert.ok(BIOGRAPHY.availability.body.length > 0);
   assert.doesNotMatch(BIOGRAPHY.lead, /decades|years of experience/i);
-  assert.equal(BIOGRAPHY.perspective.paragraphs.length, 3);
+  assert.equal(BIOGRAPHY.perspective.paragraphs.length, 1);
   assert.match(BIOGRAPHY.education.body, /School of Visual Arts/);
   const tools = BIOGRAPHY.stack.groups.flatMap(({ items }) => items);
   assert.equal(tools.length, new Set(tools).size);

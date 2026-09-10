@@ -29,7 +29,6 @@ function renderBiography() {
   const introduction = element("header", "biography-introduction");
   introduction.append(
     element("p", "biography-introduction__lead", BIOGRAPHY.lead),
-    element("h2", "biography-introduction__practice-label", BIOGRAPHY.practice.label),
     element("p", "biography-introduction__practice-body", BIOGRAPHY.practice.body),
   );
   editorial.append(introduction);
@@ -54,7 +53,12 @@ function renderBiography() {
   experience.append(experienceList);
   editorial.append(experience);
 
-  const capabilities = labeledSection(BIOGRAPHY.capabilities.label, "capabilities");
+  const education = labeledSection(BIOGRAPHY.education.label, "education");
+  education.append(prose([BIOGRAPHY.education.body]));
+  editorial.append(education);
+
+  const capabilities = element("section", "biography-block biography-block--capabilities");
+  capabilities.setAttribute("aria-label", BIOGRAPHY.capabilities.label);
   const capabilitiesContent = element("div", "biography-capabilities-content");
   const capabilityGrid = element("dl", "biography-capabilities");
   BIOGRAPHY.capabilities.groups.forEach((group) => {
@@ -67,31 +71,16 @@ function renderBiography() {
   });
   const clients = element("div", "biography-clients");
   clients.append(
-    element("h3", "biography-clients__label", "Selected clients · Direct & studio engagements"),
+    element("h3", "biography-clients__label", "Select Clients"),
     element("p", "biography-clients__list", BIOGRAPHY.capabilities.clients.join(" · ")),
   );
   capabilitiesContent.append(capabilityGrid);
   capabilities.append(capabilitiesContent, clients);
   editorial.append(capabilities);
 
-  const education = labeledSection(BIOGRAPHY.education.label, "education");
-  education.append(prose([BIOGRAPHY.education.body]));
-  editorial.append(education);
-
   const stack = labeledSection(BIOGRAPHY.stack.label, "stack");
-  const stackContent = element("div", "biography-stack-content");
-  stackContent.append(prose([BIOGRAPHY.stack.introduction]));
-  const stackGrid = element("dl", "biography-capabilities biography-stack-grid");
-  BIOGRAPHY.stack.groups.forEach((group) => {
-    const item = element("div", "biography-capability");
-    item.append(
-      element("dt", "biography-capability__label", group.label),
-      element("dd", "biography-capability__items", group.items.join(" · ")),
-    );
-    stackGrid.append(item);
-  });
-  stackContent.append(stackGrid);
-  stack.append(stackContent);
+  const tools = BIOGRAPHY.stack.groups.flatMap(({ items }) => items);
+  stack.append(element("p", "biography-clients__list biography-tools__list", tools.join(" · ")));
   editorial.append(stack);
 
   const availability = labeledSection(BIOGRAPHY.availability.label, "availability");
@@ -113,14 +102,16 @@ function renderContact() {
   emailLink.href = `mailto:${BIOGRAPHY_CONTACT.email}`;
   email.append(element("div", "biography-contact__label", "Email"), emailLink);
 
-  const website = element("div", "biography-contact__item");
-  const websiteLink = element("a", "biography-contact__link", BIOGRAPHY_CONTACT.websiteLabel);
-  websiteLink.href = BIOGRAPHY_CONTACT.websiteUrl;
-  websiteLink.target = "_blank";
-  websiteLink.rel = "noreferrer";
-  website.append(element("div", "biography-contact__label", "Website"), websiteLink);
-
-  contact.append(email, website);
+  contact.append(email);
+  const socials = element("div", "biography-contact__socials");
+  BIOGRAPHY_CONTACT.socialLinks.forEach(({ label, url }) => {
+    const link = element("a", "biography-contact__link", label);
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    socials.append(link);
+  });
+  contact.append(socials);
   anchor.replaceChildren(contact);
 }
 

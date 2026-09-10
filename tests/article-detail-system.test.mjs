@@ -5,6 +5,12 @@ import test from "node:test";
 
 import { ARTICLE_DETAILS } from "../src/article-content.js";
 
+const approvedClosingLine = "If the image doesn't work, put a dog in it. If it still doesn't work, put a bandage on the dog.";
+// Normalize only the explicitly approved closing-heading-to-body edit for historical preservation checks.
+const historicalBody = article => article.slug === "showing-my-teeth"
+  ? article.body.map(block => block.text === approvedClosingLine ? { ...block, type: "heading", text: approvedClosingLine.slice(0, -1).toUpperCase() } : block)
+  : article.body;
+
 test("article records share reviewed metadata, authored bodies and stable routes", async () => {
   const indexHtml = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
   const indexRuntime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
@@ -30,7 +36,8 @@ test("article records share reviewed metadata, authored bodies and stable routes
   }
   const bySlug = slug => ARTICLE_DETAILS.find(a => a.slug === slug);
   const originals = slug => previousArticles.find(a => a.slug === slug);
-  assert.equal(text(bySlug("showing-my-teeth")), text(originals("showing-my-teeth")), "personal essay wording is retained pending publication decision");
+  assert.equal(text({ body: historicalBody(bySlug("showing-my-teeth")) }), text(originals("showing-my-teeth")), "personal essay preserved except the approved closing line treatment");
+  assert.deepEqual(bySlug("showing-my-teeth").body.at(-1), { type: "paragraph", text: approvedClosingLine });
   for (const slug of ["company-of-one", "a-free-surf-lesson", "intention-deficit-disorder", "two-dollar-bill"]) {
     assert.ok(words(bySlug(slug)) < words(originals(slug)), slug + " should be tightened");
   }
@@ -68,7 +75,7 @@ test("Article Detail renders semantic paragraphs without fixed section labels", 
   assert.match(styles, /\.detail-unit__article-body p \+ p\s*\{[^}]*margin-top:\s*16px;/s);
   assert.match(styles, /\.detail-unit__article-body p\s*\{[^}]*text-indent:\s*0;/s);
   assert.match(styles, /\.detail-unit__article-body li \+ li\s*\{[^}]*margin-top:\s*6px;/s);
-  assert.match(styles, /\.detail-unit__article-body::before\s*\{[^}]*grid-column:\s*1 \/ -1;[^}]*border-top:\s*1px solid rgba\(255, 255, 255, \.16\);[^}]*margin-bottom:\s*32px;/s);
+  assert.match(styles, /\.detail-unit__article-body::before\s*\{[^}]*grid-column:\s*1;[^}]*border-top:\s*1px solid rgba\(255, 255, 255, \.16\);[^}]*margin-bottom:\s*32px;/s);
   assert.match(styles, /\.detail-unit__article-section\s*\{[^}]*margin-top:\s*32px;/s);
   assert.match(styles, /\.detail-unit__article-section:first-child\s*\{[^}]*margin-top:\s*0;/s);
   assert.doesNotMatch(styles, /\.detail-unit__article-section\s*\{[^}]*border-top:/s);
@@ -77,7 +84,7 @@ test("Article Detail renders semantic paragraphs without fixed section labels", 
   assert.doesNotMatch(styles, /\.detail-unit__article-section h3\s*\{[^}]*font-family:\s*var\(--fonts--family-display\)/s);
 });
 
-test("article reading columns align with the left edge while their opening rule spans the right rail", async () => {
+test("article reading columns and opening rule share the left-aligned text width", async () => {
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
   const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0, 68ch\) minmax\(0, 1fr\);[^}]*text-align:\s*left;/s);
@@ -102,12 +109,13 @@ test("article compaction preserves every word, heading, list and quote without r
   let currentCount = 0;
   for (const original of before) {
     const article = ARTICLE_DETAILS.find(entry => entry.slug === original.slug);
-    const words = article.body.flatMap(block => block.type === "list" ? block.items : [block.text]).join(" ").replace(/\s+/g, " ");
+    const body = historicalBody(article);
+    const words = body.flatMap(block => block.type === "list" ? block.items : [block.text]).join(" ").replace(/\s+/g, " ");
     assert.equal(digest(words), original.textHash, article.slug + ": all wording and order preserved");
-    assert.equal(digest(JSON.stringify(article.body.filter(block => block.type !== "paragraph"))), original.structureHash, article.slug + ": semantic structure preserved");
+    assert.equal(digest(JSON.stringify(body.filter(block => block.type !== "paragraph"))), original.structureHash, article.slug + ": semantic structure preserved except approved closing line");
     assert.equal("relatedProject" in article, false);
     previousCount += original.paragraphs;
-    currentCount += article.body.filter(block => block.type === "paragraph").length;
+    currentCount += body.filter(block => block.type === "paragraph").length;
   }
   assert.equal(previousCount - currentCount, 64, "only the 64 reviewed paragraph boundaries are removed");
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");

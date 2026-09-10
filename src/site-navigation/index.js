@@ -38,7 +38,15 @@ function initialize() {
   document.body.append(host);
   const compact = matchMedia('(max-width: 991px)');
   let frame = 0;
-  const place = () => root.style.setProperty('--site-nav-title-top', heading.getBoundingClientRect().top + 'px');
+  const brand = document.querySelector('.nav_brand');
+  const place = () => {
+    root.style.setProperty('--site-nav-title-top', heading.getBoundingClientRect().top + 'px');
+    if (brand) {
+      const rect = brand.getBoundingClientRect();
+      root.style.setProperty('--masthead-left', (rect.right + 156) + 'px');
+      root.style.setProperty('--masthead-top', (rect.top + rect.height / 2 - 22) + 'px');
+    }
+  };
   const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(place); };
   const synchronize = () => {
     const section = navigationSection(location.pathname);
@@ -61,7 +69,9 @@ function initialize() {
   });
   const observer = new MutationObserver(synchronize);
   observer.observe(root, { attributes: true, attributeFilter: ['class', 'data-detail-active-slug'] });
-  new ResizeObserver(schedule).observe(heading);
+  const sizes = new ResizeObserver(schedule);
+  sizes.observe(heading);
+  if (brand) sizes.observe(brand);
   window.addEventListener('resize', schedule);
   for (const event of ['portfolio:routechange', 'portfolio:rail-sweep-arrival', 'popstate', 'pageshow']) window.addEventListener(event, synchronize);
   compact.addEventListener('change', synchronize);

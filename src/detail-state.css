@@ -315,9 +315,24 @@ html[data-detail-boundary-motion="active"] [data-detail-motion-lede] {
   min-width: 0;
 }
 
+@media (min-width: 992px) {
+  .detail-unit__article-header {
+    display: grid;
+    grid-template-columns: minmax(0, 68ch) minmax(0, 1fr);
+    font-family: "Geist", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .detail-unit__article-header > * {
+    grid-column: 1;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
 .detail-unit__article-body::before {
   content: "";
-  grid-column: 1 / -1;
+  grid-column: 1;
   border-top: 1px solid rgba(255, 255, 255, .16);
   margin-bottom: 32px;
 }
@@ -368,6 +383,23 @@ html[data-detail-boundary-motion="active"] [data-detail-motion-lede] {
 
 .detail-unit__article-body li + li {
   margin-top: 6px;
+}
+
+.detail-unit__article-body ul > li::marker,
+.detail-unit__section-body--project ul > li::marker {
+  color: var(--swatches--accent-1);
+}
+
+.detail-unit__article-body ol > li::marker,
+.detail-unit__section-body--project ol > li::marker {
+  color: #fff;
+}
+
+/* The author's closing line is body copy, not a section heading. */
+html[data-design-edition="elevated"] [data-detail-slug="showing-my-teeth"] .detail-unit__article-body > :last-child p:last-child {
+  font-family: "Geist", sans-serif;
+  color: #fff;
+  text-transform: none;
 }
 
 .detail-unit__article-body ul + p,

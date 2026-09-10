@@ -6,6 +6,36 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 10 Back arrow refinement: desktop detail Back arrows use an 18px square, reduced from 20px. Preserve label typography, orange color, spacing and the 44px click target.
+
+- September 10 article divider refinement: article-detail dividers occupy the same first grid track as article body text, rather than spanning the full right rail. Preserve image widths and existing vertical spacing.
+
+- September 10 context restoration: show the existing context text and progress indicators on Projects, Articles and History main pages as well as detail views. Remove the Masthead experiment's visibility suppression; preserve the original desktop layout, live progress logic and compact/short-screen hiding rules.
+
+- September 10 article-detail desktop measure: title, metadata and description share the body's 68ch reading-column width (measured in the same 13px Geist parent font). Keep text left aligned and image/divider full-width. Collection cards and compact layouts remain unchanged.
+
+- September 10 desktop Back spacing: reduce the control-to-page-title gap from 16px to 8px; retain the 44px hit area, left alignment, and compact return controls.
+
+- September 10 phone Experience layout: company spans the full first row; role and date share the next row in flexible-role and auto-date columns, with a 16px horizontal gap and existing 8px internal row gap. Desktop/tablet are unchanged.
+
+- History spacing: desktop contact links have 48px horizontal gaps, including email-to-socials. Portrait-to-opening-text padding is 64px desktop/tablet and 48px phone. Smaller-screen contact spacing remains unchanged.
+
+- History contact links: show X.com (https://x.com/a2z2k26), LinkedIn (https://www.linkedin.com/in/andrewzellinger/), and GitHub (https://github.com/a2z2k26) to the right of email, wrapping when needed. All contact links are white without underlines, including hover; retain keyboard focus indicators.
+
+- Desktop Masthead alignment: center menu labels vertically with the logo and maintain exactly 156px between the logo's right edge and the first menu link, superseding the 48px trial. Recompute from actual logo dimensions on font load and resize. Compact navigation remains unchanged.
+
+- History opening-copy refinement: the lead paragraph spans 90% of the right content column on desktop (992px+), retaining full width on smaller screens. The gap to the following practice paragraph uses the shared section gap (64px desktop/tablet, 48px phone).
+
+- History spacing refinement: all section heading-to-content gaps use 24px; main section separation is 64px desktop/tablet and 48px phone. Preserve 16px Experience entry gaps. Tools must not double its parent heading gap. Contact follows the same section gap and ends with 80px bottom padding, plus compact safe-area inset.
+
+- History list typography: Select Clients and Tools & Technologies content lists use uppercase white Geist Sans, preserving their existing size and spacing. This applies to the list text, not a change to section headings.
+
+- September 9 History ordering and density: Education immediately follows Experience. Experience entries use a 16px inter-entry gap instead of 24px; preserve typography, columns and within-entry mobile spacing.
+
+- September 9 History tools presentation: Tools & Technologies has no preamble or category subheadings. Combine every existing tool in source order into one dot-separated, full-width list matching Selected Clients typography and spacing.
+
+- September 9 History label refinement: Design Practice uses white uppercase Geist Sans, preserving its existing 12px size, weight, tracking and spacing. Other History labels are unchanged.
+
 - September 9 canonical Masthead acceptance: Andrew approved promoting the Masthead navigation and its refinements to main and removing unused navigation directions. The sole live implementation is src/site-navigation. Desktop has persistent header links even on detail pages; orange Back sits left aligned 16px above the large title, with the existing reading lockup restored beneath desktop detail titles. Tablet retains the black dock and orange detail-close circle. Phone uses the 68px black tab bar with white active/gray inactive labels and orange dot; detail replaces it with white Close text and a 14px orange X. Remove the concept selector and its reserved mobile spacing. Preserve all unrelated content and motion. GitHub publishing requires a separate request.
 
 - September 9 detail lockup restoration: show the existing counter, current piece title and reading-progress rule below the large page title on desktop case-study and article detail views. Retain existing typography, spacing and live reading progress; keep collection lockups and compact/short-screen lockups hidden. Back remains above the heading.

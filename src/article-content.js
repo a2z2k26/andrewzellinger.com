@@ -249,7 +249,7 @@ So if you found your way here — maybe you're a younger designer, maybe you're 
 
 There's no silver bullet, and even a decade plus of experience is not a magic amulet. But there are people, a lot of us, who still believe in the work, and in what you can make. It's okay to be someone who'd rather get the craft right than perform it online. Hard work still pays off, even in the age of AI. It's okay to be exactly who you are. The work is bigger than the job you thought you signed up for, and there's still a place in it for you. You don't need anyone's permission to build things. Show teeth.
 
-[IF THE IMAGE DOESN'T WORK, PUT A DOG IN IT. IF IT STILL DOESN'T WORK, PUT A BANDAGE ON THE DOG]
+If the image doesn't work, put a dog in it. If it still doesn't work, put a bandage on the dog.
 `);
 
 const intentionDeficitDisorderBody = authoredBody(`Intent debt is what accumulates when a system repeatedly misreads, over-assumes, or redirects what users mean. The answer may be fluent and factually correct while still solving the wrong problem.

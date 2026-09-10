@@ -19,7 +19,8 @@ test('persistent desktop links and compact detail state',()=>{
   assert.ok(js.includes('compact.addEventListener'));
 });
 test('accepted dimensions and detail context preserved',()=>{
-  for(const value of ['- 60px','height: 44px','height: calc(68px','width: 14px','.detail-route .edition-context']) assert.ok(css.includes(value),value);
+  for(const value of ['- 52px','height: 44px','height: calc(68px','width: 14px']) assert.ok(css.includes(value),value);
+  assert.ok(!css.includes('.edition-context'));
 });
 test('no comparison UI or alternative concepts remain in active module',()=>{
   for(const value of ['sessionStorage','nav-lab','CONCEPTS','command','overview']) assert.ok(!js.includes(value),value);

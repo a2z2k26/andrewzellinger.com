@@ -41,7 +41,8 @@ test("Biography renders one semantic editorial source in the approved order", as
   const experience = runtime.indexOf("editorial.append(experience)");
   const capabilities = runtime.indexOf("editorial.append(capabilities)");
   const availability = runtime.indexOf("editorial.append(availability)");
-  assert.ok(lead < practiceLabel && practiceLabel < practiceBody && practiceBody < introduction);
+  assert.equal(practiceLabel, -1);
+  assert.ok(lead < practiceBody && practiceBody < introduction);
   assert.ok(introduction < experience && experience < capabilities && capabilities < availability);
   assert.doesNotMatch(runtime, /supportingLead|editorial\.append\(practice\)/);
   assert.match(runtime, /BIOGRAPHY\.experience\.entries\.forEach/);
@@ -57,23 +58,24 @@ test("History uses one flush-left editorial column with shared spacing", async (
   ]);
   assert.match(styles, /\.biography-layout\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);[^}]*column-gap:\s*var\(--structure--grid-row-gap\);/s);
   assert.match(styles, /\.biography-editorial\s*\{[^}]*display:\s*grid;[^}]*gap:\s*var\(--biography-section-gap\);/s);
-  assert.match(styles, /--biography-section-gap:\s*48px;/);
-  assert.match(styles, /--biography-label-gap:\s*16px;/);
+  assert.match(styles, /--biography-section-gap:\s*64px;/);
+  assert.match(styles, /--biography-label-gap:\s*24px;/);
   assert.match(styles, /\.biography-block\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*gap:\s*var\(--biography-label-gap\);/s);
   assert.match(styles, /\.biography-editorial,\s*\.biography-editorial \*,\s*\.biography-contact,\s*\.biography-contact \*\s*\{[^}]*text-indent:\s*0;[^}]*text-align:\s*left;/s);
   assert.match(styles, /\.biography-editorial :is\(p, h2, h3, dl, dt, dd, ol\)\s*\{[^}]*margin:\s*0;[^}]*padding-inline:\s*0;/s);
   assert.doesNotMatch(styles, /calc\([^;]*- 80px|width:\s*80%/);
   assert.doesNotMatch(elevation, /\.biography-block\s*\{/);
-  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*--biography-section-gap:\s*32px;/);
+  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*--biography-section-gap:\s*48px;/);
   assert.match(styles, /\.biography-introduction\s*\{[^}]*padding-top:\s*48px;/s);
   assert.match(styles, /\.biography-prose > p \+ p\s*\{[^}]*margin-top:\s*16px;/s);
-  assert.match(styles, /\.biography-clients\s*\{[^}]*grid-column:\s*1 \/ -1;[^}]*margin-top:\s*32px;/s);
-  assert.doesNotMatch(styles, /--biography-rule|border-(?:top|bottom):/);
+  assert.ok(styles.includes('margin-top: calc(var(--biography-section-gap) - var(--biography-label-gap))'));
+  assert.doesNotMatch(styles, /--biography-rule/);
+  for (const [, value] of styles.matchAll(/border-(?:top|bottom):([^;]+);/g)) assert.equal(value.trim(), "none");
   assert.match(runtime, /capabilitiesContent\.append\(capabilityGrid\);\s*capabilities\.append\(capabilitiesContent, clients\);/s);
   assert.match(motion, /new Set\(\[WORKS_PATH, INDEX_PATH, "\/articles", "\/history"\]\)/);
 });
 
-test("History has readable type and only two orange editorial accents", async () => {
+test("History has readable type and white contact links", async () => {
   const styles = await readFile(new URL("../src/biography.css", import.meta.url), "utf8");
   assert.match(styles, /\.biography-introduction__lead\s*\{[^}]*font-size:\s*28px;[^}]*font-weight:\s*500;[^}]*line-height:\s*1\.25;/s);
   assert.match(styles, /--biography-body-size:\s*16px;/);
@@ -81,21 +83,19 @@ test("History has readable type and only two orange editorial accents", async ()
   assert.match(styles, /\.biography-prose,\s*\.biography-introduction__practice-body\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*66ch;/s);
   assert.match(styles, /\.biography-contact__label\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*1\.5;/s);
   const accents = [...styles.matchAll(/([^{}]+)\{[^{}]*color:\s*var\(--swatches--accent-1\);[^{}]*\}/g)].map(match => match[1].trim());
-  assert.deepEqual(accents, [
-    ".biography-editorial .biography-introduction__practice-label",
-    '.biography-contact__link[href^="mailto:"]',
-  ]);
+  assert.deepEqual(accents, []);
+  assert.match(styles, /\.biography-contact \.biography-contact__link:hover\s*\{[^}]*color:\s*#fff;[^}]*text-decoration:\s*none;/s);
   assert.match(styles, /\.biography-contact__link\s*\{[^}]*overflow-wrap:\s*anywhere;/s);
 });
 
 test("History registers stack flush left on phones and clear the fixed menu", async () => {
   const styles = await readFile(new URL("../src/biography.css", import.meta.url), "utf8");
   assert.match(styles, /\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.35fr\) minmax\(0, 1fr\) 112px;[^}]*align-items:\s*baseline;[^}]*padding-block:\s*0;/s);
-  assert.match(styles, /\.biography-experience-section__heading\s*\{[^}]*padding-bottom:\s*24px;/s);
-  assert.match(styles, /\.biography-experience\s*\{[^}]*display:\s*grid;[^}]*row-gap:\s*24px;/s);
+  assert.match(styles, /\.biography-experience-section__heading\s*\{[^}]*padding-bottom:\s*var\(--biography-label-gap\);/s);
+  assert.match(styles, /\.biography-experience\s*\{[^}]*display:\s*grid;[^}]*row-gap:\s*16px;/s);
   assert.match(styles, /\.biography-experience\s*\{[^}]*padding:\s*0;[^}]*list-style:\s*none;/s);
-  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*row-gap:\s*8px;/);
+  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\) auto;[^}]*row-gap:\s*8px;/);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-capabilities,\s*\.biography-contact\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/);
   assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*\.biography-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/);
-  assert.match(styles, /padding-bottom:\s*calc\(144px \+ env\(safe-area-inset-bottom, 0px\)\);/);
+  assert.match(styles, /padding-bottom:\s*calc\(80px \+ env\(safe-area-inset-bottom, 0px\)\);/);
 });

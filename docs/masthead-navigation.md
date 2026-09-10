@@ -2,7 +2,7 @@
 
 Approved September 9, 2026 for main. Supersedes the navigation comparison lab and its five other directions.
 
-- Desktop: persistent top Projects, Articles and History links, including detail views. Orange arrow and Back sit left aligned 16px above the large page title. Detail reading lockups are visible; collection lockups remain hidden.
+- Desktop: persistent top Projects, Articles and History links, including detail views, vertically centered with the logo and separated from it by 156px. The 18px orange arrow and Back sit left aligned 8px above the large page title. Context and progress lockups are visible on Projects, Articles, History and detail views, retaining their compact/short-screen hiding rules.
 - Tablet: black floating dock; details have the orange circular Close control at bottom center.
 - Mobile: 68px black bottom navigation plus safe area. Detail state replaces links with white Close and a 14px orange X.
 - Existing detail-return history, keyboard focus restoration, page transitions and carousel behavior are retained.
