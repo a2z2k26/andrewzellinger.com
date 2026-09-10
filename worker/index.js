@@ -6,7 +6,9 @@ export default {
       ["/index", "/"],
       ["/info", "/history"],
       ["/biography", "/history"],
-      ["/portfolio", "/projects"],
+      ["/portfolio", "/"],
+      ["/projects", "/"],
+      ["/projects/index.html", "/"],
     ]);
     const redirectTarget = legacyRedirects.get(normalizedPath);
     if (redirectTarget && ["GET", "HEAD"].includes(request.method)) {

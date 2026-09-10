@@ -1,5 +1,6 @@
 // Editorial records. Titles, metadata, excerpts, and article body paragraphs
 // are shared by the Articles index and every Article Detail route.
+import { ARTICLE_IMAGES } from './article-images.js';
 
 const temporaryArticleBody = Object.freeze([
   "Temporary article copy. This paragraph establishes the intended editorial measure and reading rhythm; it should be replaced by Andrew's authored introduction.",
@@ -25,7 +26,7 @@ const listItemMatch = (block) => {
   };
 };
 
-// Paragraph boundaries are authored, not merged by paragraph count.
+// Paragraph boundaries are edited in each authored body, never merged by count at runtime.
 const normalizeArticleBody = (blocks) => {
   const normalized = [];
 
@@ -106,23 +107,19 @@ const authoredMarkdownBody = (source) => Object.freeze(
 );
 
 const companyOfOneBody = authoredBody(`I spent years building agent systems the wrong way before I built one I could operate. The turning point was not a more capable model. It was separating the system's coordination rules from the reasoning happening inside each task.
-
 This is an account of my own harness, not a benchmark or a claim that one architecture solves every multi-agent problem. The practical question was whether I could understand what it was doing, constrain what it could spend, and recognize a failed run without watching every step.
 
 [At its worst, my agents waited in line]
 
 A manager needed the expensive model to do its job. So did four others. There was one account, one lock, and a timeout. They queued while the rest of the system waited on decisions that had not happened.
-
 Underneath that bottleneck, the call graph could grow at runtime. One agent requested help from another; that agent escalated again. Recovery and failover mechanisms caught some problems, but they also added more coordination to a system already struggling with it. I kept trying to repair the structure by adding another layer.
 
 The predecessor, which I called the 40 Thieves, modeled departments and specialists on a company. It had several overlapping orchestration approaches: queues, batches, repository watchers, handoff managers. Each did something useful. Together, they made it hard to say which mechanism was responsible when work stalled.
-
 The lesson was not that delegation was wrong. It was that delegation needed an explicit boundary. A system becomes difficult to operate when each component can redefine the relationships that the operator thought were fixed.
 
 [Agents as bounded tools]
 
 In the replacement harness, the primary agent holds the main task context and invokes departments. Chiefs can delegate to designated specialists within configured limits. Specialists return bounded results; they do not freely create a new chain of peers.
-
 That distinction matters. Saying “agents cannot call agents” would be inaccurate: the chiefs do delegate. The constraint is on who can invoke whom, how far that delegation can go, and what must come back. The structure is configured rather than negotiated afresh during each run.
 
 The working model is simple:
@@ -139,7 +136,6 @@ This makes the allowed route legible. It does not make model output deterministi
 I assign models according to the role. A chief needs reliable tool use and the ability to consume specialist results. A specialist may need focused execution rather than orchestration. Paying for the same capability everywhere is not automatically the best use of the system.
 
 The deliberation panel uses different models to seek a broader range of responses. But vendor diversity is not proof of independent judgment. Different models can share assumptions and repeat the same error. I still need to inspect the reasons behind disagreement, check evidence, and notice when apparent consensus is only repeated framing.
-
 That is the design surface I care about: what each role can do, what context it receives, and what evidence it must return. The model name alone does not define those properties.
 
 [Checks establish a contract, not truth]
@@ -155,13 +151,11 @@ A completed call is not necessarily completed work. The harness checks basic con
 One useful check is the delegation floor. If a chief is required to consult a specialist but returns work it produced alone, that run has not followed the requested process. Marking that explicitly is better than silently accepting a different workflow.
 
 These checks catch particular failures. They do not establish that the reasoning is correct, the research is sufficient, or the implementation works for a user. A well-formed wrong answer can pass structural checks. Content evaluation, tests, and human review remain separate responsibilities.
-
 I want a failed check to produce a visible failure state, not an apparently successful result with the problem buried in its prose. That gives the operator something actionable: retry, change the task, inspect the evidence, or stop.
 
 [Cost belongs in the operating model]
 
 Cost is part of the system's behavior. It should not be discovered only after a task completes.
-
 The harness distinguishes measured, estimated, unknown, and not-applicable costs. Unknown is not zero. Where a strict monetary budget requires a known value, an unknown cost cannot satisfy that requirement. Subscription-backed calls create an accounting limit because a flat fee does not automatically translate into a trustworthy per-call dollar figure.
 
 There are also limits on the self-improvement loop. Its role is to propose changes for review, not grant itself authority to apply them. A budget, a restricted file scope, and an approval step serve different purposes; none substitutes for the others.
@@ -171,7 +165,6 @@ Short-lived department calls reduce the need to keep every role resident with it
 [What failure taught me]
 
 The queueing failure in the predecessor was useful because it was concrete. Several managers competed for one resource while the wider system waited. Better prompts would not have removed that contention. The coordination structure had to change.
-
 That changed how I approached the next build. Instead of beginning with the largest roster I could imagine, I began with the task path I needed to explain. Which component owns the request? Where can it delegate? What happens if a dependency fails? What does the operator see?
 
 The result is a working application I operate as part of my independent practice. The account here describes its design and my use, not production adoption by customers. Exact model assignments and operational limits can change; the important evidence is whether the configured controls behave as intended in the version being reviewed.
@@ -179,31 +172,24 @@ The result is a working application I operate as part of my independent practice
 [The work is in the boundaries]
 
 I am not arguing against capable agents or delegation. I am arguing for a system in which both have explicit limits.
-
 The structure should tell me where work can go. The checks should tell me which contract a result satisfied. The accounting should tell me what it knows and what it cannot measure. Review should establish what those mechanical checks cannot.
-
 That is a more useful success criterion than the number of agents in the diagram. I want to build something I can operate, inspect, and improve without confusing activity with dependable work.`);
 
 const aFreeSurfLessonBody = authoredBody(`Good taste alone will not carry a product through delivery. It matters, but it becomes useful through the decisions it helps a team make: what to build, what to leave out, and how to tell whether the result works.
-
 There is an appealing argument that cheaper AI-generated output makes selection the main human contribution. If anyone can produce a thousand options, the valuable person is the one who recognizes the right one. I agree with part of that. I disagree that selection can be separated from understanding how a product is built.
 
 [Taste needs something to stand on]
 
 What looks like instinct is often compressed knowledge. A designer recognizes a weak flow because they understand the user, have seen similar failures, or know which technical constraint the interface is ignoring.
-
 That knowledge can be aesthetic, behavioral, technical, or commercial. The important part is being able to unpack it. “This feels wrong” can begin a critique, but it should not be the only reason a team has for changing direction.
-
 AI makes this more visible. A plausible screen can be generated without resolving the state model beneath it. An elegant response can answer the wrong question. Selection requires knowing what the output has left unresolved, not just which version looks best.
 
 [One constraint that changed the design]
 
 On the Audible sleep prototype, the player was not designed for an alert listener managing a queue. It was designed for someone preparing to sleep. That changed what control should mean.
-
 We separated setup from the session and aimed for a simple in-session path: start and stop, with additional controls still available when needed. Bedtime, rise time, and personalization belonged before playback. The player could then recede instead of asking the listener to keep managing it.
 
 The important judgment was not choosing a calmer-looking player from several variations. It was recognizing that a conventional media-player structure asked for the wrong kind of attention. The visual direction followed an interaction decision.
-
 The same distinction matters in AI work. A polished interface is not enough if its underlying process spends without a limit, loses context between steps, or gives users no way to correct an assumption. Those are design questions even when their implementation lives below the screen.
 
 [Make judgment operational]
@@ -216,17 +202,14 @@ For me, that requires four connected capabilities:
 - Execution: prototype, test, and revise the decision rather than leave it as a persuasive opinion.
 
 None requires every designer to become an infrastructure engineer. It does require enough technical fluency to ask better questions and collaborate on the answers. When a model generates code, I need to understand the relevant behavior well enough to inspect it, test it, or identify where engineering review is necessary.
-
 A practical way to develop that fluency is to carry one decision further than the mockup. Follow it into a prototype. Exercise the error state. Ask what happens when the data is incomplete. Watch where a person hesitates. Those encounters change judgment because they reveal consequences that a static presentation can conceal.
 
 [Build the feedback loop]
 
 The goal is not to defend taste as a private gift. It is to make a team's standards visible enough that work can improve.
-
 Write down what a good result must preserve. Keep examples and counterexamples. Distinguish a preference from a requirement. Evaluate the same scenario after the implementation changes. When an output disappoints, explain the missed condition rather than merely asking for something better.
 
 There is still room for intuition. Some decisions begin with a hunch before there is evidence. The responsibility is to recognize that status and give the hunch a useful test.
-
 I do not know which titles or workflows will dominate the next iteration of this industry. I do know the contribution I want to make: connect judgment with enough understanding and execution that it changes the product. Taste is part of that work. It is not a substitute for doing it.`);
 
 const showingMyTeethBody = authoredBody(`
@@ -270,7 +253,6 @@ There's no silver bullet, and even a decade plus of experience is not a magic am
 `);
 
 const intentionDeficitDisorderBody = authoredBody(`Intent debt is what accumulates when a system repeatedly misreads, over-assumes, or redirects what users mean. The answer may be fluent and factually correct while still solving the wrong problem.
-
 Traditional UX measures help us see where people drop off or struggle with a step. They are less useful when the system completes a task that the person did not quite ask it to do. That is the failure I call intention deficit: the words went in, but something important did not survive the interpretation.
 
 [A request is not the whole intent]
@@ -278,7 +260,6 @@ Traditional UX measures help us see where people drop off or struggle with a ste
 Consider this hypothetical request to an AI travel product: “Can you help me plan a weekend away with my dad? He gets tired easily but does not like feeling old.”
 
 An itinerary full of walking routes could satisfy “plan a weekend” and fail the rest. The request also carries concerns about pacing, dignity, and choice. The product should not diagnose the father or assume it understands the family. It could ask what activities they both enjoy, offer a lower-exertion option, and make rest flexible rather than label him as fragile.
-
 That distinction is a design problem. The user needs help expressing constraints, inspecting the system's interpretation, and correcting it without starting over.
 
 [How intent debt accumulates]
@@ -312,7 +293,6 @@ The last question turns a critique into a design decision. “Understand intent 
 For the travel scenario, an inadequate response might immediately supply a packed itinerary and describe it as suitable for an older traveler. It has converted a nuanced request into an age-based assumption.
 
 A better first move could be: “What does your dad most enjoy doing on a trip? I can suggest a relaxed plan with optional activities and easy places to pause.” That leaves room for the user's knowledge of their father rather than replacing it.
-
 This is an illustrative contrast, not a tested response or a medical recommendation. The point is to make the behavior being evaluated explicit. A team could then compare alternatives with users instead of treating my preferred wording as the answer.
 
 [Four dimensions to inspect]
@@ -329,13 +309,11 @@ Scores from one to five can help compare examples, but only after reviewers agre
 [Make correction part of the product]
 
 Collect repeated misunderstandings and use them to revise the experience. Add a clarifying question where guessing is costly. Show the assumptions behind an action. Offer alternatives when the choice belongs to the person. Give correction, undo, and escalation the same attention as the first successful response.
-
 Not every ambiguity needs another question. Excessive clarification can also obstruct the user. The design task is to judge the cost of a wrong assumption and provide proportionate control.
 
 Speed is valuable when it helps someone make progress. It is less valuable when it efficiently commits to the wrong goal. Intent deserves a place in design reviews because interpretation is now part of product behavior, not merely an input to it.`);
 
 const twoDollarBillBody = authoredBody(`One run of my agent deliberation panel cost about two dollars instead of the roughly four cents I wanted to spend. It did not crash or leak data. It exposed a simpler problem: a process intended to run repeatedly could be individually inexpensive and still have the wrong economics.
-
 That was a small incident in my own harness, not a controlled benchmark. It pushed me to treat accounting, failure states, and stopping behavior as part of the product rather than administrative details around it.
 
 [The work after the demo]
@@ -343,7 +321,6 @@ That was a small incident in my own harness, not a controlled benchmark. It push
 I run the harness on a Mac mini for messages and scheduled tasks. An impressive single result says little about how that system behaves when a dependency disappears, a service has nothing to do, or a subprocess keeps running after its parent should have stopped.
 
 The failures I worry about are often quiet. A component can appear healthy while no longer being connected. An alert can be technically correct and so frequent that it becomes useless. A dashboard can turn a missing cost into a reassuring zero.
-
 I began organizing those problems into contracts I could inspect and test.
 
 [Four ways trust erodes]
@@ -360,13 +337,11 @@ These are categories from operating my own system. They are not an exhaustive sa
 The harness declares connections between subsystems and reports their status at startup. Active, pending, and failed mean different things. A connection deliberately deferred should not look like one that tried to initialize and crashed.
 
 The intended behavior is for an invocation of an unwired dependency to surface an error rather than quietly do nothing. That turns an invisible loss of capability into a diagnostic event. It still requires tests: a manifest can describe the expected wiring without proving every runtime path follows it.
-
 The question I want startup diagnostics to answer is straightforward: what can this instance actually do now, and what is unavailable?
 
 [Distinguish a skip from a failure]
 
 Scheduled work needs a vocabulary for not running. Missing configuration, unavailable dependencies, operator-disabled behavior, a task not being due, and nothing to do are not interchangeable states.
-
 A legitimate skip should not automatically count as a failed task. At the same time, “skipped” must not become a bucket that hides broken configuration forever. The reason has to be available for review.
 
 This is an interaction-design problem as much as a monitoring problem. The operator needs enough information to decide whether to intervene without receiving the same alarming message for every ordinary pause.
@@ -376,17 +351,14 @@ This is an interaction-design problem as much as a monitoring problem. The opera
 Each model call is classified as measured, estimated, unknown, or not applicable. A measured zero is a known value. An unknown value is an accounting gap, not a discount.
 
 For the panel run, changing specialist model assignments brought the reported per-run API cost from about two dollars to about four cents. The trade-off was slower deliberation, around fifteen to twenty-five minutes instead of five to ten in my observations.
-
 That comparison concerns reported API charges for those runs. It does not establish a fifty-fold reduction in total operating cost. It excludes a full allocation of subscriptions, hardware, retries, and my time; it also is not a controlled comparison of output quality.
 
 Subscription-backed calls are especially important here. A flat subscription does not provide a trustworthy dollar price for each operation. Where a strict monetary budget requires known cost, an unknown value cannot pass as zero. Recording and surfacing the gap is distinct from proving that every execution path has been blocked. That enforcement must be checked at the call sites.
-
 The useful rule is not “everything is cheap now.” It is “the system must tell me which numbers it knows.”
 
 [Stopping is a behavior to test]
 
 The halt design uses a shared contract for autonomous services and cancellation of in-flight subprocesses. It aims to stop new work and terminate work already in progress, including child processes.
-
 I would not treat the existence of that contract as proof of a universal stop. Each entry point and process tree needs testing. An external request may already have completed, and cancellation cannot undo a side effect that has already occurred.
 
 A useful test asks what happens before work starts, during a model call, during tool execution, and after an external action. “Stopped” should describe observed state, not just the fact that a halt button was pressed.
@@ -394,11 +366,9 @@ A useful test asks what happens before work starts, during a model call, during 
 [Let autonomy earn its scope]
 
 My intended progression is dry-run recording, shadow execution, observed testing, a reversible feature flag, then enabled operation within the approved scope.
-
 Each stage answers a different question. A dry run reveals proposed actions without performing them. Shadow work lets me compare outputs without applying them. Longer observation exposes repetition and recovery behavior that a single demo misses. A feature flag provides a practical way to disable the capability.
 
 The self-improvement loop is deliberately narrower: it proposes changes for my approval. Generating a proposed change is not permission to apply it, and passing a test does not confer new authority.
-
 This is a rollout discipline, not a guarantee. The stages still depend on representative tests, good instrumentation, and an operator who inspects the evidence.
 
 [What I would reuse]
@@ -413,7 +383,6 @@ If I were starting again, I would establish these rules before increasing autono
 - Expand scope only when the observed behavior supports it.
 
 The two-dollar mistake mattered because it was small enough to examine without becoming a crisis. It exposed a question I had not made explicit enough: what must the system demonstrate before I let it repeat this action unattended?
-
 That is the operating problem behind the demo. The goal is not a dashboard that never reports uncertainty. It is a system that makes uncertainty visible enough for me to make a responsible next decision.`);
 
 const youAlwaysLetYourselfWinBody = authoredBody(`
@@ -422,7 +391,6 @@ Every AI product team hits the same moment. The demo works. The model says somet
 [Then the real question arrives: is it good?]
 
 Not "did it respond," or "did the API return something," or "did the prompt work once while the team was watching." Good the way product people mean it — useful, clear, trustworthy, fit for the user, honest about uncertainty, able to recover when it's wrong, and consistent enough that the product feels designed rather than merely generated.
-
 In too many teams, the answer is still: a senior person looks at it.
 
 [That is not a quality system. That is a bottleneck with taste]
@@ -554,7 +522,6 @@ Use the score to start a conversation, not end one. Calibrate the rubric with mu
 [An illustrative scoring example]
 
 Suppose a user asks a writing assistant to shorten an email without changing its meaning. The response deletes a deadline and gives no indication that it removed a requirement. A reviewer might score intent fidelity 2 out of 5 and recovery 2 out of 5: the text is shorter, but the constraint was lost and the change is hard to spot.
-
 A second response preserves the deadline and highlights the edits. It could score higher on those criteria, but the team should compare judgments rather than accept one reviewer's number as truth. This is a hypothetical calibration exercise, not a reported evaluation result.
 
 [The weekly ritual]
@@ -584,17 +551,14 @@ AI makes production faster. That is the obvious part. The less obvious part is t
 
 const cutDeferOrBuildBody = authoredMarkdownBody(`
 Every 0-1 engagement reaches a point where the vision outruns the budget. You've mapped the future state, the client has seen it, everyone is excited, and someone finally has to decide what actually gets designed in the weeks that remain.
-
 I've been in that room many times. The decision is always the same three options: cut it, defer it, or build it. And the default answer is almost always the wrong one.
 
 On a recent engagement, designing an AI-powered onboarding platform for financial-services teams, we spent real time imagining what the product could eventually do. Predictive personalization. Automated escalation on flagged issues. Proactive guidance based on client behavior. Interactive meeting summaries. Good ideas, all of them, and none belonged in the MVP prototype we delivered.
-
 The gap between what the technology could do and what the MVP delivered was a constant creative tension for the whole engagement. Managing that tension well is most of the job.
 
 ## When to cut
 
 Cutting is hardest because the idea is usually good. That's what makes it dangerous. A good idea nobody asked for still consumes the same weeks as a bad one.
-
 Ask:
 
 - Did this come from research, or from the team's enthusiasm?
@@ -608,7 +572,6 @@ That last question is the sharp one. Some features exist to make a stakeholder p
 ## When to defer
 
 Defer is for good ideas with a missing prerequisite. Usually data, sometimes trust.
-
 Ask:
 
 - Does this depend on behavior the product hasn't accumulated yet? Personalization needs a history to personalize against.
@@ -621,7 +584,6 @@ Deferred work should still be designed to a level that proves it's coherent. On 
 ## When to build
 
 Build is for the thing that changes the user's day.
-
 Ask:
 
 - Did this show up in interviews as an actual complaint rather than a wish?
@@ -630,13 +592,11 @@ Ask:
 - If you shipped only this, would the product still be worth using?
 
 Research pointed at one answer over and over: manual data entry was the single largest source of frustration for the operators managing these relationships. Repetitive, error-prone, endless. So the MVP centered on document ingestion and pre-population, which turned their job from typing into checking. Everything else waited.
-
 Pilot feedback supported prioritizing document entry and verification, while also raising requests for deeper AI capabilities. Those requests required further investigation: they could signal a useful roadmap, an unmet essential need, or a mismatch between the concept and the task.
 
 ## The scope review
 
 Make it a recurring meeting, not a one-time negotiation, because the answers change as research comes in.
-
 The agenda I use:
 
 1. Restate the problem the product is solving, in one sentence.
@@ -661,7 +621,6 @@ const designPrinciplesBody = authoredMarkdownBody(`
 Most design principles die in the deck they were born in. They're written at the wrong altitude, agreed to by everyone, and then never invoked in an actual decision. "Be delightful." "Put the user first." Nobody disagrees, which is exactly the problem. A principle that nothing can violate isn't steering anything.
 
 The set that worked best for me came out of a project where the stakes made vagueness impossible: designing AI-assisted onboarding for financial-services clients. Sensitive financial documents. Regulatory exposure. Users who were, in one persona's case, a woman with a complex family trust structure who found most digital tools intimidating and was openly skeptical that software could handle her situation without her advisor in the loop.
-
 You cannot design that with "be delightful."
 
 ## Write principles at the decision level
@@ -681,11 +640,9 @@ Notice that each one is falsifiable. You can look at a screen and say "this viol
 ## Principles come from research, not from a workshop
 
 We ran stakeholder interviews with relationship associates, regional VPs, and advisors before writing any of this. The technique that produced the most was using a journey map as the interview prompt rather than a question list. We'd built a comprehensive map of the analog process, from verbal commitment through the first ninety days after handoff, and walked people through it stage by stage.
-
 Grounding the conversation in a concrete workflow got us pain points that abstract questions never surface. People are bad at answering "what's frustrating about your job" and very good at answering "walk me through what happens here."
 
 Four findings came out of it, and each one turned into a principle. Manual entry was the biggest source of frustration. Clients felt lost. Coordination between roles was fragmented across email and phone. Trust and transparency were non-negotiable given the sensitivity of the data.
-
 That's the actual method. Research, then patterns, then principles. Writing principles first produces a description of the designer you'd like to be.
 
 > Principles you write from ambition describe you. Principles you write from research describe the problem.
@@ -693,7 +650,6 @@ That's the actual method. Research, then patterns, then principles. Writing prin
 ## The part that didn't work
 
 Alongside the MVP, we developed a set of future-state concepts: predictive personalization, automated escalation, proactive guidance. Those didn't get principles. They got mockups.
-
 They remained future-state work because of scope and missing prerequisites, not simply because they lacked principles. But the absence of explicit criteria made their assumptions harder to challenge. I would separate those two questions next time: is this feasible now, and would it be useful if it were?
 
 If I were doing it again, I'd hold the speculative work to the same test as the buildable work. Not to constrain the imagining, but because a future-state concept that can't satisfy your own principles is telling you something useful about the future state.
@@ -701,11 +657,9 @@ If I were doing it again, I'd hold the speculative work to the same test as the 
 ## Put the principle in the structure
 
 The most durable principle I've written wasn't in a document at all. It was in the data model.
-
 We defined a hierarchy for the onboarding journey: journey, phase, action, sub-action group, sub-action, task. Six levels. That structure decided the navigation, the progress indicators, the operator's ability to configure a journey per client, and the customer's sense of where they were in a long process.
 
 The data model was as much a design decision as any screen. It gave navigation and progress a shared structure, making some inconsistencies harder to introduce. It could not prevent confusing interfaces by itself; the way we presented that structure still needed review and testing.
-
 That's the strongest version of a design principle: one that has been built into a structure, where following it is easier than not.
 
 ## What I'd tell someone writing them
@@ -725,11 +679,9 @@ The pattern of my career has been showing up inside someone else's company, usua
 > People are bad at answering "what's frustrating?" and very good at answering "walk me through what happens here."
 
 On a project mapping the client onboarding process for financial-services teams, we built a comprehensive journey map before conducting a single interview. It covered everything from verbal commitment through the first ninety days after handoff.
-
 Then we used the map itself as the interview prompt. Conversations with relationship associates, regional VPs, and advisors were grounded in walking the map together stage by stage.
 
 The difference in output was dramatic. Abstract questions produce abstract answers and a lot of generic complaints about "communication." A concrete workflow in front of someone produces specifics: this handoff is where things get dropped, this document always arrives late, this is the third place I retype the same number.
-
 Build the artifact first. Then let people correct it. Correction is easier than recall.
 
 ## The data model is a design decision
@@ -737,7 +689,6 @@ Build the artifact first. Then let people correct it. Correction is easier than 
 > Structure is design, and changing it later can be expensive.
 
 The same project needed a way to represent an onboarding journey that could flex across different institutions with different processes. We ended up with six levels: journey, phase, action, sub-action group, sub-action, task.
-
 That structure wasn't preliminary work before the design. It was the design. It determined the navigation, the progress indicators, what an operator could configure per client, and how a person experienced moving through a long, intimidating process.
 
 I've watched teams treat information architecture as engineering's problem and then spend months fighting an interface that can't express what users need. Get into the model early. It's the highest-leverage hour a designer spends.
@@ -759,7 +710,6 @@ Both are the same lesson. The default design persona is an alert, seated, unhurr
 I joined one engagement shortly after the company had gone through layoffs, and inherited a scope normally spread across several people: research, wireframes, prototypes, interface, the corporate site, marketing materials.
 
 What surprised me wasn't the volume. It was that coherence needed explicit time alongside delivery. Larger teams also have to work at consistency; critique and shared systems do not make it automatic. A useful small-team practice is to review the same flow across product, website, and supporting messages before calling any one surface finished.
-
 If you're the last designer standing, schedule the coherence pass. It won't happen on its own, and it's the first thing to go.
 
 ## Two-sided products require constant empathy-switching
@@ -767,9 +717,7 @@ If you're the last designer standing, schedule the coherence pass. It won't happ
 > One user is unfamiliar with the process. The other works in it repeatedly. They need different levels of guidance.
 
 The onboarding platform had two audiences: prospective clients going through an unfamiliar process infrequently, anxious and unfamiliar, and financial operators managing dozens of these relationships simultaneously.
-
 One side needed guidance, reassurance, progressive disclosure, and explanation of why each piece of information mattered. The other needed density, filtering, status at a glance, and the ability to drill into any relationship in two clicks.
-
 The mistake is designing one and adapting it. They need distinct vocabularies over a shared system. What holds them together is the underlying model, not the interface conventions.
 
 ## Pilot beyond the room
@@ -796,15 +744,12 @@ const constraintWasTheBriefBody = authoredMarkdownBody(`
 An audio company wanted to enter the sleep market. The premise was straightforward: sessions of audio content that help people fall asleep, stay asleep, and wake up better. Our studio was brought in to design and prototype the mobile experience, working with designers and product strategists on the concept.
 
 The obvious approach for a media app is to give the listener control. Playback, scrubbing, track skipping, queue management, volume, browse-while-playing. That's the vocabulary the category runs on, and it's what a stakeholder expects to see in a player mockup.
-
 It's also completely wrong for this product, and figuring out why took reframing the constraint as the brief.
 
 ## Reframing the question
 
 The person using a sleep player is not a listener in any normal sense. They're in bed, in the dark, at the point of losing consciousness. Every interaction we designed was an interaction that would keep them awake.
-
 So the constraint stopped being "how few controls can we get away with" and became the actual specification: **the intended in-session happy path is start and stop. Setup happens beforehand; optional controls remain available.**
-
 That is a scoped interaction target, not a claim that every user action fits into two taps. It helps distinguish essential in-session behavior from configuration that belongs elsewhere.
 
 ## What the constraint produced
@@ -824,7 +769,6 @@ None of that is a subtracted version of a normal player. It's a different object
 ## The same move, elsewhere
 
 I've since used a similar reframe on projects that looked nothing alike.
-
 On a pet-tech product, the flow that activates when a dog escapes its safe zone has a comparable constraint pointing the other direction. The user is panicking, outdoors, moving. That's not "make it simple" either. It's a specific state with specific implications: large touch targets, live location as the entire screen, no decisions that require reading a paragraph.
 
 On another engagement I joined shortly after the company had gone through layoffs, the constraint was headcount. My scope covered work normally spread across several people. The productive reframe there wasn't "how do I do five jobs." It was recognizing that coherence needed scheduled attention alongside delivery. Critique and shared systems support it in any team, but do not make it automatic. Naming it that way made it survivable.
@@ -843,7 +787,6 @@ On another engagement I joined shortly after the company had gone through layoff
 
 const realMvpBody = authoredMarkdownBody(`
 I've spent most of my career building zero-to-one products for startups, which means I've spent most of my career arguing about what belongs in a first version. The argument is never really about features. It's about what "viable" means.
-
 An MVP is three things:
 
 1. **The fewest features that get the job done.**
@@ -861,23 +804,19 @@ On a project designing AI-assisted onboarding for financial-services clients, on
 A minimal version for her is easy to imagine: a form, an upload field, a submit button. Minimal, and the value is real at the end. It could fail that persona's need for guidance. That is a design hypothesis to test, not a measured abandonment time.
 
 What made it viable was the work that looks like overhead on a scope list. Pre-population, so the system read her documents and she checked rather than typed. Progress indicators, because she needed to know where she was in something long. Explanations of why each piece of information was needed, because trust was the actual constraint. An assistant available at every step to answer the questions she'd otherwise have called her advisor about.
-
 None of that is minimal. All of it is viable.
 
 ## The completion test
 
 The test is simple and most teams skip it: hand a person a goal and watch.
-
 Not a demo. Not a walkthrough where you narrate. Give them the objective and stay quiet. The moment you're listening for is the one where they stop and say some version of "I don't know what to do now." If they can't resolve it within reasonable effort, you have a product that is minimal and not viable.
 
 We put the platform prototype in front of financial-services professionals during pilot testing. It confirmed the thing research had predicted, that automating manual data entry was the feature that mattered most, and it surfaced things internal review never would have: terminology that didn't match how they talked, filtering they needed on the dashboard, specific points where clients lost the thread of their own progress.
-
 What matters is including relevant people outside the team, with tasks that expose the limits of the design. Internal reviewers can catch problems too, but may share assumptions about how the product is supposed to work.
 
 ## Viability is state-dependent
 
 The same feature set can be viable for one user and unusable for another, based purely on the condition they're in.
-
 Designing a sleep product taught me this. The listener is in bed, in the dark, half-conscious. Every control is an obstacle. We designed the in-session happy path around start and stop, with setup beforehand, optional controls available, and controls fading on inactivity. Adding features there would have reduced viability.
 
 Designing the flow for a pet owner whose dog has escaped teaches the opposite. That person is panicked and moving. They need less on screen and bigger targets, but they also need more certainty: live location, unambiguous next action, no paragraph to read.
@@ -887,9 +826,7 @@ Both are viable. Neither is minimal in a way that would survive a generic scope-
 ## The real lesson
 
 Stop asking whether the first version is impressive. Ask whether someone can finish.
-
 Impressive first versions are common and mostly useless. They demo beautifully, they raise money, and then real users hit the third screen and stop. The unglamorous work of a real MVP is almost entirely about the middle of the journey, which is exactly the part that never appears in a pitch.
-
 Clarity is what makes something viable. Everything else is decoration on a path nobody completes.
 `);
 
@@ -904,15 +841,6 @@ const articleReadMinutes = (body) => {
 
   return Math.max(1, Math.ceil(wordCount / 200));
 };
-
-const relatedProjects = Object.freeze({
-  "a-free-surf-lesson": ["audible-sleep", "Audible Sleep"],
-  "cut-defer-or-build": ["avantos", "Avantos"],
-  "design-principles-that-actually-shape-the-product": ["avantos", "Avantos"],
-  "lessons-from-fifteen-years-of-embedded-product-design": ["fi-smart-collar", "Fi Collar"],
-  "the-constraint-was-the-brief": ["audible-sleep", "Audible Sleep"],
-  "what-makes-a-real-mvp": ["avantos", "Avantos"],
-});
 
 const articleOrder = [
   "the-constraint-was-the-brief", "intention-deficit-disorder", "company-of-one",
@@ -932,13 +860,10 @@ function article({ slug, title, date, summary, body = temporaryArticleBody, inde
     // Assigned historic dates remain in the private source records, not as publication claims.
     meta: Object.freeze(["Andrew Zellinger", "Reviewed Sep 8th 2026", `${articleReadMinutes(normalizedBody)} MIN`]),
     summary,
-    relatedProject: relatedProjects[slug] ? Object.freeze({
-      path: `/case-studies/${relatedProjects[slug][0]}/`,
-      title: relatedProjects[slug][1],
-    }) : null,
     body: normalizedBody,
     media: Object.freeze({
-      label: "Tasman Glacier landscape",
+      src: ARTICLE_IMAGES[slug].src,
+      label: "Abstract material sculpture",
       decorative: true,
     }),
   });

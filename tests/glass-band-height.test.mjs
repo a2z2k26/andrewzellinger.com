@@ -174,5 +174,6 @@ test("the persistent logo and clock remain native above both effects", async () 
   assert.doesNotMatch(textSelector, /#h/);
   assert.match(surface, /"\.title \.heading"/);
   assert.match(surfaceStyles, /\.glass-band-canvas\s*\{[^}]*z-index:\s*80;/s);
-  assert.match(globalStyles, /\.nav\s*\{[^}]*z-index:\s*97;/s);
+  const navZ = Number(globalStyles.match(/\.nav\s*\{[^}]*z-index:\s*(\d+);/s)?.[1]);
+  assert.ok(navZ > 80, "native navigation remains above the glass canvas");
 });

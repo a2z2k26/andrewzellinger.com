@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { access } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
+import { ARTICLE_IMAGES } from '../src/article-images.js';
 
 test("serves existing static assets without a fallback", async () => {
   const calls = [];
@@ -42,7 +43,7 @@ test("falls back to index.html for an unknown app route", async () => {
 });
 
 test("serves canonical routes from their generated index files", async () => {
-  for (const pathname of ["/articles", "/projects", "/history"]) {
+  for (const pathname of ["/articles", "/history"]) {
     const calls = [];
     const generatedPath = `${pathname}/index.html`;
     const response = await worker.fetch(
@@ -66,7 +67,7 @@ test("serves canonical routes from their generated index files", async () => {
 });
 
 test("redirects legacy routes to their canonical destinations", async () => {
-  for (const [pathname, destination] of [["/index", "/"], ["/info", "/history"], ["/biography", "/history"], ["/portfolio", "/projects"]]) {
+  for (const [pathname, destination] of [["/index", "/"], ["/info", "/history"], ["/biography", "/history"], ["/portfolio", "/"], ["/projects", "/"], ["/projects/", "/"], ["/projects/index.html", "/"]]) {
     let assetCalls = 0;
     const response = await worker.fetch(
       new Request(`https://example.test${pathname}?source=legacy`, { headers: { accept: "text/html" } }),
@@ -117,6 +118,9 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/projects/index.html", import.meta.url));
   await access(new URL("../dist/client/history/index.html", import.meta.url));
   await access(new URL("../dist/client/articles/index.html", import.meta.url));
+  for (const image of Object.values(ARTICLE_IMAGES)) {
+    await access(new URL(`../dist/client${image.src}`, import.meta.url));
+  }
   await access(new URL("../dist/client/images/tasman-glacier-stand-in.jpg", import.meta.url));
   await access(new URL("../dist/client/images/history/az-headshot.png", import.meta.url));
   await access(new URL("../dist/client/images/history/az-headshot-extended-v1.png", import.meta.url));

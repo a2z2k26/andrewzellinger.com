@@ -4,6 +4,9 @@
   --center-nav-menu-height: 320px;
   --center-nav-glass-fill: rgba(190, 200, 205, 0);
   --center-nav-glass-blur: 1px;
+  --center-nav-frosted-opacity: 1;
+  --center-nav-frosted-fill: rgba(255, 255, 255, var(--center-nav-frosted-opacity));
+  --center-nav-frosted-blur: 32px;
   width: 360px;
   height: 380px;
   align-self: center;
@@ -32,6 +35,14 @@
 }
 
 .center-glass-mask-defs { position: absolute; pointer-events: none; }
+.center-nav-frosted-surface {
+  position: absolute;
+  inset: -240px;
+  pointer-events: none;
+  background: var(--center-nav-frosted-fill);
+  backdrop-filter: blur(var(--center-nav-frosted-blur));
+  -webkit-backdrop-filter: blur(var(--center-nav-frosted-blur));
+}
 .center-nav-glass-surface {
   position: absolute;
   inset: -240px;
@@ -163,9 +174,9 @@ html.detail-route .center-nav-shell.center-nav-shell--gooey-ready .nav_toggle.ac
   align-items: center;
   justify-content: center;
   color: #000;
-  font-family: "Geist", sans-serif;
+  font-family: "Geist Menu", "Geist", sans-serif;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   font-synthesis: none;
   line-height: 20px;
   letter-spacing: .04em;
@@ -194,6 +205,10 @@ html.detail-route .center-nav-shell.center-nav-shell--gooey-ready .nav_toggle.ac
 
 .center-nav-shell .nav_icon {
   transform: none;
+}
+
+.center-nav-shell .nav_icon-plus path {
+  fill: #000;
 }
 
 .center-nav-shell .nav_icon-plus {

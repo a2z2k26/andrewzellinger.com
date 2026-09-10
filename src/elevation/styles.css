@@ -3,6 +3,9 @@ html[data-design-edition="elevated"] {
   --edition-rule: rgba(255,255,255,.17);
   --edition-ease: cubic-bezier(.16,1,.3,1);
   --edition-reading: 0;
+  --edition-context-label-size: 12px;
+  --edition-context-title-size: 20px;
+  --edition-reading-thickness: 1.5px;
   color-scheme: dark;
 }
 
@@ -14,10 +17,9 @@ html[data-design-edition="elevated"] .title .heading {
   font-weight: 500;
   letter-spacing: -.035em;
 }
-.edition-context__count,
-.edition-context__hint {
+.edition-context__count {
   font-family: "Geist Mono", monospace;
-  font-size: 10px;
+  font-size: var(--edition-context-label-size);
   line-height: 1.5;
   font-weight: 400;
   letter-spacing: .07em;
@@ -36,9 +38,8 @@ html[data-design-edition="elevated"] .title .heading {
 }
 .edition-context__count { color: var(--swatches--accent-1); margin-bottom: 14px; }
 .edition-context__count:empty { display: none; }
-.edition-context__title { color: #dbdbd7; font-family: "Geist", sans-serif; font-size: 17px; line-height: 1.4; letter-spacing: -.015em; text-transform: none; }
-.edition-context__hint { color: var(--edition-muted); margin-top: 10px; }
-.edition-reading { position: fixed; z-index: 96; bottom: 132px; left: 24px; width: 96px; height: 1px; background: var(--edition-rule); }
+.edition-context__title { color: #dbdbd7; font-family: "Geist", sans-serif; font-size: var(--edition-context-title-size); font-weight: 500; line-height: 1.4; letter-spacing: -.015em; text-transform: none; }
+.edition-reading { position: fixed; z-index: 96; bottom: 132px; left: 24px; width: 96px; height: var(--edition-reading-thickness); background: var(--edition-rule); }
 .edition-reading[hidden] { display: none; }
 .edition-reading__fill { background: var(--swatches--accent-1); width: 100%; height: 100%; transform: scaleX(var(--edition-reading)); transform-origin: left; }
 html[data-design-edition="elevated"] .nav_brand { letter-spacing: .045em; }
@@ -62,12 +63,12 @@ html[data-design-edition="elevated"] .nav_wrapper.center-nav-shell {
 html[data-design-edition="elevated"] .center-nav-menu-list {
   transform: translate(-50%, calc(-50% - var(--edition-menu-travel, 190.4px))) !important;
   padding: var(--edition-menu-padding, 34px) 24px;
-  gap: 4px;
+  gap: 12px;
 }
 html[data-design-edition="elevated"] .center-nav-link { height: 44px; flex-shrink: 0; }
 html[data-design-edition="elevated"] .center-nav-shell .nav_icon-plus { width: 28px; height: 28px; flex-basis: 28px; }
 html[data-design-edition="elevated"] .center-nav-link {
-  font-size: 20px;
+  font-size: 24px;
   line-height: 1.2;
   letter-spacing: -.02em;
   text-transform: none;
@@ -75,8 +76,7 @@ html[data-design-edition="elevated"] .center-nav-link {
 html[data-design-edition="elevated"] .center-nav-link { color: #000; }
 html[data-design-edition="elevated"] .center-nav-link.w--current {
   color: #000;
-  text-decoration: underline;
-  text-underline-offset: 5px;
+  text-decoration: none;
 }
 html[data-design-edition="elevated"] .center-nav-link:focus-visible { outline-color: black; outline-offset: 7px; }
 html[data-design-edition="elevated"] .works-motion-card .heading-style-h2.new,
@@ -127,13 +127,11 @@ html[data-design-edition="elevated"] .articles-entry__title.heading-style-h2.new
   letter-spacing: -.035em;
   text-wrap: balance;
 }
-html[data-design-edition="elevated"] .articles-entry-list > li { padding-block: 40px; border-color: var(--edition-rule); }
-html[data-design-edition="elevated"] .articles-entry__cta { font-size: 10px; color: #b7b7b2; padding-bottom: 5px; border-bottom: 1px solid #5a5a58; transition: color .2s, border-color .2s; }
-html[data-design-edition="elevated"] .articles-entry-link:hover .articles-entry__cta { color: white; border-color: var(--swatches--accent-1); }
+/* One trailing gap per row also keeps adjacent carousel sets evenly spaced. */
+html[data-design-edition="elevated"] .articles-entry-list > li { padding-block: 0 48px; border: 0; }
+html[data-design-edition="elevated"] .articles-entry__cta { font-size: 10px; color: var(--swatches--accent-1); padding-bottom: 0; border: 0; text-decoration: none; }
+html[data-design-edition="elevated"] .articles-entry-link:hover .articles-entry__cta { color: var(--swatches--accent-1); }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  html[data-design-edition="elevated"] .works-motion-card .heading-style-h2.new,
-  html[data-design-edition="elevated"] .articles-entry__title { transition: color .25s; }
-  html[data-design-edition="elevated"] .portfolio-detail-link:hover .heading-style-h2.new { color: #acaca7; }
   html[data-design-edition="elevated"] .biography-experience__row { transition: background-color .25s; }
   html[data-design-edition="elevated"] .biography-experience__row:hover { background: #0b0b0b; }
 }
@@ -150,29 +148,22 @@ html[data-design-edition="elevated"] .detail-unit__article-body blockquote {
   letter-spacing: -.01em;
   color: #d0d0cb;
 }
-html[data-design-edition="elevated"] .detail-unit__article-body { max-width: 68ch; }
+html[data-design-edition="elevated"] .detail-unit__article-body p,
+html[data-design-edition="elevated"] .detail-unit__article-body li,
+html[data-design-edition="elevated"] .detail-unit__article-body blockquote {
+  line-height: 1.6;
+}
 html[data-design-edition="elevated"] .detail-unit__section--project { grid-template-columns: minmax(72px, .24fr) minmax(0, 1fr); gap: 24px; }
 html[data-design-edition="elevated"] .detail-unit__section-label { font-size: 10px; line-height: 1.6; letter-spacing: .06em; }
 html[data-design-edition="elevated"] .detail-unit__article-heading { font-size: 11px; letter-spacing: .08em; }
-html[data-design-edition="elevated"] .biography-introduction__lead { font-size: clamp(28px, 2.55vw, 42px); line-height: 1.25; letter-spacing: -.035em; }
-html[data-design-edition="elevated"] .biography-prose,
-html[data-design-edition="elevated"] .biography-introduction__practice-body,
-html[data-design-edition="elevated"] .biography-capability__items,
-html[data-design-edition="elevated"] .biography-clients__list {
-  font-size: 15px;
-  line-height: 1.75;
-  letter-spacing: -.01em;
-  text-transform: none;
-  color: #c6c6c2;
-}
-html[data-design-edition="elevated"] .biography-introduction__practice-body { width: 100%; max-width: 66ch; }
-html[data-design-edition="elevated"] .biography-prose { text-indent: 0; }
-html[data-design-edition="elevated"] .biography-experience__organization { font-size: 14px; text-transform: none; letter-spacing: -.01em; }
-html[data-design-edition="elevated"] .biography-experience__row { padding-block: 22px; }
-html[data-design-edition="elevated"] .biography-contact__link { font-size: 16px; display: inline-block; padding-block: 10px; border-bottom: 1px solid var(--edition-rule); transition: border-color .2s; }
-html[data-design-edition="elevated"] .biography-contact__link:hover { border-color: var(--swatches--accent-1); }
+/* History's editorial rhythm and responsive type live in biography.css. */
 
 @media (min-width: 992px) {
+  html[data-design-edition="elevated"] .center-nav-link { font-size: 32px; }
+  html[data-design-edition="elevated"] .title .heading {
+    font-size: 124px;
+    font-weight: 500;
+  }
   html[data-design-edition="elevated"] .works-motion-card .heading-style-h2.new,
   html[data-design-edition="elevated"] .articles-entry__title.heading-style-h2.new,
   html[data-design-edition="elevated"] .biography-introduction__lead {
@@ -204,13 +195,10 @@ html[data-design-edition="elevated"] .biography-contact__link:hover { border-col
     top: var(--edition-reading-top, auto);
     bottom: auto;
   }
+  /* A 64px bottom inset raises the flex-centered title by exactly 32px.
+     Keep placement separate from the character-mask animation transforms. */
+  html[data-design-edition="elevated"] .title { bottom: 64px; }
   html[data-design-edition="elevated"] .title .container-xlarge { max-width: calc(50% - 60px); margin: 0; }
-  /* Optical correction for title-case glyphs; preserve the centered layout box
-     and leave the container's route-animation transform untouched. */
-  html[data-design-edition="elevated"] .title .heading { position: relative; top: -3px; }
-}
-@media (min-width: 992px) and (max-height: 720px) {
-  html[data-design-edition="elevated"] .title { padding-bottom: 100px; }
 }
 @media (max-width: 991px) {
   html[data-design-edition="elevated"] .nav {
@@ -221,7 +209,7 @@ html[data-design-edition="elevated"] .biography-contact__link:hover { border-col
     display: flex;
     align-items: center;
     background: #000;
-    z-index: 100;
+    /* Inherit the shared navigation layer above detail-transition clones. */
   }
   html[data-design-edition="elevated"] .nav > .container-xlarge:first-child { padding-inline: 24px; width: auto; flex: 1; }
   html[data-design-edition="elevated"] .nav_h { width: auto; flex: none; padding-right: 24px; white-space: nowrap; }
@@ -237,15 +225,10 @@ html[data-design-edition="elevated"] .biography-contact__link:hover { border-col
   html[data-design-edition="elevated"].index-route .index-media-placeholder { aspect-ratio: 4 / 5; background-position: center !important; }
   html[data-design-edition="elevated"] .articles-index { width: auto; margin-inline: 24px; padding: 0; }
   html[data-design-edition="elevated"] .articles-index__list { margin: 0; padding-top: 0; }
-  html[data-design-edition="elevated"] .articles-entry-list > li { padding-block: 32px; }
-  html[data-design-edition="elevated"] .articles-entry-list > li:first-child { padding-top: 0; }
+  html[data-design-edition="elevated"] .articles-entry-list > li { padding-block: 0 32px; }
   html[data-design-edition="elevated"] .articles-entry { grid-template-columns: minmax(180px, .9fr) minmax(0, 1.1fr); column-gap: 28px; }
   html[data-design-edition="elevated"] .detail-rail { margin-inline: 24px; padding-top: 0; padding-bottom: 48px; }
   html[data-design-edition="elevated"] .detail-unit__section--project { grid-template-columns: 100px minmax(0, 1fr); }
-  html[data-design-edition="elevated"] .biography-introduction__lead { max-width: 100%; }
-  html[data-design-edition="elevated"] .biography-block { grid-template-columns: 120px minmax(0,1fr); gap: 24px; }
-  html[data-design-edition="elevated"] .biography-experience__row { grid-template-columns: 1.25fr 1fr max-content; }
-  html[data-design-edition="elevated"] .biography-capabilities { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 
 .edition-loading {position:fixed;top:54px;left:24px;z-index:101;color:#93938f;font:10px/1.5 'Geist Mono',monospace;}
@@ -254,16 +237,6 @@ html[data-design-edition="elevated"] .biography-contact__link:hover { border-col
 }
 @media (max-width: 991px) {
   html[data-design-edition="elevated"] { scroll-padding-top: 80px; scroll-padding-bottom: 112px; }
-  html[data-design-edition="elevated"] body::after {
-    content: "";
-    position: fixed;
-    inset: auto 0 0;
-    height: calc(96px + env(safe-area-inset-bottom, 0px));
-    background: #000;
-    border-top: 1px solid var(--edition-rule);
-    pointer-events: none;
-    z-index: 97;
-  }
 }
 @media (max-width: 599px) {
   html[data-design-edition="elevated"] .title { padding-top: 108px; padding-bottom: 36px; }
@@ -272,11 +245,6 @@ html[data-design-edition="elevated"] .biography-contact__link:hover { border-col
   html[data-design-edition="elevated"] .articles-entry__title.heading-style-h2.new { font-size: 30px; }
   html[data-design-edition="elevated"] .articles-entry__meta { margin-top: 14px; margin-bottom: 12px; }
   html[data-design-edition="elevated"] .detail-unit__section--project { grid-template-columns: 1fr; gap: 18px; }
-  html[data-design-edition="elevated"] .biography-block { grid-template-columns: 1fr; gap: 20px; }
-  html[data-design-edition="elevated"] .biography-experience__row { grid-template-columns: 1fr max-content; column-gap: 16px; row-gap: 6px; }
-  html[data-design-edition="elevated"] .biography-experience__role { grid-column: 1; font-size: 12px; }
-  html[data-design-edition="elevated"] .biography-experience__dates { grid-column: 2; grid-row: 1; align-self: center; font-size: 10px; }
-  html[data-design-edition="elevated"] .biography-capabilities { grid-template-columns: 1fr; }
   html[data-design-edition="elevated"] .detail-unit__copy--article { padding-top: 32px; }
 }
 @media (prefers-reduced-motion: reduce) {

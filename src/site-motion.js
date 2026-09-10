@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import { ARTICLE_DETAILS } from "./article-content.js";
 import { PROJECTS } from "./project-content.js";
+import { mountPortraitArtwork } from "./elevation/portrait-artwork.js";
 import {
   isMotionPaused,
   isMotionInputPaused,
@@ -17,6 +18,7 @@ const INDEX_PATH = "";
 const WORKS_PATH = "/projects";
 const WORKS_CARD_SELECTOR = ".works-motion-card";
 const ARTICLES_PATH = "/articles";
+const HISTORY_PATH = "/history";
 const ARTICLE_CARD_SELECTOR = ".articles-entry-list > li";
 const MOBILE_NATIVE_PATHS = new Set([WORKS_PATH, INDEX_PATH, "/articles", "/history"]);
 const NATIVE_SCROLL_PATHS = new Set([INDEX_PATH]);
@@ -35,7 +37,8 @@ let pendingRailSweepArrival = false;
 const loopSnapshots = new Map();
 
 function currentPath() {
-  return window.location.pathname.replace(/\/$/, "");
+  // The root URL uses the Projects collection's established motion path.
+  return window.location.pathname.replace(/\/$/, "") || WORKS_PATH;
 }
 
 function isDetailPath(pathname = currentPath()) {
@@ -224,6 +227,9 @@ function createContentLoop(logicalItems, {
   sourceContainerSelector,
   initialSnapshot,
   initialAnchor,
+  refreshClonesOnResize = false,
+  forwardCloneLinks = false,
+  onMeasure = () => {},
 }) {
   const field = document.querySelector(fieldSelector);
   const sourceContainer = sourceContainerSelector
@@ -373,6 +379,7 @@ function createContentLoop(logicalItems, {
     const setGap = Number.parseFloat(getComputedStyle(track).rowGap) || 0;
     distance = sourceSet.getBoundingClientRect().height + setGap;
     if (!distance) return;
+    onMeasure(distance);
 
     const duration = distance / LOOP_SPEED_PX_PER_SECOND;
     track.dataset.loopDistance = String(distance);
@@ -405,6 +412,19 @@ function createContentLoop(logicalItems, {
       startCall.paused(isMotionPaused());
     } else {
       startSegment();
+    }
+  };
+
+  const resumeAfterDetail = () => {
+    if (destroyed) return;
+    // The native card is visible again. End its protective hold immediately,
+    // retaining the restored phase/direction and every independent pause.
+    if (startCall) {
+      startCall.kill();
+      startCall = null;
+      startSegment();
+    } else {
+      applyPause();
     }
   };
 
@@ -470,35 +490,102 @@ function createContentLoop(logicalItems, {
 
   const onResize = () => {
     resizeCall?.kill();
-    resizeCall = gsap.delayedCall(0.18, buildLoop);
-  };
-
-  const onFocusIn = () => setMotionPause(focusReason, true);
-  const onFocusOut = (event) => {
-    if (event.relatedTarget && field.contains(event.relatedTarget)) return;
-    queueMicrotask(() => {
-      if (!destroyed) setMotionPause(focusReason, field.contains(document.activeElement));
+    resizeCall = gsap.delayedCall(0.18, () => {
+      if (destroyed) return;
+      // History contains a responsive portrait illustration. Refresh its inert
+      // copies only after the source has settled at its new dimensions.
+      if (refreshClonesOnResize) {
+        prepareCloneSet(cloneSetBefore, "before");
+        prepareCloneSet(cloneSetAfter, "after");
+      }
+      buildLoop();
     });
   };
-  setMotionPause(focusReason, field.contains(document.activeElement));
+
+  // Inert copies never add keyboard stops. Their visible contact links still
+  // delegate pointer clicks to the matching, accessible source link.
+  const onCloneLinkClick = (event) => {
+    if (!forwardCloneLinks || event.defaultPrevented || event.button !== 0) return;
+    if (event.target.closest?.('a[href]')) return;
+    const sourceLinks = [...sourceSet.querySelectorAll('a[href]')];
+    for (const clone of [cloneSetBefore, cloneSetAfter]) {
+      const links = [...clone.querySelectorAll('a[href]')];
+      const index = links.findIndex(link => {
+        const rect = link.getBoundingClientRect();
+        return event.clientX >= rect.left && event.clientX <= rect.right
+          && event.clientY >= rect.top && event.clientY <= rect.bottom;
+      });
+      if (index < 0 || !sourceLinks[index]) continue;
+      event.preventDefault();
+      sourceLinks[index].dispatchEvent(new MouseEvent('click', {
+        bubbles: true, cancelable: true, view: window,
+        ctrlKey: event.ctrlKey, metaKey: event.metaKey,
+        altKey: event.altKey, shiftKey: event.shiftKey,
+      }));
+      break;
+    }
+  };
+  field.addEventListener('click', onCloneLinkClick);
+
+  const onReadingViewportScroll = () => {
+    if (!forwardCloneLinks || destroyed || !distance || !field.scrollTop) return;
+    // Keyboard focus can scroll an overflow-hidden viewport to its canonical
+    // contact link. Absorb that offset into the loop so focus stays visible,
+    // without leaving a second scroll offset that would break the next wrap.
+    const y = (Number(gsap.getProperty(track, 'y')) || 0) - field.scrollTop;
+    field.scrollTop = 0;
+    gsap.set(track, { y });
+    startSegment();
+    window.dispatchEvent(new CustomEvent('portfolio:loop-progress'));
+  };
+  field.addEventListener('scroll', onReadingViewportScroll, { passive: true });
+
+  const onFocusIn = () => syncFocusPause();
+  let focusFrame = 0;
+  const syncFocusPause = () => {
+    if (destroyed) return;
+    const focused = document.activeElement;
+    // Return focus remains on the source card for accessibility, but pointer
+    // focus must not stop autoplay. Keyboard focus keeps its stable target.
+    setMotionPause(focusReason, field.contains(focused) && focused.matches(':focus-visible'));
+  };
+  const scheduleFocusPause = () => {
+    cancelAnimationFrame(focusFrame);
+    // Wait for the browser's default focus/modality update before sampling it.
+    focusFrame = requestAnimationFrame(syncFocusPause);
+  };
+  const onFocusOut = scheduleFocusPause;
+  syncFocusPause();
   const unsubscribePause = subscribeMotionPause(applyPause);
   field.addEventListener("focusin", onFocusIn);
   field.addEventListener("focusout", onFocusOut);
+  window.addEventListener('keydown', scheduleFocusPause);
+  window.addEventListener('pointerdown', scheduleFocusPause);
 
   buildLoop();
   applyPause();
+  const sizeObserver = refreshClonesOnResize ? new ResizeObserver(onResize) : null;
+  sizeObserver?.observe(sourceSet);
+  if (refreshClonesOnResize) document.fonts?.ready.then(() => { if (!destroyed) onResize(); });
   window.addEventListener("resize", onResize, { passive: true });
 
   return {
     setDirection,
     handleInput,
+    resumeAfterDetail,
     resetForArrival,
     destroy() {
       if (destroyed) return;
       destroyed = true;
+      sizeObserver?.disconnect();
+      field.removeEventListener('click', onCloneLinkClick);
+      field.removeEventListener('scroll', onReadingViewportScroll);
       unsubscribePause();
       field.removeEventListener("focusin", onFocusIn);
       field.removeEventListener("focusout", onFocusOut);
+      window.removeEventListener('keydown', scheduleFocusPause);
+      window.removeEventListener('pointerdown', scheduleFocusPause);
+      cancelAnimationFrame(focusFrame);
       setMotionPause(focusReason, false);
       window.removeEventListener("resize", onResize);
       resizeCall?.kill();
@@ -546,6 +633,9 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
 
   const isWorks = currentPath() === WORKS_PATH;
   const isArticles = currentPath() === ARTICLES_PATH;
+  const isHistory = currentPath() === HISTORY_PATH;
+  // Mount the original overprint before duplicating the biography for looping.
+  if (isHistory) mountPortraitArtwork();
   const routeLoop = isWorks
       ? {
         dataset: "worksMotion",
@@ -563,7 +653,18 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
           itemSelector: ARTICLE_CARD_SELECTOR,
           namespace: "articles",
         }
-        : null;
+        : isHistory
+          ? {
+            dataset: "historyMotion",
+            expectedCount: 1,
+            fieldSelector: ".biography-sweep-viewport",
+            itemSelector: ".biography-sweep-content",
+            namespace: "history",
+            refreshClonesOnResize: true,
+            forwardCloneLinks: true,
+            onMeasure: distance => document.documentElement.style.setProperty('--history-loop-height', `${distance}px`),
+          }
+          : null;
   const logicalItems = routeLoop
     ? gsap.utils.toArray(routeLoop.itemSelector).filter((item) => !item.closest("[aria-hidden='true']"))
     : [];
@@ -615,6 +716,7 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
         stopDirectionObserver();
         contentLoop.destroy();
         stopSmoothScrolling();
+        if (isHistory) document.documentElement.style.removeProperty('--history-loop-height');
       };
     },
   );
@@ -628,6 +730,7 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
     delete document.documentElement.dataset.indexMotion;
     delete document.documentElement.dataset.worksMotion;
     delete document.documentElement.dataset.articlesMotion;
+    delete document.documentElement.dataset.historyMotion;
     window.removeEventListener("pagehide", destroy);
     if (destroyActiveRuntime === destroy) destroyActiveRuntime = null;
   };
@@ -645,7 +748,7 @@ function applyPendingRailSweepArrival() {
 }
 
 function onRailSweepArrival() {
-  if (currentPath() !== WORKS_PATH && currentPath() !== ARTICLES_PATH) return;
+  if (![WORKS_PATH, ARTICLES_PATH, HISTORY_PATH].includes(currentPath())) return;
   // pagereveal can arrive before startup, after startup, or around bfcache
   // restoration. Consume only after a live collection loop can accept it.
   pendingRailSweepArrival = true;
@@ -662,6 +765,10 @@ function startWhenReady() {
 
 startWhenReady();
 window.addEventListener("portfolio:rail-sweep-arrival", onRailSweepArrival);
+window.addEventListener('portfolio:collection-return-ready', () => {
+  if (currentPath() !== WORKS_PATH && currentPath() !== ARTICLES_PATH) return;
+  activeCollectionLoop?.resumeAfterDetail?.();
+});
 window.addEventListener("pageshow", (event) => {
   if (event.persisted && !destroyActiveRuntime) initSiteMotion();
 });

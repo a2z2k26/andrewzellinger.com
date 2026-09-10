@@ -122,6 +122,80 @@ test("the collection loop pauses its existing position and handles direct input 
   assert.match(source, /unsubscribePause\(\)/);
 });
 
+test("restored pointer focus resumes collections while keyboard focus and independent pauses remain protected", async () => {
+  const source = await readFile(motionURL, "utf8");
+  const start = source.indexOf("  const onFocusIn =");
+  const focusCode = source.slice(start, source.indexOf("\n  buildLoop();", start));
+  for (const namespace of ['works', 'articles']) {
+    const pause = await freshPause();
+    let keyboardFocus = false;
+    const card = { inField: true, matches: selector => selector === ':focus-visible' && keyboardFocus };
+    const field = Object.assign(new EventTarget(), { contains: node => Boolean(node?.inField) });
+    const document = { activeElement: card };
+    const window = new EventTarget();
+    const frames = new Map();
+    let nextFrame = 0;
+    const context = vm.createContext({
+      ...pause, field, document, window, destroyed: false, focusReason: `${namespace}:focus`,
+      applyPause() {},
+      queueMicrotask: fn => frames.set(++nextFrame, fn),
+      requestAnimationFrame: fn => { frames.set(++nextFrame, fn); return nextFrame; },
+      cancelAnimationFrame: id => frames.delete(id),
+    });
+    const flush = () => { const tasks = [...frames.values()]; frames.clear(); tasks.forEach(fn => fn()); };
+    vm.runInContext(focusCode, context);
+    assert.equal(pause.isMotionPaused(), false, `${namespace}: pointer-restored focus at runtime mount must not pause`);
+    field.dispatchEvent(new Event('focusin'));
+    assert.equal(pause.isMotionPaused(), false, `${namespace}: detail return must not require another click`);
+    keyboardFocus = true;
+    window.dispatchEvent(new Event('keydown'));
+    flush();
+    assert.equal(pause.isMotionPaused(), true, 'switching to keyboard navigation holds the focused card');
+    keyboardFocus = false;
+    window.dispatchEvent(new Event('pointerdown'));
+    flush();
+    assert.equal(pause.isMotionPaused(), false, 'pointer input releases only keyboard-focus hold');
+    pause.setUserMotionPaused(true);
+    pause.setMotionPause('navigation', true);
+    field.dispatchEvent(new Event('focusin'));
+    assert.equal(pause.isMotionPaused(), true);
+    pause.setMotionPause('navigation', false);
+    assert.equal(pause.isMotionPaused(), true, 'the saved user pause is never cleared');
+    pause.setUserMotionPaused(false);
+    keyboardFocus = true;
+    field.dispatchEvent(new Event('focusin'));
+    document.activeElement = { inField: false };
+    field.dispatchEvent(new Event('focusout'));
+    flush();
+    assert.equal(pause.isMotionPaused(), false, 'leaving the collection releases focus pause');
+  }
+});
+
+test("detail-return completion releases the hold timer without resetting phase or overriding pauses", async () => {
+  const source = await readFile(motionURL, 'utf8');
+  const start = source.indexOf('  const resumeAfterDetail =');
+  assert.ok(start >= 0, 'the loop must accept actual return completion instead of waiting for its hold timeout');
+  const code = source.slice(start, source.indexOf('  const resetForArrival =', start));
+  const pause = await freshPause();
+  let killed = 0;
+  const resumed = [];
+  const context = vm.createContext({
+    destroyed: false, startCall: { kill() { killed++; } },
+    startSegment() { resumed.push(pause.isMotionPaused()); },
+    applyPause() {},
+  });
+  pause.setUserMotionPaused(true);
+  vm.runInContext(`${code}\nresumeAfterDetail();`, context);
+  assert.equal(killed, 1);
+  assert.equal(context.startCall, null);
+  assert.deepEqual(resumed, [true]);
+  pause.setUserMotionPaused(false);
+  context.startCall = { kill() { killed++; } };
+  vm.runInContext('resumeAfterDetail();', context);
+  assert.deepEqual(resumed, [true, false]);
+  assert.doesNotMatch(code, /direction\s*=|gsap\.set|setUserMotionPaused/);
+});
+
 test("runtime restoration runs once on bfcache return and does not miss interactive documents", async () => {
   const source = await readFile(motionURL, "utf8");
   const lifecycle = source.slice(source.indexOf("export function initSiteMotion"))
@@ -139,7 +213,7 @@ test("runtime restoration runs once on bfcache return and does not miss interact
     isDetailPath: () => false,
     NATIVE_SCROLL_PATHS: new Set([""]),
     MOBILE_NATIVE_PATHS: new Set([""]),
-    WORKS_PATH: "/projects", ARTICLES_PATH: "/articles",
+    WORKS_PATH: "/projects", ARTICLES_PATH: "/articles", HISTORY_PATH: "/history",
     REDUCED_MOTION_QUERY: "reduce", FORCE_REDUCED_MOTION: false,
     destroyActiveRuntime: null,
     gsap: {
@@ -248,7 +322,7 @@ test("rail-sweep arrival queues before loop startup and resets cached running lo
   const context = vm.createContext({
     document,
     currentPath: () => "/projects",
-    WORKS_PATH: "/projects", ARTICLES_PATH: "/articles",
+    WORKS_PATH: "/projects", ARTICLES_PATH: "/articles", HISTORY_PATH: "/history",
     pendingRailSweepArrival: false, activeCollectionLoop: null,
   });
   let resets = 0;
@@ -267,9 +341,12 @@ test("rail-sweep arrival queues before loop startup and resets cached running lo
   context.applyPendingRailSweepArrival();
   assert.equal(resets, 3, "the active marker handles a pagereveal that preceded module setup");
   delete document.documentElement.dataset.railSweep;
+  context.currentPath = () => "/history";
+  context.onRailSweepArrival();
+  assert.equal(resets, 4, "History continues the upward sweep at ambient speed too");
   context.currentPath = () => "/articles/the-constraint-was-the-brief";
   context.onRailSweepArrival();
-  assert.equal(resets, 3, "detail navigation is untouched");
+  assert.equal(resets, 4, "detail navigation is untouched");
 });
 
 async function loadSmoothScrolling() {

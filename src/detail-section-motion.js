@@ -22,7 +22,7 @@ function sectionParts(section) {
     body: section.querySelector(project
       ? ".detail-unit__section-body--project"
       : ".detail-unit__article-section-body"),
-    hasRule: project,
+    hasRule: project && section.matches(":first-child"),
   };
 }
 

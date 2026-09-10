@@ -16,7 +16,6 @@ export const HOME_PORTRAIT_MARKS = [
 
 export function portraitArtworkFor(pathname) {
   const path = pathname.replace(/\/$/, '') || '/';
-  if (path === '/') return { kind: 'home', selector: '.index-static-field' };
   if (path === '/history') return { kind: 'history', selector: '.biography-portrait-placeholder' };
   return null;
 }

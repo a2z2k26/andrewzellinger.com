@@ -5,3 +5,21 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Scope the heavier face to the wordmark; existing content weights stay put. */
+@font-face {
+  font-family: "Geist Wordmark";
+  src: url("../node_modules/geist/dist/fonts/geist-sans/Geist-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Keep menu weight changes isolated from content typography. */
+@font-face {
+  font-family: "Geist Menu";
+  src: url("../node_modules/geist/dist/fonts/geist-sans/Geist-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}

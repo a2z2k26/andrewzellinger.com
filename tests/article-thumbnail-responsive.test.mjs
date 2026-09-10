@@ -39,13 +39,13 @@ test("Articles rows keep route-specific editorial spacing", async () => {
   const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
 
   assert.doesNotMatch(html, /articles-index__header|All \(10\)/i);
-  assert.match(html, /\.articles-entry-list > li\s*\{[^}]*padding-top:\s*48px;[^}]*padding-bottom:\s*48px;[^}]*border-bottom:\s*1px solid rgba\(255, 255, 255, \.16\);/s);
+  assert.match(html, /\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*48px;[^}]*border-bottom:\s*0;/s);
   assert.doesNotMatch(html, /\.articles-entry-list > li \+ li\s*\{[^}]*border-top:/s);
   assert.match(html, /\.articles-entry\s*\{[^}]*grid-column-gap:\s*32px;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry\s*\{[^}]*grid-column-gap:\s*32px;/s);
   assert.doesNotMatch(html, /html\[data-articles-motion="running"\] \.articles-motion-set > li:first-child\s*\{[^}]*border-top:\s*0;/s);
-  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry-list > li\s*\{[^}]*padding-top:\s*40px;[^}]*padding-bottom:\s*40px;/s);
-  assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry-list > li\s*\{[^}]*padding-top:\s*32px;[^}]*padding-bottom:\s*32px;/s);
+  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*32px;/s);
+  assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*32px;/s);
   assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__meta\.works-meta-spacing\s*\{[^}]*margin-bottom:\s*12px;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin-top:\s*24px;[^}]*margin-bottom:\s*var\(--space--tablet-medium\);/s);
   assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin-top:\s*32px;[^}]*margin-bottom:\s*var\(--space--smartphone-medium\);/s);
@@ -57,4 +57,14 @@ test("Articles motion derives its card-count guard from the shared article recor
   assert.match(motion, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js";/);
   assert.match(motion, /dataset:\s*"articlesMotion",[\s\S]*?expectedCount:\s*ARTICLE_DETAILS\.length,/);
   assert.doesNotMatch(motion, /dataset:\s*"articlesMotion",[\s\S]*?expectedCount:\s*10,/);
+});
+
+test("Articles listing has no dividers and uses orange unlined Read more labels", async () => {
+  const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
+  const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  assert.match(html, /\.articles-entry__cta\s*\{[^}]*color:\s*var\(--swatches--accent-1\);/s);
+  assert.match(elevated, /\.articles-entry-list > li\s*\{[^}]*padding-block:\s*0 48px;[^}]*border:\s*0;/s);
+  assert.match(elevated, /@media \(max-width: 991px\)[\s\S]*?\.articles-entry-list > li\s*\{\s*padding-block:\s*0 32px;/);
+  assert.match(elevated, /\.articles-entry__cta\s*\{[^}]*color:\s*var\(--swatches--accent-1\);[^}]*border:\s*0;[^}]*text-decoration:\s*none;/s);
+  assert.match(elevated, /\.articles-entry-link:hover \.articles-entry__cta\s*\{\s*color:\s*var\(--swatches--accent-1\);/s);
 });

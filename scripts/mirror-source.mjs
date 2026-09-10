@@ -357,26 +357,18 @@ const placeholderStyles = `
   <script id="local-home-route-state">
     document.addEventListener("DOMContentLoaded", () => {
       const pagePath = window.location.pathname.replace(/\\\/$/, "");
-      const projectsLink = document.querySelector('[data-nav-menu-list] a[href="/projects"]');
-      const indexLink = document.querySelector('[data-nav-menu-list] a[href="/"]');
+      const projectsLink = document.querySelector('[data-nav-menu-list] a[href="/"]');
       const heading = document.querySelector(".title .heading");
       const canonical = document.querySelector('link[rel="canonical"]');
 
-      if (pagePath === "") {
-        document.documentElement.classList.add("index-route");
-        return;
-      }
-      if (pagePath !== "/projects") return;
-
-      indexLink?.removeAttribute("aria-current");
-      indexLink?.classList.remove("w--current");
+      if (pagePath !== "" && pagePath !== "/projects") return;
       projectsLink?.setAttribute("aria-current", "page");
       projectsLink?.classList.add("w--current");
       if (heading && heading.textContent !== "Projects") heading.textContent = "Projects";
       document.title = "Andrew Zellinger • Projects";
       document.querySelector('meta[property="og:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
       document.querySelector('meta[property="twitter:title"]')?.setAttribute("content", "Andrew Zellinger • Projects");
-      canonical?.setAttribute("href", "/projects");
+      canonical?.setAttribute("href", "/");
     });
   </script>
   <script type="module" id="local-project-route-customization">
@@ -437,7 +429,7 @@ const placeholderStyles = `
       const anchor = document.querySelector("[data-project-content-anchor]");
       if (!anchor) return;
 
-      if (pagePath === "/projects") {
+      if (pagePath === "" || pagePath === "/projects") {
         document.documentElement.classList.add("works-motion-route");
         const motionField = makeElement("div", "works-motion-field");
         motionField.setAttribute("aria-label", "Projects");
@@ -448,15 +440,6 @@ const placeholderStyles = `
         anchor.replaceWith(motionField, scrollSpace);
       }
 
-      if (pagePath === "") {
-        const staticField = makeElement("div", "index-static-field");
-        staticField.setAttribute("aria-label", "Portrait");
-        const portrait = makeElement("div", "media-background-holder index-media-placeholder");
-        portrait.setAttribute("role", "img");
-        portrait.setAttribute("aria-label", "Andrew Zellinger seated in profile");
-        staticField.append(portrait);
-        anchor.replaceWith(staticField);
-      }
     };
 
     if (document.readyState === "loading") {
@@ -512,7 +495,7 @@ function transformHtml(source, sourceFile) {
     .replace(/\s*<a href="(?:photography|video|discography|projects)" class="nav_link">.*?<\/a>/gi, "")
     .replace(
       /<a\b([^>]*class="[^"]*\bnav_link\b[^"]*"[^>]*)>Selected works<\/a>/gi,
-      (_link, attributes) => `<a href="/" class="nav_link">Home</a>\n                <div> </div>\n                <a${attributes.replace(/href="[^"]*"/i, 'href="/projects"')}>Projects</a>`,
+      (_link, attributes) => `<a${attributes.replace(/href="[^"]*"/i, 'href="/"')}>Projects</a>`,
     )
     .replace(/<a href="info"([^>]*)>(?:Info|Biography|About)<\/a>/gi, '<a href="/history"$1>History</a>')
     .replace(/\s*<meta\b[^>]*property="og:image"[^>]*>/gi, "")
@@ -524,7 +507,7 @@ function transformHtml(source, sourceFile) {
         .replace(/\s+w--current\b/i, "")
         .replace(
           /<div>[^<]*<\/div>/i,
-          '<div>ANDREW ZELLINGER</div>',
+          '<div>A. ZELLINGER</div>',
         ),
     )
     .replace(/<div id="h">00:00(?::00)?<\/div>/g, '<div id="h">NYC 00:00:00</div>')
@@ -558,15 +541,14 @@ function transformHtml(source, sourceFile) {
     );
     html = html.replace(
       /<h1 class="heading">Selected works<\/h1>/i,
-      '<h1 class="heading"><span class="home-title-desktop">Designer</span><span class="home-title-mobile">Designer</span></h1>',
+      '<h1 class="heading">Projects</h1>',
     );
     html = html
-      .replace(/<title>[^<]*<\/title>/i, "<title>Andrew Zellinger • Designer</title>")
-      .replace(/<meta content="[^"]*" property="og:title">/i, '<meta content="Andrew Zellinger • Designer" property="og:title">')
-      .replace(/<meta content="[^"]*" property="twitter:title">/i, '<meta content="Andrew Zellinger • Designer" property="twitter:title">')
+      .replace(/<title>[^<]*<\/title>/i, "<title>Andrew Zellinger • Projects</title>")
+      .replace(/<meta content="[^"]*" property="og:title">/i, '<meta content="Andrew Zellinger • Projects" property="og:title">')
+      .replace(/<meta content="[^"]*" property="twitter:title">/i, '<meta content="Andrew Zellinger • Projects" property="twitter:title">')
       .replace(/<meta content="summary_large_image" name="twitter:card">/i, '<meta content="summary_large_image" name="twitter:card">\n  <link rel="canonical" href="/">')
-      .replace(/<a href="\/projects" aria-current="page" class="nav_link w--current">Projects<\/a>/i, '<a href="/projects" class="nav_link">Projects</a>')
-      .replace(/<a href="\/" class="nav_link">Home<\/a>/i, '<a href="/" aria-current="page" class="nav_link w--current">Home</a>');
+      .replace(/<a href="\/" class="nav_link">Projects<\/a>/i, '<a href="/" aria-current="page" class="nav_link w--current">Projects</a>');
   }
 
   html = rewriteEmbeddedAssets(html, `${sourceOrigin}/${sourceFile}`);

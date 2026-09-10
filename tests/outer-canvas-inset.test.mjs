@@ -16,16 +16,14 @@ test("desktop canvas uses a 24px outer frame while mobile remains 16px", async (
   assert.match(styles, /\.title\s*\{[^}]*padding-top:\s*var\(--structure--padding-desktop\);[^}]*padding-bottom:\s*var\(--structure--padding-desktop\);/s);
 });
 
-test("Index uses one fixed portrait field while Projects keeps its own card gap", async () => {
+test("the landing page mounts Projects without a Home portrait and retains the card gap", async () => {
   const index = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const details = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 
-  assert.match(index, /html\.index-route \.index-static-field\s*\{[^}]*position:\s*fixed;[^}]*top:\s*var\(--structure--padding-desktop\);[^}]*bottom:\s*var\(--structure--padding-desktop\);/s);
-  assert.match(index, /\.index-media-placeholder\s*\{[^}]*--portfolio-media-image:\s*url\("\/images\/home\/az-hero-extended-v2\.png"\);/s);
-  assert.match(index, /@media screen and \(min-width: 992px\)[\s\S]*?html\.index-route \.index-media-placeholder\s*\{[^}]*background-position:\s*center center !important;/s);
-  assert.match(index, /@media screen and \(min-width: 992px\)[\s\S]*?html\.index-route \.index-media-placeholder\s*\{[^}]*background-size:\s*cover !important;[^}]*transform:\s*scale\(1\.1\);[^}]*transform-origin:\s*center center;/s);
-  assert.match(index, /const staticField = makeElement\("div", "index-static-field"\);/);
-  assert.equal(index.match(/makeElement\("div", "media-background-holder index-media-placeholder"\)/g)?.length, 1);
+  assert.doesNotMatch(index, /const staticField = makeElement\("div", "index-static-field"\);/);
+  assert.doesNotMatch(index, /makeElement\("div", "media-background-holder index-media-placeholder"\)/);
+  assert.match(index, /if \(pagePath === "" \|\| pagePath === "\/projects"\) \{\s*document\.documentElement\.classList\.add\("works-motion-route"\)/);
+  assert.match(index, /PROJECTS\.forEach\(\(project\) => motionField\.append\(createProjectCard\(project\)\)\)/);
   assert.doesNotMatch(index, /index-motion-(?:field|track|set)|index-scroll-space/);
   assert.match(index, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*32px;/s);
   assert.match(index, /html\.works-motion-route \.works-motion-track,[\s\S]*?row-gap:\s*var\(--works-card-gap\);/);

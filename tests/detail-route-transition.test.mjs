@@ -2,6 +2,25 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
+test("persistent navigation paints above body-level detail transition clones at every breakpoint", async () => {
+  const base = await readFile(new URL("../public/css/caverzasio.css", import.meta.url), "utf8");
+  const edition = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  const detail = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+  const navRule = base.match(/^\.nav\s*\{([^}]+)\}/m)?.[1];
+  const navZ = Number(navRule?.match(/z-index:\s*(\d+)/)?.[1]);
+  assert.match(navRule, /position:\s*fixed/);
+  for (const className of ['detail-transition-media', 'article-transition-copy']) {
+    const rules = [...detail.matchAll(new RegExp(`\\.${className}\\s*\\{([^}]+)\\}`, 'g'))];
+    const cloneZ = rules.flatMap(match => [...match[1].matchAll(/z-index:\s*(\d+)/g)]).map(match => Number(match[1]));
+    assert.ok(cloneZ.length > 0, `${className} has an explicit layer`);
+    for (const z of cloneZ) assert.ok(navZ > z, `${className} must be below the navigation ancestor, not just the button`);
+  }
+  for (const match of edition.matchAll(/\.nav\s*\{([^}]+)\}/g)) {
+    const override = match[1].match(/z-index:\s*(\d+)/);
+    if (override) assert.ok(Number(override[1]) >= navZ, 'compact navigation must not fall below the shared layer');
+  }
+});
+
 test("project route transitions share media in both directions", async () => {
   const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const transition = await readFile(new URL("../src/detail-route-transition.js", import.meta.url), "utf8");
@@ -32,6 +51,16 @@ test("the collection loop preserves its phase across detail navigation", async (
   assert.match(motion, /loopSnapshots/);
   assert.match(motion, /phase/);
   assert.match(motion, /initialSnapshot/);
+});
+
+test('detail return restores focus before notifying the live collection to resume', async () => {
+  const detail = await readFile(new URL('../src/detail-state.js', import.meta.url), 'utf8');
+  const motion = await readFile(new URL('../src/site-motion.js', import.meta.url), 'utf8');
+  assert.match(detail, /function finishCollectionReturn\(focusTarget\)\s*\{\s*focusTarget\?\.focus\(\{ preventScroll: true \}\);\s*window\.dispatchEvent\(new Event\('portfolio:collection-return-ready'\)\);/);
+  const restore = detail.slice(detail.indexOf('async function restoreCollection'), detail.indexOf('function openDetail'));
+  assert.equal(restore.match(/finishCollectionReturn\(focusTarget\)/g)?.length, 2, 'animated and missing-target returns both release the hold');
+  assert.match(restore, /onComplete:\s*\(\) => \{\s*if \(operation !== routeOperation\) return;/);
+  assert.match(motion, /addEventListener\('portfolio:collection-return-ready',[\s\S]*?activeCollectionLoop\?\.resumeAfterDetail\?\.\(\)/);
 });
 
 test("expanded project details reuse the canonical Projects lockup", async () => {

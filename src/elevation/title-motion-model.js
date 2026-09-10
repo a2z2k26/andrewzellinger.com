@@ -2,7 +2,7 @@
 // The outgoing cascade finishes before the first incoming glyph is revealed.
 export function pageTitleForPath(pathname) {
   const path = pathname.replace(/\/$/, '') || '/';
-  if (path === '/') return 'Designer';
+  if (path === '/') return 'Projects';
   if (path === '/projects' || path.startsWith('/case-studies/')) return 'Projects';
   if (path === '/articles' || path.startsWith('/articles/')) return 'Articles';
   return path === '/history' ? 'History' : null;

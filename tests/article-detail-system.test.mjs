@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -63,24 +64,61 @@ test("Article Detail renders semantic paragraphs without fixed section labels", 
   assert.match(runtime, /<li>\$\{escapeHtml\(item\)\}<\/li>/);
   assert.match(runtime, /class="detail-unit__article-body"/);
   assert.doesNotMatch(runtime, />Opening<|>Argument<|>Notes</);
-  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*margin-left:\s*0;[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
-  assert.match(styles, /\.detail-unit__article-body p \+ p\s*\{[^}]*margin-top:\s*24px;/s);
+  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*margin-left:\s*0;[^}]*padding-top:\s*48px;/s);
+  assert.match(styles, /\.detail-unit__article-body p \+ p\s*\{[^}]*margin-top:\s*16px;/s);
   assert.match(styles, /\.detail-unit__article-body p\s*\{[^}]*text-indent:\s*0;/s);
-  assert.match(styles, /\.detail-unit__article-body li \+ li\s*\{[^}]*margin-top:\s*8px;/s);
-  assert.match(styles, /\.detail-unit__article-body > :first-child\s*\{[^}]*padding-top:\s*var\(--detail-project-section-copy-edge-gap\);[^}]*border-top:\s*1px solid rgba\(255, 255, 255, \.16\);/s);
-  assert.match(styles, /\.detail-unit__article-section\s*\{[^}]*margin-top:\s*40px;/s);
+  assert.match(styles, /\.detail-unit__article-body li \+ li\s*\{[^}]*margin-top:\s*6px;/s);
+  assert.match(styles, /\.detail-unit__article-body::before\s*\{[^}]*grid-column:\s*1 \/ -1;[^}]*border-top:\s*1px solid rgba\(255, 255, 255, \.16\);[^}]*margin-bottom:\s*32px;/s);
+  assert.match(styles, /\.detail-unit__article-section\s*\{[^}]*margin-top:\s*32px;/s);
   assert.match(styles, /\.detail-unit__article-section:first-child\s*\{[^}]*margin-top:\s*0;/s);
   assert.doesNotMatch(styles, /\.detail-unit__article-section\s*\{[^}]*border-top:/s);
   assert.match(styles, /\.detail-unit__article-section h3\s*\{[^}]*margin:\s*0;[^}]*color:\s*#9c9c9c;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;/s);
-  assert.match(styles, /\.detail-unit__article-section-body\s*\{[^}]*margin-top:\s*24px;/s);
+  assert.match(styles, /\.detail-unit__article-section-body\s*\{[^}]*margin-top:\s*16px;/s);
   assert.doesNotMatch(styles, /\.detail-unit__article-section h3\s*\{[^}]*font-family:\s*var\(--fonts--family-display\)/s);
+});
+
+test("article reading columns align with the left edge while their opening rule spans the right rail", async () => {
+  const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+  const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0, 68ch\) minmax\(0, 1fr\);[^}]*text-align:\s*left;/s);
+  assert.match(styles, /\.detail-unit__article-body > \*\s*\{[^}]*grid-column:\s*1;[^}]*min-width:\s*0;/s);
+  assert.doesNotMatch(styles, /\.detail-unit__article-body > :first-child\s*\{[^}]*border-top:/s);
+  assert.doesNotMatch(elevated, /\.detail-unit__article-body\s*\{[^}]*max-width:/s);
 });
 
 test("details keep their current collection navigation and visible headings active", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
 
   assert.match(runtime, /entry\.kind === "project" \? "Projects" : "Articles"/);
-  assert.match(runtime, /const activeCollection = entry\.kind === "project" \? "\/projects" : "\/articles"/);
+  assert.match(runtime, /const activeCollection = entry\.kind === "project" \? "\/" : "\/articles"/);
   assert.match(runtime, /document\.querySelectorAll\("\.nav_menu a"\)/);
   assert.match(runtime, /\.setAttribute\("aria-current", "page"\)/);
+});
+
+test("article compaction preserves every word, heading, list and quote without related-work links", async () => {
+  const before = JSON.parse(await readFile(new URL("./fixtures/article-body-before-compaction.json", import.meta.url), "utf8"));
+  const digest = text => createHash("sha256").update(text).digest("hex");
+  let previousCount = 0;
+  let currentCount = 0;
+  for (const original of before) {
+    const article = ARTICLE_DETAILS.find(entry => entry.slug === original.slug);
+    const words = article.body.flatMap(block => block.type === "list" ? block.items : [block.text]).join(" ").replace(/\s+/g, " ");
+    assert.equal(digest(words), original.textHash, article.slug + ": all wording and order preserved");
+    assert.equal(digest(JSON.stringify(article.body.filter(block => block.type !== "paragraph"))), original.structureHash, article.slug + ": semantic structure preserved");
+    assert.equal("relatedProject" in article, false);
+    previousCount += original.paragraphs;
+    currentCount += article.body.filter(block => block.type === "paragraph").length;
+  }
+  assert.equal(previousCount - currentCount, 64, "only the 64 reviewed paragraph boundaries are removed");
+  const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+  const content = await readFile(new URL("../src/article-content.js", import.meta.url), "utf8");
+  assert.doesNotMatch(runtime, /detail-unit__related|Related work:/);
+  assert.doesNotMatch(content, /relatedProject/);
+});
+
+test("article body rhythm is compact without inheriting doubled list spacing", async () => {
+  const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+  const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  assert.match(styles, /\.detail-unit__article-section-body > :first-child,\s*\.detail-unit__article-opening > :first-child\s*\{\s*margin-top: 0;/);
+  assert.match(elevated, /\.detail-unit__article-body blockquote\s*\{\s*line-height: 1\.6;/);
 });

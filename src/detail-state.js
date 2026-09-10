@@ -65,7 +65,7 @@ function normalizedPath() {
 }
 
 function isCollectionPath(pathname = normalizedPath()) {
-  return pathname === "/projects" || pathname === "/articles";
+  return pathname === "/" || pathname === "/projects" || pathname === "/articles";
 }
 
 function collectionNodes() {
@@ -113,7 +113,7 @@ function setDetailChrome(entry) {
   toggle?.setAttribute("aria-label", "Close detail");
   toggle?.setAttribute("title", "Close detail");
 
-  const activeCollection = entry.kind === "project" ? "/projects" : "/articles";
+  const activeCollection = entry.kind === "project" ? "/" : "/articles";
   const markActiveNavigation = () => {
     const navigationLinks = [...document.querySelectorAll(".nav_menu a")];
     navigationLinks.forEach((link) => {
@@ -276,7 +276,6 @@ function articleBodyMarkup(entry) {
         ${content ? `<div class="detail-unit__article-section-body">${content}</div>` : ""}
       </section>`;
     }).join("")}
-    ${entry.relatedProject ? `<p class="detail-unit__related">Related work: <a href="${escapeHtml(entry.relatedProject.path)}">${escapeHtml(entry.relatedProject.title)}</a></p>` : ""}
   </div>`;
 }
 
@@ -690,6 +689,11 @@ async function renderDetail(entry, {
   activeTransition = transition;
 }
 
+function finishCollectionReturn(focusTarget) {
+  focusTarget?.focus({ preventScroll: true });
+  window.dispatchEvent(new Event('portfolio:collection-return-ready'));
+}
+
 async function restoreCollection(state) {
   const operation = ++routeOperation;
   if (!activeDetail) return;
@@ -790,7 +794,7 @@ async function restoreCollection(state) {
   if (!target) {
     returnMediaVisual?.remove();
     if (collectionField) gsap.set(collectionField, { clearProps: "opacity,visibility" });
-    focusTarget?.focus({ preventScroll: true });
+    finishCollectionReturn(focusTarget);
     return;
   }
 
@@ -806,8 +810,9 @@ async function restoreCollection(state) {
     revealOffset: isArticle ? .04 : .18,
     reduceMotion: previous.reduceMotion,
     onComplete: () => {
+      if (operation !== routeOperation) return;
       if (activeTransition === transition) activeTransition = null;
-      focusTarget?.focus({ preventScroll: true });
+      finishCollectionReturn(focusTarget);
     },
   });
   activeTransition = transition;
@@ -940,7 +945,7 @@ function restoreOrphanedCollection(state) {
   nodes.forEach((node) => { node.hidden = false; });
   gsap.set(nodes, { clearProps: "opacity,visibility" });
 
-  const project = path === "/projects";
+  const project = path === "/" || path === "/projects";
   restoreCollectionChrome(collectionChromeFor({
     kind: project ? "project" : "article",
     collectionPath: path,

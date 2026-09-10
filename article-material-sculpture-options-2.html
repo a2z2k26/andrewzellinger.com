@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Sculpture Article Images · Set 2</title>
+    <style>
+      :root { color-scheme: dark; font-family: Arial, sans-serif; background: #050505; color: #f5f3ec; }
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 32px; background: #050505; }
+      header { display: flex; justify-content: space-between; gap: 24px; align-items: baseline; margin-bottom: 48px; }
+      h1 { margin: 0; font-size: clamp(32px, 5vw, 72px); font-weight: 500; letter-spacing: -0.04em; }
+      header p, figcaption { color: #9c9c9c; font: 12px/1.4 monospace; text-transform: uppercase; letter-spacing: .04em; }
+      .anchor { margin-bottom: 64px; }
+      .anchor img { max-width: 920px; }
+      section { margin-bottom: 56px; }
+      h2 { margin: 0 0 16px; font-size: 22px; font-weight: 500; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+      figure { margin: 0; }
+      img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; background: #111; }
+      figcaption { padding-top: 10px; }
+      @media (max-width: 760px) { body { padding: 16px; } header { display: block; } .grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header><h1>Material sculpture · set 2</h1><p>Reference anchor · 20 new images</p></header>
+    <section class="anchor"><h2>Selected direction</h2><figure><img src="/Project-Images/article-options/material-sculpture-set/reference-company-of-one.png" alt="Selected fiber and ceramic reference direction"><figcaption>Reference anchor</figcaption></figure></section>
+    <main id="gallery"></main>
+    <script>
+      const articles = [
+        ["Company of One", "company-of-one", 1],
+        ["A Free Surf Lesson", "a-free-surf-lesson", 2],
+        ["Showing My Teeth", "showing-my-teeth", 2],
+        ["Intention Deficit Disorder", "intention-deficit-disorder", 2],
+        ["Two-Dollar Bill", "the-two-dollar-bill", 2],
+        ["You Always Let Yourself Win", "you-always-let-yourself-win", 2],
+        ["Cut, Defer or Build", "cut-defer-or-build", 2],
+        ["Product Design Principles", "product-design-principles", 2],
+        ["Embedded Product Design Lessons", "embedded-product-design-lessons", 2],
+        ["The Constraint Was the Brief", "the-constraint-was-the-brief", 2],
+        ["What Makes a Real MVP?", "what-makes-a-real-mvp", 1],
+      ];
+      const gallery = document.querySelector("#gallery");
+      for (const [title, slug, count] of articles) {
+        const section = document.createElement("section");
+        section.innerHTML = `<h2>${title}</h2><div class="grid">${Array.from({ length: count }, (_, index) => `<figure><img src="/Project-Images/article-options/material-sculpture-set-2/${slug}/option-${index + 1}.png" alt="${title}, material sculpture set 2 option ${index + 1}"><figcaption>Option ${index + 1}</figcaption></figure>`).join("")}</div>`;
+        gallery.append(section);
+      }
+    </script>
+  </body>
+</html>

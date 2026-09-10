@@ -37,7 +37,7 @@
       padding-right: var(--structure--padding-desktop);
     }
     .page.articles .nav_brand {
-      color: inherit;
+      color: #fff;
     }
     .articles-index {
       width: 100%;
@@ -61,9 +61,9 @@
       display: none;
     }
     .articles-entry-list > li {
-      padding-top: 48px;
+      padding-top: 0;
       padding-bottom: 48px;
-      border-bottom: 1px solid rgba(255, 255, 255, .16);
+      border-bottom: 0;
     }
     .articles-entry {
       grid-column-gap: 32px;
@@ -126,7 +126,7 @@
       -webkit-line-clamp: 2;
     }
     .articles-entry__cta {
-      color: var(--swatches--light-1);
+      color: var(--swatches--accent-1);
       margin-top: 24px;
       font-family: "Geist", sans-serif;
       font-size: 12px;
@@ -192,8 +192,8 @@
         padding-top: var(--structure--padding-tablet);
       }
       .articles-entry-list > li {
-        padding-top: 40px;
-        padding-bottom: 40px;
+        padding-top: 0;
+        padding-bottom: 32px;
       }
       .articles-entry {
         grid-column-gap: 32px;
@@ -219,7 +219,7 @@
         padding-top: var(--structure--padding-smartphone);
       }
       .articles-entry-list > li {
-        padding-top: 32px;
+        padding-top: 0;
         padding-bottom: 32px;
       }
       .articles-entry {
@@ -243,7 +243,7 @@
       <nav class="nav" aria-label="Primary navigation">
         <div class="container-xlarge">
           <a href="/" class="nav_brand w-inline-block">
-            <div>ANDREW ZELLINGER</div>
+            <div>A. ZELLINGER</div>
           </a>
         </div>
         <div class="container-xlarge nav_container">
@@ -254,8 +254,7 @@
             </div>
             <div class="nav_menu">
               <div class="nav_menu-list" data-nav-menu-list>
-                <a href="/" class="nav_link">Home</a>
-                <a href="/projects" class="nav_link">Projects</a>
+                <a href="/" class="nav_link">Projects</a>
                 <a href="/articles" aria-current="page" class="nav_link w--current">Articles</a>
                 <a href="/history" class="nav_link">History</a>
               </div>
@@ -274,9 +273,9 @@
         <div class="articles-index__list">
           <ol class="articles-entry-list">
 <li>
-  <a href="/articles/the-constraint-was-the-brief/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="the-constraint-was-the-brief" aria-label="Read article: The Constraint Was the Brief">
+<a href="/articles/the-constraint-was-the-brief/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="the-constraint-was-the-brief" aria-label="Read article: The Constraint Was the Brief">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/the-constraint-was-the-brief.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">The Constraint Was the Brief</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
@@ -287,9 +286,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/intention-deficit-disorder/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="intention-deficit-disorder" aria-label="Read article: Intention Deficit Disorder">
+<a href="/articles/intention-deficit-disorder/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="intention-deficit-disorder" aria-label="Read article: Intention Deficit Disorder">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/intention-deficit-disorder.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Intention Deficit Disorder</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 5 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>5 MIN</span></div>
@@ -300,9 +299,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/company-of-one/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="company-of-one" aria-label="Read article: Company of One">
+<a href="/articles/company-of-one/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="company-of-one" aria-label="Read article: Company of One">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/company-of-one.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Company of One</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 6 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>6 MIN</span></div>
@@ -313,9 +312,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/cut-defer-or-build/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="cut-defer-or-build" aria-label="Read article: Cut, Defer or Build">
+<a href="/articles/cut-defer-or-build/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="cut-defer-or-build" aria-label="Read article: Cut, Defer or Build">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/cut-defer-or-build.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Cut, Defer or Build</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
@@ -326,9 +325,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/design-principles-that-actually-shape-the-product/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="design-principles-that-actually-shape-the-product" aria-label="Read article: Product Design Principles">
+<a href="/articles/design-principles-that-actually-shape-the-product/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="design-principles-that-actually-shape-the-product" aria-label="Read article: Product Design Principles">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/design-principles-that-actually-shape-the-product.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Product Design Principles</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 5 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>5 MIN</span></div>
@@ -339,9 +338,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/lessons-from-fifteen-years-of-embedded-product-design/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="lessons-from-fifteen-years-of-embedded-product-design" aria-label="Read article: Embedded Product Design Lessons">
+<a href="/articles/lessons-from-fifteen-years-of-embedded-product-design/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="lessons-from-fifteen-years-of-embedded-product-design" aria-label="Read article: Embedded Product Design Lessons">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/lessons-from-fifteen-years-of-embedded-product-design.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Embedded Product Design Lessons</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 5 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>5 MIN</span></div>
@@ -352,9 +351,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/what-makes-a-real-mvp/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="what-makes-a-real-mvp" aria-label="Read article: What Makes a Real MVP?">
+<a href="/articles/what-makes-a-real-mvp/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="what-makes-a-real-mvp" aria-label="Read article: What Makes a Real MVP?">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/what-makes-a-real-mvp.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">What Makes a Real MVP?</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
@@ -365,9 +364,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/you-always-let-yourself-win/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="you-always-let-yourself-win" aria-label="Read article: You Always Let Yourself Win">
+<a href="/articles/you-always-let-yourself-win/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="you-always-let-yourself-win" aria-label="Read article: You Always Let Yourself Win">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/you-always-let-yourself-win.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">You Always Let Yourself Win</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 10 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>10 MIN</span></div>
@@ -378,9 +377,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/two-dollar-bill/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="two-dollar-bill" aria-label="Read article: Two-Dollar Bill">
+<a href="/articles/two-dollar-bill/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="two-dollar-bill" aria-label="Read article: Two-Dollar Bill">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/two-dollar-bill.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Two-Dollar Bill</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 6 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>6 MIN</span></div>
@@ -391,9 +390,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/a-free-surf-lesson/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="a-free-surf-lesson" aria-label="Read article: A Free Surf Lesson">
+<a href="/articles/a-free-surf-lesson/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="a-free-surf-lesson" aria-label="Read article: A Free Surf Lesson">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/a-free-surf-lesson.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">A Free Surf Lesson</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
@@ -404,9 +403,9 @@
   </a>
 </li>
 <li>
-  <a href="/articles/showing-my-teeth/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="showing-my-teeth" aria-label="Read article: Showing My Teeth">
+<a href="/articles/showing-my-teeth/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="showing-my-teeth" aria-label="Read article: Showing My Teeth">
     <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true"></div>
+      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/showing-my-teeth.webp&quot;)"></div>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Showing My Teeth</h2>
         <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 7 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>7 MIN</span></div>

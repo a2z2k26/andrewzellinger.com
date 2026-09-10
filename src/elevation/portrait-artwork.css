@@ -20,6 +20,26 @@
   font-size: calc(var(--portrait-artwork-size) * var(--portrait-mark-scale));
   line-height: .85; letter-spacing: 0; text-transform: none;
 }
-/* Match the approved Monument's original grid centering exactly. */
-.portrait-artwork-layer--history { display: grid; place-items: center; }
-.portrait-artwork-layer--history .portrait-artwork-glyph { position: static; transform: none; }
+/* Center the complete A. monogram as one unbroken unit over the photograph. */
+.portrait-artwork-layer--history { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; mix-blend-mode: overlay; opacity: .7; }
+.portrait-artwork-layer--history .portrait-artwork-glyph { position: static; transform: none; white-space: nowrap; }
+/* Slightly exaggerate the original dot without changing its horizontal slot,
+   baseline or the shared layer compositing. */
+.portrait-artwork-period {
+  display: inline-block;
+  position: relative;
+  width: .225em;
+  height: .17em;
+  vertical-align: baseline;
+}
+.portrait-artwork-period::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: .17em;
+  height: .17em;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateX(-50%);
+}

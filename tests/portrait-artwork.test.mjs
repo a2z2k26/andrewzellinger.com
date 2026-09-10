@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { HOME_PORTRAIT_MARKS, portraitArtworkFor, portraitArtworkSize } from '../src/elevation/portrait-artwork-model.js';
 
-test('fixed artwork is limited to Home and History', () => {
-  assert.equal(portraitArtworkFor('/').kind, 'home');
+test('live fixed artwork is limited to History, not the Projects landing page', () => {
+  assert.equal(portraitArtworkFor('/'), null);
   assert.equal(portraitArtworkFor('/history/').kind, 'history');
   for (const path of ['/projects', '/articles', '/case-studies/audible-sleep/', '/articles/example/']) assert.equal(portraitArtworkFor(path), null);
 });
@@ -38,11 +38,11 @@ test('Home keeps separated glyph boxes across wide, tall and compact image frame
   }
 });
 
-test('preserved static artwork stays disabled during the photo-only navigation trial', async () => {
+test('History static artwork is restored without animations or controls', async () => {
   const [entry, source, css] = await Promise.all(['index.js', 'portrait-artwork.js', 'portrait-artwork.css']
     .map(file => readFile(new URL(`../src/elevation/${file}`, import.meta.url), 'utf8')));
   assert.match(entry, /import '\.\/portrait-artwork\.js'/);
-  assert.match(source, /export const PORTRAIT_ARTWORK_ENABLED = false/);
+  assert.match(source, /export const PORTRAIT_ARTWORK_ENABLED = true/);
   assert.match(source, /function mountPortraitArtwork\(\)\s*\{\s*if \(!PORTRAIT_ARTWORK_ENABLED\) return;/);
   assert.doesNotMatch(entry, /import '\.\/portrait-study\.js'/);
   assert.doesNotMatch(source, /from 'gsap'|Math\.random|setInterval|\.animate\(/);
@@ -50,9 +50,16 @@ test('preserved static artwork stays disabled during the photo-only navigation t
   assert.match(source, /setAttribute\('aria-hidden', 'true'\)/);
   assert.match(source, /resize.disconnect\(\); layer.remove\(\)/);
   assert.match(source, /portrait-study-stage--history/);
+  assert.match(source, /glyph\.textContent = 'A'/);
+  assert.match(source, /if \(history\)\s*\{[^}]*period\.className = 'portrait-artwork-period';[^}]*glyph\.append\(period\);/s);
   assert.match(css, /Geist-SemiBold\.woff2/);
   assert.match(css, /font-weight: 600/);
   assert.match(css, /mix-blend-mode: overlay/);
+  assert.match(css, /\.portrait-artwork-layer--history\s*\{[^}]*mix-blend-mode: overlay;[^}]*opacity: \.7;/);
+  assert.match(css, /\.portrait-artwork-layer--history\s*\{[^}]*display: grid;[^}]*place-items: center;/);
+  assert.match(css, /\.portrait-artwork-layer--history \.portrait-artwork-glyph\s*\{[^}]*white-space: nowrap;/);
+  assert.match(css, /\.portrait-artwork-period\s*\{[^}]*width: \.225em;[^}]*height: \.17em;[^}]*vertical-align: baseline;/);
+  assert.match(css, /\.portrait-artwork-period::after\s*\{[^}]*width: \.17em;[^}]*height: \.17em;[^}]*border-radius: 50%;[^}]*background: currentColor;/);
   assert.match(css, /overflow: clip !important/);
   assert.match(css, /pointer-events: none/);
   assert.doesNotMatch(css, /animation:|transition:/);

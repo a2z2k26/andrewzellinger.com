@@ -1,5 +1,6 @@
 import { counterflowDirection, counterflowTiming, counterflowTravel, waitForVisualReadiness } from './counterflow-model.js';
 import { PROJECTS } from '../project-content.js';
+import { ARTICLE_DETAILS } from '../article-content.js';
 import { setMotionPause } from './motion-pause.js';
 import { captureTitleCharacters, animateCapturedTitleCharacters } from './title-motion.js';
 import './counterflow.css';
@@ -17,10 +18,10 @@ let releaseTitleMotion=()=>{};
 
 function destinationMedia(to) {
   const path=new URL(to,location.href).pathname.replace(/\/$/,'');
-  if(path==='/projects') return PROJECTS.slice(0,2).map(item=>item.media.src);
-  if(path==='/articles') return ['/images/tasman-glacier-stand-in.jpg'];
+  if(path==='' || path==='/projects') return PROJECTS.slice(0,2).map(item=>item.media.src);
+  if(path==='/articles') return ARTICLE_DETAILS.slice(0,2).map(item=>item.media.src);
   if(path==='/history') return ['/images/history/az-headshot-extended-v1.png'];
-  return ['/images/home/az-hero-extended-v2.png'];
+  return [];
 }
 
 export const hasCounterflow = () => 'onpagereveal' in window && 'onpageswap' in window;
@@ -51,12 +52,15 @@ export function commitCounterflow(to, ready) {
 
 // Warm route media once. Every destination still has bounded decode readiness.
 if(hasCounterflow() && !reduced() && ['','/projects','/articles','/history'].includes(location.pathname.replace(/\/$/,''))) {
-  for(const target of ['/','/projects','/articles','/history']) destinationMedia(target).forEach(warmImage);
+  for(const target of ['/','/articles','/history']) destinationMedia(target).forEach(warmImage);
 }
 
 function historyViewport() {
   const rail=document.querySelector('.biography-layout__content');
   const viewport=rail?.querySelector('.biography-sweep-viewport');
+  // The carousel already owns a fixed, clipped reading window. Capture it
+  // directly without applying the native document-scroll compensation.
+  if(viewport?.querySelector('.history-motion-track')) return viewport;
   const content=viewport?.querySelector('.biography-sweep-content');
   if(!viewport || !content) return null;
   const rect=rail.getBoundingClientRect();

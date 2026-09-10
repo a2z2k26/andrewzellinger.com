@@ -25,6 +25,11 @@ test('snapshot names distinguish old/new letters and sort numeric positions', ()
 });
 
 const source = await readFile(new URL('../src/elevation/title-motion.js', import.meta.url), 'utf8');
+test('desktop page titles use 124px Medium without changing the responsive base', async () => {
+  const styles = await readFile(new URL('../src/elevation/styles.css', import.meta.url), 'utf8');
+  assert.match(styles, /@media \(min-width: 992px\)\s*\{\s*html\[data-design-edition="elevated"\] \.center-nav-link[^}]*\}\s*html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 124px;\s*font-weight: 500;/);
+});
+
 function snapshotRuntime() {
   const snapshots = [];
   for (const [pseudo, slot, animationName] of [['old', 'out', 'cf-letter-exit'], ['new', 'in', 'cf-letter-enter']]) {
@@ -66,7 +71,7 @@ test('real GSAP timeline drives independently staggered snapshots, not the rail 
 test('Projects resolves before splitting even when the shared HTML still says Designer', () => {
   assert.equal(pageTitleForPath('/projects'), 'Projects');
   assert.equal(pageTitleForPath('/projects/'), 'Projects');
-  assert.equal(pageTitleForPath('/'), 'Designer');
+  assert.equal(pageTitleForPath('/'), 'Projects');
   assert.equal(pageTitleForPath('/case-studies/audible-sleep/'), 'Projects');
   assert.equal(pageTitleForPath('/articles/the-constraint-was-the-brief/'), 'Articles');
   assert.equal(pageTitleForPath('/history'), 'History');

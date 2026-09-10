@@ -1,11 +1,14 @@
-const path = value => new URL(value, 'https://portfolio.invalid').pathname.replace(/\/$/, '') || '/';
-const topLevelRoutes=new Set(['/','/projects','/articles','/history']);
+const path = value => {
+  const pathname = new URL(value, 'https://portfolio.invalid').pathname.replace(/\/$/, '') || '/';
+  return pathname === '/projects' ? '/' : pathname;
+};
+const topLevelRoutes=new Set(['/','/articles','/history']);
 export function counterflowDirection(from, to) {
   if (!from || !to) return 0;
   const origin=new URL(from,'https://portfolio.invalid').origin;
   if(new URL(to,origin).origin!==origin) return 0;
   const a=path(from), b=path(to);
-  // Leaving a case study via Home is page navigation, not the detail-close
+  // Leaving a case study via the logo is page navigation, not the detail-close
   // interaction. Keep collection returns and all detail arrivals independent.
   if (/^\/case-studies\/[^/]+$/.test(a) && b==='/') return 1;
   return a!==b && topLevelRoutes.has(a) && topLevelRoutes.has(b) ? 1 : 0;

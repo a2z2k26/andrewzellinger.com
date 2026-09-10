@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "the-constraint-was-the-brief",
+    "paragraphs": 15,
+    "textHash": "7be5e3be9dab1ab3ce52a3ed3df7ac54fe47b4f32ad1fae616e2b3d5b0b5d512",
+    "structureHash": "0fe2fda0851bf245284f9566c872c854602ee0b25e7ca5f6b1b24e6f530f1de6"
+  },
+  {
+    "slug": "intention-deficit-disorder",
+    "paragraphs": 18,
+    "textHash": "4e98589688305fa2b54fe616cdcce751328d926d6797a6e9230f0a6ac094a327",
+    "structureHash": "b6c1976f52e57f5bf6d440ce990a09d90776d0f8ec4cd0b405634d56c35790a4"
+  },
+  {
+    "slug": "company-of-one",
+    "paragraphs": 27,
+    "textHash": "efa5e091d95345f6acc89a94e3b88d52e7502fec6e60847675fcb7273df2e18a",
+    "structureHash": "bf75266d34b80c49448cdbb8712e616e494a500676ed3fe20e5b8863f4c80def"
+  },
+  {
+    "slug": "cut-defer-or-build",
+    "paragraphs": 17,
+    "textHash": "c667d5a562069f93977805e500d7656f9592b2a168a596c7c382746018ccb79f",
+    "structureHash": "b1891e35490357f49dd45dbf795d3f75b6ca7196398fb2dae0d2f9ea25fbfdee"
+  },
+  {
+    "slug": "design-principles-that-actually-shape-the-product",
+    "paragraphs": 20,
+    "textHash": "dd4964163c680c96222ddfdad516f82d94de085c99c4bd63ffe2bfdd43177f62",
+    "structureHash": "764fe1e7c29c6213adfe2dd93a24fdd6ad0b0945ac8308e4c42d9cbadffdf506"
+  },
+  {
+    "slug": "lessons-from-fifteen-years-of-embedded-product-design",
+    "paragraphs": 19,
+    "textHash": "193ce15a51be7888123c8403ab3a1b7d20fe879ae6afe49c35682d78a46b2815",
+    "structureHash": "7c9b73923bd01194ce06932b6ab0e98ffabacea9566fdb9622f889f423a45955"
+  },
+  {
+    "slug": "what-makes-a-real-mvp",
+    "paragraphs": 19,
+    "textHash": "e735a913ad738930bf3f50e167f30ab622fa5704ee8397532fb64d55d38ce4d2",
+    "structureHash": "dec4ef7da51ffad88aa82ceea05db72302e2d6978699e770134a909fa5b40802"
+  },
+  {
+    "slug": "you-always-let-yourself-win",
+    "paragraphs": 28,
+    "textHash": "52c6a209ee3bb33f960a71a6a05ab554798bd9d4e2285c4c892e572ed95281c6",
+    "structureHash": "de856cccd82c74782a7faa707836272707c2bc29d63f52a54b1099483ddda46a"
+  },
+  {
+    "slug": "two-dollar-bill",
+    "paragraphs": 27,
+    "textHash": "0ef6d276c900eb8b036d63fcc623d252bc9c0d73933e678f08fe89d6d295f3c3",
+    "structureHash": "44c0369c9f5ddc0263ded8cd13f7ffa940f7833349bd17a2111100cb6f116d61"
+  },
+  {
+    "slug": "a-free-surf-lesson",
+    "paragraphs": 16,
+    "textHash": "5abd30aa759b3450b5c9a035c12ee17e4e085dba9e000effb2e89f647173fe0b",
+    "structureHash": "0f945f222509f3035ed2880e1555cf96bfe16193d724ad60f14cafdf061c3c68"
+  },
+  {
+    "slug": "showing-my-teeth",
+    "paragraphs": 13,
+    "textHash": "1c31624c42286e3dcbc68a85f03f6fdaadf572f952354fac42901af661be528a",
+    "structureHash": "70a6fef681c91ec9ea6415fc811e5de0043d2e7559a827b5a6af73db3a01de2f"
+  }
+]

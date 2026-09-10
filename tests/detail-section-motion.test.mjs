@@ -39,9 +39,12 @@ test("article prose reveals in authored groups without splitting individual line
   assert.doesNotMatch(motion, /SplitText|querySelectorAll\("span"\)/);
 });
 
-test("project rules draw from left to right without changing reduced-motion paint", async () => {
+test("only the first project section has a rule, preserving its draw and reduced-motion paint", async () => {
   const styles = await readSource("../src/detail-state.css");
+  const motion = await readSource("../src/detail-section-motion.js");
 
-  assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*--detail-section-rule-progress:\s*1;[^}]*border-top-color:\s*transparent;[^}]*position:\s*relative;/s);
-  assert.match(styles, /\.detail-unit__section--project::before\s*\{[^}]*transform:\s*scaleX\(var\(--detail-section-rule-progress\)\);[^}]*transform-origin:\s*left center;/s);
+  assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*--detail-section-rule-progress:\s*1;[^}]*border-top:\s*0;[^}]*position:\s*relative;/s);
+  assert.match(styles, /\.detail-unit__section--project:first-child::before\s*\{[^}]*transform:\s*scaleX\(var\(--detail-section-rule-progress\)\);[^}]*transform-origin:\s*left center;/s);
+  assert.doesNotMatch(styles, /\.detail-unit__section--project::before/);
+  assert.match(motion, /hasRule: project && section\.matches\(":first-child"\)/);
 });

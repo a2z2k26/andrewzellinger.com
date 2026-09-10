@@ -2,20 +2,21 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { counterflowDirection, counterflowTiming, counterflowTravel, waitForVisualReadiness } from '../src/elevation/counterflow-model.js';
 
-test('all twelve top-level route pairs share one upward sweep', () => {
-  const routes=['/','/projects','/articles','/history'];
+test('all six top-level route pairs share one upward sweep', () => {
+  const routes=['/','/articles','/history'];
   for(const from of routes) for(const to of routes) {
     assert.equal(counterflowDirection(from,to),from===to?0:1,`${from} → ${to}`);
   }
   assert.equal(counterflowDirection('https://site.test/', 'https://site.test/articles/'),1);
   assert.equal(counterflowDirection('/history?x=1','/'),1);
-  for (const pair of [['/case-studies/audible-sleep/','/projects'],['/','/case-studies/audible-sleep/'],['/articles/a-story','/'],['/','/articles/a-story'],['/projects','/projects/'],[undefined,'/'],['https://outside.test/','https://site.test/projects']]) {
+  for (const pair of [['/','/projects'],['/projects/','/'],['/','/case-studies/audible-sleep/'],['/articles/a-story','/'],['/','/articles/a-story'],['/projects','/projects/'],[undefined,'/'],['https://outside.test/','https://site.test/projects']]) {
     assert.equal(counterflowDirection(...pair),0);
   }
 });
 
-test('case-study departure to Home joins the sweep without changing detail-close routes', () => {
+test('case-study logo departure to the Projects landing page joins the sweep', () => {
   assert.equal(counterflowDirection('/case-studies/andrew-eccles/', '/'), 1);
+  assert.equal(counterflowDirection('/case-studies/andrew-eccles/', '/projects'), 1);
   assert.equal(counterflowDirection('https://site.test/case-studies/audible-sleep/', 'https://site.test/'), 1);
   assert.equal(counterflowDirection('/case-studies/audible-sleep/', '/history'), 0);
   assert.equal(counterflowDirection('/case-studies/', '/'), 0);

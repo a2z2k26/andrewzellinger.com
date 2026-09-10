@@ -6,6 +6,8 @@ import { PROJECTS } from "../src/project-content.js";
 import { PROJECT_SECTION_LABELS, ENGAGEMENT_SECTION_LABELS } from "../src/project-narratives.js";
 
 const expectedTitles = [
+  "Avantos",
+  "Amazon Fire TV",
   "Audible Sleep",
   "Turner Media",
   "Obagi Care",
@@ -19,11 +21,9 @@ const expectedTitles = [
   "Thomson Reuters",
   "Gero Timer",
   "Foursquare Brand",
-  "Amazon Fire TV",
   "PwC Audit",
   "NW Mutual",
   "McDonalds Kiosk",
-  "Avantos",
   "Positive Brand",
 ];
 
@@ -38,7 +38,7 @@ test("project content keeps the approved order and stable routes", () => {
 
   for (const project of PROJECTS) {
     assert.equal(project.kind, "project");
-    assert.equal(project.collectionPath, "/projects");
+    assert.equal(project.collectionPath, "/");
     assert.equal(project.path, `/case-studies/${project.slug}/`);
   }
 });

@@ -2,10 +2,11 @@
 // viewport coordinates, so ancestor scale transforms misalign its SVG proxy.
 export function navigationGeometry(width, height) {
   // Every route is bottom-docked. Keep sizing independent of placement, and
-  // fit short-screen padding around four 44px targets plus the 16px air gap.
+  // Retain the approved panel envelope around three 44px targets with 12px
+  // row gaps, plus the separate 16px panel-to-circle air gap.
   const compact = width < 992 || height < 676;
   const bottomInset = 48;
-  const buttonSize = compact ? 64 : 88;
+  const buttonSize = compact ? 64 : 92;
   const panelHeight = Math.max(188, Math.min(256, height - bottomInset - buttonSize - 32));
   return { scale: .8, docked: true, bottomInset, buttonSize, panelWidth: 224, panelHeight,
     padding: (panelHeight - 188) / 2,

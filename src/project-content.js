@@ -35,7 +35,7 @@ import { PROJECT_NARRATIVES } from "./project-narratives.js";
  * @property {"project"} kind
  * @property {string} slug
  * @property {string} path
- * @property {"/projects"} collectionPath
+ * @property {"/"} collectionPath
  * @property {string} title
  * @property {string} headline
  * @property {ProjectMetadata} metadata
@@ -51,7 +51,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "audible-sleep",
     "path": "/case-studies/audible-sleep/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Audible Sleep",
     "headline": "Audible Sleep, an immersive sleep solution.",
     "metadata": {
@@ -161,7 +161,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "android-wear",
     "path": "/case-studies/android-wear/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Android Wear",
     "headline": "Pioneering Smartwatch Face Design for Wear OS",
     "metadata": {
@@ -321,7 +321,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "fi-smart-collar",
     "path": "/case-studies/fi-smart-collar/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Fi Collar",
     "headline": "Enhancing Dog Tracking",
     "metadata": {
@@ -492,7 +492,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "wework-studio",
     "path": "/case-studies/wework-studio/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "WeWork Studio",
     "headline": "Sales tool for business growth",
     "metadata": {
@@ -606,7 +606,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "foursquare",
     "path": "/case-studies/foursquare/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Foursquare Brand",
     "headline": "Rebranding Foursquare",
     "metadata": {
@@ -663,7 +663,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "live-auctioneers",
     "path": "/case-studies/live-auctioneers/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Live Auctioneers",
     "headline": "Live Auctioneers, connecting buyers with live auctions.",
     "metadata": {
@@ -772,7 +772,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "proctor-and-gamble",
     "path": "/case-studies/proctor-and-gamble/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Procter & Gamble",
     "headline": "Showcasing P&G's sustainability program",
     "metadata": {
@@ -901,7 +901,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "thompson-reuters",
     "path": "/case-studies/thompson-reuters/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Thomson Reuters",
     "headline": "TV Streaming Platform for Reuters",
     "metadata": {
@@ -958,7 +958,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "price-waterhouse-coopers",
     "path": "/case-studies/price-waterhouse-coopers/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "PwC Audit",
     "headline": "Streamlining PwC's financial auditing process",
     "metadata": {
@@ -1099,7 +1099,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "avantos",
     "path": "/case-studies/avantos/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Avantos",
     "headline": "AI-Powered Client Onboarding for Investment Banking",
     "metadata": {
@@ -1280,7 +1280,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "turner-tv",
     "path": "/case-studies/turner-tv/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Turner Media",
     "headline": "Designing the Future of Streaming",
     "metadata": {
@@ -1338,7 +1338,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "mcdonalds",
     "path": "/case-studies/mcdonalds/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "McDonalds Kiosk",
     "headline": "McDonald's In-Restaurant Kiosk Experience",
     "metadata": {
@@ -1395,7 +1395,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "northwestern-mutual",
     "path": "/case-studies/northwestern-mutual/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "NW Mutual",
     "headline": "Designing Financial Planning",
     "metadata": {
@@ -1452,7 +1452,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "amazon-fire-tv",
     "path": "/case-studies/amazon-fire-tv/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Amazon Fire TV",
     "headline": "Amazon Fire TV",
     "metadata": {
@@ -1497,7 +1497,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "andrew-eccles",
     "path": "/case-studies/andrew-eccles/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Andrew Eccles",
     "headline": "A Portfolio Built Around the Work",
     "metadata": {
@@ -1542,7 +1542,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "modern-age",
     "path": "/case-studies/modern-age/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Modern Age",
     "headline": "Connecting Digital Discovery to In-Person Care",
     "metadata": {
@@ -1587,7 +1587,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "pi-app",
     "path": "/case-studies/pi-app/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Positive Brand",
     "headline": "From Philosophy to Brand and Product",
     "metadata": {
@@ -1632,7 +1632,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "obagi",
     "path": "/case-studies/obagi/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Obagi Care",
     "headline": "A Two-Sided Skincare Commerce Experience",
     "metadata": {
@@ -1677,7 +1677,7 @@ const projectRecords = [
     "kind": "project",
     "slug": "gero-app",
     "path": "/case-studies/gero-app/",
-    "collectionPath": "/projects",
+    "collectionPath": "/",
     "title": "Gero Timer",
     "headline": "A Pomodoro Companion for Your Wrist",
     "metadata": {
@@ -1733,6 +1733,8 @@ const projectRecords = [
 ];
 
 const projectDisplayOrder = Object.freeze([
+  "avantos",
+  "amazon-fire-tv",
   "audible-sleep",
   "turner-tv",
   "obagi",
@@ -1746,11 +1748,9 @@ const projectDisplayOrder = Object.freeze([
   "thompson-reuters",
   "gero-app",
   "foursquare",
-  "amazon-fire-tv",
   "price-waterhouse-coopers",
   "northwestern-mutual",
   "mcdonalds",
-  "avantos",
   "pi-app",
 ]);
 

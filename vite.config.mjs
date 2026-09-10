@@ -13,7 +13,9 @@ const legacyRedirects = new Map([
   ["/index", "/"],
   ["/info", "/history"],
   ["/biography", "/history"],
-  ["/portfolio", "/projects"],
+  ["/portfolio", "/"],
+  ["/projects", "/"],
+  ["/projects/index.html", "/"],
 ]);
 const removedRoutes = new Set(["/photography", "/video", "/discography", "/archive"]);
 const detailRoutes = new Set(

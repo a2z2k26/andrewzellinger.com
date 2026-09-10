@@ -9,6 +9,8 @@ import {
 } from "../src/project-content.js";
 
 const expectedTitles = [
+  "Avantos",
+  "Amazon Fire TV",
   "Audible Sleep",
   "Turner Media",
   "Obagi Care",
@@ -22,11 +24,9 @@ const expectedTitles = [
   "Thomson Reuters",
   "Gero Timer",
   "Foursquare Brand",
-  "Amazon Fire TV",
   "PwC Audit",
   "NW Mutual",
   "McDonalds Kiosk",
-  "Avantos",
   "Positive Brand",
 ];
 
@@ -135,10 +135,14 @@ test("expanded projects balance their detail spacing while article details stay 
   assert.match(styles, /--detail-project-section-label-inset:\s*28px;/);
   assert.doesNotMatch(styles, /--detail-project-text-to-divider-gap/);
   assert.match(styles, /\.detail-unit__section\s*\{[^}]*padding-bottom:\s*27px;/s);
-  assert.match(styles, /\.detail-unit__section--project-context,\s*\.detail-unit__section--project-work\s*\{[^}]*padding-bottom:\s*var\(--detail-project-section-copy-edge-gap\);/s);
-  assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*align-items:\s*baseline;[^}]*padding-top:\s*var\(--detail-project-section-copy-edge-gap\);/s);
+  assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*align-items:\s*baseline;[^}]*border-top:\s*0;[^}]*padding:\s*0;/s);
+  assert.match(styles, /\.detail-unit__section--project:first-child\s*\{[^}]*padding-top:\s*var\(--detail-project-section-copy-edge-gap\);/s);
+  assert.match(styles, /\.detail-unit__sections--project\s*\{[^}]*gap:\s*48px;/s);
+  assert.doesNotMatch(styles, /\.detail-unit__section--project-(?:context|work|key-decisions)\s*[,\{]/);
   assert.doesNotMatch(styles, /\.detail-unit__section--project \.detail-unit__section-body--project\s*\{[^}]*margin-top:/s);
-  assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__section--project\s*\{[^}]*align-items:\s*stretch;[^}]*padding-top:\s*var\(--detail-project-section-label-inset\);/s);
+  assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__section--project\s*\{[^}]*align-items:\s*stretch;/s);
+  assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__sections--project\s*\{[^}]*gap:\s*32px;/s);
+  assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__section--project:first-child\s*\{[^}]*padding-top:\s*var\(--detail-project-section-label-inset\);/s);
   assert.match(runtime, /detail-unit__section--project detail-unit__section--project-/);
   assert.match(styles, /--detail-project-section-body-shift:\s*80px;/);
   assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*calc\(\(100% - var\(--structure--grid-row-gap\)\) \/ 3 - var\(--detail-project-section-body-shift\)\)\)\s*minmax\(0,\s*1fr\);/s);

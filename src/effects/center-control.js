@@ -1,25 +1,11 @@
-import { navigationGeometry, scaleMorphFrames, fitMorphFrames, playToward } from "../elevation/nav-geometry.js";
+import { navigationGeometry, playToward } from "../elevation/nav-geometry.js";
+import { MENU_MORPH_DURATION_MS, menuMorphFrames, menuListFrames, menuIconProgress, menuFillOpacity } from "../elevation/menu-morph.js";
 
 let destroyCenterControl = null;
 
 const SHARED_ICON_SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-const SHARED_ICON_PATH = "M18 0C19.0843 0.000258911 19.9629 0.87955 19.9629 1.96387V16.0361H34.0361C35.1204 16.0364 36 16.9157 36 18C35.9997 19.0841 35.1203 19.9627 34.0361 19.9629H19.9629V34.0361C19.9627 35.1203 19.0841 35.9997 18 36C16.9156 36 16.0363 35.1205 16.0361 34.0361V19.9629H1.96289C0.878757 19.9627 0.000258891 19.0841 0 18C0 16.9157 0.878597 16.0363 1.96289 16.0361H16.0361V1.96387C16.0361 0.87939 16.9155 0 18 0Z";
-const MENU_MORPH_DURATION_MS = 900;
-const MENU_MORPH_EASING = "cubic-bezier(.45,0,.55,1)";
-const ICON_ROTATION_PROGRESS = 0.27;
-const MENU_MORPH_KEYFRAMES = [
-  { offset: 0, width: "36px", height: "36px", borderRadius: "999px", transform: "translate(-50%, -50%)", easing: MENU_MORPH_EASING },
-  { offset: 0.2, width: "36.5px", height: "36.5px", borderRadius: "999px", transform: "translate(-50%, calc(-50% - 50px))", easing: MENU_MORPH_EASING },
-  { offset: 0.4, width: "96px", height: "112px", borderRadius: "999px", transform: "translate(-50%, calc(-50% - 88px))", easing: MENU_MORPH_EASING },
-  { offset: 0.6, width: "176px", height: "200px", borderRadius: "999px", transform: "translate(-50%, calc(-50% - 132px))", easing: MENU_MORPH_EASING },
-  { offset: 0.8, width: "232px", height: "252px", borderRadius: "64px", transform: "translate(-50%, calc(-50% - 198px))", easing: MENU_MORPH_EASING },
-  { offset: 1, width: "280px", height: "320px", borderRadius: "56px", transform: "translate(-50%, calc(-50% - 238px))" },
-];
-const MENU_LIST_KEYFRAMES = [
-  { offset: 0, marginTop: "40px", easing: MENU_MORPH_EASING },
-  { offset: 0.8, marginTop: "40px", easing: MENU_MORPH_EASING },
-  { offset: 1, marginTop: "0px" },
-];
+// Five-unit arms give the plus/X a little more weight within the same 36px bounds.
+const SHARED_ICON_PATH = "M18 0a2.5 2.5 0 0 1 2.5 2.5v13h13a2.5 2.5 0 0 1 0 5h-13v13a2.5 2.5 0 0 1 -5 0v-13h-13a2.5 2.5 0 0 1 0 -5h13v-13A2.5 2.5 0 0 1 18 0Z";
 
 function ensureSharedNavIcon(toggle) {
   const icon = toggle.querySelector(".nav_icon");
@@ -74,8 +60,8 @@ function initCenterControl() {
     shell.style.setProperty("--edition-menu-travel", `${geometry.travel}px`);
     shell.style.setProperty("--edition-menu-padding", `${geometry.padding}px`);
     shell.dataset.navPlacement = geometry.docked ? "docked" : "center";
-    panelAnimation?.effect.setKeyframes(fitMorphFrames(MENU_MORPH_KEYFRAMES, geometry));
-    menuListAnimation?.effect.setKeyframes(scaleMorphFrames(MENU_LIST_KEYFRAMES, geometry.scale));
+    panelAnimation?.effect.setKeyframes(menuMorphFrames(geometry));
+    menuListAnimation?.effect.setKeyframes(menuListFrames(geometry.scale));
   };
   updateGeometry();
 
@@ -92,7 +78,7 @@ function initCenterControl() {
       const href = anchor.getAttribute("href");
       anchor.classList.add("nav_link", "center-nav-link");
       const isCurrent = currentPath === href
-        || (href === "/projects" && currentPath.startsWith("/case-studies/"))
+        || (href === "/" && currentPath.startsWith("/case-studies/"))
         || (href === "/articles" && currentPath.startsWith("/articles/"));
       if (isCurrent) {
         anchor.classList.add("w--current");
@@ -105,12 +91,13 @@ function initCenterControl() {
   const applyProgressState = () => {
     const currentTime = Math.max(0, Math.min(MENU_MORPH_DURATION_MS, Number(panelAnimation?.currentTime) || 0));
     const progress = currentTime / MENU_MORPH_DURATION_MS;
+    shell.style.setProperty("--center-nav-frosted-opacity", String(menuFillOpacity(progress)));
     const linkStage = progress >= .98 ? 4 : progress >= .78 ? 2 : 0;
     setLinkStage(linkStage);
 
     const icon = toggle.querySelector(".nav_icon-plus");
     if (icon) {
-      const iconProgress = isDetailRoute() ? 1 : Math.min(1, progress / ICON_ROTATION_PROGRESS);
+      const iconProgress = isDetailRoute() ? 1 : menuIconProgress(progress);
       icon.style.transform = `rotate(${iconProgress * 45}deg)`;
     }
 
@@ -159,12 +146,12 @@ function initCenterControl() {
       return;
     }
 
-    panelAnimation = panel.animate(fitMorphFrames(MENU_MORPH_KEYFRAMES, geometry), {
+    panelAnimation = panel.animate(menuMorphFrames(geometry), {
       duration: MENU_MORPH_DURATION_MS,
       fill: "both",
       easing: "linear",
     });
-    menuListAnimation = menuList.animate(scaleMorphFrames(MENU_LIST_KEYFRAMES, geometry.scale), {
+    menuListAnimation = menuList.animate(menuListFrames(geometry.scale), {
       duration: MENU_MORPH_DURATION_MS,
       fill: "both",
       easing: "linear",

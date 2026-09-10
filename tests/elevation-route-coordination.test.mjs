@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { counterflowDirection } from '../src/elevation/counterflow-model.js';
-import { pageContext, activeSectionIndex, documentProgress, collectionProgress } from '../src/elevation/page-context.js';
+import { pageContext, activeSectionIndex, documentProgress, collectionProgress, historyLoopPosition } from '../src/elevation/page-context.js';
 
 const source = await readFile(new URL('../src/elevation/index.js', import.meta.url), 'utf8');
 const flushPromises = () => new Promise(resolve => setImmediate(resolve));
@@ -76,7 +76,7 @@ function loadRouteCoordinator({ nativeCounterflow = true, reducedMotion = false,
     document, window, location, URL, URLSearchParams,
     innerWidth: 1440, innerHeight: 1000,
     PROJECTS: [], ARTICLE_DETAILS: [],
-    pageContext, activeSectionIndex, documentProgress, collectionProgress,
+    pageContext, activeSectionIndex, documentProgress, collectionProgress, historyLoopPosition,
     ensureTitleCharacters() {},
     animateTitleCharacters: () => title.animate([], { duration: 240 }),
     matchMedia: () => Object.assign(new EventTarget(), { matches: reducedMotion }),
@@ -120,17 +120,16 @@ test('page chrome adds neither title metadata nor secondary navigation on any pa
   }
 });
 
-test('all six page states share context, with progress on every scrolling page', () => {
+test('all remaining page states share context and scrolling progress', () => {
   for (const startPath of ['/', '/projects', '/projects/', '/articles', '/history', '/case-studies/audible-sleep/', '/articles/the-constraint-was-the-brief/']) {
     const runtime = loadRouteCoordinator({ startPath });
     const context = runtime.body.children.find(node => node.className === 'edition-context');
     assert.ok(context, `${startPath}: contextual text is present`);
-    assert.ok(context.children.find(node => node.className === 'edition-context__hint').textContent);
+    assert.deepEqual(Array.from(context.children, node => node.className), ['edition-context__count', 'edition-context__title']);
+    assert.ok(context.children.find(node => node.className === 'edition-context__title').textContent);
     const reading = runtime.body.children.find(node => node.className === 'edition-reading');
-    assert.equal(reading.hidden, startPath === '/', startPath);
-    if (startPath === '/') {
-      assert.doesNotMatch(context.children.map(node => node.textContent).join(' '), /scroll|\d+\s*\/\s*\d+/i);
-    }
+    assert.equal(reading.hidden, false, startPath);
+    if (startPath === '/') assert.equal(runtime.root.dataset.editionSection, 'projects');
   }
 });
 
@@ -141,10 +140,10 @@ test('Projects and Articles both omit the visible pause control', () => {
   }
 });
 
-test('case-study Home links prepare the shared sweep without starting the old fade', async () => {
+test('case-study logo links prepare the landing-page sweep without starting the old fade', async () => {
   const runtime = loadRouteCoordinator({ startPath: '/case-studies/andrew-eccles/' });
   assert.equal(runtime.click('/').defaultPrevented, true);
-  assert.equal(runtime.preparations.length, 1, 'Home must enter the native sweep path');
+  assert.equal(runtime.preparations.length, 1, 'the landing page must enter the native sweep path');
   assert.equal(runtime.exits().length, 0, 'the old departure fade must not run');
   runtime.preparations[0].resolve(true);
   await flushPromises();
@@ -179,20 +178,20 @@ test('Counterflow intent cancels an older fallback before destination preparatio
   runtime.click('/articles');
   const timer = [...runtime.timers.values()][0];
   runtime.setNativeCounterflow(true);
-  runtime.click('/projects');
+  runtime.click('/history');
   timer.callback();
   await flushPromises();
   assert.deepEqual(runtime.assignments, []);
   assert.equal(runtime.preparations.length, 1);
   runtime.preparations[0].resolve(true);
   await flushPromises();
-  assert.deepEqual(runtime.commits, [{ to: 'https://portfolio.test/projects', ready: true }]);
-  assert.deepEqual(runtime.assignments, ['https://portfolio.test/projects']);
+  assert.deepEqual(runtime.commits, [{ to: 'https://portfolio.test/history', ready: true }]);
+  assert.deepEqual(runtime.assignments, ['https://portfolio.test/history']);
 });
 
 test('delayed Counterflow preparation cannot commit after a newer fallback intent', async () => {
   const runtime = loadRouteCoordinator();
-  runtime.click('/projects');
+  runtime.click('/history');
   assert.equal(runtime.root.dataset.transitionPhase, 'prepare');
   assert.equal(runtime.loading().length, 1);
   runtime.setNativeCounterflow(false);
@@ -208,15 +207,15 @@ test('delayed Counterflow preparation cannot commit after a newer fallback inten
 
 test('a second Counterflow preparation supersedes the first even when it resolves later', async () => {
   const runtime = loadRouteCoordinator();
-  runtime.click('/projects');
-  runtime.click('/projects');
+  runtime.click('/history');
+  runtime.click('/history');
   assert.equal(runtime.preparations.length, 2);
   assert.equal(runtime.loading().length, 1);
   runtime.preparations[1].resolve(false);
   await flushPromises();
   runtime.preparations[0].resolve(true);
   await flushPromises();
-  assert.deepEqual(runtime.commits, [{ to: 'https://portfolio.test/projects', ready: false }]);
+  assert.deepEqual(runtime.commits, [{ to: 'https://portfolio.test/history', ready: false }]);
   assert.equal(runtime.loading().length, 0);
 });
 
@@ -233,7 +232,7 @@ test('same-route click cancels a pending fallback without forcing a reload', asy
 
 test('same-route click cancels a pending Counterflow decode and removes its loading cue', async () => {
   const runtime = loadRouteCoordinator();
-  runtime.click('/projects');
+  runtime.click('/history');
   runtime.click('/');
   runtime.preparations[0].resolve(true);
   await flushPromises();
@@ -246,12 +245,12 @@ test('same-route click cancels a pending Counterflow decode and removes its load
 test('modified, external, hash, download, and new-tab links retain native navigation', async () => {
   const runtime = loadRouteCoordinator();
   for (const [href, properties, attributes] of [
-    ['/projects', { metaKey: true }], ['/projects', { ctrlKey: true }],
-    ['/projects', { shiftKey: true }], ['/projects', { altKey: true }],
-    ['/projects', { button: 1 }], ['https://elsewhere.test/projects'],
-    ['/projects#selected'], ['/projects', {}, { download: 'portfolio' }],
-    ['/projects', {}, { target: '_blank' }],
-    ['/projects', {}, { 'data-portfolio-detail-link': '' }],
+    ['/history', { metaKey: true }], ['/history', { ctrlKey: true }],
+    ['/history', { shiftKey: true }], ['/history', { altKey: true }],
+    ['/history', { button: 1 }], ['https://elsewhere.test/history'],
+    ['/history#selected'], ['/history', {}, { download: 'portfolio' }],
+    ['/history', {}, { target: '_blank' }],
+    ['/history', {}, { 'data-portfolio-detail-link': '' }],
   ]) assert.equal(runtime.click(href, properties, attributes).defaultPrevented, false);
   await flushPromises();
   assert.equal(runtime.preparations.length, 0);
@@ -261,7 +260,7 @@ test('modified, external, hash, download, and new-tab links retain native naviga
 
 test('ordinary external navigation cancels an internal decode instead of being overwritten later', async () => {
   const runtime = loadRouteCoordinator();
-  runtime.click('/projects');
+  runtime.click('/history');
   assert.equal(runtime.click('https://elsewhere.test/').defaultPrevented, false);
   runtime.preparations[0].resolve(true);
   await flushPromises();
@@ -283,7 +282,7 @@ test('ordinary external navigation cancels a pending fallback animation and time
 
 test('same-document hash navigation cancels an older route preparation', async () => {
   const runtime = loadRouteCoordinator();
-  runtime.click('/projects');
+  runtime.click('/history');
   assert.equal(runtime.click('/#selected').defaultPrevented, false);
   runtime.preparations[0].resolve(true);
   await flushPromises();
@@ -293,7 +292,7 @@ test('same-document hash navigation cancels an older route preparation', async (
 
 test('modified, new-tab, and download activations do not cancel the current page intent', async () => {
   const runtime = loadRouteCoordinator();
-  runtime.click('/projects');
+  runtime.click('/history');
   for (const [href, properties, attributes] of [
     ['/articles', { metaKey: true }], ['/history', { ctrlKey: true }],
     ['https://elsewhere.test/', { shiftKey: true }], ['/articles', { button: 1 }],
@@ -302,21 +301,21 @@ test('modified, new-tab, and download activations do not cancel the current page
   assert.equal(runtime.loading().length, 1);
   runtime.preparations[0].resolve(true);
   await flushPromises();
-  assert.deepEqual(runtime.assignments, ['https://portfolio.test/projects']);
+  assert.deepEqual(runtime.assignments, ['https://portfolio.test/history']);
 });
 
 test('reduced-motion route changes use native navigation without preparation or delayed callbacks', () => {
   const runtime = loadRouteCoordinator({ reducedMotion: true });
-  assert.equal(runtime.click('/projects').defaultPrevented, false);
+  assert.equal(runtime.click('/history').defaultPrevented, false);
   assert.equal(runtime.click('/articles').defaultPrevented, false);
   assert.equal(runtime.preparations.length, 0);
   assert.equal(runtime.timers.size, 0);
   assert.deepEqual(runtime.assignments, []);
 });
 
-for (const [path, label] of [['/articles', 'Articles'], ['/history', 'History']]) {
+for (const [path, label] of [['/', 'Projects'], ['/articles', 'Articles'], ['/history', 'History']]) {
   test(`native ${label} navigation shows its destination label and commits after preparation`, async () => {
-    const runtime = loadRouteCoordinator();
+    const runtime = loadRouteCoordinator({ startPath: path === '/' ? '/history' : '/' });
     assert.equal(runtime.click(path).defaultPrevented, true);
     assert.equal(runtime.loading().length, 1);
     assert.equal(runtime.loading()[0].textContent, `Preparing ${label}`);

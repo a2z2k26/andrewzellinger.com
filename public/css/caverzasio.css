@@ -1712,7 +1712,9 @@ figcaption {
 }
 
 .nav {
-  z-index: 97;
+  /* Persistent chrome stays above body-level detail media/copy (120/121).
+     Raising only the nested toggle cannot escape this stacking context. */
+  z-index: 130;
   padding-top: var(--structure--padding-desktop);
   padding-bottom: var(--structure--padding-desktop);
   pointer-events: none;
@@ -1724,9 +1726,10 @@ figcaption {
 }
 
 .nav_brand {
-  font-family: "Geist", sans-serif;
-  font-size: 13px;
-  font-weight: 500;
+  color: #fff;
+  font-family: "Geist Wordmark", "Geist", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
   font-synthesis: none;
   line-height: 12px;
   letter-spacing: .06em;

@@ -2,7 +2,7 @@ import { PROJECTS } from "../project-content.js";
 import { ARTICLE_DETAILS } from "../article-content.js";
 import { hasCounterflow, isCounterflowPair, isCounterflowArrival, prepareCounterflow, commitCounterflow } from './counterflow.js';
 import { readingContextLayout } from './reading-context-layout.js';
-import { pageContext, activeSectionIndex, documentProgress, collectionProgress } from './page-context.js';
+import { pageContext, activeSectionIndex, documentProgress, collectionProgress, historyLoopPosition } from './page-context.js';
 import { ensureTitleCharacters, animateTitleCharacters } from './title-motion.js';
 import "./styles.css";
 import './portrait-artwork.js';
@@ -14,14 +14,14 @@ const forceReducedMotion = import.meta.env.DEV && new URLSearchParams(location.s
 const shouldReduceMotion = () => reduceQuery.matches || forceReducedMotion;
 root.dataset.editionMotion = shouldReduceMotion() ? "reduced" : "full";
 const routes = [
-  { path: "/", label: "Home" },
-  { path: "/projects", label: "Projects" },
+  { path: "/", label: "Projects" },
   { path: "/articles", label: "Articles" },
   { path: "/history", label: "History" },
 ];
 const normalized = (path) => path.replace(/\/$/, "") || "/";
 const sectionFor = (path) => path.startsWith("/case-studies/") ? "/projects"
-  : path.startsWith("/articles/") ? "/articles" : normalized(path);
+  : path.startsWith("/articles/") ? "/articles"
+  : normalized(path) === "/" ? "/projects" : normalized(path);
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
   node.className = className;
@@ -38,8 +38,7 @@ function initialize() {
   const context = el("div", "edition-context");
   const contextCount = el("span", "edition-context__count");
   const contextTitle = el("span", "edition-context__title");
-  const contextHint = el("span", "edition-context__hint");
-  context.append(contextCount, contextTitle, contextHint);
+  context.append(contextCount, contextTitle);
   let contextMounted = false;
 
   const reading = el("div", "edition-reading");
@@ -63,13 +62,10 @@ function initialize() {
   const positionReadingContext = () => {
     if (innerWidth < 992 || !contextMounted) return;
     const heading = document.querySelector('.title .heading');
-    const clock = document.querySelector('#h');
-    if (!heading || !clock) return;
+    if (!heading) return;
     const layout = readingContextLayout(
       heading.getBoundingClientRect().bottom,
-      clock.getBoundingClientRect().top,
       context.getBoundingClientRect().height,
-      !reading.hidden,
     );
     root.style.setProperty('--edition-context-top', `${layout.top}px`);
     root.style.setProperty('--edition-reading-top', `${layout.ruleTop}px`);
@@ -81,7 +77,7 @@ function initialize() {
   };
   if (typeof ResizeObserver === 'function') {
     const contextSizeObserver = new ResizeObserver(scheduleContextLayout);
-    [context, document.querySelector('.title .heading'), document.querySelector('#h')]
+    [context, document.querySelector('.title .heading')]
       .filter(Boolean).forEach(node => contextSizeObserver.observe(node));
   }
   document.fonts?.ready.then(scheduleContextLayout);
@@ -142,24 +138,31 @@ function initialize() {
     let index = collection.findIndex((item) => item.title === name);
     let total = collection.length;
     const detail = root.classList.contains("detail-route");
-    const historyProgress = section === '/history'
-      ? documentProgress(window.scrollY, root.scrollHeight, innerHeight) : 0;
+    const historySource = section === '/history' ? document.querySelector('.history-motion-set-source') : null;
+    const historyDistance = Number(historySource?.parentElement.dataset.loopDistance) || 0;
+    const historySourceTop = historySource?.getBoundingClientRect().top || 0;
+    const historyPosition = historyLoopPosition(historySourceTop, historyDistance, targetY);
+    const historyProgress = historyDistance > 0 ? historyPosition / historyDistance
+      : section === '/history' ? documentProgress(window.scrollY, root.scrollHeight, innerHeight) : 0;
     const atEnd = historyProgress >= .9999;
     if (section === '/history') {
-      index = activeSectionIndex(historySections.map(node => node.getBoundingClientRect().top), targetY, atEnd);
+      index = activeSectionIndex(
+        historySections.map(node => node.getBoundingClientRect().top - (historyDistance ? historySourceTop : 0)),
+        historyDistance ? historyPosition : targetY,
+        !historyDistance && atEnd,
+      );
       const activeSection = historySections[index];
       name = activeSection?.querySelector('h2, h3')?.textContent?.trim()
         || activeSection?.getAttribute('aria-label') || 'Design practice';
       total = historySections.length;
     }
-    const content = pageContext({ section, detail, name, index, total, atEnd });
+    const content = pageContext({ section, name, index, total });
     reading.hidden = !content.progress;
     const contextKey = JSON.stringify(content);
     if (contextKey !== currentContext) {
       currentContext = contextKey;
       contextCount.textContent = content.count;
       contextTitle.textContent = content.title;
-      contextHint.textContent = content.hint;
       scheduleContextLayout();
       if (!shouldReduceMotion()) contextTitle.animate([{ opacity: .2, transform: "translateY(5px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 260, easing: "ease-out" });
     }
@@ -178,6 +181,7 @@ function initialize() {
     candidates.clear();
     historySections = sectionFor(location.pathname) === '/history'
       ? [...document.querySelectorAll('.biography-introduction, .biography-block, .biography-experience-section, .biography-clients, .biography-contact')]
+        .filter(node => !node.closest('[aria-hidden="true"]'))
       : [];
     const selector = root.classList.contains("detail-route") ? ".detail-unit"
       : sectionFor(location.pathname) === "/projects" ? ".works-motion-card" : ".articles-entry-list > li";
@@ -203,7 +207,7 @@ function initialize() {
     scheduled = requestAnimationFrame(() => { updateChrome(); observeContent(); scheduleContextLayout(); });
   };
   const modeObserver = new MutationObserver(synchronize);
-  modeObserver.observe(root, { attributes: true, attributeFilter: ["class", "data-detail-active-slug", "data-works-motion", "data-articles-motion"] });
+  modeObserver.observe(root, { attributes: true, attributeFilter: ["class", "data-detail-active-slug", "data-works-motion", "data-articles-motion", "data-history-motion"] });
   window.addEventListener("popstate", synchronize);
   window.addEventListener("resize", synchronize);
   const onScroll = () => {
@@ -272,7 +276,7 @@ function initialize() {
     entries.forEach(({ target, isIntersecting }) => {
       if (!isIntersecting) return;
       revealObserver.unobserve(target);
-      if (!shouldReduceMotion()) target.animate([
+      if (!shouldReduceMotion() && !(sectionFor(location.pathname) === '/history' && innerWidth >= 992)) target.animate([
         { opacity: 0, transform: "translateY(16px)" },
         { opacity: 1, transform: "translateY(0)" },
       ], { duration: 650, easing: "cubic-bezier(.16,1,.3,1)" });

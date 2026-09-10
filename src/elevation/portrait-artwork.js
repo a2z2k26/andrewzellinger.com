@@ -3,13 +3,13 @@ import './portrait-artwork.css';
 
 // The motion laboratory remains preserved in portrait-study.js, but is no
 // longer imported by the active site. These are deterministic still artworks.
-// Temporary photo-only comparison with the orange navigation. Restore to true
-// to recover both approved still compositions without changing either image.
-export const PORTRAIT_ARTWORK_ENABLED = false;
+// History's approved Monument overprint is restored. The former Home artwork
+// stays archived in the model; the Projects landing page has no portrait art.
+export const PORTRAIT_ARTWORK_ENABLED = true;
 let cleanup = null;
 let pendingFrame = 0;
 
-function mountPortraitArtwork() {
+export function mountPortraitArtwork() {
   if (!PORTRAIT_ARTWORK_ENABLED) return;
   if (cleanup) return;
   const artwork = portraitArtworkFor(location.pathname);
@@ -30,6 +30,11 @@ function mountPortraitArtwork() {
   for (const mark of marks) {
     const glyph = document.createElement('span');
     glyph.className = 'portrait-artwork-glyph'; glyph.textContent = 'A';
+    if (history) {
+      const period = document.createElement('span');
+      period.className = 'portrait-artwork-period';
+      glyph.append(period);
+    }
     glyph.style.left = `${mark.x * 100}%`; glyph.style.top = `${mark.y * 100}%`;
     glyph.style.setProperty('--portrait-mark-scale', mark.scale);
     layer.append(glyph);
