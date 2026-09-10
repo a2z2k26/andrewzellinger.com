@@ -50,8 +50,10 @@
   }
   html[data-history-motion="running"] .biography-sweep-viewport {
     position: fixed;
-    inset: var(--structure--padding-desktop) var(--structure--padding-desktop)
-      var(--structure--padding-desktop) calc(50% + (var(--structure--grid-row-gap) / 2));
+    top: 0;
+    right: var(--structure--padding-desktop);
+    bottom: 0;
+    left: calc(50% + (var(--structure--grid-row-gap) / 2));
     overflow: hidden;
     background: #000;
     z-index: 2;
@@ -107,8 +109,6 @@
 .biography-introduction__practice-label,
 .biography-block__label,
 .biography-experience-section__heading,
-.biography-capability__label,
-.biography-clients__label,
 .biography-contact__label {
   color: #9c9c9c;
   font-family: var(--fonts--family-mono);
@@ -127,7 +127,6 @@
 
 .biography-prose,
 .biography-introduction__practice-body,
-.biography-capability__items,
 .biography-clients__list {
   min-width: 0;
   color: var(--biography-copy);
@@ -153,6 +152,16 @@
 
 @media (min-width: 992px) {
   .biography-introduction__lead { width: 90%; }
+
+  .biography-experience {
+    width: 90%;
+    row-gap: 10px;
+  }
+
+  .biography-experience__row {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .9fr) auto;
+    column-gap: 16px;
+  }
 }
 
 .biography-block {
@@ -198,7 +207,7 @@
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: -.01em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .biography-experience__role {
@@ -222,39 +231,11 @@
   white-space: nowrap;
 }
 
-.biography-capabilities-content,
-.biography-stack-content {
-  min-width: 0;
-}
-
-.biography-capabilities {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-}
-
-.biography-editorial .biography-capability__items {
-  margin-top: var(--biography-label-gap);
-}
-
-.biography-clients {
-  grid-column: 1 / -1;
-  /* Include the parent grid gap in the shared section separation. */
-  margin-top: calc(var(--biography-section-gap) - var(--biography-label-gap));
-}
-
 .biography-editorial .biography-clients__list {
   font-family: "Geist", sans-serif;
-  text-transform: uppercase;
+  text-transform: none;
   color: #fff;
-  margin-top: var(--biography-label-gap);
-}
-
-/* Tools already receive the heading gap from their parent grid. */
-.biography-editorial .biography-tools__list { margin-top: 0; text-transform: none; }
-
-.biography-editorial .biography-stack-grid {
-  margin-top: 24px;
+  margin-top: 0;
 }
 
 .biography-contact {
@@ -340,7 +321,6 @@
   .biography-experience__role { grid-column: 1; }
   .biography-experience__dates { grid-column: 2; }
 
-  .biography-capabilities,
   .biography-contact {
     grid-template-columns: minmax(0, 1fr);
   }

@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  articleCopyFrame,
   boundaryProgress,
   clamp01,
   motionFrame,
@@ -26,13 +27,11 @@ test("boundary motion engages as soon as incoming media crosses the viewport edg
   assert.ok(boundaryProgress(999, 1000) > 0);
 });
 
-test("motionFrame resolves outgoing and incoming media and copy", () => {
+test("motionFrame resolves outgoing and incoming media and incoming copy", () => {
   assert.deepEqual(motionFrame(0, false), {
     outgoingMediaScale: 1,
     outgoingMediaY: 0,
     outgoingShade: 0,
-    outgoingCopyY: 0,
-    outgoingCopyOpacity: 1,
     incomingMediaScale: 1.04,
     incomingMediaY: 40,
     incomingReveal: 0,
@@ -45,7 +44,6 @@ test("motionFrame resolves outgoing and incoming media and copy", () => {
   });
   const end = motionFrame(1, false);
   assert.equal(end.outgoingMediaScale, .96);
-  assert.equal(end.outgoingCopyOpacity, 0);
   assert.equal(end.incomingMediaScale, 1);
   assert.equal(end.incomingMediaY, 0);
   assert.equal(end.incomingReveal, 1);
@@ -62,4 +60,18 @@ test("incoming media reveals immediately and resolves before its copy", () => {
   assert.ok(justInside.incomingReveal > 0);
   assert.equal(imageComplete.incomingReveal, 1);
   assert.equal(imageComplete.incomingTitleOpacity, 0);
+});
+
+test("article copy resolves in the lower viewport entry zone", () => {
+  const atEdge = articleCopyFrame(0, false);
+  const beforeMidpoint = articleCopyFrame(.3, false);
+
+  assert.equal(atEdge.incomingTitleOpacity, 0);
+  assert.equal(atEdge.incomingMetaOpacity, 0);
+  assert.equal(atEdge.incomingLedeOpacity, 0);
+  assert.equal(beforeMidpoint.incomingTitleOpacity, 1);
+  assert.equal(beforeMidpoint.incomingMetaOpacity, 1);
+  assert.equal(beforeMidpoint.incomingLedeOpacity, 1);
+  assert.equal(articleCopyFrame(.278, false).incomingLedeOpacity, 1);
+  assert.ok(articleCopyFrame(.1, false).incomingTitleOpacity > 0);
 });

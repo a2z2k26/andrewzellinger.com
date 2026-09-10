@@ -129,6 +129,101 @@ export function runArticleExitTransition({
   return { tween, finished: completion, cancel };
 }
 
+export function runArticleTextTransition({
+  nativeCopy = null,
+  sourceCopyVisual = null,
+  copyFrom = null,
+  copyTo = null,
+  expansionTarget = null,
+  reduceMotion = false,
+  onComplete = () => {},
+}) {
+  const copyOverlay = sourceCopyVisual?.isConnected ? sourceCopyVisual : null;
+  let timeline = null;
+  let finished = false;
+
+  const finish = (notify = true) => {
+    if (finished) return;
+    finished = true;
+    if (nativeCopy) gsap.set(nativeCopy, { clearProps: "transform,opacity,visibility,willChange" });
+    if (expansionTarget) {
+      gsap.set(expansionTarget, {
+        clearProps: "transform,opacity,visibility,clipPath,willChange",
+      });
+    }
+    copyOverlay?.remove();
+    if (notify) onComplete();
+  };
+
+  const cancel = () => {
+    timeline?.kill();
+    finish(false);
+  };
+
+  const canAnimateCopy = Boolean(
+    copyOverlay
+    && nativeCopy
+    && copyFrom
+    && copyTo
+    && [copyFrom.width, copyFrom.height, copyTo.width, copyTo.height]
+      .every((value) => value > 0),
+  );
+
+  if (reduceMotion || !canAnimateCopy) {
+    requestAnimationFrame(() => finish(true));
+    return { timeline: null, cancel };
+  }
+
+  gsap.set(copyOverlay, {
+    x: 0,
+    y: 0,
+    willChange: "transform,opacity",
+  });
+  gsap.set(nativeCopy, {
+    autoAlpha: 0,
+    y: 10,
+    willChange: "transform,opacity",
+  });
+  if (expansionTarget) {
+    gsap.set(expansionTarget, {
+      autoAlpha: 0,
+      y: 24,
+      clipPath: "inset(0 0 100% 0)",
+      willChange: "transform,opacity,clip-path",
+    });
+  }
+
+  timeline = gsap.timeline({ onComplete: () => finish(true) });
+  timeline.to(copyOverlay, {
+    x: copyTo.left - copyFrom.left,
+    y: copyTo.top - copyFrom.top,
+    duration: .72,
+    ease: "power3.inOut",
+  }, 0);
+  timeline.to(copyOverlay, {
+    autoAlpha: 0,
+    duration: .18,
+    ease: "power1.out",
+  }, .54);
+  timeline.to(nativeCopy, {
+    autoAlpha: 1,
+    y: 0,
+    duration: .32,
+    ease: "power2.out",
+  }, .5);
+  if (expansionTarget) {
+    timeline.to(expansionTarget, {
+      autoAlpha: 1,
+      y: 0,
+      clipPath: "inset(0 0 0% 0)",
+      duration: .58,
+      ease: "power3.out",
+    }, .62);
+  }
+
+  return { timeline, cancel };
+}
+
 export function runRouteTransition({
   direction = "enter",
   mediaVisual,

@@ -1,12 +1,18 @@
 import { gsap } from "gsap";
-import { boundaryProgress, motionFrame } from "./detail-motion-values.js";
+import {
+  articleCopyFrame,
+  boundaryProgress,
+  motionFrame,
+} from "./detail-motion-values.js";
 
 const BOUNDARY_PENDING_CLASS = "detail-unit__media--boundary-pending";
 
 function unitParts(unit) {
+  const media = unit.querySelector(".detail-unit__media");
   return {
     unit,
-    media: unit.querySelector(".detail-unit__media"),
+    media,
+    anchor: media ?? unit.querySelector("[data-article-detail-header]"),
     shade: unit.querySelector(".detail-unit__media-shade"),
     header: [
       ...unit.querySelectorAll("[data-detail-motion-title]"),
@@ -21,8 +27,8 @@ function unitParts(unit) {
 
 function resetParts(parts) {
   if (!parts) return;
-  gsap.set(parts.media, { clearProps: "transform,clipPath,willChange" });
-  gsap.set(parts.shade, { clearProps: "opacity" });
+  if (parts.media) gsap.set(parts.media, { clearProps: "transform,clipPath,willChange" });
+  if (parts.shade) gsap.set(parts.shade, { clearProps: "opacity" });
   gsap.set(parts.header, { clearProps: "transform,opacity,willChange" });
 }
 
@@ -38,6 +44,7 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
     || view?.classList.contains("detail-view--article"),
   ) && !reduceMotion;
   const animateOutgoing = view?.classList.contains("detail-view--project");
+  const revealArticleCopyEarly = view?.classList.contains("detail-view--article");
   const compact = !circular;
   let pairs = [];
   let activePair = null;
@@ -77,7 +84,7 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
   const render = () => {
     if (!enabled || !pairs.length) return;
     const candidates = pairs.map((pair) => {
-      const nextRect = pair.incoming.media?.getBoundingClientRect();
+      const nextRect = pair.incoming.anchor?.getBoundingClientRect();
       if (!nextRect) return null;
       syncPendingMedia(pair.incoming, nextRect);
       const progress = boundaryProgress(nextRect.top, window.innerHeight);
@@ -98,6 +105,9 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
 
     const { pair, progress, nextRect } = candidate;
     const frame = motionFrame(progress, compact);
+    const copyFrame = revealArticleCopyEarly
+      ? articleCopyFrame(progress, compact)
+      : frame;
     activeProgress = progress;
     document.documentElement.dataset.detailBoundaryMotion = "active";
 
@@ -108,28 +118,26 @@ export function createBoundaryMotion({ view, circular, reduceMotion, initialUnit
         transformOrigin: "50% 50%",
       });
       gsap.set(pair.outgoing.shade, { opacity: frame.outgoingShade });
-      gsap.set(pair.outgoing.header, {
-        y: frame.outgoingCopyY,
-        opacity: frame.outgoingCopyOpacity,
+    }
+    if (pair.incoming.media) {
+      gsap.set(pair.incoming.media, {
+        y: frame.incomingMediaY,
+        scale: frame.incomingMediaScale,
+        clipPath: `inset(${(1 - frame.incomingReveal) * 100}% 0 0 0)`,
+        transformOrigin: "50% 50%",
       });
     }
-    gsap.set(pair.incoming.media, {
-      y: frame.incomingMediaY,
-      scale: frame.incomingMediaScale,
-      clipPath: `inset(${(1 - frame.incomingReveal) * 100}% 0 0 0)`,
-      transformOrigin: "50% 50%",
-    });
     gsap.set(pair.incoming.titles, {
-      y: frame.incomingTitleY,
-      opacity: frame.incomingTitleOpacity,
+      y: copyFrame.incomingTitleY,
+      opacity: copyFrame.incomingTitleOpacity,
     });
     gsap.set(pair.incoming.meta, {
-      y: frame.incomingMetaY,
-      opacity: frame.incomingMetaOpacity,
+      y: copyFrame.incomingMetaY,
+      opacity: copyFrame.incomingMetaOpacity,
     });
     gsap.set(pair.incoming.lede, {
-      y: frame.incomingLedeY,
-      opacity: frame.incomingLedeOpacity,
+      y: copyFrame.incomingLedeY,
+      opacity: copyFrame.incomingLedeOpacity,
     });
   };
 

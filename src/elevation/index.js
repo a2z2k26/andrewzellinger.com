@@ -1,8 +1,4 @@
-import { PROJECTS } from "../project-content.js";
-import { ARTICLE_DETAILS } from "../article-content.js";
 import { hasCounterflow, isCounterflowPair, isCounterflowArrival, prepareCounterflow, commitCounterflow } from './counterflow.js';
-import { readingContextLayout } from './reading-context-layout.js';
-import { pageContext, activeSectionIndex, documentProgress, collectionProgress, historyLoopPosition } from './page-context.js';
 import { ensureTitleCharacters, animateTitleCharacters } from './title-motion.js';
 import "./styles.css";
 import './portrait-artwork.js';
@@ -30,58 +26,17 @@ const el = (tag, className, text) => {
 };
 
 function initialize() {
-  if (document.querySelector(".edition-context")) return;
+  if (root.dataset.elevationInitialized === "true") return;
   const title = document.querySelector(".title .container-xlarge");
   if (!title) return;
+  root.dataset.elevationInitialized = "true";
   ensureTitleCharacters();
 
-  const context = el("div", "edition-context");
-  const contextCount = el("span", "edition-context__count");
-  const contextTitle = el("span", "edition-context__title");
-  context.append(contextCount, contextTitle);
-  let contextMounted = false;
-
-  const reading = el("div", "edition-reading");
-  reading.setAttribute("aria-hidden", "true");
-  reading.append(el("div", "edition-reading__fill"));
-  document.body.append(reading);
-  let activeUnit = null;
-  let currentContext = "";
-  let lastSection = "";
   let entering = [];
   let navigating = false;
   let cancelPendingDeparture = () => {};
   window.addEventListener('portfolio:routechange',()=>cancelPendingDeparture());
   window.addEventListener('pagehide',()=>cancelPendingDeparture());
-  let progressFrame = 0;
-  let candidateObserver = null;
-  let readingLineObserver = null;
-  let historySections = [];
-  const candidates = new Set();
-
-  const positionReadingContext = () => {
-    if (innerWidth < 992 || !contextMounted) return;
-    const heading = document.querySelector('.title .heading');
-    if (!heading) return;
-    const layout = readingContextLayout(
-      heading.getBoundingClientRect().bottom,
-      context.getBoundingClientRect().height,
-    );
-    root.style.setProperty('--edition-context-top', `${layout.top}px`);
-    root.style.setProperty('--edition-reading-top', `${layout.ruleTop}px`);
-  };
-  let contextLayoutFrame = 0;
-  const scheduleContextLayout = () => {
-    cancelAnimationFrame(contextLayoutFrame);
-    contextLayoutFrame = requestAnimationFrame(positionReadingContext);
-  };
-  if (typeof ResizeObserver === 'function') {
-    const contextSizeObserver = new ResizeObserver(scheduleContextLayout);
-    [context, document.querySelector('.title .heading')]
-      .filter(Boolean).forEach(node => contextSizeObserver.observe(node));
-  }
-  document.fonts?.ready.then(scheduleContextLayout);
-  window.addEventListener('portfolio:rail-sweep-arrival', scheduleContextLayout);
 
   const currentRail = () => root.classList.contains("detail-route")
     ? document.querySelector(".detail-view")
@@ -101,123 +56,22 @@ function initialize() {
         { clipPath: "inset(0 0 0 0)", opacity: 1 },
       ], { ...timing, duration: 800 }));
     }
-    // Re-measure after the title's temporary entrance translation settles.
-    Promise.all(entering.map(animation => animation.finished.catch(() => {}))).then(scheduleContextLayout);
   };
 
   const updateChrome = () => {
     ensureTitleCharacters();
     const section = sectionFor(location.pathname);
     root.dataset.editionSection = section === "/" ? "home" : section.slice(1);
-    if (lastSection !== section) {
-      currentContext = "";
-      lastSection = section;
-    }
-  };
-
-  const updateContext = () => {
-    const section = sectionFor(location.pathname);
-    if (!contextMounted) {
-      document.body.append(context);
-      contextMounted = true;
-    }
-    let best = null;
-    let distance = Infinity;
-    const targetY = innerHeight * .38;
-    for (const item of candidates) {
-      if (!item.isConnected) continue;
-      const rect = item.getBoundingClientRect();
-      const nextDistance = targetY < rect.top ? rect.top - targetY
-        : targetY > rect.bottom ? targetY - rect.bottom : 0;
-      if (nextDistance < distance) { distance = nextDistance; best = item; }
-    }
-    activeUnit = best?.classList.contains("detail-unit") ? best : null;
-    const collection = section === "/projects" ? PROJECTS : ARTICLE_DETAILS;
-    const heading = best?.querySelector(".detail-unit__title, .heading-style-h2, h2");
-    let name = heading?.textContent?.trim() || "";
-    let index = collection.findIndex((item) => item.title === name);
-    let total = collection.length;
-    const detail = root.classList.contains("detail-route");
-    const historySource = section === '/history' ? document.querySelector('.history-motion-set-source') : null;
-    const historyDistance = Number(historySource?.parentElement.dataset.loopDistance) || 0;
-    const historySourceTop = historySource?.getBoundingClientRect().top || 0;
-    const historyPosition = historyLoopPosition(historySourceTop, historyDistance, targetY);
-    const historyProgress = historyDistance > 0 ? historyPosition / historyDistance
-      : section === '/history' ? documentProgress(window.scrollY, root.scrollHeight, innerHeight) : 0;
-    const atEnd = historyProgress >= .9999;
-    if (section === '/history') {
-      index = activeSectionIndex(
-        historySections.map(node => node.getBoundingClientRect().top - (historyDistance ? historySourceTop : 0)),
-        historyDistance ? historyPosition : targetY,
-        !historyDistance && atEnd,
-      );
-      const activeSection = historySections[index];
-      name = activeSection?.querySelector('h2, h3')?.textContent?.trim()
-        || activeSection?.getAttribute('aria-label') || 'Design practice';
-      total = historySections.length;
-    }
-    const content = pageContext({ section, name, index, total });
-    reading.hidden = !content.progress;
-    const contextKey = JSON.stringify(content);
-    if (contextKey !== currentContext) {
-      currentContext = contextKey;
-      contextCount.textContent = content.count;
-      contextTitle.textContent = content.title;
-      scheduleContextLayout();
-      if (!shouldReduceMotion()) contextTitle.animate([{ opacity: .2, transform: "translateY(5px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 260, easing: "ease-out" });
-    }
-    const rect = activeUnit?.getBoundingClientRect();
-    const itemRect = best?.getBoundingClientRect();
-    const progress = section === '/history'
-      ? historyProgress
-      : !detail && itemRect ? collectionProgress(index, total, itemRect.top, itemRect.height, targetY)
-        : rect ? Math.max(0, Math.min(1, (innerHeight * .25 - rect.top) / Math.max(1, rect.height - innerHeight * .5))) : 0;
-    root.style.setProperty("--edition-reading", String(progress));
-  };
-
-  const observeContent = () => {
-    candidateObserver?.disconnect();
-    readingLineObserver?.disconnect();
-    candidates.clear();
-    historySections = sectionFor(location.pathname) === '/history'
-      ? [...document.querySelectorAll('.biography-introduction, .biography-block, .biography-experience-section, .biography-clients, .biography-contact')]
-        .filter(node => !node.closest('[aria-hidden="true"]'))
-      : [];
-    const selector = root.classList.contains("detail-route") ? ".detail-unit"
-      : sectionFor(location.pathname) === "/projects" ? ".works-motion-card" : ".articles-entry-list > li";
-    candidateObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => entry.isIntersecting ? candidates.add(entry.target) : candidates.delete(entry.target));
-      updateContext();
-    }, { rootMargin: "100px 0px", threshold: [0, .25, .5, .75, 1] });
-    // Ambient collection motion changes transforms without window scroll events.
-    // The narrow reading-line observer refreshes the label at the actual handoff.
-    readingLineObserver = new IntersectionObserver(updateContext, {
-      rootMargin: `-${innerHeight * .38}px 0px -${innerHeight * .62 - 1}px 0px`, threshold: 0,
-    });
-    document.querySelectorAll(selector).forEach((node) => {
-      candidateObserver.observe(node);
-      readingLineObserver.observe(node);
-    });
-    updateContext();
   };
 
   let scheduled = 0;
   const synchronize = () => {
     cancelAnimationFrame(scheduled);
-    scheduled = requestAnimationFrame(() => { updateChrome(); observeContent(); scheduleContextLayout(); });
+    scheduled = requestAnimationFrame(updateChrome);
   };
   const modeObserver = new MutationObserver(synchronize);
   modeObserver.observe(root, { attributes: true, attributeFilter: ["class", "data-detail-active-slug", "data-works-motion", "data-articles-motion", "data-history-motion"] });
   window.addEventListener("popstate", synchronize);
-  window.addEventListener("resize", synchronize);
-  const onScroll = () => {
-    if (progressFrame) return;
-    progressFrame = requestAnimationFrame(() => { progressFrame = 0; updateContext(); });
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener('portfolio:loop-progress', () => {
-    if (innerWidth >= 992 && !root.classList.contains('detail-route')) onScroll();
-  });
 
   // Top-level routes retain real document navigation and the existing detail history.
   document.addEventListener("click", (event) => {
@@ -284,7 +138,6 @@ function initialize() {
   }, { threshold: .08 });
   document.querySelectorAll(".biography-block, .biography-introduction, .biography-experience-section, .biography-contact").forEach((node) => revealObserver.observe(node));
   updateChrome();
-  observeContent();
   requestAnimationFrame(animateEntrance);
   reduceQuery.addEventListener("change", () => {
     root.dataset.editionMotion = shouldReduceMotion() ? "reduced" : "full";

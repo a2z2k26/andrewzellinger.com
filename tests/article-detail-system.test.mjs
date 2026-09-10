@@ -11,7 +11,7 @@ const historicalBody = article => article.slug === "showing-my-teeth"
   ? article.body.map(block => block.text === approvedClosingLine ? { ...block, type: "heading", text: approvedClosingLine.slice(0, -1).toUpperCase() } : block)
   : article.body;
 
-test("article records share reviewed metadata, authored bodies and stable routes", async () => {
+test("article records share publish-date metadata, authored bodies and stable routes", async () => {
   const indexHtml = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
   const indexRuntime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
   const source = await readFile(new URL("../src/article-content.js", import.meta.url), "utf8");
@@ -21,17 +21,24 @@ test("article records share reviewed metadata, authored bodies and stable routes
   assert.deepEqual(ARTICLE_DETAILS.slice(0,3).map(a => a.slug), ["the-constraint-was-the-brief", "intention-deficit-disorder", "company-of-one"]);
   const text = a => a.body.flatMap(b => b.type === "list" ? b.items : [b.text]).join(" ");
   const words = a => text(a).trim().split(/\s+/).length;
+  const assignedDates = new Set();
   for (const article of ARTICLE_DETAILS) {
     assert.equal(article.kind, "article");
     assert.equal(article.collectionPath, "/articles");
     assert.equal(article.path, `/articles/${article.slug}/`);
-    assert.deepEqual(article.meta, ["Andrew Zellinger", "Reviewed Sep 8th 2026", `${Math.max(1, Math.ceil(words(article) / 200))} MIN`]);
-    assert.ok(article.summary.length >= 100 && article.summary.length <= 190);
+    assert.equal(article.meta.length, 2);
+    assert.match(article.meta[0], /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{1,2}(st|nd|rd|th) 20(23|24|25|26)$/);
+    assert.equal(article.meta[1], `${Math.max(1, Math.ceil(words(article) / 200))} MIN`);
+    assert.doesNotMatch(article.meta.join(" "), /Andrew Zellinger|Reviewed/i);
+    assert.ok(!assignedDates.has(article.meta[0]), `duplicate provisional publish date: ${article.meta[0]}`);
+    assignedDates.add(article.meta[0]);
+    assert.ok(article.summary.length >= 145 && article.summary.length <= 190);
     assert.match(article.summary, /\.$/);
     assert.ok(article.body.every(b => b.type === "list" ? b.items.length && b.items.every(Boolean) : b.text?.trim()));
     assert.equal(article.media.decorative, true);
     assert.ok(indexHtml.includes(`data-detail-slug="${article.slug}"`));
     assert.ok(indexHtml.includes(`aria-label="Read article: ${article.title}"`));
+    assert.ok(indexHtml.includes(article.summary));
     for (const meta of article.meta) assert.ok(indexHtml.includes(meta));
   }
   const bySlug = slug => ARTICLE_DETAILS.find(a => a.slug === slug);
@@ -52,7 +59,7 @@ test("article records share reviewed metadata, authored bodies and stable routes
   assert.doesNotMatch(JSON.stringify(ARTICLE_DETAILS), /Jason Ramirez/);
   assert.match(indexRuntime, /entry\.meta\.map/);
   assert.match(indexRuntime, /entry\.summary/);
-  assert.match(indexRuntime, /Read more/);
+  assert.doesNotMatch(indexRuntime, /Read more|articles-entry__thumbnail/);
 });
 
 test("Article Detail renders semantic paragraphs without fixed section labels", async () => {
@@ -71,23 +78,31 @@ test("Article Detail renders semantic paragraphs without fixed section labels", 
   assert.match(runtime, /<li>\$\{escapeHtml\(item\)\}<\/li>/);
   assert.match(runtime, /class="detail-unit__article-body"/);
   assert.doesNotMatch(runtime, />Opening<|>Argument<|>Notes</);
-  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*margin-left:\s*0;[^}]*padding-top:\s*48px;/s);
+  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*margin-left:\s*0;[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
+  assert.match(styles, /\.detail-unit__copy--article\s*\{[^}]*width:\s*min\(100%, 60ch\);[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*15px;/s);
   assert.match(styles, /\.detail-unit__article-body p \+ p\s*\{[^}]*margin-top:\s*16px;/s);
   assert.match(styles, /\.detail-unit__article-body p\s*\{[^}]*text-indent:\s*0;/s);
   assert.match(styles, /\.detail-unit__article-body li \+ li\s*\{[^}]*margin-top:\s*6px;/s);
-  assert.match(styles, /\.detail-unit__article-body::before\s*\{[^}]*grid-column:\s*1;[^}]*border-top:\s*1px solid rgba\(255, 255, 255, \.16\);[^}]*margin-bottom:\s*32px;/s);
-  assert.match(styles, /\.detail-unit__article-section\s*\{[^}]*margin-top:\s*32px;/s);
+  assert.match(styles, /\.detail-unit__article-body::before\s*\{\s*content:\s*none;/s);
+  assert.match(styles, /\.detail-unit__article-header\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*row-gap:\s*16px;/s);
+  assert.match(styles, /\.detail-unit__article-details\s*\{[^}]*grid-column:\s*1;/s);
+  assert.match(styles, /\.detail-unit__article-details \.works-meta-spacing\s*\{[^}]*margin-bottom:\s*8px;/s);
+  assert.match(styles, /\.detail-unit__title--article\s*\{[^}]*font-size:\s*16px;[^}]*line-height:\s*1\.08;/s);
+  assert.match(styles, /\.detail-unit__article-body ul > li::marker,[\s\S]*?color:\s*#fff;/s);
+  assert.match(styles, /--detail-article-section-gap:\s*48px;/);
+  assert.match(styles, /\.detail-unit__article-section\s*\{[^}]*margin-top:\s*var\(--detail-article-section-gap\);/s);
   assert.match(styles, /\.detail-unit__article-section:first-child\s*\{[^}]*margin-top:\s*0;/s);
   assert.doesNotMatch(styles, /\.detail-unit__article-section\s*\{[^}]*border-top:/s);
   assert.match(styles, /\.detail-unit__article-section h3\s*\{[^}]*margin:\s*0;[^}]*color:\s*#9c9c9c;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;/s);
   assert.match(styles, /\.detail-unit__article-section-body\s*\{[^}]*margin-top:\s*16px;/s);
+  assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*?--detail-article-section-gap:\s*32px;/);
   assert.doesNotMatch(styles, /\.detail-unit__article-section h3\s*\{[^}]*font-family:\s*var\(--fonts--family-display\)/s);
 });
 
 test("article reading columns and opening rule share the left-aligned text width", async () => {
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
   const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
-  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0, 68ch\) minmax\(0, 1fr\);[^}]*text-align:\s*left;/s);
+  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*width:\s*100%;[^}]*display:\s*grid;[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*text-align:\s*left;/s);
   assert.match(styles, /\.detail-unit__article-body > \*\s*\{[^}]*grid-column:\s*1;[^}]*min-width:\s*0;/s);
   assert.doesNotMatch(styles, /\.detail-unit__article-body > :first-child\s*\{[^}]*border-top:/s);
   assert.doesNotMatch(elevated, /\.detail-unit__article-body\s*\{[^}]*max-width:/s);

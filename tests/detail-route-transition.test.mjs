@@ -73,7 +73,7 @@ test("expanded project details reuse the canonical Projects lockup", async () =>
   assert.match(detail, /works-meta-spacing/);
   assert.match(detail, /works-project-description/);
   assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*var\(--detail-project-description-section-gap\);/s);
-  assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;/s);
+  assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-size:\s*16px;[^}]*line-height:\s*1\.08;/s);
   assert.match(styles, /\.detail-unit__project-lockup \.works-project-description\s*\{[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;/s);
   assert.match(styles, /\.detail-unit__title\[tabindex\]:focus-visible\s*\{[^}]*outline:\s*none;/s);
 });
@@ -141,19 +141,36 @@ test("detail routes cannot leak a generic Detail heading into a collection", asy
   assert.doesNotMatch(shell, /<h1 class="heading">Detail<\/h1>/);
 });
 
-test("article navigation expands the thumbnail while crossfading the header after travel", async () => {
+test("article navigation carries the selected text lockup into the text-only detail header", async () => {
   const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const transition = await readFile(new URL("../src/detail-route-transition.js", import.meta.url), "utf8");
+  const collection = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
 
   assert.match(detail, /data-article-detail-header/);
-  assert.match(detail, /\[data-project-card-copy\], \.articles-entry__body/);
+  assert.match(detail, /\[data-project-card-copy\], \[data-article-card-copy\]/);
   assert.match(detail, /sourceCopyVisual/);
   assert.match(detail, /nativeCopy:\s*targetHeader/);
-  assert.match(detail, /copyMode:\s*"crossfade"/);
+  assert.match(detail, /runArticleTextTransition\(\{/);
+  assert.match(detail, /expansionTarget:\s*selectedUnit\.querySelector\("\.detail-unit__article-body"\)/);
   assert.match(detail, /runArticleExitTransition/);
+  assert.doesNotMatch(detail, /articles-entry__thumbnail/);
+  assert.match(collection, /data-article-card-copy/);
+  assert.doesNotMatch(collection, /articles-entry__thumbnail|Read more/);
+  assert.match(transition, /export function runArticleTextTransition/);
+  assert.match(transition, /x:\s*copyTo\.left - copyFrom\.left/);
+  assert.match(transition, /y:\s*copyTo\.top - copyFrom\.top/);
+  assert.match(transition, /timeline\.to\(nativeCopy,[\s\S]*?autoAlpha:\s*1/);
+  assert.match(transition, /clipPath:\s*"inset\(0 0 0% 0\)"/);
   assert.match(transition, /export function runArticleExitTransition/);
-  assert.match(transition, /copyMode\s*=\s*"shared"/);
-  assert.match(transition, /copyMode === "crossfade"/);
-  assert.match(transition, /travel\+=1\.02/);
   assert.match(detail, /revealDuration:\s*isArticle \? \.42 : \.72/);
+});
+
+test("article details settle below the desktop canvas edge while project details retain their inset", async () => {
+  const detail = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
+
+  assert.match(detail, /const DETAIL_TOP_INSET = 16;/);
+  assert.match(detail, /const ARTICLE_DETAIL_TOP_INSET = 64;/);
+  assert.match(detail, /dataset\.detailKind === "article"[\s\S]*?\? ARTICLE_DETAIL_TOP_INSET[\s\S]*?: DETAIL_TOP_INSET/);
+  assert.match(detail, /const expandedTop = detailTopInset\(\);/);
+  assert.match(detail, /setScroll\(documentTop\(selectedUnit\) - expandedTop\);/);
 });

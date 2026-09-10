@@ -2,18 +2,16 @@ import { gsap } from "gsap";
 
 export const SECTION_REVEAL = Object.freeze({
   offsetY: 12,
-  lineDuration: .54,
   labelDuration: .38,
   bodyDuration: .46,
-  labelStart: .12,
-  bodyStart: .17,
-  totalDuration: .63,
+  bodyStart: .06,
+  totalDuration: .52,
 });
 
 function sectionParts(section) {
   const project = section.matches(".detail-unit__section--project");
   if (!project && section.matches(".detail-unit__article-opening")) {
-    return { label: null, body: section, hasRule: false };
+    return { label: null, body: section };
   }
   return {
     label: section.querySelector(project
@@ -22,7 +20,6 @@ function sectionParts(section) {
     body: section.querySelector(project
       ? ".detail-unit__section-body--project"
       : ".detail-unit__article-section-body"),
-    hasRule: project && section.matches(":first-child"),
   };
 }
 
@@ -37,8 +34,7 @@ export function createDetailSectionMotion({ view, enabled = false }) {
   let started = false;
 
   sections.forEach((section) => {
-    const { label, body, hasRule } = sectionParts(section);
-    if (hasRule) section.style.setProperty("--detail-section-rule-progress", "0");
+    const { label, body } = sectionParts(section);
     gsap.set([label, body].filter(Boolean), {
       autoAlpha: 0,
       y: SECTION_REVEAL.offsetY,
@@ -48,29 +44,21 @@ export function createDetailSectionMotion({ view, enabled = false }) {
 
   const reveal = (section) => {
     if (timelines.has(section)) return;
-    const { label, body, hasRule } = sectionParts(section);
+    const { label, body } = sectionParts(section);
     const text = [label, body].filter(Boolean);
     const timeline = gsap.timeline({
       onComplete: () => {
-        section.style.removeProperty("--detail-section-rule-progress");
         gsap.set(text, { clearProps: "transform,opacity,visibility,willChange" });
       },
     });
     timelines.set(section, timeline);
-    if (hasRule) {
-      timeline.to(section, {
-        "--detail-section-rule-progress": 1,
-        duration: SECTION_REVEAL.lineDuration,
-        ease: "power2.out",
-      }, 0);
-    }
     if (label) {
       timeline.to(label, {
         autoAlpha: 1,
         y: 0,
         duration: SECTION_REVEAL.labelDuration,
         ease: "power2.out",
-      }, hasRule ? SECTION_REVEAL.labelStart : 0);
+      }, 0);
     }
     if (body) {
       timeline.to(body, {
@@ -78,7 +66,7 @@ export function createDetailSectionMotion({ view, enabled = false }) {
         y: 0,
         duration: SECTION_REVEAL.bodyDuration,
         ease: "power2.out",
-      }, hasRule ? SECTION_REVEAL.bodyStart : .06);
+      }, SECTION_REVEAL.bodyStart);
     }
   };
 
@@ -111,7 +99,6 @@ export function createDetailSectionMotion({ view, enabled = false }) {
     timelines.clear();
     sections.forEach((section) => {
       const { label, body } = sectionParts(section);
-      section.style.removeProperty("--detail-section-rule-progress");
       gsap.set([label, body].filter(Boolean), {
         clearProps: "transform,opacity,visibility,willChange",
       });

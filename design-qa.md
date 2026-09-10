@@ -2,6 +2,131 @@
 
 result: passed
 
+## History X.com removal — September 10, 2026
+
+final result: passed
+
+- Decision: remove X.com from the live History contact row and public biography contact data.
+- Preserved content: email, LinkedIn, GitHub, and Cal.com remain in their existing order and retain the current white, underline-free interaction treatment.
+- Live evidence: `http://127.0.0.1:5175/history` was refreshed and captured inline in the Codex in-app browser at 319×907 CSS pixels and device-pixel ratio 2. The contact row visibly contains LinkedIn, GitHub, and Cal.com with no X.com link.
+- DOM evidence: the live contact section contains exactly four anchors: email, LinkedIn, GitHub, and Cal.com. The X.com label and URL are absent.
+- Fidelity: retained links preserve their order, labels, destinations, spacing, wrapping, color, hover treatment, and keyboard-focus behavior. No History copy, media, section spacing, or carousel behavior changed.
+- Verification: 11 focused biography and History tests passed. The production build and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: visual verification used the Codex in-app Chromium browser. Safari, Firefox, and physical devices were not recertified for this isolated content removal.
+
+## History portrait reversion — September 10, 2026
+
+final result: passed
+
+- Decision: restore `public/images/history/az-headshot-extended-v1.png` as the live History portrait and return the accessibility label to `Andrew Zellinger in profile`.
+- Reversibility: retain `public/images/history/az-headshot-extended-v2.png` as an inactive frontal alternative; no generated asset was deleted.
+- Scope: preserve the existing 3:2 frame, centered crop behavior, counterflow transition preload, History carousel motion, layout, and copy.
+- Live evidence: `http://127.0.0.1:5175/history` was refreshed and captured inline in the Codex in-app browser at 319×907 CSS pixels and device-pixel ratio 2. The rendered background resolves to `/images/history/az-headshot-extended-v1.png`, and the focused capture visibly shows the earlier side-profile portrait wearing the Mets cap.
+- Accessibility: the live element reports `Andrew Zellinger in profile`, matching the restored pose.
+- Fidelity: the earlier portrait asset itself was not edited or recompressed. Frame dimensions, centered background positioning, 3:2 crop, surrounding layout, and opening-copy rhythm remain unchanged.
+- Verification: 38 focused biography, History-carousel, portrait-study, and media-surface tests passed. The production build and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: the available browser pane was compact. The asset mapping and shared geometry are route-wide, but Safari, Firefox, and physical devices were not recertified for this isolated reversion.
+
+## History portrait replacement — September 10, 2026
+
+final result: passed
+
+- Source visual truth: `/Users/az/Documents/A-Z Profile/A-Z Avatar/ig_09eb24a3da62c2db016a1b561a3ec481998862ff72e56e8aa0.png`, supplied at 1254×1254 pixels, is the exact identity and central-image source. The former active portrait is `public/images/history/az-headshot-extended-v1.png` at 1536×1024.
+- Intended implementation: preserve the supplied square portrait in a centered 1024×1024 region and extend only its gray studio background laterally to a 1536×1024 3:2 canvas. The frontal figure remains centered and more prominent than the prior profile portrait while keeping modest headroom and side space.
+- Asset workflow: built-in ImageGen produced the matching lateral background extension; deterministic compositing restored the scaled original square source across the complete center region so generated facial, clothing, and central-background pixels are not shipped. Final workspace asset: `public/images/history/az-headshot-extended-v2.png`.
+- Rendered implementation: `http://127.0.0.1:5175/history`, refreshed and captured inline from the Codex in-app browser at a 319×907 CSS viewport and device-pixel ratio 2. The active CSS resolves to `/images/history/az-headshot-extended-v2.png` at centered 50%/50% positioning inside the existing 271×180.664 CSS-pixel compact frame.
+- Full-view and focused evidence: the live History capture shows the new frontal portrait centered in the established 3:2 media slot, with intact headroom, visible shoulders, balanced gray side space, and no overlay. The figure is visibly more prominent than the earlier profile portrait while the surrounding page hierarchy and opening copy remain unchanged.
+- Identity and pixel preservation: an exact PSNR comparison between the shipped asset's centered 1024×1024 crop and the supplied source scaled to 1024×1024 returned infinite PSNR across RGB. This confirms pixel identity across the complete central region; only the 256px left and right background bands are generated.
+- Fonts and typography: no type, copy, wrapping, or text hierarchy changed.
+- Spacing and layout rhythm: portrait frame dimensions, aspect ratio, crop position, carousel geometry, and opening-copy spacing are unchanged.
+- Colors and visual tokens: the source's neutral gray studio background and black sweater remain intact; the generated lateral bands continue the same tonal field without added color treatment.
+- Image quality and asset fidelity: the output is a 1536×1024 PNG. The supplied face, body, clothing, lighting, expression, and central background are retained exactly after deterministic scaling; no facial generation is shipped.
+- Copy and accessibility: page copy is unchanged. The image label now accurately reads `Portrait of Andrew Zellinger` instead of describing the former profile pose.
+- Comparison history: the first generated outpaint established the lateral background and framing but subtly regenerated the subject, so it was rejected as the final asset. The approved workspace version composites the exact source back into the center and uses generated pixels only outside that source region.
+- Verification: 38 focused biography, History-carousel, portrait-study, and media-surface tests passed. The production build packaged the new asset and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: the available live browser pane was compact, so a same-size desktop screenshot comparison was not available. Safari, Firefox, and physical devices were not recertified for this isolated asset replacement.
+
+## Experience register density and casing — September 10, 2026
+
+final result: passed
+
+- Source visual truth: `/var/folders/00/nrg_xrgs33g5v8nm_s1zn77r0000gn/T/TemporaryItems/NSIRD_screencaptureui_U2umof/Screenshot 2026-09-10 at 3.57.44 PM.png`. The supplied 1758×1820 desktop screenshot identifies uppercase organization names, generous row spacing, and a wide three-column register as the change target.
+- Rendered implementation: `http://127.0.0.1:5175/history`, refreshed and captured inline from the Codex in-app browser at a 319×907 CSS viewport and device-pixel ratio 2. The supplied desktop source and compact live capture are not treated as a pixel-matched comparison.
+- Full-view and focused evidence: the focused compact capture shows authored casing throughout the visible register, including Independent practice, Cosmos Holodeck, Avantos, Sketch / Amazon Fire TV, SketchDeck, Fi, Live Auctioneers, Modern Age, AKQA, I&Co / Audible Sleep, and Greater Than One. Computed style reports `text-transform: none`; the first organization resolves to `Independent practice`.
+- Desktop layout evidence: the 992px+ stylesheet constrains the register to 90%, reduces row gap to 10px, sets column gap to 16px, and tightens tracks to `1.15fr / .9fr / auto`. Focused regression coverage asserts all four desktop values while retaining the base and phone layouts.
+- Fonts and typography: organization font family, 15px size, 500 weight, leading, tracking, and white color are unchanged. Roles and dates retain their prior Geist/mono typography and colors.
+- Spacing and layout rhythm: only the desktop register width, row gap, column gap, and track proportions changed. Section separation, heading gap, content order, and phone two-row structure remain unchanged.
+- Colors and visual tokens: no palette or interaction-state tokens changed.
+- Image quality and asset fidelity: no media or image assets changed.
+- Copy and content: organization, role, and date records are unchanged. Title case is presentation-only and preserves intentional acronyms and brand styling.
+- Comparison history: the supplied source showed uppercase organizations with a wide, loose desktop register. The live compact view confirms casing and responsive preservation; static CSS and focused tests verify the requested desktop measure and rhythm.
+- Verification: 11 focused biography and History tests passed. The production build and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: the available live browser pane was compact, so desktop geometry was verified from the shipped CSS and regression tests rather than a same-size browser capture. Safari, Firefox, and physical devices were not recertified for this isolated refinement.
+
+## Select Clients casing and separators — September 10, 2026
+
+final result: passed
+
+- Source visual truth: `/var/folders/00/nrg_xrgs33g5v8nm_s1zn77r0000gn/T/TemporaryItems/NSIRD_screencaptureui_SJtozW/Screenshot 2026-09-10 at 3.56.42 PM.png`. The supplied 1844Õ726 source screenshot identifies uppercase client names and centered-dot separators as the change target.
+- Rendered implementation: `http://127.0.0.1:5175/history`, captured and emitted inline from the Codex in-app browser at a 319×907 CSS viewport and device-pixel ratio 2. The source and implementation are not treated as a pixel-matched layout comparison because the source isolates a desktop region while the available live browser is compact.
+- Full-view and focused evidence: the source and live implementation were inspected in the same task. The focused live capture shows authored title casing and comma-space separators across the complete client list. Computed style reports `text-transform: none`; DOM text contains commas and no middle-dot characters.
+- Fonts and typography: Geist family, 16px body size, weight, leading, tracking, white color, and the uppercase mono Select Clients label remain unchanged. Intentional brand forms such as IBM, LG, Fi, PwC, Coca-Cola, McDonald's, and WeWork are preserved from source records.
+- Spacing and layout rhythm: section position, width, wrapping behavior, and gap to Work With Me are unchanged; natural line breaks shift only because commas are narrower than the former spaced dots.
+- Colors and visual tokens: no color or state tokens changed.
+- Image quality and asset fidelity: no media or image assets changed.
+- Copy and content: client names and ordering are unchanged. Only presentation casing and separators changed.
+- Comparison history: the sole P1 mismatch was the uppercase, dot-separated presentation shown in the supplied source. The renderer now joins names with `, ` and the live style no longer uppercases them. Post-fix DOM and visual evidence confirm both corrections.
+- Verification: focused biography and History-carousel tests passed. The production build and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: visual verification used the Codex in-app Chromium browser. Safari, Firefox, and physical devices were not recertified for this isolated typography change.
+
+## History tools-section removal — September 10, 2026
+
+final result: passed
+
+- Source visual truth: `/var/folders/00/nrg_xrgs33g5v8nm_s1zn77r0000gn/T/TemporaryItems/NSIRD_screencaptureui_IpQ9Kj/Screenshot 2026-09-10 at 3.56.05 PM.png`. The supplied 1874Ö70 source screenshot identifies the complete Tools & Technologies section as the removal target.
+- Rendered implementation: `http://127.0.0.1:5175/history`, captured and emitted inline from the Codex in-app browser at a 319×907 CSS viewport and device-pixel ratio 2. The source and implementation are not treated as a pixel-matched layout comparison because the source isolates a desktop region while the available live browser is compact.
+- Full-view and focused evidence: the source and live implementation were inspected in the same task. Live DOM inspection found zero `.biography-block--stack` or `.biography-tools__list` nodes and no Tools & Technologies heading. The focused live capture shows Work With Me following Select Clients directly with the expected section separation.
+- Fonts and typography: all retained History typography, wrapping, weights, and casing remain unchanged.
+- Spacing and layout rhythm: the removed section contributes no DOM height or reserved spacing. Work With Me inherits the shared 64px desktop/tablet and 48px phone section separation.
+- Colors and visual tokens: no palette, opacity, border, or interaction-state treatment changed.
+- Image quality and asset fidelity: no media or image assets changed.
+- Copy and content: only the requested Tools & Technologies presentation was removed. Its source records remain inactive in `biography-content.js`; Select Clients and Work With Me retain their complete copy.
+- Comparison history: the sole P1 mismatch was the unwanted Tools & Technologies block. Its renderer and unused presentation hooks were removed. The post-fix capture and DOM inspection confirm a direct Select Clients to Work With Me sequence with no empty stack container.
+- Verification: focused biography and History-carousel tests passed. The production build and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: visual verification used the Codex in-app Chromium browser. Safari, Firefox, and physical devices were not recertified for this isolated deletion.
+
+## History capability-block removal — September 10, 2026
+
+final result: passed
+
+- Source visual truth: `/var/folders/00/nrg_xrgs33g5v8nm_s1zn77r0000gn/T/TemporaryItems/NSIRD_screencaptureui_vzfpnD/Screenshot 2026-09-10 at 3.55.17 PM.png`. The supplied 1844×640 source screenshot identifies AI Systems, Product, Delivery, and Direction as the complete removal target.
+- Rendered implementation: `http://127.0.0.1:5175/history`, captured and emitted inline from the Codex in-app browser at a 319×907 CSS viewport and device-pixel ratio 2. The source and implementation are not treated as a pixel-matched layout comparison because the supplied source isolates a desktop region while the available live browser is compact.
+- Full-view and focused evidence: the source and live implementation were inspected in the same task. Live DOM inspection found zero `.biography-capability` or `.biography-capabilities` nodes and none of the four labels. Select Clients remains and now follows Education as an ordinary History section; the focused live capture shows it flowing directly into Tools & Technologies without a residual capability gap.
+- Fonts and typography: the retained History sections preserve their existing Geist and Geist Mono styles, sizes, weights, leading, tracking, casing, and wrapping.
+- Spacing and layout rhythm: the removed block contributes no DOM height or reserved margin. Select Clients inherits the shared 64px desktop/tablet and 48px phone section separation; its internal 24px label gap remains unchanged.
+- Colors and visual tokens: no palette, opacity, border, or state treatment changed.
+- Image quality and asset fidelity: the clean History portrait from the prior pass remains untouched; no assets changed.
+- Copy and content: only the four requested capability presentations were removed. Select Clients, Tools & Technologies, Experience, Education, Work With Me, and Contact remain unchanged. Capability source records remain inactive in `biography-content.js` for reversibility.
+- Comparison history: the sole P1 mismatch was the unwanted four-part capability presentation. Rendering and now-unused presentation hooks were removed. The post-fix capture and DOM inspection show the section sequence closing correctly with no capability nodes.
+- Verification: focused biography and History-carousel tests passed. The production build and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: visual verification used the Codex in-app Chromium browser. Safari, Firefox, and physical devices were not recertified for this isolated deletion.
+
+## History portrait overlay removal — September 10, 2026
+
+final result: passed
+
+- Source visual truth: `/var/folders/00/nrg_xrgs33g5v8nm_s1zn77r0000gn/T/TemporaryItems/NSIRD_screencaptureui_Vdshx4/Screenshot 2026-09-10 at 3.54.03 PM.png`, supplied at 1814×1410 pixels and displayed by the task at 1792×1392 pixels. It identifies the colorized `A.` overlay as the sole removal target.
+- Rendered implementation: `http://127.0.0.1:5175/history`, captured and emitted inline from the Codex in-app browser. The CUA capture is ephemeral and exposes no filesystem path. Browser evidence used a 319×907 CSS viewport at device-pixel ratio 2. The source and implementation are not treated as a pixel-matched layout comparison because the supplied source is desktop and the available live viewport is compact.
+- Full-view and focused evidence: the supplied source and live implementation were inspected in the same task. The source visibly contains the orange `A.`; the revised portrait is the unmodified `az-headshot-extended-v1.png` with no overlay. The portrait itself is fully legible in the full-view compact capture, so no separate detail crop was needed. Live DOM inspection found zero `.portrait-artwork-layer` or `.portrait-artwork-stage` nodes and retained the expected portrait background URL.
+- Fonts and typography: no text styles, font loading, hierarchy, wrapping, or truncation changed; the removed mark no longer introduces a portrait-only font layer.
+- Spacing and layout rhythm: portrait dimensions, crop, frame, History carousel geometry, surrounding gaps, and responsive flow are unchanged. At the inspected viewport the portrait remains 271×180.664 CSS pixels at x24/y198.875.
+- Colors and visual tokens: the orange blended overlay is absent. The portrait, black canvas, white text, gray metadata, and navigation colors are unchanged.
+- Image quality and asset fidelity: the original local portrait remains the active `background-image`; it was not regenerated, edited, stretched, or replaced.
+- Copy and content: no History copy, labels, links, or metadata changed.
+- Comparison history: the only P1 mismatch was the unwanted colorized `A.` shown in the supplied source. The History route mapping was removed while keeping the artwork implementation archived. The post-fix live capture and DOM inspection confirm the overlay is absent with the portrait and layout intact.
+- Verification: focused History, biography, and portrait-artwork tests passed. The production build and all 229 source tests passed; `git diff --check` also passed.
+- Residual limits: visual verification used the Codex in-app Chromium browser. Desktop absence is guaranteed by the route-level no-mount rule and regression coverage, but Safari, Firefox, and physical devices were not recertified for this isolated deletion.
+
 ## Page-title character cascade
 
 The fixed-mask GSAP title cascade, descender-clearance correction, and Projects initialization fix are documented in [title-motion-qa.md](docs/title-motion-qa.md). The approved rail sweep and same-heading detail transitions are retained. Main remains untouched.

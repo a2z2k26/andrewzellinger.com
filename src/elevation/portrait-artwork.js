@@ -1,10 +1,8 @@
 import { HOME_PORTRAIT_MARKS, portraitArtworkFor, portraitArtworkSize } from './portrait-artwork-model.js';
 import './portrait-artwork.css';
 
-// The motion laboratory remains preserved in portrait-study.js, but is no
-// longer imported by the active site. These are deterministic still artworks.
-// History's approved Monument overprint is restored. The former Home artwork
-// stays archived in the model; the Projects landing page has no portrait art.
+// The motion laboratory and fixed portrait artwork remain preserved for later
+// use, but no live route currently opts into an overlay.
 export const PORTRAIT_ARTWORK_ENABLED = true;
 let cleanup = null;
 let pendingFrame = 0;

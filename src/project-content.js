@@ -52,7 +52,7 @@ const projectRecords = [
     "slug": "audible-sleep",
     "path": "/case-studies/audible-sleep/",
     "collectionPath": "/",
-    "title": "Audible Sleep",
+    "title": "Audible",
     "headline": "Audible Sleep, an immersive sleep solution.",
     "metadata": {
       "client": "Audible",
@@ -162,7 +162,7 @@ const projectRecords = [
     "slug": "android-wear",
     "path": "/case-studies/android-wear/",
     "collectionPath": "/",
-    "title": "Android Wear",
+    "title": "Google",
     "headline": "Pioneering Smartwatch Face Design for Wear OS",
     "metadata": {
       "client": "Google",
@@ -322,7 +322,7 @@ const projectRecords = [
     "slug": "fi-smart-collar",
     "path": "/case-studies/fi-smart-collar/",
     "collectionPath": "/",
-    "title": "Fi Collar",
+    "title": "Fi",
     "headline": "Enhancing Dog Tracking",
     "metadata": {
       "client": "Fi",
@@ -493,7 +493,7 @@ const projectRecords = [
     "slug": "wework-studio",
     "path": "/case-studies/wework-studio/",
     "collectionPath": "/",
-    "title": "WeWork Studio",
+    "title": "WeWork",
     "headline": "Sales tool for business growth",
     "metadata": {
       "client": "WeWork",
@@ -607,7 +607,7 @@ const projectRecords = [
     "slug": "foursquare",
     "path": "/case-studies/foursquare/",
     "collectionPath": "/",
-    "title": "Foursquare Brand",
+    "title": "Foursquare",
     "headline": "Rebranding Foursquare",
     "metadata": {
       "client": "Foursquare",
@@ -773,7 +773,7 @@ const projectRecords = [
     "slug": "proctor-and-gamble",
     "path": "/case-studies/proctor-and-gamble/",
     "collectionPath": "/",
-    "title": "Procter & Gamble",
+    "title": "P&G",
     "headline": "Showcasing P&G's sustainability program",
     "metadata": {
       "client": "P&G",
@@ -902,7 +902,7 @@ const projectRecords = [
     "slug": "thompson-reuters",
     "path": "/case-studies/thompson-reuters/",
     "collectionPath": "/",
-    "title": "Thomson Reuters",
+    "title": "Thompson Reuters",
     "headline": "TV Streaming Platform for Reuters",
     "metadata": {
       "client": "Thomson Reuters",
@@ -959,7 +959,7 @@ const projectRecords = [
     "slug": "price-waterhouse-coopers",
     "path": "/case-studies/price-waterhouse-coopers/",
     "collectionPath": "/",
-    "title": "PwC Audit",
+    "title": "PwC",
     "headline": "Streamlining PwC's financial auditing process",
     "metadata": {
       "client": "PwC",
@@ -1339,7 +1339,7 @@ const projectRecords = [
     "slug": "mcdonalds",
     "path": "/case-studies/mcdonalds/",
     "collectionPath": "/",
-    "title": "McDonalds Kiosk",
+    "title": "McDonalds",
     "headline": "McDonald's In-Restaurant Kiosk Experience",
     "metadata": {
       "client": "McDonald's",
@@ -1453,7 +1453,7 @@ const projectRecords = [
     "slug": "amazon-fire-tv",
     "path": "/case-studies/amazon-fire-tv/",
     "collectionPath": "/",
-    "title": "Amazon Fire TV",
+    "title": "Amazon",
     "headline": "Amazon Fire TV",
     "metadata": {
       "client": "AMAZON",
@@ -1588,7 +1588,7 @@ const projectRecords = [
     "slug": "pi-app",
     "path": "/case-studies/pi-app/",
     "collectionPath": "/",
-    "title": "Positive Brand",
+    "title": "Positive Intelligence",
     "headline": "From Philosophy to Brand and Product",
     "metadata": {
       "client": "Positive Intelligence",
@@ -1633,7 +1633,7 @@ const projectRecords = [
     "slug": "obagi",
     "path": "/case-studies/obagi/",
     "collectionPath": "/",
-    "title": "Obagi Care",
+    "title": "Obagi",
     "headline": "A Two-Sided Skincare Commerce Experience",
     "metadata": {
       "client": "Obagi",
@@ -1678,7 +1678,7 @@ const projectRecords = [
     "slug": "gero-app",
     "path": "/case-studies/gero-app/",
     "collectionPath": "/",
-    "title": "Gero Timer",
+    "title": "Gero",
     "headline": "A Pomodoro Companion for Your Wrist",
     "metadata": {
       "client": "USTWO",
@@ -1754,6 +1754,12 @@ const projectDisplayOrder = Object.freeze([
   "pi-app",
 ]);
 
+export const HIDDEN_PROJECT_SLUGS = Object.freeze([
+  "obagi",
+  "gero-app",
+  "northwestern-mutual",
+]);
+
 const projectsBySlug = new Map(projectRecords.map((project) => [project.slug, project]));
 const orderedProjectRecords = projectDisplayOrder.map((slug) => {
   const project = projectsBySlug.get(slug);
@@ -1767,7 +1773,7 @@ if (orderedProjectRecords.length !== projectRecords.length) {
   throw new Error("Project display order must include every project exactly once");
 }
 
-export const PROJECTS = Object.freeze(orderedProjectRecords.map((project) => {
+export const ALL_PROJECTS = Object.freeze(orderedProjectRecords.map((project) => {
   const publishedNarrative = PROJECT_NARRATIVES[project.slug];
   if (!publishedNarrative) {
     throw new Error("Missing published narrative for " + project.slug);
@@ -1788,6 +1794,12 @@ export const PROJECTS = Object.freeze(orderedProjectRecords.map((project) => {
   });
 }));
 
+const hiddenProjectSlugs = new Set(HIDDEN_PROJECT_SLUGS);
+
+export const PROJECTS = Object.freeze(
+  ALL_PROJECTS.filter((project) => !hiddenProjectSlugs.has(project.slug)),
+);
+
 /**
  * Canonical Projects/case-study metadata projection. Both collection cards
  * and project detail headers must use these helpers so their visible content
@@ -1795,7 +1807,7 @@ export const PROJECTS = Object.freeze(orderedProjectRecords.map((project) => {
  * @param {ProjectRecord} project
  */
 export function projectCardTags(project) {
-  return [project.metadata.client, project.metadata.role, project.metadata.year]
+  return [project.metadata.role, project.metadata.year]
     .filter(Boolean);
 }
 

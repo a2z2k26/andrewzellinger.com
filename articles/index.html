@@ -62,29 +62,32 @@
     }
     .articles-entry-list > li {
       padding-top: 0;
-      padding-bottom: 48px;
+      padding-bottom: 0;
       border-bottom: 0;
     }
-    .articles-entry {
-      grid-column-gap: 32px;
-      grid-template-columns: 288px minmax(0, 1fr);
-      align-items: center;
+    .articles-entry-link {
       width: 100%;
-      display: grid;
+      padding-bottom: 60px;
+      display: block;
     }
-    .articles-entry__thumbnail {
+    .articles-entry {
       width: 100%;
-      aspect-ratio: 3 / 2;
-      background-color: #2b2b2b;
+      display: block;
     }
     .articles-entry__body {
+      width: min(100%, 60ch);
       min-width: 0;
+      font-family: "Geist", sans-serif;
+      font-size: 15px;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+      display: grid;
     }
     .articles-entry__meta {
+      grid-column: 1;
       color: #9c9c9c;
       opacity: 1;
-      margin-top: 16px;
-      margin-bottom: var(--space--desktop-medium);
+      margin: 0 0 8px;
       gap: 24px;
       font-family: var(--fonts--family-mono);
       font-size: 12px;
@@ -96,16 +99,19 @@
       flex-wrap: wrap;
     }
     .articles-entry__title.heading-style-h2.new {
-      max-width: 80%;
-      margin: 0;
+      grid-column: 1;
+      grid-row: auto;
+      max-width: none;
+      margin: 0 0 16px;
       font-family: "Geist", sans-serif;
-      font-size: 24px;
-      line-height: 24px;
-      letter-spacing: 0;
+      font-size: 16px;
+      line-height: 1.08;
+      letter-spacing: .01em;
       text-transform: none;
       font-weight: 500;
     }
     .articles-entry__excerpt {
+      grid-column: 1;
       max-width: 100%;
       color: var(--swatches--light-1);
       opacity: 1;
@@ -116,26 +122,16 @@
       font-family: "Geist", sans-serif;
       font-size: 13px;
       font-weight: 400;
-      line-height: 24px;
+      line-height: 22px;
       letter-spacing: 0;
       text-indent: 0;
       text-transform: uppercase;
       overflow: hidden;
+      text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-    }
-    .articles-entry__cta {
-      color: var(--swatches--accent-1);
-      margin-top: 24px;
-      font-family: "Geist", sans-serif;
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 13px;
-      letter-spacing: .36px;
-      text-transform: uppercase;
-      text-decoration: none;
-      display: inline-block;
+      line-clamp: 2;
     }
     .nav_menu {
       opacity: 0;
@@ -148,8 +144,11 @@
     }
     .nav .container-xlarge + * { margin-top: 0; }
     @media screen and (min-width: 992px) {
-      .articles-entry__meta.works-meta-spacing {
-        margin-bottom: 12px;
+      .articles-entry__title.heading-style-h2.new {
+        font-size: 18px;
+      }
+      .articles-entry__excerpt {
+        block-size: 2lh;
       }
       html[data-articles-motion="running"] .articles-index__list {
         z-index: 2;
@@ -157,9 +156,9 @@
         margin: 0;
         padding: 0;
         position: fixed;
-        top: var(--structure--padding-desktop);
+        top: 0;
         right: var(--structure--padding-desktop);
-        bottom: var(--structure--padding-desktop);
+        bottom: 0;
         left: calc(50% + (var(--structure--grid-row-gap) / 2));
         overflow: hidden;
         display: flex;
@@ -193,18 +192,28 @@
       }
       .articles-entry-list > li {
         padding-top: 0;
+        padding-bottom: 0;
+      }
+      .articles-entry-link {
         padding-bottom: 32px;
       }
       .articles-entry {
-        grid-column-gap: 32px;
-        grid-template-columns: 224px minmax(0, 1fr);
+        display: block;
+      }
+      .articles-entry__body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .articles-entry__title.heading-style-h2.new {
+        grid-column: 1;
+        grid-row: auto;
+        margin-bottom: 16px;
       }
       .articles-entry__meta {
-        margin-top: 24px;
-        margin-bottom: var(--space--tablet-medium);
+        grid-column: 1;
+        margin: 0 0 8px;
       }
-      .articles-entry__title { max-width: 80%; }
       .articles-entry__excerpt {
+        grid-column: 1;
         max-width: 100%;
       }
     }
@@ -220,16 +229,16 @@
       }
       .articles-entry-list > li {
         padding-top: 0;
+        padding-bottom: 0;
+      }
+      .articles-entry-link {
         padding-bottom: 32px;
       }
       .articles-entry {
-        grid-template-columns: minmax(0, 1fr);
-        row-gap: 24px;
-        align-items: start;
+        display: block;
       }
       .articles-entry__meta {
-        margin-top: 32px;
-        margin-bottom: var(--space--smartphone-medium);
+        margin: 0 0 8px;
       }
     }
   </style>
@@ -243,7 +252,7 @@
       <nav class="nav" aria-label="Primary navigation">
         <div class="container-xlarge">
           <a href="/" class="nav_brand w-inline-block">
-            <div>A. ZELLINGER</div>
+            <div>ZELLINGER</div>
           </a>
         </div>
         <div class="container-xlarge nav_container">
@@ -262,7 +271,7 @@
           </div>
         </div>
         <div class="container-xlarge nav_h">
-          <div class="display-inlineflex"><div id="h">NYC 00:00:00</div></div>
+          <div class="display-inlineflex"><div id="h">00:00:00</div></div>
         </div>
       </nav>
       <header class="title">
@@ -274,143 +283,121 @@
           <ol class="articles-entry-list">
 <li>
 <a href="/articles/the-constraint-was-the-brief/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="the-constraint-was-the-brief" aria-label="Read article: The Constraint Was the Brief">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/the-constraint-was-the-brief.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">The Constraint Was the Brief</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">How treating severe constraints as the brief can clarify the problem, reject familiar patterns, and produce a better product.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Aug 27th 2026, 4 MIN"><span>Aug 27th 2026</span><span>4 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">How treating severe constraints as the brief can clarify the real problem, expose the limits of familiar patterns, and produce a product for the user's actual state.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/intention-deficit-disorder/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="intention-deficit-disorder" aria-label="Read article: Intention Deficit Disorder">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/intention-deficit-disorder.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Intention Deficit Disorder</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 5 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>5 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">How AI products accumulate intent debt when they misread users, and how design teams can identify, measure, and prevent it.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="May 9th 2026, 5 MIN"><span>May 9th 2026</span><span>5 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">How AI products accumulate intent debt when they misread users, assume missing context, and make correction difficult, plus ways design teams can identify and prevent it.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/company-of-one/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="company-of-one" aria-label="Read article: Company of One">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/company-of-one.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Company of One</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 6 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>6 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">How a working agent harness uses bounded delegation, explicit checks, and honest cost accounting to make uncertain behavior easier to inspect.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="May 1st 2026, 6 MIN"><span>May 1st 2026</span><span>6 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">How a working agent harness uses bounded delegation, explicit checks, visible failure states, and honest cost accounting to make uncertain behavior easier to inspect.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/cut-defer-or-build/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="cut-defer-or-build" aria-label="Read article: Cut, Defer or Build">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/cut-defer-or-build.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Cut, Defer or Build</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">A practical framework for deciding what an early product should cut, defer, or build when ambition outruns time and budget.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Jan 14th 2026, 4 MIN"><span>Jan 14th 2026</span><span>4 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">A practical framework for deciding what an early product should cut, defer, or build when ambition outruns time and budget, and research must separate evidence from enthusiasm.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/design-principles-that-actually-shape-the-product/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="design-principles-that-actually-shape-the-product" aria-label="Read article: Product Design Principles">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/design-principles-that-actually-shape-the-product.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Product Design Principles</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 5 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>5 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">How research-grounded design principles resolve real trade-offs, survive delivery pressure, and actively shape product decisions.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Oct 3rd 2025, 5 MIN"><span>Oct 3rd 2025</span><span>5 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">How research-grounded design principles resolve real product trade-offs, survive delivery pressure, and endure when encoded in workflows, interfaces, and structure.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/lessons-from-fifteen-years-of-embedded-product-design/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="lessons-from-fifteen-years-of-embedded-product-design" aria-label="Read article: Embedded Product Design Lessons">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/lessons-from-fifteen-years-of-embedded-product-design.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Embedded Product Design Lessons</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 5 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>5 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">Lessons in research, workflow structure, and delivery from embedding with product teams across complex commercial design projects.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Jul 13th 2025, 5 MIN"><span>Jul 13th 2025</span><span>5 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">Lessons in research, workflow structure, delivery, and coherence from embedding with product teams across complex commercial projects and organizational change.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/what-makes-a-real-mvp/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="what-makes-a-real-mvp" aria-label="Read article: What Makes a Real MVP?">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/what-makes-a-real-mvp.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">What Makes a Real MVP?</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">Why a real MVP is not the smallest demo, but the smallest complete journey a user can finish clearly and with confidence.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Jul 12th 2025, 4 MIN"><span>Jul 12th 2025</span><span>4 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">Why a real MVP is not the smallest demo, but the smallest complete journey a user can finish confidently, especially when trust, context, and user state shape viability.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/you-always-let-yourself-win/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="you-always-let-yourself-win" aria-label="Read article: You Always Let Yourself Win">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/you-always-let-yourself-win.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">You Always Let Yourself Win</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 10 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>10 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">Why designers need evals to define product quality, expose weak outputs, and keep AI experiences useful, clear, and trustworthy.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Nov 3rd 2024, 10 MIN"><span>Nov 3rd 2024</span><span>10 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">Why designers need evals to define product quality, expose weak and inconsistent outputs, and keep AI experiences useful, clear, trustworthy, and accountable over time.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/two-dollar-bill/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="two-dollar-bill" aria-label="Read article: Two-Dollar Bill">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/two-dollar-bill.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Two-Dollar Bill</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 6 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>6 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">What a two-dollar agent mistake revealed about cost visibility, operational trust, and why autonomous systems must earn freedom.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Apr 29th 2024, 6 MIN"><span>Apr 29th 2024</span><span>6 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">What a two-dollar agent mistake revealed about cost visibility, failure states, operational trust, and why autonomous systems must demonstrate control before earning more freedom.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/a-free-surf-lesson/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="a-free-surf-lesson" aria-label="Read article: A Free Surf Lesson">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/a-free-surf-lesson.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">A Free Surf Lesson</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 4 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>4 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">Why design judgment needs systems understanding and hands-on execution, with a sleep-player example showing how constraints shape the work.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Feb 12th 2024, 4 MIN"><span>Feb 12th 2024</span><span>4 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">Why design judgment needs systems understanding and hands-on execution, with a sleep-player example showing how user state, constraints, and implementation shape the work.</p>
       </div>
     </article>
   </a>
 </li>
 <li>
 <a href="/articles/showing-my-teeth/" class="portfolio-detail-link articles-entry-link" data-portfolio-detail-link data-detail-kind="article" data-detail-slug="showing-my-teeth" aria-label="Read article: Showing My Teeth">
-    <article class="articles-entry">
-      <div class="articles-entry__thumbnail" aria-hidden="true" style="--portfolio-media-image: url(&quot;/images/articles/showing-my-teeth.webp&quot;)"></div>
+    <article class="articles-entry" data-article-card-copy>
       <div class="articles-entry__body">
         <h2 class="articles-entry__title heading-style-h2 new">Showing My Teeth</h2>
-        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Andrew Zellinger, Reviewed Sep 8th 2026, 7 MIN"><span>Andrew Zellinger</span><span>Reviewed Sep 8th 2026</span><span>7 MIN</span></div>
-        <p class="articles-entry__excerpt works-project-description">A personal account of professional loss, family crisis, survival, and choosing integrity when the design industry turns hostile.</p>
-        <span class="articles-entry__cta">Read more</span>
+        <div class="articles-entry__meta display-inlineflex categories works-meta-spacing" aria-label="Jan 10th 2024, 7 MIN"><span>Jan 10th 2024</span><span>7 MIN</span></div>
+        <p class="articles-entry__excerpt works-project-description">A personal account of professional loss, family crisis, survival, and choosing integrity when the industry turns hostile, and why continuing to make the work matters.</p>
       </div>
     </article>
   </a>

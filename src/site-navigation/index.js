@@ -1,4 +1,4 @@
-import { NAVIGATION_ROUTES, navigationSection, detailReturn } from './model.js';
+import { NAVIGATION_ROUTES, navigationSection, detailReturn, centeredMastheadLeft } from './model.js';
 import './styles.css';
 const root = document.documentElement;
 root.dataset.siteNavigation = 'masthead';
@@ -43,7 +43,10 @@ function initialize() {
     root.style.setProperty('--site-nav-title-top', heading.getBoundingClientRect().top + 'px');
     if (brand) {
       const rect = brand.getBoundingClientRect();
-      root.style.setProperty('--masthead-left', (rect.right + 156) + 'px');
+      const gridGap = Number.parseFloat(getComputedStyle(root).getPropertyValue('--structure--grid-row-gap')) || 0;
+      const rightColumnLeft = window.innerWidth / 2 + gridGap / 2;
+      const menuWidth = nav.getBoundingClientRect().width;
+      root.style.setProperty('--masthead-left', centeredMastheadLeft(rect.right, rightColumnLeft, menuWidth) + 'px');
       root.style.setProperty('--masthead-top', (rect.top + rect.height / 2 - 22) + 'px');
     }
   };
@@ -72,6 +75,7 @@ function initialize() {
   const sizes = new ResizeObserver(schedule);
   sizes.observe(heading);
   if (brand) sizes.observe(brand);
+  sizes.observe(nav);
   window.addEventListener('resize', schedule);
   for (const event of ['portfolio:routechange', 'portfolio:rail-sweep-arrival', 'popstate', 'pageshow']) window.addEventListener(event, synchronize);
   compact.addEventListener('change', synchronize);

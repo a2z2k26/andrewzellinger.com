@@ -40,16 +40,20 @@ test('eleven distinct artworks are assigned, leaving one spare and one duplicate
   }
 });
 
-test('static, live, detail and transition rendering use the same article image source', async () => {
+test('article artwork stays archived while public article surfaces render text only', async () => {
   const html = await readFile(new URL('articles/index.html', root), 'utf8');
   const index = await readFile(new URL('src/articles-index.js', root), 'utf8');
   const detail = await readFile(new URL('src/detail-state.js', root), 'utf8');
   const transitions = await readFile(new URL('src/elevation/counterflow.js', root), 'utf8');
-  assert.match(index, /--portfolio-media-image: url\('\$\{escapeHtml\(entry\.media\.src\)\}'\)/);
-  assert.match(detail, /escapeHtml\(entry\.media\.src\)/);
-  assert.match(transitions, /ARTICLE_DETAILS\.slice\(0,2\)\.map\(item=>item\.media\.src\)/);
-  for (const article of ARTICLE_DETAILS) {
-    const card = html.match(new RegExp(`data-detail-slug="${article.slug}"[\\s\\S]*?</article>`))?.[0];
-    assert.ok(card?.includes(article.media.src), article.slug);
-  }
+  const articleUnitMarkup = detail.slice(
+    detail.indexOf('const body = articleBodyMarkup(entry);'),
+    detail.indexOf('function setMarkup'),
+  );
+
+  assert.doesNotMatch(html, /articles-entry__thumbnail|\/images\/articles\//);
+  assert.doesNotMatch(index, /articles-entry__thumbnail|entry\.media\.src/);
+  assert.doesNotMatch(articleUnitMarkup, /mediaMarkup\(entry\)|entry\.media\.src|detail-unit__media/);
+  assert.doesNotMatch(transitions, /ARTICLE_DETAILS/);
+  assert.match(transitions, /if\(path==='\/articles'\) return \[\];/);
+  for (const article of ARTICLE_DETAILS) assert.ok(ARTICLE_IMAGES[article.slug], article.slug);
 });

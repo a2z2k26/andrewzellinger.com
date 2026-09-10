@@ -47,6 +47,29 @@ test("article boundaries animate the incoming chapter without moving the complet
   assert.match(controller, /if \(animateOutgoing\) \{[\s\S]*pair\.outgoing\.media/);
   assert.match(controller, /gsap\.set\(pair\.incoming\.media/);
   assert.match(controller, /gsap\.set\(pair\.incoming\.titles/);
+  assert.match(controller, /articleCopyFrame\(progress, compact\)/);
+});
+
+test("article copy uses an early entry-zone reveal instead of project midpoint timing", async () => {
+  const controller = await readFile(new URL("../src/detail-boundary-motion.js", import.meta.url), "utf8");
+  const values = await readFile(new URL("../src/detail-motion-values.js", import.meta.url), "utf8");
+
+  assert.match(controller, /revealArticleCopyEarly/);
+  assert.match(controller, /copyFrame = revealArticleCopyEarly/);
+  assert.match(values, /const title = rangeProgress\(value, 0, \.18\)/);
+  assert.match(values, /const meta = rangeProgress\(value, \.03, \.23\)/);
+  assert.match(values, /const lede = rangeProgress\(value, \.06, \.27\)/);
+});
+
+test("outgoing project lockups remain stationary and fully opaque at detail boundaries", async () => {
+  const controller = await readFile(new URL("../src/detail-boundary-motion.js", import.meta.url), "utf8");
+
+  assert.doesNotMatch(
+    controller,
+    /gsap\.set\(pair\.outgoing\.header,\s*\{[^}]*\b(?:y|opacity):/s,
+  );
+  assert.match(controller, /gsap\.set\(pair\.outgoing\.media,/);
+  assert.match(controller, /gsap\.set\(pair\.incoming\.media,/);
 });
 
 test("entry motion places the selected project at the canvas top without an intermediate curtain", async () => {

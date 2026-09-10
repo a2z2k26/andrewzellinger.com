@@ -2,41 +2,52 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { CASE_STUDIES } from "../src/detail-content.js";
-import { PROJECTS } from "../src/project-content.js";
+import {
+  ALL_PROJECTS,
+  HIDDEN_PROJECT_SLUGS,
+  PROJECTS,
+} from "../src/project-content.js";
 import { PROJECT_SECTION_LABELS, ENGAGEMENT_SECTION_LABELS } from "../src/project-narratives.js";
 
 const expectedTitles = [
   "Avantos",
-  "Amazon Fire TV",
-  "Audible Sleep",
+  "Amazon",
+  "Audible",
   "Turner Media",
-  "Obagi Care",
-  "WeWork Studio",
-  "Android Wear",
+  "Obagi",
+  "WeWork",
+  "Google",
   "Live Auctioneers",
   "Andrew Eccles",
-  "Procter & Gamble",
+  "P&G",
   "Modern Age",
-  "Fi Collar",
-  "Thomson Reuters",
-  "Gero Timer",
-  "Foursquare Brand",
-  "PwC Audit",
+  "Fi",
+  "Thompson Reuters",
+  "Gero",
+  "Foursquare",
+  "PwC",
   "NW Mutual",
-  "McDonalds Kiosk",
-  "Positive Brand",
+  "McDonalds",
+  "Positive Intelligence",
 ];
 
-test("project content keeps the approved order and stable routes", () => {
-  assert.equal(PROJECTS.length, 19);
-  assert.deepEqual(PROJECTS.map(({ title }) => title), expectedTitles);
-  assert.equal(new Set(PROJECTS.map(({ slug }) => slug)).size, PROJECTS.length);
+const hiddenTitles = ["Obagi", "Gero", "NW Mutual"];
+const visibleTitles = expectedTitles.filter((title) => !hiddenTitles.includes(title));
+
+test("project content preserves the complete archive while exposing only visible projects", () => {
+  assert.equal(ALL_PROJECTS.length, 19);
+  assert.deepEqual(ALL_PROJECTS.map(({ title }) => title), expectedTitles);
+  assert.equal(new Set(ALL_PROJECTS.map(({ slug }) => slug)).size, ALL_PROJECTS.length);
+  assert.deepEqual(HIDDEN_PROJECT_SLUGS, ["obagi", "gero-app", "northwestern-mutual"]);
+  assert.equal(PROJECTS.length, 16);
+  assert.deepEqual(PROJECTS.map(({ title }) => title), visibleTitles);
+  assert.deepEqual(PROJECTS.filter(({ title }) => hiddenTitles.includes(title)), []);
   assert.deepEqual(
-    PROJECTS.filter(({ slug }) => ["juuice-app", "tred-auto", "seattle-genetics"].includes(slug)),
+    ALL_PROJECTS.filter(({ slug }) => ["juuice-app", "tred-auto", "seattle-genetics"].includes(slug)),
     [],
   );
 
-  for (const project of PROJECTS) {
+  for (const project of ALL_PROJECTS) {
     assert.equal(project.kind, "project");
     assert.equal(project.collectionPath, "/");
     assert.equal(project.path, `/case-studies/${project.slug}/`);
@@ -58,7 +69,7 @@ test("dense phone-array thumbnails are separated in the circular sequence", () =
 });
 
 test("project detail data is complete and uses no runtime Notion source references", () => {
-  for (const project of PROJECTS) {
+  for (const project of ALL_PROJECTS) {
     assert.ok(project.title);
     assert.ok(project.headline);
     assert.ok(project.summary);
@@ -179,7 +190,7 @@ test("project detail data is complete and uses no runtime Notion source referenc
     assert.ok(project.sections.every((section) => section.label && (section.paragraphs.length > 0 || section.items?.length > 0)));
   }
 
-  const runtimeContent = JSON.stringify(PROJECTS);
+  const runtimeContent = JSON.stringify(ALL_PROJECTS);
   assert.doesNotMatch(runtimeContent, /notion\.so|api\.notion|prod-files|attachment:/i);
   assert.doesNotMatch(runtimeContent, /"slug":"(?:ustwo|talentai)"/i);
 });
@@ -188,20 +199,20 @@ test("case-study routes consume the canonical project collection", () => {
   assert.equal(CASE_STUDIES, PROJECTS);
 });
 
-test("Gero Timer uses the approved USTWO client tag", () => {
-  const gero = PROJECTS.find(({ slug }) => slug === "gero-app");
+test("Gero uses the approved USTWO client tag", () => {
+  const gero = ALL_PROJECTS.find(({ slug }) => slug === "gero-app");
   assert.equal(gero?.metadata.client, "USTWO");
   assert.equal(gero?.meta[0], "USTWO");
 });
 
-test("Amazon Fire TV uses the approved AMAZON client tag", () => {
+test("Amazon uses the approved AMAZON client tag", () => {
   const amazon = PROJECTS.find(({ slug }) => slug === "amazon-fire-tv");
   assert.equal(amazon?.metadata.client, "AMAZON");
   assert.equal(amazon?.meta[0], "AMAZON");
 });
 
-test("Obagi Care uses the approved 2020 year tag", () => {
-  const obagi = PROJECTS.find(({ slug }) => slug === "obagi");
+test("Obagi uses the approved 2020 year tag", () => {
+  const obagi = ALL_PROJECTS.find(({ slug }) => slug === "obagi");
   assert.equal(obagi?.metadata.year, "2020");
   assert.equal(obagi?.meta[2], "2020");
 });
@@ -212,20 +223,23 @@ test("Turner Media uses the approved TURNER client tag", () => {
   assert.equal(turner?.meta[0], "TURNER");
 });
 
-test("Positive Brand uses the approved 2018 year tag", () => {
+test("Positive Intelligence uses the approved 2018 year tag", () => {
   const positiveBrand = PROJECTS.find(({ slug }) => slug === "pi-app");
   assert.equal(positiveBrand?.metadata.year, "2018");
   assert.equal(positiveBrand?.meta[2], "2018");
 });
 
 test("case studies use substantive decisions without a padding quota", () => {
-  for (const project of PROJECTS) {
+  for (const project of ALL_PROJECTS) {
     const shortRecord = project.slug === "amazon-fire-tv";
     assert.deepEqual(project.sections.map(s => s.label), shortRecord ? ENGAGEMENT_SECTION_LABELS : PROJECT_SECTION_LABELS);
-    assert.deepEqual(project.sections.map(s => s.paragraphs.length), shortRecord ? [1,1,1] : [1,1,0,1]);
+    assert.deepEqual(project.sections.map(s => s.paragraphs.length), shortRecord ? [1,1] : [1,0,1]);
+    assert.equal(project.sections[0].label, "Context");
+    assert.equal(project.sections[0].paragraphs.length, 1);
+    assert.ok(!project.sections.some(section => section.label === "Work"));
     if (!shortRecord) {
-      assert.equal(project.sections[2].items.length, 3);
-      assert.ok(project.sections[2].items.every(item => item.trim().split(/\s+/).length >= 10));
+      assert.equal(project.sections[1].items.length, 3);
+      assert.ok(project.sections[1].items.every(item => item.trim().split(/\s+/).length >= 10));
     }
     const words = project.sections.flatMap(s => [...s.paragraphs, ...(s.items ?? [])]).join(" ").split(/\s+/).length;
     assert.ok(words <= 350, project.slug + " exceeds the editorial upper budget");

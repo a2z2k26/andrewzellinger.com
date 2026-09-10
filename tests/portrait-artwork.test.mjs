@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { HOME_PORTRAIT_MARKS, portraitArtworkFor, portraitArtworkSize } from '../src/elevation/portrait-artwork-model.js';
 
-test('live fixed artwork is limited to History, not the Projects landing page', () => {
-  assert.equal(portraitArtworkFor('/'), null);
-  assert.equal(portraitArtworkFor('/history/').kind, 'history');
-  for (const path of ['/projects', '/articles', '/case-studies/audible-sleep/', '/articles/example/']) assert.equal(portraitArtworkFor(path), null);
+test('fixed portrait artwork remains archived and is not mounted on live routes', () => {
+  for (const path of ['/', '/projects', '/articles', '/history', '/history/', '/case-studies/audible-sleep/', '/articles/example/']) {
+    assert.equal(portraitArtworkFor(path), null);
+  }
 });
 
 test('Home keeps ten screenshot positions with authored size variation and no random layout', () => {
@@ -38,7 +38,7 @@ test('Home keeps separated glyph boxes across wide, tall and compact image frame
   }
 });
 
-test('History static artwork is restored without animations or controls', async () => {
+test('archived fixed artwork stays deterministic and free of animations or controls', async () => {
   const [entry, source, css] = await Promise.all(['index.js', 'portrait-artwork.js', 'portrait-artwork.css']
     .map(file => readFile(new URL(`../src/elevation/${file}`, import.meta.url), 'utf8')));
   assert.match(entry, /import '\.\/portrait-artwork\.js'/);

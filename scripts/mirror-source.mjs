@@ -47,7 +47,7 @@ const newYorkClockScript = `const newYorkClockFormatter = new Intl.DateTimeForma
 });
 function showTime() {
   const clockElement = document.getElementById("h");
-  clockElement.textContent = "NYC " + newYorkClockFormatter.format(new Date());
+  clockElement.textContent = newYorkClockFormatter.format(new Date());
 }
 setInterval(showTime, 1000);
 showTime();`;
@@ -184,7 +184,7 @@ const placeholderStyles = `
   </style>
   <style id="local-index-page-spacing">
     html.works-motion-route {
-      --works-card-gap: 32px;
+      --works-card-gap: 40px;
     }
     html.works-motion-route body {
       min-height: 300svh;
@@ -195,9 +195,9 @@ const placeholderStyles = `
     html.works-motion-route .works-motion-field {
       z-index: 0;
       position: fixed;
-      top: var(--structure--padding-desktop);
+      top: 0;
       right: var(--structure--padding-desktop);
-      bottom: var(--structure--padding-desktop);
+      bottom: 0;
       left: calc(50% + (var(--structure--grid-row-gap) / 2));
       display: flex;
       flex-direction: column;
@@ -221,13 +221,13 @@ const placeholderStyles = `
     }
     @media screen and (min-width: 992px) {
       html.works-motion-route .works-motion-card .works-meta-spacing {
-        margin-bottom: 12px;
+        margin-bottom: 8px;
       }
     }
     html.works-motion-route .works-motion-card .heading-style-h2.new {
       font-family: "Geist", sans-serif;
-      font-size: 24px;
-      line-height: 24px;
+      font-size: 16px;
+      line-height: 1.08;
       font-weight: 500;
       letter-spacing: .01em;
       text-transform: none;
@@ -511,10 +511,10 @@ function transformHtml(source, sourceFile) {
         .replace(/\s+w--current\b/i, "")
         .replace(
           /<div>[^<]*<\/div>/i,
-          '<div>A. ZELLINGER</div>',
+          '<div>ZELLINGER</div>',
         ),
     )
-    .replace(/<div id="h">00:00(?::00)?<\/div>/g, '<div id="h">NYC 00:00:00</div>')
+    .replace(/<div id="h">(?:NYC )?00:00(?::00)?<\/div>/g, '<div id="h">00:00:00</div>')
     .replace(
       /function showTime\(\) \{[\s\S]*?\n\}\nsetInterval\(showTime, 1000\);\nshowTime\(\);/g,
       newYorkClockScript,

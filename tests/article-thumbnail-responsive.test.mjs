@@ -2,21 +2,16 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-test("Articles thumbnails grow responsively without changing their 3:2 geometry", async () => {
+test("Articles render as a text-only Projects-style collection", async () => {
   const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
-
-  assert.match(html, /\.articles-entry\s*\{[^}]*grid-template-columns:\s*288px minmax\(0, 1fr\);/s);
-  assert.match(html, /\.articles-entry\s*\{[^}]*align-items:\s*center;/s);
-  assert.match(html, /\.articles-entry__thumbnail\s*\{[^}]*width:\s*100%;[^}]*aspect-ratio:\s*3 \/ 2;/s);
-  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry\s*\{[^}]*grid-template-columns:\s*224px minmax\(0, 1fr\);/s);
-  assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*row-gap:\s*24px;[^}]*align-items:\s*start;/s);
-});
-
-test("Articles use the Projects-like title, metadata, excerpt hierarchy", async () => {
-  const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
-  const entries = html.split('<article class="articles-entry">').slice(1);
+  const runtime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
+  const entries = html.split('<article class="articles-entry" data-article-card-copy>').slice(1);
 
   assert.equal(entries.length, 11);
+  assert.equal(html.match(/data-article-card-copy/g)?.length, 11);
+  assert.doesNotMatch(html, /articles-entry__thumbnail|articles-entry__cta|Read more/);
+  assert.doesNotMatch(runtime, /articles-entry__thumbnail|articles-entry__cta|entry\.media\.src|Read more/);
+
   for (const entry of entries) {
     const title = entry.indexOf('class="articles-entry__title heading-style-h2 new"');
     const meta = entry.indexOf('class="articles-entry__meta display-inlineflex categories works-meta-spacing"');
@@ -24,31 +19,29 @@ test("Articles use the Projects-like title, metadata, excerpt hierarchy", async 
     assert.ok(title >= 0 && title < meta && meta < excerpt);
   }
 
-  assert.equal(html.match(/articles-entry__title heading-style-h2 new/g)?.length, 11);
-  assert.equal(html.match(/articles-entry__meta display-inlineflex categories works-meta-spacing/g)?.length, 11);
-  assert.equal(html.match(/articles-entry__excerpt works-project-description/g)?.length, 11);
-  assert.equal(html.match(/<span class="articles-entry__cta">Read more<\/span>/g)?.length, 11);
-  assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*max-width:\s*80%;[^}]*margin:\s*0;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*24px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;[^}]*font-weight:\s*500;/s);
-  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__title\s*\{\s*max-width:\s*80%;\s*\}/s);
-  assert.match(html, /\.articles-entry__meta\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;[^}]*margin-top:\s*16px;[^}]*margin-bottom:\s*var\(--space--desktop-medium\);[^}]*gap:\s*24px;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;[^}]*display:\s*flex;[^}]*flex-wrap:\s*wrap;/s);
-  assert.match(html, /\.articles-entry__excerpt\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*opacity:\s*1;[^}]*margin-top:\s*0;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*24px;[^}]*text-transform:\s*uppercase;[^}]*overflow:\s*hidden;[^}]*display:\s*-webkit-box;[^}]*-webkit-box-orient:\s*vertical;[^}]*-webkit-line-clamp:\s*2;/s);
-  assert.match(html, /\.articles-entry__cta\s*\{[^}]*margin-top:\s*24px;[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;[^}]*text-decoration:\s*none;[^}]*display:\s*inline-block;/s);
+  assert.match(html, /\.articles-entry\s*\{[^}]*display:\s*block;/s);
+  assert.match(html, /\.articles-entry__body\s*\{[^}]*width:\s*min\(100%, 60ch\);[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*15px;[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*align-items:\s*start;/s);
+  assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*auto;[^}]*max-width:\s*none;[^}]*margin:\s*0 0 16px;[^}]*font-size:\s*16px;[^}]*line-height:\s*1\.08;[^}]*text-transform:\s*none;/s);
+  assert.match(html, /\.articles-entry__meta\s*\{[^}]*grid-column:\s*1;[^}]*margin:\s*0 0 8px;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;/s);
+  assert.match(html, /\.articles-entry__excerpt\s*\{[^}]*grid-column:\s*1;[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*-webkit-line-clamp:\s*2;[^}]*line-clamp:\s*2;/s);
+  assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__title\.heading-style-h2\.new\s*\{\s*font-size:\s*18px;/s);
+  assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__excerpt\s*\{\s*block-size:\s*2lh;/s);
 });
 
-test("Articles rows keep route-specific editorial spacing", async () => {
+test("Articles keep the refined collection rhythm at every breakpoint", async () => {
   const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
+  const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
 
   assert.doesNotMatch(html, /articles-index__header|All \(10\)/i);
-  assert.match(html, /\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*48px;[^}]*border-bottom:\s*0;/s);
-  assert.doesNotMatch(html, /\.articles-entry-list > li \+ li\s*\{[^}]*border-top:/s);
-  assert.match(html, /\.articles-entry\s*\{[^}]*grid-column-gap:\s*32px;/s);
-  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry\s*\{[^}]*grid-column-gap:\s*32px;/s);
-  assert.doesNotMatch(html, /html\[data-articles-motion="running"\] \.articles-motion-set > li:first-child\s*\{[^}]*border-top:\s*0;/s);
-  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*32px;/s);
-  assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*32px;/s);
-  assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__meta\.works-meta-spacing\s*\{[^}]*margin-bottom:\s*12px;/s);
-  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin-top:\s*24px;[^}]*margin-bottom:\s*var\(--space--tablet-medium\);/s);
-  assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin-top:\s*32px;[^}]*margin-bottom:\s*var\(--space--smartphone-medium\);/s);
+  assert.match(html, /\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*0;[^}]*border-bottom:\s*0;/s);
+  assert.match(html, /\.articles-entry-link\s*\{[^}]*width:\s*100%;[^}]*padding-bottom:\s*60px;[^}]*display:\s*block;/s);
+  assert.match(elevated, /\.articles-entry-list > li\s*\{\s*padding-block:\s*0;\s*border:\s*0;/s);
+  assert.match(elevated, /\.articles-entry-link\s*\{\s*padding-bottom:\s*60px;/s);
+  assert.match(elevated, /@media \(max-width: 991px\)[\s\S]*?\.articles-entry-link\s*\{\s*padding-bottom:\s*32px;/s);
+  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__body\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
+  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*grid-row:\s*auto;[^}]*margin-bottom:\s*16px;/s);
+  assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin:\s*0 0 8px;/s);
+  assert.match(html, /@media screen and \(max-width:\s*480px\)[\s\S]*?\.articles-entry-link\s*\{[^}]*padding-bottom:\s*32px;/s);
 });
 
 test("Articles motion derives its card-count guard from the shared article records", async () => {
@@ -57,14 +50,4 @@ test("Articles motion derives its card-count guard from the shared article recor
   assert.match(motion, /import \{ ARTICLE_DETAILS \} from "\.\/article-content\.js";/);
   assert.match(motion, /dataset:\s*"articlesMotion",[\s\S]*?expectedCount:\s*ARTICLE_DETAILS\.length,/);
   assert.doesNotMatch(motion, /dataset:\s*"articlesMotion",[\s\S]*?expectedCount:\s*10,/);
-});
-
-test("Articles listing has no dividers and uses orange unlined Read more labels", async () => {
-  const html = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
-  const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
-  assert.match(html, /\.articles-entry__cta\s*\{[^}]*color:\s*var\(--swatches--accent-1\);/s);
-  assert.match(elevated, /\.articles-entry-list > li\s*\{[^}]*padding-block:\s*0 48px;[^}]*border:\s*0;/s);
-  assert.match(elevated, /@media \(max-width: 991px\)[\s\S]*?\.articles-entry-list > li\s*\{\s*padding-block:\s*0 32px;/);
-  assert.match(elevated, /\.articles-entry__cta\s*\{[^}]*color:\s*var\(--swatches--accent-1\);[^}]*border:\s*0;[^}]*text-decoration:\s*none;/s);
-  assert.match(elevated, /\.articles-entry-link:hover \.articles-entry__cta\s*\{\s*color:\s*var\(--swatches--accent-1\);/s);
 });

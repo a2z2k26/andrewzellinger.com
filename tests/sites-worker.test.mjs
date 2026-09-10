@@ -3,6 +3,7 @@ import { access } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
 import { ARTICLE_IMAGES } from '../src/article-images.js';
+import { HIDDEN_PROJECT_SLUGS, PROJECTS } from '../src/project-content.js';
 
 test("serves existing static assets without a fallback", async () => {
   const calls = [];
@@ -146,6 +147,12 @@ test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/images/projects/positiveintelligence-screen.png", import.meta.url));
   await access(new URL("../dist/client/images/projects/obagi-screen.png", import.meta.url));
   await access(new URL("../dist/client/images/projects/gero-screen.png", import.meta.url));
+  for (const project of PROJECTS) {
+    await access(new URL(`../dist/client/case-studies/${project.slug}/index.html`, import.meta.url));
+  }
+  for (const slug of HIDDEN_PROJECT_SLUGS) {
+    await assert.rejects(access(new URL(`../dist/client/case-studies/${slug}/index.html`, import.meta.url)));
+  }
   await access(new URL("../dist/server/index.js", import.meta.url));
   await access(new URL("../dist/.openai/hosting.json", import.meta.url));
   await assert.rejects(access(new URL("../dist/client/index/index.html", import.meta.url)));

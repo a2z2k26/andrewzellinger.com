@@ -57,31 +57,9 @@ function renderBiography() {
   education.append(prose([BIOGRAPHY.education.body]));
   editorial.append(education);
 
-  const capabilities = element("section", "biography-block biography-block--capabilities");
-  capabilities.setAttribute("aria-label", BIOGRAPHY.capabilities.label);
-  const capabilitiesContent = element("div", "biography-capabilities-content");
-  const capabilityGrid = element("dl", "biography-capabilities");
-  BIOGRAPHY.capabilities.groups.forEach((group) => {
-    const item = element("div", "biography-capability");
-    item.append(
-      element("dt", "biography-capability__label", group.label),
-      element("dd", "biography-capability__items", group.items.join(" · ")),
-    );
-    capabilityGrid.append(item);
-  });
-  const clients = element("div", "biography-clients");
-  clients.append(
-    element("h3", "biography-clients__label", "Select Clients"),
-    element("p", "biography-clients__list", BIOGRAPHY.capabilities.clients.join(" · ")),
-  );
-  capabilitiesContent.append(capabilityGrid);
-  capabilities.append(capabilitiesContent, clients);
-  editorial.append(capabilities);
-
-  const stack = labeledSection(BIOGRAPHY.stack.label, "stack");
-  const tools = BIOGRAPHY.stack.groups.flatMap(({ items }) => items);
-  stack.append(element("p", "biography-clients__list biography-tools__list", tools.join(" · ")));
-  editorial.append(stack);
+  const clients = labeledSection("Select Clients", "clients");
+  clients.append(element("p", "biography-clients__list", BIOGRAPHY.capabilities.clients.join(", ")));
+  editorial.append(clients);
 
   const availability = labeledSection(BIOGRAPHY.availability.label, "availability");
   availability.append(prose([BIOGRAPHY.availability.body]));

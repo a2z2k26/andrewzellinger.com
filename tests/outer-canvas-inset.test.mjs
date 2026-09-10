@@ -25,7 +25,34 @@ test("the landing page mounts Projects without a Home portrait and retains the c
   assert.match(index, /if \(pagePath === "" \|\| pagePath === "\/projects"\) \{\s*document\.documentElement\.classList\.add\("works-motion-route"\)/);
   assert.match(index, /PROJECTS\.forEach\(\(project\) => motionField\.append\(createProjectCard\(project\)\)\)/);
   assert.doesNotMatch(index, /index-motion-(?:field|track|set)|index-scroll-space/);
-  assert.match(index, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*32px;/s);
+  assert.match(index, /html\.works-motion-route\s*\{[^}]*--works-card-gap:\s*40px;/s);
   assert.match(index, /html\.works-motion-route \.works-motion-track,[\s\S]*?row-gap:\s*var\(--works-card-gap\);/);
   assert.match(details, /\.detail-sets\s*\{[^}]*gap:\s*var\(--structure--gutter-width\);/s);
+});
+
+test("the desktop Projects carousel passes behind the canvas's vertical inset", async () => {
+  const index = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const mirror = await readFile(new URL("../scripts/mirror-source.mjs", import.meta.url), "utf8");
+
+  for (const [label, source] of [["shipped page", index], ["source mirror", mirror]]) {
+    assert.match(
+      source,
+      /html\.works-motion-route \.works-motion-field\s*\{[^}]*position:\s*fixed;[^}]*top:\s*0;[^}]*right:\s*var\(--structure--padding-desktop\);[^}]*bottom:\s*0;[^}]*left:\s*calc\(50% \+ \(var\(--structure--grid-row-gap\) \/ 2\)\);[^}]*overflow:\s*hidden;/s,
+      `${label} must clip the moving carousel at the viewport edges while retaining the horizontal rail`,
+    );
+  }
+});
+
+test("the desktop Articles and History carousels pass behind the canvas's vertical inset", async () => {
+  const articles = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
+  const biography = await readFile(new URL("../src/biography.css", import.meta.url), "utf8");
+
+  assert.match(
+    articles,
+    /html\[data-articles-motion="running"\] \.articles-index__list\s*\{[^}]*position:\s*fixed;[^}]*top:\s*0;[^}]*right:\s*var\(--structure--padding-desktop\);[^}]*bottom:\s*0;[^}]*left:\s*calc\(50% \+ \(var\(--structure--grid-row-gap\) \/ 2\)\);[^}]*overflow:\s*hidden;/s,
+  );
+  assert.match(
+    biography,
+    /html\[data-history-motion="running"\] \.biography-sweep-viewport\s*\{[^}]*position:\s*fixed;[^}]*top:\s*0;[^}]*right:\s*var\(--structure--padding-desktop\);[^}]*bottom:\s*0;[^}]*left:\s*calc\(50% \+ \(var\(--structure--grid-row-gap\) \/ 2\)\);[^}]*overflow:\s*hidden;/s,
+  );
 });

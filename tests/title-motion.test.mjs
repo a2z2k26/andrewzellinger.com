@@ -25,9 +25,9 @@ test('snapshot names distinguish old/new letters and sort numeric positions', ()
 });
 
 const source = await readFile(new URL('../src/elevation/title-motion.js', import.meta.url), 'utf8');
-test('desktop page titles use 124px Medium without changing the responsive base', async () => {
+test('desktop page titles use 80px Medium without changing the responsive base', async () => {
   const styles = await readFile(new URL('../src/elevation/styles.css', import.meta.url), 'utf8');
-  assert.match(styles, /@media \(min-width: 992px\)\s*\{\s*html\[data-design-edition="elevated"\] \.center-nav-link[^}]*\}\s*html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 124px;\s*font-weight: 500;/);
+  assert.match(styles, /@media \(min-width: 992px\)\s*\{\s*html\[data-design-edition="elevated"\] \.center-nav-link[^}]*\}\s*html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 80px;\s*font-weight: 500;/);
 });
 
 function snapshotRuntime() {

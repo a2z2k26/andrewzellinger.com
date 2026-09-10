@@ -24,13 +24,11 @@ test('History loop captures its existing clipped viewport without native scroll 
   assert.ok(source.includes("if(viewport?.querySelector('.history-motion-track')) return viewport;"));
 });
 
-test('History clones refresh after source resizing and are excluded from section counts', async () => {
+test('History clones refresh after source resizing', async () => {
   const source = await read('src/site-motion.js');
-  const context = await read('src/elevation/index.js');
   assert.match(source, /if \(refreshClonesOnResize\) \{\s*prepareCloneSet\(cloneSetBefore, "before"\);\s*prepareCloneSet\(cloneSetAfter, "after"\);/);
   assert.match(source, /sizeObserver\?\.observe\(sourceSet\)/);
   assert.match(source, /sizeObserver\?\.disconnect\(\)/);
-  assert.match(context, /historySections =[\s\S]*?filter\(node => !node\.closest\('\[aria-hidden="true"\]'\)\)/);
 });
 
 test('keyboard contact focus is absorbed into the loop without a second scroll offset', async () => {

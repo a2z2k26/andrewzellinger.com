@@ -391,7 +391,7 @@ function createContentLoop(logicalItems, {
       const anchorItem = logicalItems.find((item) => (
         item.querySelector("[data-portfolio-detail-link]")?.dataset.detailSlug === anchor.anchorSlug
       ));
-      const anchorMedia = anchorItem?.querySelector(".media-background-holder, .articles-entry__thumbnail");
+      const anchorMedia = anchorItem?.querySelector(".media-background-holder, [data-article-card-copy]");
       if (anchorMedia) {
         const trackTop = track.getBoundingClientRect().top;
         const mediaOffset = anchorMedia.getBoundingClientRect().top - trackTop;

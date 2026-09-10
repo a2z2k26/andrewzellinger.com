@@ -1,17 +1,19 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
-import { PROJECTS } from "../src/project-content.js";
+import { ALL_PROJECTS } from "../src/project-content.js";
 import { PROJECT_NARRATIVES } from "../src/project-narratives.js";
 import { ARTICLE_DETAILS } from "../src/article-content.js";
 
-test("all documented cases use the approved four-section model", () => {
-  assert.equal(PROJECTS.filter(p => p.sections.length === 4).length, 18);
-  for (const p of PROJECTS) {
+test("all documented cases use the consolidated narrative model", () => {
+  assert.equal(ALL_PROJECTS.filter(p => p.sections.length === 3).length, 18);
+  for (const p of ALL_PROJECTS) {
     assert.equal(p.summary, PROJECT_NARRATIVES[p.slug].summary);
     assert.equal(p.sections, PROJECT_NARRATIVES[p.slug].sections);
-    if (p.slug !== "amazon-fire-tv") assert.equal(p.sections[2].items.length, 3);
-    else assert.equal(p.sections.length, 3);
+    assert.equal(p.sections[0].label, "Context");
+    assert.equal(p.sections[0].paragraphs.length, 1);
+    if (p.slug !== "amazon-fire-tv") assert.equal(p.sections[1].items.length, 3);
+    else assert.equal(p.sections.length, 2);
   }
 });
 
@@ -38,4 +40,12 @@ test("project decisions render escaped semantic lists within existing motion bod
   const renderer = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   assert.match(renderer, /<ul class="detail-unit__decisions">/);
   assert.match(renderer, /<li>\$\{escapeHtml\(item\)\}<\/li>/);
+});
+
+test("desktop project paragraphs use widow-aware wrapping", async () => {
+  const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+  assert.match(
+    styles,
+    /@media \(min-width: 992px\)\s*\{\s*\.detail-unit__section-body--project p\s*\{\s*text-wrap: pretty;/,
+  );
 });

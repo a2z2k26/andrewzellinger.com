@@ -13,3 +13,7 @@ export function detailReturn(path) {
   if (/^\/articles\/[^/]+/.test(path)) return { path: '/articles', label: 'Articles' };
   return null;
 }
+
+export function centeredMastheadLeft(brandRight, rightColumnLeft, menuWidth) {
+  return brandRight + (rightColumnLeft - brandRight - menuWidth) / 2;
+}

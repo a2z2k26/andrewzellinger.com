@@ -10,24 +10,21 @@ import {
 
 const expectedTitles = [
   "Avantos",
-  "Amazon Fire TV",
-  "Audible Sleep",
+  "Amazon",
+  "Audible",
   "Turner Media",
-  "Obagi Care",
-  "WeWork Studio",
-  "Android Wear",
+  "WeWork",
+  "Google",
   "Live Auctioneers",
   "Andrew Eccles",
-  "Procter & Gamble",
+  "P&G",
   "Modern Age",
-  "Fi Collar",
-  "Thomson Reuters",
-  "Gero Timer",
-  "Foursquare Brand",
-  "PwC Audit",
-  "NW Mutual",
-  "McDonalds Kiosk",
-  "Positive Brand",
+  "Fi",
+  "Thompson Reuters",
+  "Foursquare",
+  "PwC",
+  "McDonalds",
+  "Positive Intelligence",
 ];
 
 test("case-study titles retain canonical project capitalization", () => {
@@ -46,14 +43,15 @@ test("Projects cards and case-study headers share one metadata projection", () =
   for (const project of PROJECTS) {
     assert.deepEqual(
       projectCardTags(project),
-      [project.metadata.client, project.metadata.role, project.metadata.year].filter(Boolean),
+      [project.metadata.role, project.metadata.year].filter(Boolean),
       project.slug,
     );
+    assert.ok(!projectCardTags(project).includes(project.metadata.client), project.slug);
     assert.equal(projectCardDescription(project), project.summary, project.slug);
   }
 });
 
-test("project details reuse the Projects lockup while articles retain the editorial header", async () => {
+test("project and article details share the refined collection title scale", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 
@@ -63,13 +61,13 @@ test("project details reuse the Projects lockup while articles retain the editor
   assert.match(runtime, /projectCardDescription\(entry\)/);
   assert.match(runtime, /escapeHtml\(entry\.title\)/);
   assert.doesNotMatch(runtime, /entry\.title\.(?:toUpperCase|toLowerCase)\(/);
-  assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*24px;[^}]*font-weight:\s*500;[^}]*line-height:\s*24px;[^}]*text-transform:\s*none;/s);
+  assert.match(styles, /\.detail-unit__project-lockup \.heading-style-h2\.new\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*16px;[^}]*font-weight:\s*500;[^}]*line-height:\s*1\.08;[^}]*text-transform:\s*none;/s);
   assert.match(styles, /\.detail-unit__title\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*24px;[^}]*font-weight:\s*500;/s);
-  assert.match(styles, /\.detail-unit__title--article\s*\{[^}]*font-size:\s*32px;[^}]*line-height:\s*32px;[^}]*text-transform:\s*none;/s);
+  assert.match(styles, /\.detail-unit__title--article\s*\{[^}]*padding:\s*0;[^}]*font-size:\s*16px;[^}]*line-height:\s*1\.08;[^}]*text-transform:\s*none;/s);
   assert.doesNotMatch(styles, /\.detail-unit__title--project,\s*\.detail-unit__title--article/);
   assert.doesNotMatch(styles, /\.detail-unit__title--article\s*\{[^}]*text-transform:\s*uppercase;/s);
   assert.match(styles, /\.detail-unit__project-lockup \.display-inlineflex\.categories\s*\{[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*letter-spacing:\s*\.36px;[^}]*text-transform:\s*uppercase;/s);
-  assert.match(styles, /\.detail-unit__lede--article\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*0;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(styles, /\.detail-unit__lede--article\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;[^}]*letter-spacing:\s*0;[^}]*text-transform:\s*uppercase;/s);
 });
 
 test("project detail lockups do not inherit all-sided spacing utilities", async () => {
@@ -95,10 +93,14 @@ test("detail headers render exactly one collection description", async () => {
 test("project sections and continuous article bodies use sentence-case Geist typography", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+  const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
 
   assert.match(runtime, /detail-unit__section-body detail-unit__section-body--project/);
   assert.match(styles, /\.detail-unit__section-body--project p\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*400;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*-0\.01em;[^}]*text-transform:\s*none;/s);
-  assert.match(styles, /\.detail-unit__section--project \.detail-unit__section-label\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;/s);
+  assert.match(styles, /\.detail-unit__section--project \.detail-unit__section-label\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*letter-spacing:\s*\.36px;/s);
+  assert.match(elevated, /html\[data-design-edition="elevated"\] \.detail-unit__section--project \.detail-unit__section-label \{ font-size: 11px; line-height: 1\.5; letter-spacing: \.04em; \}/);
+  assert.match(elevated, /html\[data-design-edition="elevated"\] \.categories,[\s\S]*?\.detail-unit__meta \{\s*font-size: 11px !important;\s*line-height: 1\.5 !important;\s*letter-spacing: \.04em !important;/);
+  assert.match(styles, /\.detail-unit__section-body--project ul > li::marker,[\s\S]*?color:\s*#fff;/s);
   assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*400;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*-0\.01em;[^}]*text-transform:\s*none;/s);
   assert.match(styles, /\.detail-unit__lede\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s);
   assert.match(styles, /\.detail-unit__section p\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s);
@@ -116,36 +118,36 @@ test("project details retain one primary media surface and omit Process media", 
   );
 });
 
-test("expanded projects balance their detail spacing while article details stay unchanged", async () => {
+test("project and text-only article details keep their route-specific spacing", async () => {
   const runtime = await readFile(new URL("../src/detail-state.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
 
   assert.match(runtime, /detail-unit__copy detail-unit__copy--\$\{entry\.kind\}/);
   assert.match(runtime, /detail-unit__sections detail-unit__sections--project/);
-  assert.match(styles, /--detail-article-media-title-gap:\s*44px;/);
+  assert.doesNotMatch(styles, /--detail-article-media-title-gap/);
   assert.doesNotMatch(styles, /--detail-project-media-title-gap/);
   assert.match(styles, /--detail-project-description-section-gap:\s*64px;/);
   assert.match(styles, /\.detail-unit__copy\s*\{[^}]*padding-top:\s*20px;/s);
-  assert.match(styles, /\.detail-unit__copy--article\s*\{[^}]*padding-top:\s*var\(--detail-article-media-title-gap\);/s);
+  assert.match(styles, /\.detail-unit__copy--article\s*\{[^}]*padding-top:\s*0;/s);
+  assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(styles, /\.detail-unit__project-lockup \.works-media-spacing\s*\{[^}]*margin-bottom:\s*var\(--detail-project-description-section-gap\);/s);
   assert.match(styles, /\.detail-unit__sections\s*\{[^}]*padding-top:\s*40px;/s);
   assert.match(styles, /\.detail-unit__sections--project\s*\{[^}]*padding-top:\s*var\(--detail-project-description-section-gap\);/s);
   assert.ok(runtime.includes('section.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")'));
-  assert.match(styles, /--detail-project-section-copy-edge-gap:\s*52px;/);
-  assert.match(styles, /--detail-project-section-label-inset:\s*28px;/);
+  assert.doesNotMatch(styles, /--detail-project-section-(?:copy-edge-gap|label-inset)/);
   assert.doesNotMatch(styles, /--detail-project-text-to-divider-gap/);
   assert.match(styles, /\.detail-unit__section\s*\{[^}]*padding-bottom:\s*27px;/s);
   assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*align-items:\s*baseline;[^}]*border-top:\s*0;[^}]*padding:\s*0;/s);
-  assert.match(styles, /\.detail-unit__section--project:first-child\s*\{[^}]*padding-top:\s*var\(--detail-project-section-copy-edge-gap\);/s);
   assert.match(styles, /\.detail-unit__sections--project\s*\{[^}]*gap:\s*48px;/s);
   assert.doesNotMatch(styles, /\.detail-unit__section--project-(?:context|work|key-decisions)\s*[,\{]/);
   assert.doesNotMatch(styles, /\.detail-unit__section--project \.detail-unit__section-body--project\s*\{[^}]*margin-top:/s);
   assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__section--project\s*\{[^}]*align-items:\s*stretch;/s);
   assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__sections--project\s*\{[^}]*gap:\s*32px;/s);
-  assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*\.detail-unit__section--project:first-child\s*\{[^}]*padding-top:\s*var\(--detail-project-section-label-inset\);/s);
+  assert.doesNotMatch(styles, /\.detail-unit__section--project:first-child/);
   assert.match(runtime, /detail-unit__section--project detail-unit__section--project-/);
   assert.match(styles, /--detail-project-section-body-shift:\s*80px;/);
   assert.match(styles, /\.detail-unit__section--project\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*calc\(\(100% - var\(--structure--grid-row-gap\)\) \/ 3 - var\(--detail-project-section-body-shift\)\)\)\s*minmax\(0,\s*1fr\);/s);
+  assert.match(styles, /\.detail-unit__decisions\s*\{[^}]*width:\s*90%;/s);
   assert.match(runtime, /detail-set detail-set--\$\{name\} detail-set--\$\{kind\}/);
   assert.match(runtime, /detail-view detail-view--\$\{kind\}/);
   assert.match(styles, /--detail-project-inter-unit-gap:\s*72px;/);

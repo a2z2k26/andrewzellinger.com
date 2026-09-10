@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hourCycle: "h23",
   });
   const updateClock = () => {
-    clock.textContent = `NYC ${newYorkClockFormatter.format(new Date())}`;
+    clock.textContent = newYorkClockFormatter.format(new Date());
   };
   updateClock();
   setInterval(updateClock, 1000);

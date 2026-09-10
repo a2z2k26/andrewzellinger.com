@@ -2,11 +2,11 @@
 // Public editorial layer, revised 2026-09-08. Source recollections are retained
 // in project-content.js; unresolved evidence is tracked privately in docs/content-claim-ledger.md.
 // No minimum word quota: evidence determines the length of each record.
-export const PROJECT_SECTION_LABELS = Object.freeze(["Context", "Work", "Key decisions", "Outcome"]);
-export const ENGAGEMENT_SECTION_LABELS = Object.freeze(["Context", "Work", "Outcome"]);
+export const PROJECT_SECTION_LABELS = Object.freeze(["Context", "Key decisions", "Outcome"]);
+export const ENGAGEMENT_SECTION_LABELS = Object.freeze(["Context", "Outcome"]);
 const textSection = (label, text) => Object.freeze({label, paragraphs:Object.freeze([text])});
 function narrative([summary, context, work, decisions, outcome]) {
-  const sections = [textSection("Context", context), textSection("Work", work)];
+  const sections = [textSection("Context", `${context} ${work}`.trim())];
   if (decisions.length) sections.push(Object.freeze({label:"Key decisions", paragraphs:Object.freeze([]), items:Object.freeze(decisions)}));
   sections.push(textSection("Outcome", outcome));
   return Object.freeze({summary, sections:Object.freeze(sections)});
@@ -70,7 +70,7 @@ const records = {
   "live-auctioneers": [
     "A shared Figma and Storybook design system for LiveAuctioneers' web and native auction experiences.",
     "LiveAuctioneers' web and native products had accumulated inconsistent patterns as the business grew. Design files had moved from Sketch to Figma while engineering was developing UI in Storybook. The immediate need was agreement about how components looked, behaved, and should be used.",
-    "As consulting Design Lead, I led interface and process audits, set the system roadmap, and guided a small team in partnership with product and engineering. We inventoried duplicated patterns and missing states, then developed foundations and reusable components. Documentation connected design intent with implementation behavior.",
+    "As consulting Design Lead, I led interface and process audits, set the system roadmap, and guided a small team in partnership with product and engineering. We inventoried duplicated patterns and missing states, then developed foundations and reusable components. Documentation made design intent and component behavior legible across both disciplines.",
     [
       "Audit interaction states and intended use alongside visual differences, so the library addresses more than surface consistency.",
       "Develop Figma and Storybook documentation in parallel to make behavior and edge cases discussable across disciplines.",
@@ -81,13 +81,13 @@ const records = {
   "andrew-eccles": [
     "A photography portfolio developed with Crate for Andrew Eccles, presenting commercial work across music, film, and sports.",
     "In 2016, I worked with Crate and commercial photographer Andrew Eccles on his portfolio website. His work features prominent figures across music, film, and sports. The site needed to present that photography as a body of work prospective clients could browse.",
-    "My contribution was website design in collaboration with the studio and Andrew. The focus was the relationship between the photographs and the interface around them: how the site introduced the work, provided orientation, and maintained an image-led presentation.",
+    "My contribution was website design in collaboration with the studio and Andrew. The focus was how the interface introduced the work, provided orientation, and kept the presentation centered on the photography.",
     [
       "Give the photographs visual priority, keeping interface decoration secondary to the work.",
       "Use the commercial portfolio as the organizing purpose rather than turn the site into a celebrity-focused editorial experience.",
       "Develop the presentation in direct collaboration with the photographer and studio so it reflects the work being shown."
     ],
-    "The engagement brought Andrew's commercial photography into a portfolio website developed with Crate. The design contribution was a presentation framework that served the images instead of becoming the main event, keeping the photographer's work at the center of the experience."
+    "The engagement brought Andrew's commercial photography into a portfolio website developed with Crate. The design contribution was a presentation framework that served the images instead of becoming the main event, keeping the photographer's work central throughout."
   ],
   "proctor-and-gamble": [
     "Experience architecture for the Kew garden journey within P&G's Beauty Sphere, combining spatial exploration and educational content.",
@@ -109,7 +109,7 @@ const records = {
       "Design the chatbot as an additional way to find help without making it a prerequisite for ordinary navigation.",
       "Use reusable promotional components so offers can change without redefining the surrounding page structure."
     ],
-    "The engagement produced design work across service discovery and transaction journeys, alongside chatbot and promotional experiences. Those features were designed to support appointment and checkout completion. The responsibility was balancing changing commercial messages with a dependable route to an in-person service."
+    "The engagement produced design work across service discovery and transaction journeys, alongside chatbot and promotional experiences. Those features were designed to support appointment and checkout completion. The responsibility was balancing changing commercial messages with a dependable path from website to appointment."
   ],
   "fi-smart-collar": [
     "Product and growth design for Fi, spanning Lost Dog Mode, subscriptions, checkout, and connected mobile and web experiences.",
@@ -187,13 +187,13 @@ const records = {
   "mcdonalds": [
     "Self-order kiosk UX with Method, connecting menu navigation, customization, upsell, and restaurant operations.",
     "McDonald's self-order kiosks needed to serve customers with varied levels of digital confidence while accommodating a large menu, customization, payment, and restaurant operations. Deep navigation and crowded ordering screens made the relationship between choice and clarity especially important.",
-    "I led UX for the kiosk redesign as part of Method's wider digital engagement. The work included auditing the existing experience, observing restaurant use, and translating findings into architecture, navigation, customization flows, and interaction patterns. Collaboration connected customer-facing design with the systems and physical setting around the kiosk.",
+    "I led UX for the kiosk redesign as part of Method's wider digital engagement. The work included auditing the existing experience, observing restaurant use, and translating findings into architecture, navigation, customization flows, and interaction patterns. Collaboration connected the customer-facing interface to restaurant systems, kiosk placement, and service flow.",
     [
       "Reduce navigation depth while preserving the menu and customization choices customers need to complete an order.",
       "Place relevant upsell opportunities within the ordering sequence rather than repeatedly interrupt the task.",
       "Review interface choices alongside kiosk placement and order flow, treating the screen as part of restaurant service."
     ],
-    "The contribution was UX direction and interaction patterns for the redesigned kiosk experience within a wider digital program. The work reconciled commercial goals with a straightforward ordering path, without assuming every customer had patience or familiarity with touchscreen conventions."
+    "The contribution was UX direction and interaction patterns for the redesigned kiosk experience within a wider digital program. The work reconciled commercial goals with a straightforward ordering path while accommodating different levels of patience and touchscreen familiarity."
   ],
   "avantos": [
     "AI-assisted onboarding design for financial-services teams, pairing client guidance with document verification and operator workflows.",

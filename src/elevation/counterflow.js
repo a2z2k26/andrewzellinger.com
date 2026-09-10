@@ -1,6 +1,5 @@
 import { counterflowDirection, counterflowTiming, counterflowTravel, waitForVisualReadiness } from './counterflow-model.js';
 import { PROJECTS } from '../project-content.js';
-import { ARTICLE_DETAILS } from '../article-content.js';
 import { setMotionPause } from './motion-pause.js';
 import { captureTitleCharacters, animateCapturedTitleCharacters } from './title-motion.js';
 import './counterflow.css';
@@ -19,7 +18,7 @@ let releaseTitleMotion=()=>{};
 function destinationMedia(to) {
   const path=new URL(to,location.href).pathname.replace(/\/$/,'');
   if(path==='' || path==='/projects') return PROJECTS.slice(0,2).map(item=>item.media.src);
-  if(path==='/articles') return ARTICLE_DETAILS.slice(0,2).map(item=>item.media.src);
+  if(path==='/articles') return [];
   if(path==='/history') return ['/images/history/az-headshot-extended-v1.png'];
   return [];
 }
@@ -118,12 +117,12 @@ function nameSurfaces(direction, phase) {
   // A detail may retain its hidden collection DOM. Resolve its visible rail
   // first so Home departure cannot accidentally capture that hidden source.
   const media=root.classList.contains('detail-route') ? caseStudyViewport() : innerWidth<992
-    ? document.querySelector('.index-static-field, .works-motion-card .media-background-holder, .articles-entry__thumbnail, .portrait-study-stage--history, .biography-portrait-placeholder')
+    ? document.querySelector('.index-static-field, .works-motion-card .media-background-holder, .articles-entry__body, .portrait-study-stage--history, .biography-portrait-placeholder')
     : document.querySelector('.index-static-field, .works-motion-field, .articles-index__list') || historyViewport();
   if (!title || !media) return false;
   captureTitleCharacters(phase);
   media.style.viewTransitionName='counterflow-media';
-  for(const [selector,name] of [['.nav_wrapper','control'],['.nav_brand','brand'],['.nav_h','clock'],['.edition-context','context']]) {
+  for(const [selector,name] of [['.nav_wrapper','control'],['.nav_brand','brand'],['.nav_h','clock']]) {
     const node=document.querySelector(selector);
     if(node) node.style.viewTransitionName=`counterflow-${name}`;
   }

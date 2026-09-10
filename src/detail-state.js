@@ -8,6 +8,7 @@ import {
 import {
   holdRouteVisual,
   runArticleExitTransition,
+  runArticleTextTransition,
   runRouteTransition,
   runVerticalExpansion,
 } from "./detail-route-transition.js";
@@ -26,8 +27,14 @@ const MOTION_ROUTE_EVENT = "portfolio:routechange";
 const DETAIL_STATE_KEY = "portfolioDetail";
 const COLLECTION_STATE_KEY = "portfolioCollection";
 const DETAIL_TOP_INSET = 16;
+const ARTICLE_DETAIL_TOP_INSET = 64;
 const DESKTOP_QUERY = "(min-width: 992px)";
-const detailTopInset = () => DETAIL_TOP_INSET + (matchMedia(DESKTOP_QUERY).matches ? 0 : 64);
+const detailTopInset = () => {
+  if (!matchMedia(DESKTOP_QUERY).matches) return DETAIL_TOP_INSET + 64;
+  return document.documentElement.dataset.detailKind === "article"
+    ? ARTICLE_DETAIL_TOP_INSET
+    : DETAIL_TOP_INSET;
+};
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 let activeDetail = null;
@@ -283,11 +290,7 @@ function unitMarkup(entry, index, entries, hidden) {
   const isProject = entry.kind === "project";
   const meta = isProject
     ? projectCardTags(entry)
-    : [
-      entry.meta[0] ?? "",
-      entry.meta[1] ?? "",
-      entry.meta.slice(2).join(" · "),
-    ].filter(Boolean);
+    : entry.meta;
   const id = hidden ? "" : ` id="detail-${entry.kind}-${entry.slug}"`;
   const lede = isProject ? projectCardDescription(entry) : entry.summary;
   const titleClass = `detail-unit__title detail-unit__title--${entry.kind}`;
@@ -303,12 +306,15 @@ function unitMarkup(entry, index, entries, hidden) {
   const body = articleBodyMarkup(entry);
 
   return `<article class="detail-unit" data-detail-index="${index}" data-detail-slug="${entry.slug}"${id}>
-    ${mediaMarkup(entry)}
     <div class="detail-unit__copy detail-unit__copy--${entry.kind}" data-detail-motion-copy>
       <div class="detail-unit__article-header" data-article-detail-header>
         <h2 class="${titleClass}" data-detail-motion-title tabindex="-1">${escapeHtml(entry.title)}</h2>
-        <div class="${metaClass}" data-detail-motion-meta>${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
-        <p class="${ledeClass}" data-detail-motion-lede>${escapeHtml(lede)}</p>
+        <div class="detail-unit__article-details">
+          <div class="works-meta-spacing">
+            <div class="${metaClass}" data-detail-motion-meta>${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
+          </div>
+          <p class="${ledeClass}" data-detail-motion-lede>${escapeHtml(lede)}</p>
+        </div>
       </div>
       ${body}
     </div>
@@ -547,10 +553,10 @@ async function renderDetail(entry, {
   const selectedIndex = entries.findIndex((candidate) => candidate.slug === entry.slug);
   const selectedUnit = sourceSet.querySelector(`.detail-unit[data-detail-index="${selectedIndex}"]`);
   const animateFromCard = circular
-    && Boolean(sourceVisual)
-    && Number.isFinite(sourceRect?.top);
+    && (entry.kind === "article"
+      ? Boolean(sourceCopyVisual) && Number.isFinite(sourceCopyRect?.top)
+      : Boolean(sourceVisual) && Number.isFinite(sourceRect?.top));
   if (entry.kind === "article" && animateFromCard) {
-    selectedUnit.querySelector(".detail-unit__media").style.visibility = "hidden";
     gsap.set(selectedUnit.querySelector("[data-article-detail-header]"), { autoAlpha: 0 });
   }
   const sectionMotion = createDetailSectionMotion({
@@ -665,20 +671,14 @@ async function renderDetail(entry, {
     return;
   }
 
-  const targetMedia = selectedUnit.querySelector(".detail-unit__media");
   const targetHeader = selectedUnit.querySelector("[data-article-detail-header]");
   let transition = null;
-  transition = runRouteTransition({
-    direction: "enter",
-    mediaVisual: sourceVisual,
-    mediaFrom: sourceRect,
-    mediaTo: elementRect(targetMedia),
-    nativeTarget: targetMedia,
+  transition = runArticleTextTransition({
     nativeCopy: targetHeader,
     sourceCopyVisual,
     copyFrom: sourceCopyRect,
     copyTo: elementRect(targetHeader),
-    copyMode: "crossfade",
+    expansionTarget: selectedUnit.querySelector(".detail-unit__article-body"),
     reduceMotion,
     onComplete: () => {
       if (activeTransition === transition) activeTransition = null;
@@ -823,23 +823,19 @@ function openDetail(link) {
   const entry = entries.find((candidate) => candidate.slug === link.dataset.detailSlug);
   if (!entry) return;
 
-  const sourceMedia = link.querySelector(".media-background-holder, .articles-entry__thumbnail");
+  const sourceMedia = link.querySelector(".media-background-holder");
   const rect = sourceMedia?.getBoundingClientRect();
   const sourceRect = rect
     ? { left: rect.left, top: rect.top, width: rect.width, height: rect.height }
     : null;
-  const sourceCopy = link.querySelector("[data-project-card-copy], .articles-entry__body");
+  const sourceCopy = link.querySelector("[data-project-card-copy], [data-article-card-copy]");
   const sourceCopyRect = elementRect(sourceCopy);
   const sourceVisual = sourceMedia?.cloneNode(true) ?? null;
   const canAnimateArticle = entry.kind === "article"
-    && sourceRect
+    && sourceCopyRect
     && matchMedia(DESKTOP_QUERY).matches
     && !shouldReduceMotion();
-  const transitionVisual = entry.kind === "article"
-    && sourceVisual
-    && canAnimateArticle
-    ? holdRouteVisual(sourceVisual, "detail-transition-media", sourceRect)
-    : sourceVisual;
+  const transitionVisual = entry.kind === "project" ? sourceVisual : null;
   const sourceCopyVisual = canAnimateArticle && sourceCopy && sourceCopyRect
     ? holdRouteVisual(sourceCopy.cloneNode(true), "article-transition-copy", sourceCopyRect)
     : null;

@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { counterflowDirection } from '../src/elevation/counterflow-model.js';
-import { pageContext, activeSectionIndex, documentProgress, collectionProgress, historyLoopPosition } from '../src/elevation/page-context.js';
 
 const source = await readFile(new URL('../src/elevation/index.js', import.meta.url), 'utf8');
 const flushPromises = () => new Promise(resolve => setImmediate(resolve));
@@ -63,7 +62,6 @@ function loadRouteCoordinator({ nativeCounterflow = true, reducedMotion = false,
     readyState: 'interactive', documentElement: root, body,
     createElement: tag => new Node(tag),
     querySelector(selector) {
-      if (selector === '.edition-context') return body.children.find(node => node.className === 'edition-context') ?? null;
       if (selector === '.title .container-xlarge') return title;
       if (selector.includes('.index-static-field')) return rail;
       return null;
@@ -75,8 +73,6 @@ function loadRouteCoordinator({ nativeCounterflow = true, reducedMotion = false,
   const context = vm.createContext({
     document, window, location, URL, URLSearchParams,
     innerWidth: 1440, innerHeight: 1000,
-    PROJECTS: [], ARTICLE_DETAILS: [],
-    pageContext, activeSectionIndex, documentProgress, collectionProgress, historyLoopPosition,
     ensureTitleCharacters() {},
     animateTitleCharacters: () => title.animate([], { duration: 240 }),
     matchMedia: () => Object.assign(new EventTarget(), { matches: reducedMotion }),
@@ -120,15 +116,11 @@ test('page chrome adds neither title metadata nor secondary navigation on any pa
   }
 });
 
-test('all remaining page states share context and scrolling progress', () => {
+test('all page states omit the title lockup and scrolling progress', () => {
   for (const startPath of ['/', '/projects', '/projects/', '/articles', '/history', '/case-studies/audible-sleep/', '/articles/the-constraint-was-the-brief/']) {
     const runtime = loadRouteCoordinator({ startPath });
-    const context = runtime.body.children.find(node => node.className === 'edition-context');
-    assert.ok(context, `${startPath}: contextual text is present`);
-    assert.deepEqual(Array.from(context.children, node => node.className), ['edition-context__count', 'edition-context__title']);
-    assert.ok(context.children.find(node => node.className === 'edition-context__title').textContent);
-    const reading = runtime.body.children.find(node => node.className === 'edition-reading');
-    assert.equal(reading.hidden, false, startPath);
+    assert.equal(runtime.body.children.some(node => node.className === 'edition-context'), false, `${startPath}: no contextual text`);
+    assert.equal(runtime.body.children.some(node => node.className === 'edition-reading'), false, `${startPath}: no progress rule`);
     if (startPath === '/') assert.equal(runtime.root.dataset.editionSection, 'projects');
   }
 });

@@ -237,7 +237,6 @@ export const BIOGRAPHY = Object.freeze({
 export const BIOGRAPHY_CONTACT = Object.freeze({
   email: "hello@andrewzellinger.com",
   socialLinks: Object.freeze([
-    Object.freeze({ label: "X.com", url: "https://x.com/a2z2k26" }),
     Object.freeze({ label: "LinkedIn", url: "https://www.linkedin.com/in/andrewzellinger/" }),
     Object.freeze({ label: "GitHub", url: "https://github.com/a2z2k26" }),
     Object.freeze({ label: "Cal.com", url: "https://cal.com/andrewzellinger" }),

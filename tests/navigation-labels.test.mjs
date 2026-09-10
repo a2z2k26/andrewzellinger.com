@@ -72,20 +72,22 @@ test("the mirror generator preserves canonical routes and route-specific page na
   assert.match(generator, /heading\.textContent = "Projects"/);
   assert.match(generator, /<h1 class="heading">Projects<\/h1>/);
   assert.match(generator, /<h1 class="heading">History<\/h1>/);
-  assert.ok(generator.includes('<div>A. ZELLINGER</div>'));
+  assert.ok(generator.includes('<div>ZELLINGER</div>'));
 });
 
 test("elevated page titles use a fixed desktop size without changing compact typography", async () => {
   const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   assert.match(styles, /html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 72px;\s*line-height: \.98;\s*font-weight: 500;/);
-  assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 124px;\s*font-weight: 500;/);
+  assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 80px;\s*font-weight: 500;/);
   assert.match(styles, /@media \(max-width: 991px\)[\s\S]*?\.title \.heading \{ font-size: clamp\(56px, 6\.9vw, 94px\); \}/);
 });
 
-test("desktop collection titles and History lead use 28px", async () => {
+test("project and article collection titles grow to 18px on desktop while detail titles stay 16px", async () => {
   const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
-  assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.works-motion-card \.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.articles-entry__title\.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.biography-introduction__lead \{\s*font-size: 28px;\s*\}/);
-  assert.match(styles, /\.detail-unit__title \{ font-size: clamp\(30px, 3vw, 44px\);/);
+  assert.match(styles, /html\[data-design-edition="elevated"\] \.works-motion-card \.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.detail-unit__project-lockup \.heading-style-h2\.new \{\s*font-size: 16px;/);
+  assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.works-motion-card \.heading-style-h2\.new \{\s*font-size: 18px;\s*\}/);
+  assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.articles-entry__title\.heading-style-h2\.new \{\s*font-size: 18px;\s*\}/);
+  assert.match(styles, /html\[data-design-edition="elevated"\] \.detail-unit__title \{ font-size: 16px; line-height: 1\.08;/);
 });
 
 test("desktop page titles sit 32px above vertical center with left alignment and compact layout intact", async () => {
@@ -98,14 +100,19 @@ test("desktop page titles sit 32px above vertical center with left alignment and
   assert.match(styles, /\.title \{ position: relative; padding: 104px 0 42px; inset: auto; \}/);
 });
 
-test("desktop project copy restores its original split and detail titles match collection sizes", async () => {
+test("desktop project copy restores its original split with the refined collection rhythm", async () => {
   const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   const desktop = styles.slice(styles.indexOf('@media (min-width: 992px) {'), styles.indexOf('@media (min-width: 992px) and'));
-  assert.match(desktop, /\.detail-unit__project-lockup \.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.detail-unit__title--article \{\s*font-size: 28px;/);
+  assert.match(desktop, /\.works-motion-card \.heading-style-h2\.new \{\s*font-size: 18px;/);
+  assert.doesNotMatch(desktop, /\.detail-unit__project-lockup \.heading-style-h2\.new/);
+  assert.match(desktop, /\.detail-unit__title--article \{\s*font-size: 16px;/);
   assert.match(desktop, /\.works-motion-card \.grid\._3-col \{\s*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);\s*column-gap: var\(--structure--grid-row-gap\);\s*align-items: start;/);
   assert.match(desktop, /\.works-motion-card \.grid\._3-col > :nth-child\(2\) \{\s*grid-area: 1 \/ 2 \/ 2 \/ 4;\s*min-width: 0;\s*max-width: none;/);
   // The shared compact defaults remain stacked; only the desktop override splits.
   assert.match(styles, /\.detail-unit__project-lockup \.grid\._3-col \{\s*grid-template-columns: 1fr;/);
+  assert.match(styles, /\.works-motion-card \.works-meta-spacing \{ margin-bottom: 8px; \}/);
+  assert.match(styles, /\.works-motion-card \.works-media-spacing \{ margin-bottom: 32px; \}/);
+  assert.match(styles, /html\[data-design-edition="elevated"\]\.works-motion-route \{ --works-card-gap: 40px; \}/);
 });
 
 test("mobile navigation floats over content without a bottom band", async () => {
@@ -143,7 +150,23 @@ test("the shared identity uses the approved page-title size and logo treatment",
 
   for (const templatePath of templatePaths) {
     const html = await readFile(new URL(templatePath, import.meta.url), "utf8");
-    assert.match(html, /<a href="\/" class="nav_brand w-inline-block">\s*<div>A\. ZELLINGER<\/div>\s*<\/a>/s);
+    assert.match(html, /<a href="\/" class="nav_brand w-inline-block">\s*<div>ZELLINGER<\/div>\s*<\/a>/s);
     assert.doesNotMatch(html, /nav_brand-(?:desktop|mobile)/);
   }
+});
+
+test("the shared clock shows time only at the refined size", async () => {
+  const shellScript = await readFile(new URL("../public/js/site-shell.js", import.meta.url), "utf8");
+  const home = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+
+  for (const templatePath of templatePaths) {
+    const html = await readFile(new URL(templatePath, import.meta.url), "utf8");
+    assert.match(html, /<div id="h">00:00:00<\/div>/);
+    assert.doesNotMatch(html, /<div id="h">NYC /);
+  }
+  assert.match(shellScript, /clock\.textContent = newYorkClockFormatter\.format\(new Date\(\)\);/);
+  assert.doesNotMatch(shellScript, /clock\.textContent = `NYC /);
+  assert.match(home, /clockElement\.textContent = newYorkClockFormatter\.format\(new Date\(\)\);/);
+  assert.match(styles, /html\[data-design-edition="elevated"\] #h \{ font-size: 13px;/);
 });

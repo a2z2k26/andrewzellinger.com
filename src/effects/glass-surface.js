@@ -28,9 +28,6 @@ const TEXT_SELECTOR = [
   ".biography-prose p",
   ".biography-experience-section__heading",
   ".biography-experience__row",
-  ".biography-capability__label",
-  ".biography-capability__items",
-  ".biography-clients__label",
   ".biography-clients__list",
   ".biography-contact__label",
   ".biography-contact__link",
@@ -40,7 +37,6 @@ const TEXT_SELECTOR = [
 
 const MEDIA_SELECTOR = [
   ".index-media-placeholder",
-  ".articles-entry__thumbnail",
   ".biography-portrait-placeholder",
 ].join(",");
 

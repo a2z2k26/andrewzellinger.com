@@ -73,7 +73,7 @@ test("glass bands rasterize retained non-project media surfaces into the shader"
 
   assert.match(surface, /const MEDIA_SELECTOR/);
   assert.match(surface, /"\.index-media-placeholder"/);
-  assert.match(surface, /"\.articles-entry__thumbnail"/);
+  assert.doesNotMatch(surface, /"\.articles-entry__thumbnail"/);
   assert.match(surface, /"\.biography-portrait-placeholder"/);
   assert.match(surface, /new THREE\.TextureLoader\(\)\.load/);
   assert.match(surface, /entry\.kind === "media"/);
