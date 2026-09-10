@@ -30,6 +30,7 @@ function ensureSharedNavIcon(toggle) {
 
 function initCenterControl() {
   destroyCenterControl?.();
+  if (document.documentElement.dataset.siteNavigation) return;
 
   const toggle = document.querySelector(".nav_toggle");
   const menu = document.querySelector(".nav_menu");

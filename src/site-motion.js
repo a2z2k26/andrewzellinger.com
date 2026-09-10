@@ -1,4 +1,5 @@
 import { gsap } from "gsap";
+import './site-navigation/index.js';
 import { ARTICLE_DETAILS } from "./article-content.js";
 import { PROJECTS } from "./project-content.js";
 import { mountPortraitArtwork } from "./elevation/portrait-artwork.js";

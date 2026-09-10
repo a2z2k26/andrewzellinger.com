@@ -94,27 +94,28 @@ async function loadLifecycle({ initialize = true } = {}) {
     event.button = 0;
     document.dispatchEvent(event);
   };
-  eventTarget = { closest: () => { activations += 1; return null; } };
+  // Count handler entries, not incidental selector queries inside the handler.
+  eventTarget = { closest: selector => { if (selector.includes('.nav_toggle')) activations += 1; return null; } };
   return { context, window, activate, activations: () => activations };
 }
 
 test("cached documents regain detail-link and close listeners after pagehide/pageshow", async () => {
   const runtime = await loadLifecycle();
   runtime.activate();
-  assert.equal(runtime.activations(), 2);
+  assert.equal(runtime.activations(), 1);
   const pagehide = new Event("pagehide");
   Object.assign(pagehide, { persisted: true });
   runtime.window.dispatchEvent(pagehide);
   runtime.activate();
-  assert.equal(runtime.activations(), 2);
+  assert.equal(runtime.activations(), 1);
   const pageshow = new Event("pageshow");
   Object.assign(pageshow, { persisted: true });
   runtime.window.dispatchEvent(pageshow);
   runtime.activate();
-  assert.equal(runtime.activations(), 4);
+  assert.equal(runtime.activations(), 2);
   runtime.window.dispatchEvent(pageshow);
   runtime.activate();
-  assert.equal(runtime.activations(), 6, "repeated resume must not duplicate click handling");
+  assert.equal(runtime.activations(), 3, "repeated resume must not duplicate click handling");
 });
 
 test("environment rerenders use the saved reading anchor instead of only the current slug", async () => {

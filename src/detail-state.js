@@ -892,13 +892,18 @@ function isModifiedActivation(event) {
 }
 
 function onDocumentClick(event) {
-  const toggle = event.target.closest(".nav_toggle");
+  const toggle = event.target.closest(".nav_toggle, [data-site-detail-back]");
+  if (toggle?.matches('[data-site-detail-back]') && isModifiedActivation(event)) return;
   if (toggle && (activeDetail || pendingDetailRender)) {
     event.preventDefault();
     event.stopImmediatePropagation();
     closeDetail();
     return;
   }
+
+  // Demo chrome must never be mistaken for a project in the inert loop copy
+  // beneath it. Its real section links still reach the shared route coordinator.
+  if (event.target.closest('.site-navigation')) return;
 
   let link = event.target.closest("[data-portfolio-detail-link]");
   if (!link && !activeDetail && !pendingDetailRender && Number.isFinite(event.clientX) && Number.isFinite(event.clientY)) {
