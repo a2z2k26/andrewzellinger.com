@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/client",
+  "installCommand": "npm ci",
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/index", "destination": "/", "permanent": true },
+    { "source": "/info", "destination": "/history", "permanent": true },
+    { "source": "/biography", "destination": "/history", "permanent": true },
+    { "source": "/portfolio", "destination": "/", "permanent": true },
+    { "source": "/projects", "destination": "/", "permanent": true },
+    { "source": "/projects/index.html", "destination": "/", "permanent": true }
+  ]
+}

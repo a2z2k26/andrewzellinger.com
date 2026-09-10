@@ -2,6 +2,7 @@
   "name": "andrewzellinger.com",
   "version": "0.0.0",
   "private": true,
+  "engines": { "node": "22.x" },
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
