@@ -22,7 +22,7 @@ const detailRoutes = new Set(
   [...CASE_STUDIES, ...ARTICLE_DETAILS].map((entry) => entry.path.replace(/\/$/, "")),
 );
 
-function routeRequest(request, response) {
+function routeRequest(request, response, built = false) {
   const url = new URL(request.url, "http://localhost");
   const pathname = url.pathname.replace(/\/$/, "") || "/";
   const redirectTarget = legacyRedirects.get(pathname);
@@ -47,7 +47,7 @@ function routeRequest(request, response) {
     return false;
   }
   const routeFile = routeFiles.get(pathname);
-  if (routeFile) request.url = `${routeFile}${url.search}`;
+  if (routeFile) request.url = `${built && pathname === "/history" ? "/history/index.html" : routeFile}${url.search}`;
   return true;
 }
 
@@ -61,7 +61,7 @@ const prettyRoutePlugin = {
   },
   configurePreviewServer(server) {
     server.middlewares.use((request, _response, next) => {
-      if (!routeRequest(request, _response)) return;
+      if (!routeRequest(request, _response, true)) return;
       next();
     });
   },
@@ -76,6 +76,18 @@ const detailRouteAliasesPlugin = {
       await mkdir(destinationDirectory, { recursive: true });
       await copyFile(shell, resolve(destinationDirectory, "index.html"));
     }));
+  },
+};
+
+// Vite replaces authored module tags when bundling and drops blocking="render".
+// Keep the incoming page's transition listeners installed before pagereveal;
+// otherwise Chrome reveals it before the bundle has named its snapshots.
+const renderBlockingEntryPlugin = {
+  name: "render-blocking-entry",
+  apply: "build",
+  transformIndexHtml: {
+    order: "post",
+    handler: html => html.replace(/<script type="module" crossorigin/g, '<script type="module" blocking="render" crossorigin'),
   },
 };
 
@@ -101,5 +113,5 @@ export default defineConfig({
       clientFiles: ["./src/main.jsx"],
     },
   },
-  plugins: [prettyRoutePlugin, detailRouteAliasesPlugin, react()],
+  plugins: [prettyRoutePlugin, detailRouteAliasesPlugin, react(), renderBlockingEntryPlugin],
 });

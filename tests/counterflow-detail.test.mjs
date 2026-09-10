@@ -51,7 +51,7 @@ function detailSweep() {
   });
   vm.runInContext(source.replace(/^import\s+[^;]+;\n/gm, '').replaceAll('export ', ''), context);
   let skipped = false;
-  const transition = { finished: new Promise(() => {}), skipTransition() { skipped = true; } };
+  const transition = { ready: Promise.resolve(), finished: new Promise(() => {}), skipTransition() { skipped = true; } };
   const event = new Event('pageswap');
   Object.assign(event, { activation: { entry: { url: 'https://portfolio.test/' } }, viewTransition: transition });
   window.dispatchEvent(event);

@@ -168,6 +168,9 @@ function cancel() {
 window.addEventListener('pageswap',event=>{
   const direction=counterflowDirection(location.href,event.activation?.entry?.url);
   if(!event.viewTransition) return;
+  // Chrome rejects ready when a transition is skipped (including departures).
+  // Register the rejection handler before any early skip or cancellation.
+  event.viewTransition.ready.catch(()=>{});
   if(skipDeparture || !nameSurfaces(direction, 'out')) {event.viewTransition.skipTransition();skipDeparture=false;return;}
   const token=++sequence;
   active=event.viewTransition;
@@ -181,6 +184,7 @@ window.addEventListener('pageswap',event=>{
 window.addEventListener('pagereveal',event=>{
   const direction=counterflowDirection(window.navigation?.activation?.from?.url,location.href);
   if(!event.viewTransition) {settle(sequence);return;}
+  event.viewTransition.ready.catch(()=>{});
   if(!nameSurfaces(direction, 'in')) {event.viewTransition.skipTransition();settle(sequence);return;}
   const token=++sequence;
   active=event.viewTransition;

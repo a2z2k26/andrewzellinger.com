@@ -196,7 +196,7 @@ test("detail-return completion releases the hold timer without resetting phase o
   assert.doesNotMatch(code, /direction\s*=|gsap\.set|setUserMotionPaused/);
 });
 
-test("runtime restoration runs once on bfcache return and does not miss interactive documents", async () => {
+test("runtime waits for deferred content modules and restores once on bfcache return", async () => {
   const source = await readFile(motionURL, "utf8");
   const lifecycle = source.slice(source.indexOf("export function initSiteMotion"))
     .replace("export function", "function");
@@ -227,7 +227,11 @@ test("runtime restoration runs once on bfcache return and does not miss interact
     },
   });
   vm.runInContext(lifecycle, context);
-  assert.equal(starts, 1, "interactive documents must initialize immediately");
+  assert.equal(starts, 0, "interactive still precedes deferred entry-module content");
+  document.dispatchEvent(new Event("DOMContentLoaded"));
+  assert.equal(starts, 1, "initialize after all static entry modules finish");
+  document.dispatchEvent(new Event("DOMContentLoaded"));
+  assert.equal(starts, 1, "initial setup runs once");
   const originalDestroy = context.destroyActiveRuntime;
   window.dispatchEvent(new Event("pagehide"));
   originalDestroy();

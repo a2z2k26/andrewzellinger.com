@@ -757,7 +757,10 @@ function onRailSweepArrival() {
 }
 
 function startWhenReady() {
-  if (document.readyState === "loading") {
+  // Static module scripts run while readyState is "interactive". In a build,
+  // Rollup evaluates this shared import before the entry module creates cards.
+  // Wait for the complete deferred module graph, not just the HTML parser.
+  if (document.readyState !== "complete") {
     document.addEventListener("DOMContentLoaded", () => initSiteMotion(), { once: true });
   } else {
     initSiteMotion();
