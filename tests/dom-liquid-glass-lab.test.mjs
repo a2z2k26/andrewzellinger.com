@@ -149,7 +149,7 @@ test("every breakpoint uses one stacked menu and contains no legacy circular-men
     "../info/index.html",
     "../detail-shell.html",
     "../public/js/site-shell.js",
-    "../public/css/caverzasio.css",
+    "../public/css/site-base.css",
     "../src/biography.css",
     "../src/detail-state.css",
     "../src/effects/center-control.js",

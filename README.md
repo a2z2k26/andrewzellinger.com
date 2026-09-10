@@ -1,36 +1,49 @@
-# Caverzasio clone
+# andrewzellinger.com
 
-Faithful local implementation of `https://www.caverzasio.ch/`, isolated from the AndrewZellinger.com project.
+Andrew Zellinger's commercial product design portfolio. Vite serves static HTML with DOM controllers, GSAP motion and local media. Selected effects use React. Content is checked in; no runtime CMS credentials are required.
 
 ## Routes
 
-- `/` (canonical Index/home with the responsive “Product designer” / “Designer” heading)
-- `/projects`
+- `/` (Projects collection; `/projects` redirects here)
 - `/articles`
 - `/history`
 - `/case-studies/<slug>/` (direct project details)
 - `/articles/<slug>/` (direct article details)
 
-Legacy `/index`, `/info`, `/biography`, and `/portfolio` requests redirect permanently to `/`, `/history`, `/history`, and `/projects` respectively.
+Legacy redirects live in `vite.config.mjs` and `worker/index.js`; keep them consistent.
 
 ## Run locally
 
 ```bash
-npm install
+nvm use
+npm ci
 npm run dev
 ```
 
 Production verification:
 
 ```bash
-npm run build
-npm run test:sites
+npm run check
 ```
 
 ## Asset policy
 
-All retained media surfaces currently share one local Tasman Glacier photograph as a reversible stand-in; legacy project/page raster imagery remains intentionally excluded. Fonts, CSS, JavaScript, favicons, and non-raster UI chrome assets remain local. No MP4, WebM, MOV, or M4V files are included.
+Project imagery, portraits, fonts and UI assets are served locally. `src/article-images.js` maps artwork across listing and detail views; `Article-Image/README.md` documents originals, assignments and the remaining spare. Preserve originals and third-party notices.
 
-Projects and case-study copy is a one-time static extraction of 13 approved records from Andrew's Notion portfolio gallery. The source records live in `src/project-content.js`; their published editorial layer lives in `src/project-narratives.js` and gives every detail the same Context, Work, and Outcome structure without removing the underlying role, approach, outcome, or reflection copy. The website has no Notion runtime connection, synchronization, credentials, or client-side fetch path.
+## Source map
 
-`npm run mirror` rebuilds the two source-backed route files, preserves the locally authored Articles page, updates the local asset manifest, and prunes assets no longer referenced by the retained site. It reads the captured source files at `/private/tmp/caverzasio-source-html` and is not required to run or build the checked-in clone.
+- `src/site-navigation/`: responsive Masthead and detail-return controls.
+- `src/site-motion.js`, `src/detail-state.js`: carousels and transitions.
+- `src/project-content.js`, `src/project-narratives.js`: project records and editorial copy.
+- `src/article-content.js`, `src/article-images.js`: articles and artwork mapping.
+- `src/biography-content.js`, `src/biography.js`, `src/biography.css`: History.
+- `tests/`: Node regression tests; `npm test` runs them all.
+- `worker/`, `scripts/prepare-sites-build.mjs`: production routing and packaging.
+
+## Maintenance boundaries
+
+Use Node 22 (`.nvmrc`) and `npm ci`. `npm run check` runs tests and the production build. Follow the newest decisions in `AGENTS.md` and `docs/masthead-navigation.md`; older audit documents describe historical snapshots. Check changed visual states in a browser on desktop and compact layouts, including keyboard navigation, reduced motion and detail returns. Tests alone are not visual approval.
+
+`scripts/mirror-source.mjs` is an archival restoration tool, not a normal build step. It can overwrite authored route shells and prune assets. It requires explicit source-capture and origin environment variables. Do not run `npm run mirror` or `npm run prune:assets` as routine cleanup.
+
+Preserve factual provenance and third-party license notices. Do not apply an open-source license to artwork or client material without owner approval. Do not commit secrets, generated builds, dependencies or local worktrees. Deployment and pushing commits require separate authorization.

@@ -6,8 +6,12 @@ import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = path.resolve(import.meta.dirname, "..");
-const sourceRoot = "/private/tmp/caverzasio-source-html";
-const sourceOrigin = "https://www.caverzasio.ch";
+// Archival restoration only: never overwrite the accepted site with implicit inputs.
+const sourceRoot = process.env.PORTFOLIO_IMPORT_ROOT;
+const sourceOrigin = process.env.PORTFOLIO_IMPORT_ORIGIN;
+if (!sourceRoot || !sourceOrigin) {
+  throw new Error("Archival import requires PORTFOLIO_IMPORT_ROOT and PORTFOLIO_IMPORT_ORIGIN; it overwrites authored route files.");
+}
 const routes = [
   ["index.html", "index.html"],
   ["info.html", "info/index.html"],
@@ -562,7 +566,6 @@ function transformHtml(source, sourceFile) {
       .replace(/<meta content="[^"]*" property="og:description">/i, `<meta content="${biographyDescription}" property="og:description">`)
       .replace(/<meta content="[^"]*" property="twitter:title">/i, '<meta content="Andrew Zellinger • History" property="twitter:title">')
       .replace(/<meta content="[^"]*" property="twitter:description">/i, `<meta content="${biographyDescription}" property="twitter:description">`)
-      .replace(/Fabio Caverzasio • Art Director &amp; Web Designer/g, "Andrew Zellinger • History")
       .replace('<h1 class="heading">Info</h1>', '<h1 class="heading">History</h1>')
       .replace(/<meta content="summary_large_image" name="twitter:card">/i, '<meta content="summary_large_image" name="twitter:card">\n  <link rel="canonical" href="/history">')
       .replace(

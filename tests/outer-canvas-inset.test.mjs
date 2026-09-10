@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("desktop canvas uses a 24px outer frame while mobile remains 16px", async () => {
   const styles = await readFile(
-    new URL("../public/css/caverzasio.css", import.meta.url),
+    new URL("../public/css/site-base.css", import.meta.url),
     "utf8",
   );
 

@@ -162,7 +162,7 @@ test("the persistent logo and clock remain native above both effects", async () 
     "utf8",
   );
   const globalStyles = await readFile(
-    new URL("../public/css/caverzasio.css", import.meta.url),
+    new URL("../public/css/site-base.css", import.meta.url),
     "utf8",
   );
 

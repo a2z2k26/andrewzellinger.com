@@ -86,7 +86,7 @@ Evidence labels: **Observed** = current browser or computed DOM; **Source-confir
 
 ### F2 — High: article metadata fails normal-text contrast
 
-**Observed + calculated.** The article-list metadata uses computed `rgb(147,147,143)` and inherits `.display-inlineflex.categories { opacity: .45 }` from `public/css/caverzasio.css:621`. Over black this becomes approximately `rgb(66,66,64)`, giving **2.09:1** contrast. At 11px it does not meet the **4.5:1** normal-text requirement. [WCAG contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
+**Observed + calculated.** The article-list metadata uses computed `rgb(147,147,143)` and inherits `.display-inlineflex.categories { opacity: .45 }` from `public/css/site-base.css:621`. Over black this becomes approximately `rgb(66,66,64)`, giving **2.09:1** contrast. At 11px it does not meet the **4.5:1** normal-text requirement. [WCAG contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html).
 
 Detail metadata does not inherit that opacity and was observed at opacity 1. Fix the composition, not just the nominal color token. Recheck project tags and all category descendants for the same legacy rule. Screenshots 12, 18, and 23 show the issue.
 

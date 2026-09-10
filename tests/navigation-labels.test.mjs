@@ -116,7 +116,7 @@ test("mobile navigation floats over content without a bottom band", async () => 
 });
 
 test("the shared identity uses the approved page-title size and logo treatment", async () => {
-  const styles = await readFile(new URL("../public/css/caverzasio.css", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../public/css/site-base.css", import.meta.url), "utf8");
   const fontStyles = await readFile(new URL("../src/site-fonts.css", import.meta.url), "utf8");
   const packageManifest = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
 

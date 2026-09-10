@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 test("persistent navigation paints above body-level detail transition clones at every breakpoint", async () => {
-  const base = await readFile(new URL("../public/css/caverzasio.css", import.meta.url), "utf8");
+  const base = await readFile(new URL("../public/css/site-base.css", import.meta.url), "utf8");
   const edition = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   const detail = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
   const navRule = base.match(/^\.nav\s*\{([^}]+)\}/m)?.[1];

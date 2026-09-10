@@ -6,6 +6,8 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 10 repository grooming: the canonical repository is `andrewzellinger.com`. Keep shipped pages and asset URLs free of predecessor branding. Preserve imported runtime bytes, third-party notices, approved visuals, content and motion. Use `npm run check` for regression/build verification; archival mirroring is not routine maintenance.
+
 - September 10 Back arrow refinement: desktop detail Back arrows use an 18px square, reduced from 20px. Preserve label typography, orange color, spacing and the 44px click target.
 
 - September 10 article divider refinement: article-detail dividers occupy the same first grid track as article body text, rather than spanning the full right rail. Preserve image widths and existing vertical spacing.
@@ -275,7 +277,7 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 - The After Hours visual experiment was a capability test and is excluded from the active site. Keep it preserved on `experiment/after-hours`; continue the accepted design on `main` and do not reintroduce the experiment unless Andrew requests it.
 
-- Use the original Caverzasio implementation as a structural template while allowing major content and menu changes.
+- Preserve the inherited structural template while allowing approved content and menu changes.
 - Preserve its typography, solid-black theme, responsive behavior, and interaction language unless the user explicitly changes direction.
 - The persistent upper-left site header reads “ANDREW ZELLINGER” in white, superseding the abbreviated initial and extra-space treatments. Apply on every route and at every breakpoint. Preserve its current Geist Medium typography, tracking, placement, behavior, and canonical Home link at `/`.
 - The persistent bottom-left live clock uses `America/New_York` local time and is visibly prefixed with `NYC ` on every route; preserve its typography, placement, and one-second updates.
