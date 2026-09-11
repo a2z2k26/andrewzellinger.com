@@ -211,6 +211,49 @@ html[data-welcome-preface="open"] body {
   }
 }
 
+@media screen and (max-width: 599px) {
+  .welcome-preface__panel {
+    width: min(344px, calc(100vw - 32px));
+    height: auto;
+    padding: 56px 24px 44px;
+  }
+
+  .rotating-globe-icon {
+    width: 68px;
+    height: 38px;
+  }
+
+  .welcome-preface__title {
+    margin-top: 14px;
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .welcome-preface__description {
+    margin-top: 32px;
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .welcome-preface__visit {
+    margin-top: 28px;
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .welcome-preface__close {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    margin-top: 44px;
+  }
+
+  .welcome-preface__close svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .welcome-preface,
   .welcome-preface__panel,
