@@ -259,6 +259,19 @@ html[data-design-edition="elevated"] .detail-unit__article-heading { font-size: 
   html[data-design-edition="elevated"] { scroll-padding-top: 80px; scroll-padding-bottom: 112px; }
 }
 @media (max-width: 599px) {
+  html[data-design-edition="elevated"] { --mobile-page-gutter: 16px; }
+  html[data-design-edition="elevated"] .container-xlarge,
+  html[data-design-edition="elevated"] .title .container-xlarge,
+  html[data-design-edition="elevated"] .nav > .container-xlarge:first-child {
+    padding-inline: var(--mobile-page-gutter);
+  }
+  html[data-design-edition="elevated"] .nav_h { padding-right: var(--mobile-page-gutter); }
+  html[data-design-edition="elevated"].index-route .index-static-field,
+  html[data-design-edition="elevated"].works-motion-route[data-works-motion="mobile-static"] .works-motion-field,
+  html[data-design-edition="elevated"] .articles-index,
+  html[data-design-edition="elevated"] .detail-rail {
+    margin-inline: var(--mobile-page-gutter);
+  }
   html[data-design-edition="elevated"].works-motion-route { --works-card-gap: 32px; }
   html[data-design-edition="elevated"] .nav {
     background: transparent;

@@ -6,6 +6,12 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 mobile modal bottom-padding follow-up: use 40px bottom interior padding while retaining 32px top and zero horizontal padding. Preserve width, internal gaps and larger breakpoints.
+
+- September 11 mobile modal vertical breathing room: add 32px interior padding above and below the centered lockup. Preserve phone width `min(312px, calc(100vw - 64px))`, zero horizontal panel padding, internal spacing, typography and controls. Tablet and desktop are unchanged. This supersedes the zero vertical padding from the earlier frame reduction.
+
+- September 11 mobile canvas clarification: below 600px, page content has 16px left/right outer gutters across Projects, Articles, History and both detail views. Align the header logo/clock and page titles to those gutters. This is page canvas spacing, not modal padding; preserve the current modal, full-width bottom controls, tablet and desktop layouts.
+
 - September 11 mobile modal frame reduction: remove another 16px around each side of the phone panel while preserving content size and centered placement. Phone width becomes `min(312px, calc(100vw - 64px))` and padding becomes zero, consuming the previous 16px inset. Content-sized height decreases by 32px; internal gaps and type/icon sizes remain unchanged. Desktop and tablet stay unchanged.
 
 - September 11 mobile modal interior-padding follow-up: set phone panel padding to 16px on all four sides, superseding 52px vertical / 24px horizontal. Keep the existing responsive width, centered lockup, internal gaps, typography and controls. Desktop and tablet are unchanged.

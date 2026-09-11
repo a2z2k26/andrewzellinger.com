@@ -109,7 +109,7 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 36px;[^}]*width: 36px;[^}]*height: 36px/);
   assert.match(phoneStyles, /\.welcome-preface__close::before\s*\{[^}]*inset: -6px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*margin-top: 60px/);
-  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(312px, calc\(100vw - 64px\)\);[^}]*padding: 0/);
+  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(312px, calc\(100vw - 64px\)\);[^}]*padding: 32px 0 40px;/);
   assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*width: 62px;[^}]*height: 34px/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 36px;[^}]*margin-bottom: 0/);
   assert.match(styles, /border: 0/);

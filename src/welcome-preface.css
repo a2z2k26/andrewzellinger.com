@@ -217,7 +217,7 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__panel {
     width: min(312px, calc(100vw - 64px));
     height: auto;
-    padding: 0;
+    padding: 32px 0 40px;
     /* Keep the close button's invisible touch extension usable at the edge. */
     overflow: visible;
   }

@@ -4,6 +4,18 @@ import { readFile } from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 
+test("phone page gutters share a 16px token independently of the modal and tablet", async () => {
+  const elevated = await readFile(new URL("src/elevation/styles.css", root), "utf8");
+  const phoneStart = elevated.indexOf('@media (max-width: 599px) {');
+  const phone = elevated.slice(phoneStart);
+  assert.match(phone, /--mobile-page-gutter: 16px;/);
+  assert.match(phone, /\.container-xlarge,[\s\S]*?\.title \.container-xlarge,[\s\S]*?\.nav > \.container-xlarge:first-child \{\s*padding-inline: var\(--mobile-page-gutter\);/);
+  assert.match(phone, /\.nav_h \{ padding-right: var\(--mobile-page-gutter\); \}/);
+  assert.match(phone, /\.index-static-field,[\s\S]*?\.works-motion-field,[\s\S]*?\.articles-index,[\s\S]*?\.detail-rail \{\s*margin-inline: var\(--mobile-page-gutter\);/);
+  assert.match(elevated.slice(0, phoneStart), /\.container-xlarge \{ padding-inline: 24px; \}/);
+  assert.doesNotMatch(phone, /welcome-preface/);
+});
+
 test("phone typography uses one shared hierarchy without changing larger breakpoints", async () => {
   const elevated = await readFile(new URL("src/elevation/styles.css", root), "utf8");
   const biography = await readFile(new URL("src/biography.css", root), "utf8");
