@@ -268,18 +268,14 @@ html[data-design-edition="elevated"] .detail-unit__article-heading { font-size: 
     font-size: 12px;
     line-height: 12px;
   }
-  html[data-design-edition="elevated"] .title .heading { font-size: 32px; }
+  html[data-design-edition="elevated"] .title .heading { font-size: 40px; }
   html[data-design-edition="elevated"] .works-motion-card .works-media-spacing { margin-bottom: 24px; }
   html[data-design-edition="elevated"] .works-motion-card .grid._3-col { row-gap: 12px; }
   html[data-design-edition="elevated"] .works-motion-card .heading-style-h2.new {
     font-size: 14px;
     line-height: 1.15;
   }
-  html[data-design-edition="elevated"] .works-motion-card .categories {
-    font-size: 12px !important;
-    line-height: 1.5 !important;
-  }
-  html[data-design-edition="elevated"] .works-motion-card .works-meta-spacing { margin-bottom: 6px; }
+  html[data-design-edition="elevated"] .works-motion-card .works-meta-spacing { display: none; }
   html[data-design-edition="elevated"] .works-motion-card .works-project-description {
     font-size: 12px;
     line-height: 1.6;
@@ -289,7 +285,7 @@ html[data-design-edition="elevated"] .detail-unit__article-heading { font-size: 
   html[data-design-edition="elevated"].works-motion-route[data-works-motion="mobile-static"] .works-motion-field {
     padding-bottom: 80px;
   }
-  html[data-design-edition="elevated"] .title { padding-top: 156px; padding-bottom: 24px; }
+  html[data-design-edition="elevated"] .title { padding-top: 132px; padding-bottom: 24px; }
   html[data-design-edition="elevated"] .articles-entry__title.heading-style-h2.new { font-size: 16px; }
   html[data-design-edition="elevated"] .articles-entry__meta { margin: 0 0 8px; }
   html[data-design-edition="elevated"] .detail-unit__section--project { grid-template-columns: 1fr; gap: 18px; }

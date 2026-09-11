@@ -75,11 +75,12 @@ test("the mirror generator preserves canonical routes and route-specific page na
   assert.ok(generator.includes('<div>ZELLINGER</div>'));
 });
 
-test("elevated page titles use a fixed desktop size without changing compact typography", async () => {
+test("elevated page titles use the approved desktop and phone sizes", async () => {
   const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   assert.match(styles, /html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 72px;\s*line-height: \.98;\s*font-weight: 500;/);
   assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 80px;\s*font-weight: 500;/);
   assert.match(styles, /@media \(max-width: 991px\)[\s\S]*?\.title \.heading \{ font-size: clamp\(56px, 6\.9vw, 94px\); \}/);
+  assert.match(styles, /@media \(max-width: 599px\)[\s\S]*?\.title \.heading \{ font-size: 40px; \}/);
 });
 
 test("article collection and detail titles share 18px on desktop while project details stay 16px", async () => {
@@ -124,6 +125,14 @@ test("mobile navigation floats over content without a bottom band", async () => 
   assert.doesNotMatch(styles, /body::after/);
   assert.match(styles, /--edition-control-bottom-gap, 48px/);
   assert.match(styles, /env\(safe-area-inset-bottom, 0px\)/);
+});
+
+test("mobile project cards omit collection metadata without changing detail metadata", async () => {
+  const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  const mobile = styles.slice(styles.indexOf('@media (max-width: 599px) {'));
+  assert.match(mobile, /\.works-motion-card \.works-meta-spacing \{ display: none; \}/);
+  assert.doesNotMatch(mobile, /\.detail-unit__project-lockup \.works-meta-spacing \{ display: none; \}/);
+  assert.doesNotMatch(mobile, /\.detail-unit__meta[^\{]*\{[^}]*display:\s*none;/s);
 });
 
 test("the shared identity uses the approved page-title size and logo treatment", async () => {
