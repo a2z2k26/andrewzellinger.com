@@ -25,12 +25,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  width: min(528px, calc(100vw - 48px));
-  height: 600px;
+  width: min(464px, calc(100vw - 48px));
+  height: 536px;
   max-height: calc(100dvh - 48px);
   overflow: hidden;
-  padding: 96px 64px 84px;
+  padding: 16px 32px;
   border-radius: 16px;
   background: linear-gradient(180deg, #151515 0%, #121212 100%);
   box-shadow: inset 0 0 0 1px #242424;
@@ -59,13 +60,6 @@
 .welcome-preface__visit,
 .welcome-preface__close {
   margin: 0;
-}
-
-.rotating-globe-icon,
-.welcome-preface__title,
-.welcome-preface__description,
-.welcome-preface__visit {
-  transform: translate3d(0, -4px, 0);
 }
 
 .rotating-globe-icon {
@@ -104,11 +98,11 @@
 
 .welcome-preface__description {
   width: 100%;
-  margin-top: 44px;
+  margin-top: 36px;
   color: #8a8a8a;
   font-size: 16px;
   font-weight: 500;
-  line-height: 32px;
+  line-height: 28px;
   letter-spacing: 0;
   text-align: center;
   text-transform: none;
@@ -119,15 +113,16 @@
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
-  margin-top: 36px;
+  margin-top: 28px;
   color: #8a8a8a;
   font-size: 16px;
   font-weight: 500;
   line-height: 32px;
   letter-spacing: 0;
   text-transform: none;
+  text-indent: 0;
   white-space: nowrap;
 }
 
@@ -150,9 +145,9 @@
 .welcome-preface__close {
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
-  margin-top: auto;
+  width: 48px;
+  height: 48px;
+  margin-top: 60px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -166,8 +161,8 @@
 }
 
 .welcome-preface__close svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   overflow: visible;
 }
 
@@ -175,7 +170,7 @@
   fill: none;
   stroke: currentColor;
   stroke-linecap: square;
-  stroke-width: 2.5;
+  stroke-width: 2;
   vector-effect: non-scaling-stroke;
 }
 
@@ -205,9 +200,9 @@ html[data-welcome-preface="open"] body {
   }
 
   .welcome-preface__panel {
-    width: min(528px, calc(100vw - 32px));
+    width: min(464px, calc(100vw - 32px));
     max-height: calc(100dvh - 32px);
-    padding-inline: clamp(28px, 12vw, 64px);
+    padding-inline: 32px;
   }
 }
 
@@ -215,12 +210,12 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__panel {
     width: min(344px, calc(100vw - 32px));
     height: auto;
-    padding: 56px 24px 44px;
+    padding: 52px 24px;
   }
 
   .rotating-globe-icon {
-    width: 68px;
-    height: 38px;
+    width: 62px;
+    height: 34px;
   }
 
   .welcome-preface__title {
@@ -230,27 +225,28 @@ html[data-welcome-preface="open"] body {
   }
 
   .welcome-preface__description {
-    margin-top: 32px;
+    margin-top: 24px;
     font-size: 12px;
-    line-height: 24px;
+    line-height: 20px;
   }
 
   .welcome-preface__visit {
-    margin-top: 28px;
+    margin-top: 20px;
     font-size: 12px;
     line-height: 24px;
   }
 
   .welcome-preface__close {
-    flex: 0 0 44px;
-    width: 44px;
-    height: 44px;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
     margin-top: 44px;
+    margin-bottom: 0;
   }
 
   .welcome-preface__close svg {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
   }
 }
 
