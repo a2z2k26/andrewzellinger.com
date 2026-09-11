@@ -12,7 +12,7 @@ test("phone typography uses one shared hierarchy without changing larger breakpo
   const historyPhone = biography.slice(biography.indexOf('@media screen and (max-width: 599px) {'));
   const welcomePhone = welcome.slice(welcome.indexOf('@media screen and (max-width: 599px) {'));
 
-  assert.match(phone, /\.title \.heading \{ font-size: 36px; \}/);
+  assert.match(phone, /\.title \.heading \{ font-size: 38px; \}/);
   assert.match(phone, /\.works-motion-route \{ --works-card-gap: 32px; \}/);
   assert.match(phone, /\.title \{ padding-top: 132px; padding-bottom: 32px; \}/);
   assert.match(phone, /\.articles-entry__title\.heading-style-h2\.new,[\s\S]*?\.detail-unit__title--article \{\s*font-size: 14px;\s*line-height: 1\.15;/);

@@ -21,10 +21,23 @@ test('persistent desktop links and compact detail state',()=>{
   assert.ok(js.includes("back.dataset.siteDetailBack = ''"));
   assert.ok(js.includes('link.href = route.path'));
   assert.ok(js.includes('compact.addEventListener'));
+  assert.ok(js.includes('phone.addEventListener'));
   assert.ok(js.includes("getPropertyValue('--structure--grid-row-gap')"));
   assert.ok(js.includes('centeredMastheadLeft(rect.right, rightColumnLeft, menuWidth, -80)'));
   assert.ok(js.includes('sizes.observe(nav)'));
   assert.ok(!js.includes('rect.right + 156'));
+});
+test('phone navigation collapses into an accessible tap and swipe drawer',()=>{
+  assert.ok(js.includes("menuToggle.setAttribute('aria-controls', nav.id)"));
+  assert.ok(js.includes("menuToggle.setAttribute('aria-expanded', 'false')"));
+  assert.ok(js.includes('travel <= -24'));
+  assert.ok(js.includes('travel >= 24'));
+  assert.ok(js.includes("event.key === 'Escape'"));
+  assert.match(css,/\.site-navigation__menu-toggle \{[\s\S]*?width: 100%;[\s\S]*?height: calc\(56px \+ env\(safe-area-inset-bottom,0px\)\);[\s\S]*?touch-action: none;/);
+  assert.doesNotMatch(js,/site-navigation__menu-label/);
+  assert.match(css,/\.site-navigation__menu-icon::before,[\s\S]*?\.site-navigation__menu-icon::after \{[\s\S]*?width: 28px;[\s\S]*?height: 2px;/);
+  assert.match(css,/\.site-navigation--mobile-open \.masthead-links \{[\s\S]*?opacity: 1;[\s\S]*?pointer-events: auto;/);
+  assert.match(css,/\.masthead-link \{ width: 100%; min-height: 44px;[\s\S]*?font-size: 12px;/);
 });
 test('accepted dimensions and detail context preserved',()=>{
   for(const value of ['- 52px','height: 44px','height: calc(68px','width: 14px']) assert.ok(css.includes(value),value);
