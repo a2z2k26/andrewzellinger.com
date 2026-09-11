@@ -6,6 +6,16 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 mobile Experience density: reduce the vertical gap between History experience entries from 16px to 12px below 600px. Preserve single-line three-column rows and larger breakpoints.
+
+- September 11 Experience role normalization and mobile columns: across all breakpoints, change every `Senior Product Designer · Contract` role to `Product Designer` and remove the `· Contract` suffix from every other Experience role. Below 600px, use equal flexible outer columns around a consistent 112px-wide middle column, so every job title begins at the same x-position in the mathematical center of the layout. Keep job titles left-aligned and dates right-aligned. Retain single-line organization, role and date rows. Preserve tablet and desktop layout geometry.
+
+- September 11 mobile experience single-line rows: render organization, role and dates on one 3-column row below 600px. Use adaptive microtype so every complete entry remains visible without truncation: organization 10–12px, role/dates 9–10px, and 4–6px column gaps. Keep whitespace unbroken and distribute columns across the available width. Desktop/tablet retain their existing grid and sizes.
+
+- September 11 experience-name abbreviations: across all breakpoints, use Independent, Cosmos, Sketch Deck, I&Co, GTO, Ueno, Red Antler, Ustwo, CP&B and SVA in the History experience list. These are display labels only; preserve the full “School of Visual Arts” name in Education and do not rewrite project narratives or credits.
+
+- September 11 mobile History type refinement: follow Projects' 12px baseline while preserving hierarchy. Below 600px, use an 18px lead (was 20px) and 12px practice/education/client/availability prose (was 14px); keep employer names 14px, roles/contact links 12px and mono labels/dates 11px. Preserve 32px page title, existing line-height ratios, spacing, portrait and all tablet/desktop typography.
+
 - September 11 mobile menu row-height follow-up: increase all four rows from 48px to 54px, including the collapsed handle (plus safe-area inset). Keep equal sizing, full-width dividers, centered content and all other styling.
 
 - September 11 mobile drawer equal-row cleanup: the open handle and each of the three link rows are exactly 48px tall, with centered contents and edge-to-edge dividers. Remove tray top/side padding and side borders; keep safe-area padding only below the last row. Collapsed shelf remains 48px plus safe area. Preserve black fill, thin icon, 14px labels, gestures and larger breakpoints.

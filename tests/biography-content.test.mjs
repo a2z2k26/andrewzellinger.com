@@ -19,32 +19,39 @@ test("biography contains the approved editorial structure and experience record"
   assert.deepEqual(
     BIOGRAPHY.experience.entries.map(({ organization }) => organization),
     [
-      "Independent practice",
-      "Cosmos Holodeck",
+      "Independent",
+      "Cosmos",
       "Avantos",
-      "Sketch / Amazon Fire TV",
+      "Sketch Deck",
       "SketchDeck",
       "Fi",
       "Live Auctioneers",
       "Modern Age",
       "AKQA",
-      "I&Co / Audible Sleep",
-      "Greater Than One",
+      "I&Co",
+      "GTO",
       "Studio Rodrigo",
       "Philosophie",
-      "Ueno / Reuters TV",
+      "Ueno",
       "Noom",
-      "Red Antler / Foursquare",
+      "Red Antler",
       "Method",
       "Pod1",
-      "ustwo",
-      "Crispin Porter & Bogusky",
-      "School of Visual Arts",
+      "Ustwo",
+      "CP&B",
+      "SVA",
       "Razorfish",
       "Iris Nation",
     ],
   );
   assert.ok(BIOGRAPHY.experience.entries.every(({ role, dates }) => role && dates));
+  assert.ok(BIOGRAPHY.experience.entries.every(({ role }) => !role.includes("Contract")));
+  assert.deepEqual(
+    BIOGRAPHY.experience.entries
+      .filter(({ organization }) => ["Studio Rodrigo", "Noom", "Pod1"].includes(organization))
+      .map(({ role }) => role),
+    ["Product Designer", "Product Designer", "Product Designer"],
+  );
   assert.equal("consulting" in BIOGRAPHY, false);
   assert.equal("foundation" in BIOGRAPHY, false);
   assert.equal(BIOGRAPHY.capabilities.groups.length, 4);

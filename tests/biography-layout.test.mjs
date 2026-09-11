@@ -95,6 +95,8 @@ test("History uses one flush-left editorial column with shared spacing", async (
   assert.doesNotMatch(contentStyles, /calc\([^;]*- 80px|width:\s*80%/);
   assert.doesNotMatch(elevation, /\.biography-block\s*\{/);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*--biography-section-gap:\s*48px;/);
+  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*?\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\) 112px minmax\(0, 1fr\);/s);
+  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*?\.biography-experience\s*\{[^}]*row-gap:\s*12px;/s);
   assert.match(styles, /\.biography-introduction\s*\{[^}]*padding-top:\s*48px;/s);
   assert.match(styles, /\.biography-prose > p \+ p\s*\{[^}]*margin-top:\s*16px;/s);
   assert.doesNotMatch(styles, /biography-clients[^}]*calc\(var\(--biography-section-gap\)/s);
@@ -130,7 +132,8 @@ test("History registers stack flush left on phones and clear the fixed menu", as
   assert.match(styles, /\.biography-experience\s*\{[^}]*padding:\s*0;[^}]*list-style:\s*none;/s);
   assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*\.biography-experience\s*\{[^}]*width:\s*100%;[^}]*row-gap:\s*6px;/);
   assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.15fr\) minmax\(0, \.9fr\) auto;[^}]*column-gap:\s*16px;/);
-  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\) auto;[^}]*row-gap:\s*8px;/);
+  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-experience__role\s*\{[^}]*grid-column:\s*2;[^}]*text-align:\s*left;[^}]*white-space:\s*nowrap;/s);
+  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-experience__dates\s*\{[^}]*grid-column:\s*3;[^}]*justify-self:\s*end;[^}]*text-align:\s*right;/s);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-contact\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/);
   assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*\.biography-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/);
   assert.match(styles, /padding-bottom:\s*calc\(80px \+ env\(safe-area-inset-bottom, 0px\)\);/);

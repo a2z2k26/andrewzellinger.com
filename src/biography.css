@@ -356,7 +356,7 @@
 @media screen and (max-width: 599px) {
   .biography-layout__content {
     --biography-section-gap: 48px;
-    --biography-body-size: 14px;
+    --biography-body-size: 12px;
   }
 
   .biography-introduction {
@@ -364,7 +364,7 @@
   }
 
   .biography-introduction__lead {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .biography-editorial .biography-introduction__practice-label {
@@ -372,18 +372,32 @@
   }
 
   .biography-experience__row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    row-gap: 8px;
-    column-gap: 16px;
+    grid-template-columns: minmax(0, 1fr) 112px minmax(0, 1fr);
+    row-gap: 0;
+    column-gap: clamp(4px, 1.54vw, 6px);
   }
 
-  .biography-experience__organization { grid-column: 1 / -1; }
-  .biography-experience__organization { font-size: 14px; }
-  .biography-experience__role {
-    grid-column: 1;
-    font-size: 12px;
+  .biography-experience {
+    row-gap: 12px;
   }
-  .biography-experience__dates { grid-column: 2; }
+
+  .biography-experience__organization {
+    grid-column: 1;
+    font-size: clamp(10px, 3.08vw, 12px);
+    white-space: nowrap;
+  }
+  .biography-experience__role {
+    grid-column: 2;
+    font-size: clamp(9px, 2.56vw, 10px);
+    text-align: left;
+    white-space: nowrap;
+  }
+  .biography-experience__dates {
+    grid-column: 3;
+    justify-self: end;
+    font-size: clamp(9px, 2.56vw, 10px);
+    text-align: right;
+  }
 
   .biography-contact {
     grid-template-columns: minmax(0, 1fr);

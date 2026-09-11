@@ -31,10 +31,10 @@ test("phone typography uses one shared hierarchy without changing larger breakpo
   assert.match(phone, /\.articles-entry__excerpt,[\s\S]*?\.detail-unit__lede \{\s*font-size: 12px;/);
   assert.match(phone, /\.detail-unit__section-body--project p,[\s\S]*?\.detail-unit__article-body blockquote \{\s*font-size: 14px;/);
 
-  assert.match(historyPhone, /--biography-body-size: 14px;/);
-  assert.match(historyPhone, /\.biography-introduction__lead \{\s*font-size: 20px;/);
-  assert.match(historyPhone, /\.biography-experience__organization \{ font-size: 14px; \}/);
-  assert.match(historyPhone, /\.biography-experience__role \{[\s\S]*?font-size: 12px;/);
+  assert.match(historyPhone, /--biography-body-size: 12px;/);
+  assert.match(historyPhone, /\.biography-introduction__lead \{\s*font-size: 18px;/);
+  assert.match(historyPhone, /\.biography-experience__organization \{[\s\S]*?font-size: clamp\(10px, 3\.08vw, 12px\);/);
+  assert.match(historyPhone, /\.biography-experience__role \{[\s\S]*?font-size: clamp\(9px, 2\.56vw, 10px\);/);
   assert.match(historyPhone, /\.biography-contact__link \{\s*font-size: 12px;/);
 
   assert.match(welcomePhone, /\.welcome-preface__description \{[\s\S]*?font-size: 12px;/);

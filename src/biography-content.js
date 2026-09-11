@@ -25,12 +25,12 @@ export const BIOGRAPHY = Object.freeze({
     label: "Experience",
     entries: Object.freeze([
       Object.freeze({
-        organization: "Independent practice",
+        organization: "Independent",
         role: "Design Consultant",
         dates: "Present",
       }),
       Object.freeze({
-        organization: "Cosmos Holodeck",
+        organization: "Cosmos",
         role: "Design Engineer",
         dates: "2025 — 2026",
       }),
@@ -40,13 +40,13 @@ export const BIOGRAPHY = Object.freeze({
         dates: "2024 — 2025",
       }),
       Object.freeze({
-        organization: "Sketch / Amazon Fire TV",
+        organization: "Sketch Deck",
         role: "Design Lead",
         dates: "2024 — 2025",
       }),
       Object.freeze({
         organization: "SketchDeck",
-        role: "Design Lead · Contract",
+        role: "Design Lead",
         dates: "2023 — 2024",
       }),
       Object.freeze({
@@ -66,22 +66,22 @@ export const BIOGRAPHY = Object.freeze({
       }),
       Object.freeze({
         organization: "AKQA",
-        role: "UX Design Lead · Contract",
+        role: "UX Design Lead",
         dates: "2022 — 2023",
       }),
       Object.freeze({
-        organization: "I&Co / Audible Sleep",
+        organization: "I&Co",
         role: "UX Design Lead",
         dates: "2021 — 2022",
       }),
       Object.freeze({
-        organization: "Greater Than One",
-        role: "Director of UX · Contract",
+        organization: "GTO",
+        role: "Director of UX",
         dates: "2020 — 2021",
       }),
       Object.freeze({
         organization: "Studio Rodrigo",
-        role: "Senior Product Designer · Contract",
+        role: "Product Designer",
         dates: "2019 — 2020",
       }),
       Object.freeze({
@@ -90,17 +90,17 @@ export const BIOGRAPHY = Object.freeze({
         dates: "2018 — 2020",
       }),
       Object.freeze({
-        organization: "Ueno / Reuters TV",
+        organization: "Ueno",
         role: "Senior Product Designer",
         dates: "2017 — 2018",
       }),
       Object.freeze({
         organization: "Noom",
-        role: "Senior Product Designer · Contract",
+        role: "Product Designer",
         dates: "2016 — 2020",
       }),
       Object.freeze({
-        organization: "Red Antler / Foursquare",
+        organization: "Red Antler",
         role: "Senior Designer",
         dates: "2015 — 2016",
       }),
@@ -111,27 +111,27 @@ export const BIOGRAPHY = Object.freeze({
       }),
       Object.freeze({
         organization: "Pod1",
-        role: "Senior Product Designer · Contract",
+        role: "Product Designer",
         dates: "2014 — 2015",
       }),
       Object.freeze({
-        organization: "ustwo",
+        organization: "Ustwo",
         role: "Senior Product Designer",
         dates: "2013 — 2015",
       }),
       Object.freeze({
-        organization: "Crispin Porter & Bogusky",
-        role: "Senior Designer · Contract",
+        organization: "CP&B",
+        role: "Senior Designer",
         dates: "2010 — 2012",
       }),
       Object.freeze({
-        organization: "School of Visual Arts",
+        organization: "SVA",
         role: "Adjunct Instructor",
         dates: "2010 — 2012",
       }),
       Object.freeze({
         organization: "Razorfish",
-        role: "Product Designer · Contract",
+        role: "Product Designer",
         dates: "2009 — 2010",
       }),
       Object.freeze({
