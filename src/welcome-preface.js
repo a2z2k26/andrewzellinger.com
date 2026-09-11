@@ -55,7 +55,7 @@ function makePreface() {
   const description = document.createElement("p");
   description.id = "welcome-preface-description";
   description.className = "welcome-preface__description";
-  description.innerHTML = "Lorem ipsum dolor amet, consectetur<br>adipiscing elit. Aenean et sapien augue.<br>ipsum dolor amet consectetur.";
+  description.textContent = "3 years of building with AI has reshaped my design practice. This site documents what came before. Here’s what’s next:";
 
   const visit = document.createElement("p");
   visit.className = "welcome-preface__visit";

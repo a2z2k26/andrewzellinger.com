@@ -6,6 +6,8 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 approved introduction copy: use exactly “3 years of building with AI has reshaped my design practice. This site documents what came before. Here’s what’s next:” Preserve Andrew's chosen “has” wording, numeral “3” and final colon. Replace placeholder copy at every breakpoint and allow responsive wrapping; retain the visit link and modal styling.
+
 - September 11 History globe speed refinement: reduce rotation speed by 20%, increasing its cycle duration from 6860ms to 8575ms. The modal retains its 6860ms cycle. Preserve all overlay styling.
 
 - September 11 History globe opacity follow-up: reduce the white portrait overlay to 8% opacity; preserve all other globe and modal settings.

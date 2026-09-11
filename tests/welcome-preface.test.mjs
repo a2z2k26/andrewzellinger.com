@@ -29,7 +29,8 @@ test("the introduction is Projects-only and once per browser session", () => {
 
 test("the approved copy and accessible dialog contract are present", () => {
   assert.match(source, /title\.textContent = "ZELLINGER"/);
-  assert.match(source, /Lorem ipsum dolor amet, consectetur<br>adipiscing elit\. Aenean et sapien augue\.<br>ipsum dolor amet consectetur\./);
+  assert.match(source, /description\.textContent = "3 years of building with AI has reshaped my design practice\. This site documents what came before\. Here’s what’s next:"/);
+  assert.doesNotMatch(source, /Lorem ipsum/);
   assert.match(source, /role", "dialog"/);
   assert.match(source, /aria-modal", "true"/);
   assert.match(source, /aria-labelledby/);
