@@ -1,0 +1,30 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+
+const root = new URL("../", import.meta.url);
+
+test("phone typography uses one shared hierarchy without changing larger breakpoints", async () => {
+  const elevated = await readFile(new URL("src/elevation/styles.css", root), "utf8");
+  const biography = await readFile(new URL("src/biography.css", root), "utf8");
+  const welcome = await readFile(new URL("src/welcome-preface.css", root), "utf8");
+  const phone = elevated.slice(elevated.indexOf('@media (max-width: 599px) {'));
+  const historyPhone = biography.slice(biography.indexOf('@media screen and (max-width: 599px) {'));
+  const welcomePhone = welcome.slice(welcome.indexOf('@media screen and (max-width: 599px) {'));
+
+  assert.match(phone, /\.title \.heading \{ font-size: 36px; \}/);
+  assert.match(phone, /\.works-motion-route \{ --works-card-gap: 32px; \}/);
+  assert.match(phone, /\.title \{ padding-top: 132px; padding-bottom: 32px; \}/);
+  assert.match(phone, /\.articles-entry__title\.heading-style-h2\.new,[\s\S]*?\.detail-unit__title--article \{\s*font-size: 14px;\s*line-height: 1\.15;/);
+  assert.match(phone, /\.articles-entry__excerpt,[\s\S]*?\.detail-unit__lede \{\s*font-size: 12px;/);
+  assert.match(phone, /\.detail-unit__section-body--project p,[\s\S]*?\.detail-unit__article-body blockquote \{\s*font-size: 14px;/);
+
+  assert.match(historyPhone, /--biography-body-size: 14px;/);
+  assert.match(historyPhone, /\.biography-introduction__lead \{\s*font-size: 20px;/);
+  assert.match(historyPhone, /\.biography-experience__organization \{ font-size: 14px; \}/);
+  assert.match(historyPhone, /\.biography-experience__role \{[\s\S]*?font-size: 12px;/);
+  assert.match(historyPhone, /\.biography-contact__link \{\s*font-size: 12px;/);
+
+  assert.match(welcomePhone, /\.welcome-preface__description \{[\s\S]*?font-size: 12px;/);
+  assert.match(welcomePhone, /\.welcome-preface__visit \{[\s\S]*?font-size: 12px;/);
+});

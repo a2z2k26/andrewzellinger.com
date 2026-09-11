@@ -80,7 +80,7 @@ test("elevated page titles use the approved desktop and phone sizes", async () =
   assert.match(styles, /html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 72px;\s*line-height: \.98;\s*font-weight: 500;/);
   assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 80px;\s*font-weight: 500;/);
   assert.match(styles, /@media \(max-width: 991px\)[\s\S]*?\.title \.heading \{ font-size: clamp\(56px, 6\.9vw, 94px\); \}/);
-  assert.match(styles, /@media \(max-width: 599px\)[\s\S]*?\.title \.heading \{ font-size: 40px; \}/);
+  assert.match(styles, /@media \(max-width: 599px\)[\s\S]*?\.title \.heading \{ font-size: 36px; \}/);
 });
 
 test("article collection and detail titles share 18px on desktop while project details stay 16px", async () => {
@@ -107,7 +107,7 @@ test("desktop page titles sit 32px above vertical center with left alignment and
 
 test("desktop project copy restores its original split with the refined collection rhythm", async () => {
   const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
-  const desktop = styles.slice(styles.indexOf('@media (min-width: 992px) {'), styles.indexOf('@media (min-width: 992px) and'));
+  const desktop = styles.slice(styles.indexOf('@media (min-width: 992px) {'), styles.indexOf('@media (max-width: 991px) {'));
   assert.match(desktop, /\.works-motion-card \.heading-style-h2\.new \{\s*font-size: 18px;/);
   assert.doesNotMatch(desktop, /\.detail-unit__project-lockup \.heading-style-h2\.new/);
   assert.match(desktop, /\.detail-unit__title--article \{\s*font-size: 18px;/);

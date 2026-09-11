@@ -333,10 +333,15 @@
 @media screen and (max-width: 599px) {
   .biography-layout__content {
     --biography-section-gap: 48px;
+    --biography-body-size: 14px;
   }
 
   .biography-introduction {
     padding-top: 48px;
+  }
+
+  .biography-introduction__lead {
+    font-size: 20px;
   }
 
   .biography-editorial .biography-introduction__practice-label {
@@ -350,10 +355,18 @@
   }
 
   .biography-experience__organization { grid-column: 1 / -1; }
-  .biography-experience__role { grid-column: 1; }
+  .biography-experience__organization { font-size: 14px; }
+  .biography-experience__role {
+    grid-column: 1;
+    font-size: 12px;
+  }
   .biography-experience__dates { grid-column: 2; }
 
   .biography-contact {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .biography-contact__link {
+    font-size: 12px;
   }
 }

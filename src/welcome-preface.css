@@ -231,13 +231,13 @@ html[data-welcome-preface="open"] body {
 
   .welcome-preface__description {
     margin-top: 32px;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 24px;
   }
 
   .welcome-preface__visit {
     margin-top: 28px;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 24px;
   }
 
