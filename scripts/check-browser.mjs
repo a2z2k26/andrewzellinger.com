@@ -46,8 +46,15 @@ async function check(name, run, options = {}) {
 async function visit(page, path) {
   await page.goto(base + path, { waitUntil: 'load' });
   await page.waitForTimeout(1500);
+  const welcomeClose = page.getByRole('button', { name: 'Close portfolio introduction' });
+  if (await welcomeClose.count()) {
+    await welcomeClose.click();
+    await page.waitForTimeout(350);
+  }
 }
 async function assertMoving(page, track) {
+  await page.mouse.move(100, 100);
+  await page.waitForTimeout(120);
   const element = page.locator(track);
   await element.waitFor({ timeout: 3000 });
   const before = (await element.boundingBox()).y;
@@ -76,15 +83,17 @@ try {
       await assertMoving(page, route.track);
       assert.equal(await page.locator(route.item).evaluateAll(nodes => nodes.filter(n => !n.closest('[aria-hidden="true"]')).length), route.count);
       await page.mouse.move(1150, 400);
+      const before = (await page.locator(route.track).boundingBox()).y;
       await page.mouse.wheel(0, 180);
       await page.waitForTimeout(100);
-      const before = (await page.locator(route.track).boundingBox()).y;
-      await page.waitForTimeout(200);
       const after = (await page.locator(route.track).boundingBox()).y;
+      await page.waitForTimeout(200);
+      const settled = (await page.locator(route.track).boundingBox()).y;
       const distance = await page.locator(route.track).evaluate(n => n.children[1].offsetTop - n.children[0].offsetTop);
       const delta = after - before;
       const unwrapped = delta < -distance / 2 ? delta + distance : delta;
       assert.ok(unwrapped > 0, `Reverse input: ${before} -> ${after}`);
+      assert.ok(Math.abs(settled - after) < 1, `Hovered carousel coasts after wheel input: ${after} -> ${settled}`);
     });
   }
   for (const route of routes.slice(0, 2)) {

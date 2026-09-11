@@ -33,10 +33,6 @@ function renderBiography() {
   );
   editorial.append(introduction);
 
-  const perspective = labeledSection(BIOGRAPHY.perspective.label, "perspective");
-  perspective.append(prose(BIOGRAPHY.perspective.paragraphs));
-  editorial.append(perspective);
-
   const experience = element("section", "biography-experience-section");
   experience.append(element("h2", "biography-experience-section__heading", BIOGRAPHY.experience.label));
   const experienceList = element("ol", "biography-experience");

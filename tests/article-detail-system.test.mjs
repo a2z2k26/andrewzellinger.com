@@ -93,7 +93,7 @@ test("Article Detail renders semantic paragraphs without fixed section labels", 
   assert.match(styles, /\.detail-unit__article-section\s*\{[^}]*margin-top:\s*var\(--detail-article-section-gap\);/s);
   assert.match(styles, /\.detail-unit__article-section:first-child\s*\{[^}]*margin-top:\s*0;/s);
   assert.doesNotMatch(styles, /\.detail-unit__article-section\s*\{[^}]*border-top:/s);
-  assert.match(styles, /\.detail-unit__article-section h3\s*\{[^}]*margin:\s*0;[^}]*color:\s*#9c9c9c;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(styles, /\.detail-unit__article-section h3\s*\{[^}]*margin:\s*0;[^}]*color:\s*#9c9c9c;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*var\(--typography--mono-size\);[^}]*line-height:\s*13px;[^}]*text-transform:\s*uppercase;/s);
   assert.match(styles, /\.detail-unit__article-section-body\s*\{[^}]*margin-top:\s*16px;/s);
   assert.match(styles, /@media screen and \(max-width:\s*767px\)[\s\S]*?--detail-article-section-gap:\s*32px;/);
   assert.doesNotMatch(styles, /\.detail-unit__article-section h3\s*\{[^}]*font-family:\s*var\(--fonts--family-display\)/s);
@@ -106,6 +106,11 @@ test("article reading columns and opening rule share the left-aligned text width
   assert.match(styles, /\.detail-unit__article-body > \*\s*\{[^}]*grid-column:\s*1;[^}]*min-width:\s*0;/s);
   assert.doesNotMatch(styles, /\.detail-unit__article-body > :first-child\s*\{[^}]*border-top:/s);
   assert.doesNotMatch(elevated, /\.detail-unit__article-body\s*\{[^}]*max-width:/s);
+});
+
+test("article titles retain the collection scale in desktop detail views", async () => {
+  const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
+  assert.match(elevated, /@media \(min-width: 992px\) \{[\s\S]*?\.articles-entry__title\.heading-style-h2\.new \{\s*font-size: 18px;\s*\}[\s\S]*?\.detail-unit__title--article \{\s*font-size: 18px;\s*\}/);
 });
 
 test("details keep their current collection navigation and visible headings active", async () => {
@@ -139,9 +144,12 @@ test("article compaction preserves every word, heading, list and quote without r
   assert.doesNotMatch(content, /relatedProject/);
 });
 
-test("article body rhythm is compact without inheriting doubled list spacing", async () => {
+test("article body rhythm adds readable leading without inheriting doubled list spacing", async () => {
   const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
   const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   assert.match(styles, /\.detail-unit__article-section-body > :first-child,\s*\.detail-unit__article-opening > :first-child\s*\{\s*margin-top: 0;/);
-  assert.match(elevated, /\.detail-unit__article-body blockquote\s*\{\s*line-height: 1\.6;/);
+  assert.match(elevated, /--detail-project-body-leading:\s*1\.8;/);
+  assert.match(elevated, /--detail-article-body-leading:\s*1\.7;/);
+  assert.match(elevated, /\.detail-unit__section-body--project p,[\s\S]*?line-height:\s*var\(--detail-project-body-leading\);/);
+  assert.match(elevated, /\.detail-unit__article-body blockquote\s*\{\s*line-height:\s*var\(--detail-article-body-leading\);/);
 });

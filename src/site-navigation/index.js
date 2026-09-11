@@ -46,7 +46,7 @@ function initialize() {
       const gridGap = Number.parseFloat(getComputedStyle(root).getPropertyValue('--structure--grid-row-gap')) || 0;
       const rightColumnLeft = window.innerWidth / 2 + gridGap / 2;
       const menuWidth = nav.getBoundingClientRect().width;
-      root.style.setProperty('--masthead-left', centeredMastheadLeft(rect.right, rightColumnLeft, menuWidth) + 'px');
+      root.style.setProperty('--masthead-left', centeredMastheadLeft(rect.right, rightColumnLeft, menuWidth, -80) + 'px');
       root.style.setProperty('--masthead-top', (rect.top + rect.height / 2 - 22) + 'px');
     }
   };

@@ -4,10 +4,17 @@ import test from "node:test";
 import { BIOGRAPHY, BIOGRAPHY_CONTACT } from "../src/biography-content.js";
 
 test("biography contains the approved editorial structure and experience record", () => {
-  assert.ok(BIOGRAPHY.lead.length > 0);
+  assert.equal(
+    BIOGRAPHY.lead,
+    "I’m Andrew Zellinger, a hands-on product design lead working across complex workflows, design systems, and AI products. I connect research, strategy, design, and engineering. This site is the standing record of my commercial product design career and the body of work that established my practice.",
+  );
   assert.equal("supportingLead" in BIOGRAPHY, false);
   assert.equal(BIOGRAPHY.practice.label, "Design practice");
-  assert.ok(BIOGRAPHY.practice.body.length > 0);
+  assert.equal(
+    BIOGRAPHY.practice.body,
+    "I work best where products are complex, the path forward is unclear, and design needs to do more than produce screens. My background spans art direction, branding, product design, leadership, and teaching, and I’ve worked both as the design function for early teams and within established organizations. Across that work, I connect customer needs and business decisions to system behavior and implementation details. Over the past two and a half years, I’ve expanded that practice by building AI products and launching an automation consultancy. That newer body of work is not represented in this collection, but it grows from the same foundation and has made me a more technical designer while keeping the work grounded in the people who use it.",
+  );
+  assert.equal("perspective" in BIOGRAPHY, false);
   assert.equal(BIOGRAPHY.experience.label, "Experience");
   assert.deepEqual(
     BIOGRAPHY.experience.entries.map(({ organization }) => organization),
@@ -41,10 +48,41 @@ test("biography contains the approved editorial structure and experience record"
   assert.equal("consulting" in BIOGRAPHY, false);
   assert.equal("foundation" in BIOGRAPHY, false);
   assert.equal(BIOGRAPHY.capabilities.groups.length, 4);
-  assert.ok(BIOGRAPHY.capabilities.clients.length >= 12);
-  assert.ok(BIOGRAPHY.availability.body.length > 0);
+  assert.deepEqual(BIOGRAPHY.capabilities.clients, [
+    "Adidas",
+    "Adult Swim",
+    "Amazon",
+    "American Express",
+    "Apple",
+    "Audible",
+    "Avantos",
+    "Cosmos",
+    "Fi",
+    "Foursquare",
+    "Google",
+    "IBM",
+    "Instrumental",
+    "Live Auctioneers",
+    "McDonald's",
+    "Mercedes-Benz",
+    "MetLife",
+    "Microsoft",
+    "Modern Age",
+    "NBCUniversal",
+    "Noom",
+    "Northwestern Mutual",
+    "Procter & Gamble",
+    "PwC",
+    "Seattle Genetics",
+    "Thomson Reuters",
+    "Turner Media",
+    "WeWork",
+  ]);
+  assert.equal(
+    BIOGRAPHY.availability.body,
+    "I’m open to senior or lead product design roles, particularly where complex workflows, design systems, AI, and hands-on product development intersect. I can establish design for an early team or contribute within an established organization, from problem definition through detailed interaction design and delivery.",
+  );
   assert.doesNotMatch(BIOGRAPHY.lead, /decades|years of experience/i);
-  assert.equal(BIOGRAPHY.perspective.paragraphs.length, 1);
   assert.match(BIOGRAPHY.education.body, /School of Visual Arts/);
   const tools = BIOGRAPHY.stack.groups.flatMap(({ items }) => items);
   assert.equal(tools.length, new Set(tools).size);

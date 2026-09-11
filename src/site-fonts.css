@@ -6,6 +6,15 @@
   font-display: swap;
 }
 
+/* Keep the intro-modal wordmark weight isolated from site-wide headings. */
+@font-face {
+  font-family: "Geist Modal";
+  src: url("../node_modules/geist/dist/fonts/geist-sans/Geist-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Scope the heavier face to the wordmark; existing content weights stay put. */
 @font-face {
   font-family: "Geist Wordmark";

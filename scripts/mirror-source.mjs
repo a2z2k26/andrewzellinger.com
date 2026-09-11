@@ -235,7 +235,7 @@ const placeholderStyles = `
     html.works-motion-route .works-motion-card .display-inlineflex.categories {
       gap: 24px;
       font-family: var(--fonts--family-mono);
-      font-size: 12px;
+      font-size: var(--typography--mono-size);
       font-weight: 400;
       line-height: 13px;
       letter-spacing: .36px;

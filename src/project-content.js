@@ -1754,11 +1754,7 @@ const projectDisplayOrder = Object.freeze([
   "pi-app",
 ]);
 
-export const HIDDEN_PROJECT_SLUGS = Object.freeze([
-  "obagi",
-  "gero-app",
-  "northwestern-mutual",
-]);
+export const HIDDEN_PROJECT_SLUGS = Object.freeze([]);
 
 const projectsBySlug = new Map(projectRecords.map((project) => [project.slug, project]));
 const orderedProjectRecords = projectDisplayOrder.map((slug) => {

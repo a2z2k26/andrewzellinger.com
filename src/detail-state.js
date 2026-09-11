@@ -561,7 +561,7 @@ async function renderDetail(entry, {
   }
   const sectionMotion = createDetailSectionMotion({
     view,
-    enabled: circular,
+    enabled: !reduceMotion,
   });
   const pending = {
     operation,

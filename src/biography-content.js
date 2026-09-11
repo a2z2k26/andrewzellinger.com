@@ -16,16 +16,10 @@
 /** @typedef {{ label: string, items: readonly string[] }} BiographyCapabilityGroup */
 
 export const BIOGRAPHY = Object.freeze({
-  lead: "I'm Andrew Zellinger, a hands-on product design lead working across complex workflows, design systems, and AI products. I connect research, strategy, design and engineering. This is my commercial product design portfolio website.",
+  lead: "I’m Andrew Zellinger, a hands-on product design lead working across complex workflows, design systems, and AI products. I connect research, strategy, design, and engineering. This site is the standing record of my commercial product design career and the body of work that established my practice.",
   practice: Object.freeze({
     label: "Design practice",
-    body: "My practice spans product strategy, research, interaction design, branding, and hands-on prototyping. I've worked as the entire design function for early teams and alongside established teams, staying close to both the decisions and the details. This portfolio brings together selected commercial work across studios, agencies, startups, and technology companies: different products and industries, connected by the work of understanding a problem and carrying an idea into an interface people can use.",
-  }),
-  perspective: Object.freeze({
-    label: "An evolving practice",
-    paragraphs: Object.freeze([
-      "My background spans art direction, branding, product design, leadership, and teaching. I work across research, strategy, and hands-on design, helping teams decide what to build and making complex products easier to use. Alongside client work, I independently build AI applications and agent systems. That work has deepened my engineering and evaluation skills, with a focus on reliable behavior and keeping people in control.",
-    ]),
+    body: "I work best where products are complex, the path forward is unclear, and design needs to do more than produce screens. My background spans art direction, branding, product design, leadership, and teaching, and I’ve worked both as the design function for early teams and within established organizations. Across that work, I connect customer needs and business decisions to system behavior and implementation details. Over the past two and a half years, I’ve expanded that practice by building AI products and launching an automation consultancy. That newer body of work is not represented in this collection, but it grows from the same foundation and has made me a more technical designer while keeping the work grounded in the people who use it.",
   }),
   experience: Object.freeze({
     label: "Experience",
@@ -170,45 +164,30 @@ export const BIOGRAPHY = Object.freeze({
     clients: Object.freeze([
       "Adidas",
       "Adult Swim",
-      "Atrient",
       "Amazon",
       "American Express",
       "Apple",
       "Audible",
       "Avantos",
       "Cosmos",
-      "Coca-Cola",
       "Fi",
-      "Firebrand TV",
       "Foursquare",
-      "Frigidaire",
       "Google",
       "IBM",
       "Instrumental",
-      "InteractWith",
-      "LearnVest",
-      "LG",
       "Live Auctioneers",
       "McDonald's",
       "Mercedes-Benz",
       "MetLife",
       "Microsoft",
       "Modern Age",
-      "Mystro",
       "NBCUniversal",
-      "Nike",
       "Noom",
       "Northwestern Mutual",
       "Procter & Gamble",
       "PwC",
-      "Rabble",
       "Seattle Genetics",
-      "Snap Kitchen",
-      "Sony",
-      "State Farm",
       "Thomson Reuters",
-      "Tred",
-      "Tripadvisor",
       "Turner Media",
       "WeWork",
     ]),
@@ -230,7 +209,7 @@ export const BIOGRAPHY = Object.freeze({
   }),
   availability: Object.freeze({
     label: "Work with me",
-    body: "I'm looking for a senior or lead product design role where I can contribute hands-on, from problem definition through detailed interaction design and delivery. I can establish the design function for an early product or join an existing team working through complex workflows, design systems, or AI features. Get in touch to discuss the role and the work.",
+    body: "I’m open to senior or lead product design roles, particularly where complex workflows, design systems, AI, and hands-on product development intersect. I can establish design for an early team or contribute within an established organization, from problem definition through detailed interaction design and delivery.",
   }),
 });
 

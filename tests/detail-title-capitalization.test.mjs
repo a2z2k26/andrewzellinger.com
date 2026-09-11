@@ -13,6 +13,7 @@ const expectedTitles = [
   "Amazon",
   "Audible",
   "Turner Media",
+  "Obagi",
   "WeWork",
   "Google",
   "Live Auctioneers",
@@ -21,8 +22,10 @@ const expectedTitles = [
   "Modern Age",
   "Fi",
   "Thompson Reuters",
+  "Gero",
   "Foursquare",
   "PwC",
+  "NW Mutual",
   "McDonalds",
   "Positive Intelligence",
 ];
@@ -66,7 +69,7 @@ test("project and article details share the refined collection title scale", asy
   assert.match(styles, /\.detail-unit__title--article\s*\{[^}]*padding:\s*0;[^}]*font-size:\s*16px;[^}]*line-height:\s*1\.08;[^}]*text-transform:\s*none;/s);
   assert.doesNotMatch(styles, /\.detail-unit__title--project,\s*\.detail-unit__title--article/);
   assert.doesNotMatch(styles, /\.detail-unit__title--article\s*\{[^}]*text-transform:\s*uppercase;/s);
-  assert.match(styles, /\.detail-unit__project-lockup \.display-inlineflex\.categories\s*\{[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*letter-spacing:\s*\.36px;[^}]*text-transform:\s*uppercase;/s);
+  assert.match(styles, /\.detail-unit__project-lockup \.display-inlineflex\.categories\s*\{[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*var\(--typography--mono-size\);[^}]*line-height:\s*13px;[^}]*letter-spacing:\s*\.36px;[^}]*text-transform:\s*uppercase;/s);
   assert.match(styles, /\.detail-unit__lede--article\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;[^}]*letter-spacing:\s*0;[^}]*text-transform:\s*uppercase;/s);
 });
 
@@ -97,9 +100,9 @@ test("project sections and continuous article bodies use sentence-case Geist typ
 
   assert.match(runtime, /detail-unit__section-body detail-unit__section-body--project/);
   assert.match(styles, /\.detail-unit__section-body--project p\s*\{[^}]*color:\s*var\(--swatches--light-1\);[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*400;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*-0\.01em;[^}]*text-transform:\s*none;/s);
-  assert.match(styles, /\.detail-unit__section--project \.detail-unit__section-label\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;[^}]*font-size:\s*12px;[^}]*line-height:\s*13px;[^}]*letter-spacing:\s*\.36px;/s);
-  assert.match(elevated, /html\[data-design-edition="elevated"\] \.detail-unit__section--project \.detail-unit__section-label \{ font-size: 11px; line-height: 1\.5; letter-spacing: \.04em; \}/);
-  assert.match(elevated, /html\[data-design-edition="elevated"\] \.categories,[\s\S]*?\.detail-unit__meta \{\s*font-size: 11px !important;\s*line-height: 1\.5 !important;\s*letter-spacing: \.04em !important;/);
+  assert.match(styles, /\.detail-unit__section--project \.detail-unit__section-label\s*\{[^}]*color:\s*#9c9c9c;[^}]*opacity:\s*1;[^}]*font-size:\s*var\(--typography--mono-size\);[^}]*line-height:\s*13px;[^}]*letter-spacing:\s*\.36px;/s);
+  assert.match(elevated, /html\[data-design-edition="elevated"\] \.detail-unit__section--project \.detail-unit__section-label \{ font-size: var\(--typography--mono-size\); line-height: 1\.5; letter-spacing: \.04em; \}/);
+  assert.match(elevated, /html\[data-design-edition="elevated"\] \.categories,[\s\S]*?\.detail-unit__meta \{\s*font-size: var\(--typography--mono-size\) !important;\s*line-height: 1\.5 !important;\s*letter-spacing: \.04em !important;/);
   assert.match(styles, /\.detail-unit__section-body--project ul > li::marker,[\s\S]*?color:\s*#fff;/s);
   assert.match(styles, /\.detail-unit__article-body\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*400;[^}]*line-height:\s*24px;[^}]*letter-spacing:\s*-0\.01em;[^}]*text-transform:\s*none;/s);
   assert.match(styles, /\.detail-unit__lede\s*\{[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*13px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s);

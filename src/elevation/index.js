@@ -1,5 +1,10 @@
 import { hasCounterflow, isCounterflowPair, isCounterflowArrival, prepareCounterflow, commitCounterflow } from './counterflow.js';
 import { ensureTitleCharacters, animateTitleCharacters } from './title-motion.js';
+import {
+  prepareStructuralText,
+  resetStructuralText,
+  revealStructuralText,
+} from "./text-motion-system.js";
 import "./styles.css";
 import './portrait-artwork.js';
 
@@ -24,6 +29,22 @@ const el = (tag, className, text) => {
   if (text !== undefined) node.textContent = text;
   return node;
 };
+
+function historyTextParts(section) {
+  if (section.matches(".biography-block")) {
+    return {
+      label: section.querySelector(".biography-block__label"),
+      body: section.querySelector(".biography-prose, .biography-clients__list"),
+    };
+  }
+  if (section.matches(".biography-experience-section")) {
+    return {
+      label: section.querySelector(".biography-experience-section__heading"),
+      body: section.querySelector(".biography-experience"),
+    };
+  }
+  return { label: null, body: section };
+}
 
 function initialize() {
   if (root.dataset.elevationInitialized === "true") return;
@@ -126,22 +147,61 @@ function initialize() {
     window.addEventListener("pageshow", reset, { once: true });
   });
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(({ target, isIntersecting }) => {
-      if (!isIntersecting) return;
-      revealObserver.unobserve(target);
-      if (!shouldReduceMotion() && !(sectionFor(location.pathname) === '/history' && innerWidth >= 992)) target.animate([
-        { opacity: 0, transform: "translateY(16px)" },
-        { opacity: 1, transform: "translateY(0)" },
-      ], { duration: 650, easing: "cubic-bezier(.16,1,.3,1)" });
-    });
-  }, { threshold: .08 });
-  document.querySelectorAll(".biography-block, .biography-introduction, .biography-experience-section, .biography-contact").forEach((node) => revealObserver.observe(node));
+  let destroyHistoryTextMotion = () => {};
+  let historyTextMode = null;
+  const setupHistoryTextMotion = () => {
+    const nextMode = sectionFor(location.pathname) === "/history" && innerWidth < 992 && !shouldReduceMotion()
+      ? "compact"
+      : "static";
+    if (nextMode === historyTextMode) return;
+    destroyHistoryTextMotion();
+    destroyHistoryTextMotion = () => {};
+    historyTextMode = nextMode;
+    if (nextMode !== "compact") return;
+
+    const sections = [...document.querySelectorAll(
+      ".biography-block, .biography-introduction, .biography-experience-section, .biography-contact",
+    )];
+    const timelines = new Map();
+    sections.forEach((section) => prepareStructuralText(historyTextParts(section)));
+    const reveal = (section) => {
+      if (timelines.has(section)) return;
+      timelines.set(section, revealStructuralText(historyTextParts(section)));
+    };
+    let observer = null;
+    if (typeof IntersectionObserver !== "function") {
+      sections.forEach(reveal);
+    } else {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (!isIntersecting) return;
+          observer.unobserve(target);
+          reveal(target);
+        });
+      }, { rootMargin: "0px 0px -12% 0px", threshold: .08 });
+      sections.forEach((section) => observer.observe(section));
+    }
+    destroyHistoryTextMotion = () => {
+      observer?.disconnect();
+      timelines.forEach((timeline) => timeline.kill());
+      sections.forEach((section) => resetStructuralText(historyTextParts(section)));
+    };
+  };
+  let historyResizeFrame = 0;
+  const onHistoryResize = () => {
+    cancelAnimationFrame(historyResizeFrame);
+    historyResizeFrame = requestAnimationFrame(setupHistoryTextMotion);
+  };
+  if (sectionFor(location.pathname) === "/history") {
+    setupHistoryTextMotion();
+    window.addEventListener("resize", onHistoryResize, { passive: true });
+  }
   updateChrome();
   requestAnimationFrame(animateEntrance);
   reduceQuery.addEventListener("change", () => {
     root.dataset.editionMotion = shouldReduceMotion() ? "reduced" : "full";
     if (shouldReduceMotion()) entering.forEach((animation) => animation.cancel());
+    setupHistoryTextMotion();
   });
   window.addEventListener("pageshow", (event) => { if (event.persisted) { navigating = false; synchronize(); } });
 }

@@ -1,11 +1,16 @@
-import { gsap } from "gsap";
+import {
+  TEXT_MOTION,
+  prepareStructuralText,
+  resetStructuralText,
+  revealStructuralText,
+} from "./elevation/text-motion-system.js";
 
 export const SECTION_REVEAL = Object.freeze({
-  offsetY: 12,
-  labelDuration: .38,
-  bodyDuration: .46,
-  bodyStart: .06,
-  totalDuration: .52,
+  offsetY: TEXT_MOTION.distance.reveal,
+  labelDuration: TEXT_MOTION.duration.response,
+  bodyDuration: TEXT_MOTION.duration.reveal,
+  bodyStart: TEXT_MOTION.stagger.structural,
+  totalDuration: TEXT_MOTION.duration.reveal + TEXT_MOTION.stagger.structural,
 });
 
 function sectionParts(section) {
@@ -34,40 +39,14 @@ export function createDetailSectionMotion({ view, enabled = false }) {
   let started = false;
 
   sections.forEach((section) => {
-    const { label, body } = sectionParts(section);
-    gsap.set([label, body].filter(Boolean), {
-      autoAlpha: 0,
-      y: SECTION_REVEAL.offsetY,
-      willChange: "transform,opacity",
-    });
+    prepareStructuralText(sectionParts(section));
   });
 
   const reveal = (section) => {
     if (timelines.has(section)) return;
-    const { label, body } = sectionParts(section);
-    const text = [label, body].filter(Boolean);
-    const timeline = gsap.timeline({
-      onComplete: () => {
-        gsap.set(text, { clearProps: "transform,opacity,visibility,willChange" });
-      },
-    });
+    const parts = sectionParts(section);
+    const timeline = revealStructuralText(parts);
     timelines.set(section, timeline);
-    if (label) {
-      timeline.to(label, {
-        autoAlpha: 1,
-        y: 0,
-        duration: SECTION_REVEAL.labelDuration,
-        ease: "power2.out",
-      }, 0);
-    }
-    if (body) {
-      timeline.to(body, {
-        autoAlpha: 1,
-        y: 0,
-        duration: SECTION_REVEAL.bodyDuration,
-        ease: "power2.out",
-      }, SECTION_REVEAL.bodyStart);
-    }
   };
 
   const start = () => {
@@ -98,10 +77,7 @@ export function createDetailSectionMotion({ view, enabled = false }) {
     timelines.forEach((timeline) => timeline.kill());
     timelines.clear();
     sections.forEach((section) => {
-      const { label, body } = sectionParts(section);
-      gsap.set([label, body].filter(Boolean), {
-        clearProps: "transform,opacity,visibility,willChange",
-      });
+      resetStructuralText(sectionParts(section));
     });
   };
 

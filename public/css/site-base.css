@@ -104,6 +104,7 @@
   --fonts--family-03: Arial, "Helvetica Neue", Helvetica, sans-serif;
   --fonts--family-display: "Times Newer Roman", "Times New Roman", serif;
   --fonts--family-mono: "Geist Mono", monospace;
+  --typography--mono-size: 11px;
   --selection--text-color: var(--swatches--light-1);
   --selection--background-color: var(--swatches--accent-1);
   --structure--col-width: 3.68vw;
@@ -112,6 +113,7 @@
   --structure--padding-smartphone: 16px;
   --structure--grid-container-gap: 32px;
   --structure--border-radius: 0px;
+  --media--image-radius: 8px;
   --swatches--dark-2: var(--swatches--dark-1);
   --swatches--dark-3: var(--swatches--dark-1);
   --swatches--light-2: #d9d9d9;
@@ -273,6 +275,7 @@ ul, ol {
 img {
   max-width: 100%;
   display: inline-block;
+  border-radius: var(--media--image-radius);
 }
 
 label {
@@ -899,6 +902,7 @@ figcaption {
   display: flex;
   position: relative;
   overflow: hidden;
+  border-radius: var(--media--image-radius);
 }
 
 .media-background-holder.div-full {
@@ -1817,7 +1821,7 @@ figcaption {
 #h {
   color: #9c9c9c;
   font-family: var(--fonts--family-mono);
-  font-size: 13px;
+  font-size: var(--typography--mono-size);
   font-weight: 400;
   line-height: 12px;
   letter-spacing: 0;

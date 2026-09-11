@@ -31,19 +31,21 @@ test("Biography renders one semantic editorial source in the approved order", as
   assert.equal(html.match(/data-biography-contact-anchor/g)?.length, 1);
   assert.match(html, /class="biography-layout" aria-label="Professional biography"/);
   assert.match(html, /class="media-background-holder landscape biography-portrait-placeholder" role="img" aria-label="Andrew Zellinger in profile"/);
-  assert.match(styles, /\.biography-portrait-placeholder\s*\{[^}]*--portfolio-media-image:\s*url\("\/images\/history\/az-headshot-extended-v1\.png"\);/s);
+  assert.match(styles, /\.biography-portrait-placeholder\s*\{[^}]*--portfolio-media-image:\s*url\("\/images\/history\/az-headshot-extended-v1\.png"\);[^}]*width:\s*100%;[^}]*background-size:\s*120% auto !important;/s);
   await access(new URL("../public/images/history/az-headshot-extended-v1.png", import.meta.url));
 
   const lead = runtime.indexOf('"biography-introduction__lead"');
   const practiceLabel = runtime.indexOf('"biography-introduction__practice-label"');
   const practiceBody = runtime.indexOf('"biography-introduction__practice-body"');
   const introduction = runtime.indexOf("editorial.append(introduction)");
+  const perspective = runtime.indexOf("editorial.append(perspective)");
   const experience = runtime.indexOf("editorial.append(experience)");
   const clients = runtime.indexOf("editorial.append(clients)");
   const tools = runtime.indexOf("editorial.append(stack)");
   const availability = runtime.indexOf("editorial.append(availability)");
   assert.equal(practiceLabel, -1);
   assert.ok(lead < practiceBody && practiceBody < introduction);
+  assert.equal(perspective, -1);
   assert.ok(introduction < experience && experience < clients && clients < availability);
   assert.equal(tools, -1);
   assert.doesNotMatch(runtime, /supportingLead|editorial\.append\(practice\)/);
@@ -62,9 +64,14 @@ test("History uses one flush-left editorial column with shared spacing", async (
     readFile(new URL("../src/biography.js", import.meta.url), "utf8"),
   ]);
   assert.match(styles, /\.biography-layout\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);[^}]*column-gap:\s*var\(--structure--grid-row-gap\);/s);
+  assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*html\[data-design-edition="elevated"\] \.page\.info \.title \.container-xlarge\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*calc\(100% - 8px\);[^}]*padding-right:\s*48px;/s);
+  assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*\.biography-layout__spacer\s*\{[^}]*padding-right:\s*48px;/s);
   assert.match(styles, /\.biography-editorial\s*\{[^}]*display:\s*grid;[^}]*gap:\s*var\(--biography-section-gap\);/s);
   assert.match(styles, /--biography-section-gap:\s*64px;/);
   assert.match(styles, /--biography-label-gap:\s*24px;/);
+  assert.match(styles, /--biography-content-width:\s*90%;/);
+  assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*?\.biography-portrait-placeholder\s*\{[^}]*width:\s*var\(--biography-content-width\);/s);
+  assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*?\.biography-introduction,\s*\.biography-block,\s*\.biography-experience-section,\s*\.biography-contact\s*\{[^}]*width:\s*var\(--biography-content-width\);/s);
   assert.match(styles, /\.biography-block\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*gap:\s*var\(--biography-label-gap\);/s);
   assert.match(styles, /\.biography-editorial,\s*\.biography-editorial \*,\s*\.biography-contact,\s*\.biography-contact \*\s*\{[^}]*text-indent:\s*0;[^}]*text-align:\s*left;/s);
   assert.match(styles, /\.biography-editorial :is\(p, h2, h3, dl, dt, dd, ol\)\s*\{[^}]*margin:\s*0;[^}]*padding-inline:\s*0;/s);
@@ -84,11 +91,13 @@ test("History uses one flush-left editorial column with shared spacing", async (
 
 test("History has readable type and white contact links", async () => {
   const styles = await readFile(new URL("../src/biography.css", import.meta.url), "utf8");
-  assert.match(styles, /\.biography-introduction__lead\s*\{[^}]*font-size:\s*28px;[^}]*font-weight:\s*500;[^}]*line-height:\s*1\.25;/s);
+  assert.match(styles, /\.biography-introduction__lead\s*\{[^}]*font-size:\s*28px;[^}]*font-weight:\s*500;[^}]*line-height:\s*var\(--biography-lead-leading\);/s);
   assert.match(styles, /--biography-body-size:\s*16px;/);
-  assert.match(styles, /--biography-body-leading:\s*1\.625;/);
+  assert.match(styles, /--biography-lead-leading:\s*1\.3;/);
+  assert.match(styles, /--biography-body-leading:\s*1\.7;/);
+  assert.match(styles, /\.biography-prose,[\s\S]*?\.biography-clients__list\s*\{[^}]*line-height:\s*var\(--biography-body-leading\);/s);
   assert.match(styles, /\.biography-prose,\s*\.biography-introduction__practice-body\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*66ch;/s);
-  assert.match(styles, /\.biography-contact__label\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*1\.5;/s);
+  assert.match(styles, /\.biography-contact__label\s*\{[^}]*font-size:\s*var\(--typography--mono-size\);[^}]*line-height:\s*1\.5;/s);
   const accents = [...styles.matchAll(/([^{}]+)\{[^{}]*color:\s*var\(--swatches--accent-1\);[^{}]*\}/g)].map(match => match[1].trim());
   assert.deepEqual(accents, []);
   assert.match(styles, /\.biography-contact \.biography-contact__link:hover\s*\{[^}]*color:\s*#fff;[^}]*text-decoration:\s*none;/s);
@@ -102,7 +111,7 @@ test("History registers stack flush left on phones and clear the fixed menu", as
   assert.match(styles, /\.biography-experience-section__heading\s*\{[^}]*padding-bottom:\s*var\(--biography-label-gap\);/s);
   assert.match(styles, /\.biography-experience\s*\{[^}]*display:\s*grid;[^}]*row-gap:\s*16px;/s);
   assert.match(styles, /\.biography-experience\s*\{[^}]*padding:\s*0;[^}]*list-style:\s*none;/s);
-  assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*\.biography-experience\s*\{[^}]*width:\s*90%;[^}]*row-gap:\s*10px;/);
+  assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*\.biography-experience\s*\{[^}]*width:\s*100%;[^}]*row-gap:\s*6px;/);
   assert.match(styles, /@media \(min-width:\s*992px\)[\s\S]*\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.15fr\) minmax\(0, \.9fr\) auto;[^}]*column-gap:\s*16px;/);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-experience__row\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\) auto;[^}]*row-gap:\s*8px;/);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-contact\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/);

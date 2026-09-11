@@ -14,6 +14,6 @@ export function detailReturn(path) {
   return null;
 }
 
-export function centeredMastheadLeft(brandRight, rightColumnLeft, menuWidth) {
-  return brandRight + (rightColumnLeft - brandRight - menuWidth) / 2;
+export function centeredMastheadLeft(brandRight, rightColumnLeft, menuWidth, offset = 0) {
+  return brandRight + (rightColumnLeft - brandRight - menuWidth) / 2 + offset;
 }

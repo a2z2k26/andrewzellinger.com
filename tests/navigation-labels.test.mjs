@@ -82,11 +82,12 @@ test("elevated page titles use a fixed desktop size without changing compact typ
   assert.match(styles, /@media \(max-width: 991px\)[\s\S]*?\.title \.heading \{ font-size: clamp\(56px, 6\.9vw, 94px\); \}/);
 });
 
-test("project and article collection titles grow to 18px on desktop while detail titles stay 16px", async () => {
+test("article collection and detail titles share 18px on desktop while project details stay 16px", async () => {
   const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   assert.match(styles, /html\[data-design-edition="elevated"\] \.works-motion-card \.heading-style-h2\.new,\s*html\[data-design-edition="elevated"\] \.detail-unit__project-lockup \.heading-style-h2\.new \{\s*font-size: 16px;/);
   assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.works-motion-card \.heading-style-h2\.new \{\s*font-size: 18px;\s*\}/);
   assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.articles-entry__title\.heading-style-h2\.new \{\s*font-size: 18px;\s*\}/);
+  assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.detail-unit__title--article \{\s*font-size: 18px;\s*\}/);
   assert.match(styles, /html\[data-design-edition="elevated"\] \.detail-unit__title \{ font-size: 16px; line-height: 1\.08;/);
 });
 
@@ -94,7 +95,10 @@ test("desktop page titles sit 32px above vertical center with left alignment and
   const styles = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   const desktop = styles.slice(styles.indexOf('@media (min-width: 992px) {'), styles.indexOf('@media (max-width: 991px) {'));
   assert.match(desktop, /\.title \{ bottom: 64px; \}/);
-  assert.match(desktop, /\.title \.container-xlarge \{ max-width: calc\(50% - 60px\); margin: 0; \}/);
+  assert.match(
+    desktop,
+    /\.title \.container-xlarge \{\s*max-width: calc\(50% - 60px\);\s*margin: 0;\s*\}/,
+  );
   assert.doesNotMatch(desktop, /bottom: 20vh|top: -3px/);
   assert.doesNotMatch(styles, /\.title \{ padding-bottom: 100px; \}/);
   assert.match(styles, /\.title \{ position: relative; padding: 104px 0 42px; inset: auto; \}/);
@@ -105,7 +109,7 @@ test("desktop project copy restores its original split with the refined collecti
   const desktop = styles.slice(styles.indexOf('@media (min-width: 992px) {'), styles.indexOf('@media (min-width: 992px) and'));
   assert.match(desktop, /\.works-motion-card \.heading-style-h2\.new \{\s*font-size: 18px;/);
   assert.doesNotMatch(desktop, /\.detail-unit__project-lockup \.heading-style-h2\.new/);
-  assert.match(desktop, /\.detail-unit__title--article \{\s*font-size: 16px;/);
+  assert.match(desktop, /\.detail-unit__title--article \{\s*font-size: 18px;/);
   assert.match(desktop, /\.works-motion-card \.grid\._3-col \{\s*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);\s*column-gap: var\(--structure--grid-row-gap\);\s*align-items: start;/);
   assert.match(desktop, /\.works-motion-card \.grid\._3-col > :nth-child\(2\) \{\s*grid-area: 1 \/ 2 \/ 2 \/ 4;\s*min-width: 0;\s*max-width: none;/);
   // The shared compact defaults remain stacked; only the desktop override splits.
@@ -168,5 +172,5 @@ test("the shared clock shows time only at the refined size", async () => {
   assert.match(shellScript, /clock\.textContent = newYorkClockFormatter\.format\(new Date\(\)\);/);
   assert.doesNotMatch(shellScript, /clock\.textContent = `NYC /);
   assert.match(home, /clockElement\.textContent = newYorkClockFormatter\.format\(new Date\(\)\);/);
-  assert.match(styles, /html\[data-design-edition="elevated"\] #h \{ font-size: 13px;/);
+  assert.match(styles, /html\[data-design-edition="elevated"\] #h \{ font-size: var\(--typography--mono-size\);/);
 });

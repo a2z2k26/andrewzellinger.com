@@ -31,17 +31,13 @@ const expectedTitles = [
   "Positive Intelligence",
 ];
 
-const hiddenTitles = ["Obagi", "Gero", "NW Mutual"];
-const visibleTitles = expectedTitles.filter((title) => !hiddenTitles.includes(title));
-
-test("project content preserves the complete archive while exposing only visible projects", () => {
+test("project content exposes the complete approved project collection", () => {
   assert.equal(ALL_PROJECTS.length, 19);
   assert.deepEqual(ALL_PROJECTS.map(({ title }) => title), expectedTitles);
   assert.equal(new Set(ALL_PROJECTS.map(({ slug }) => slug)).size, ALL_PROJECTS.length);
-  assert.deepEqual(HIDDEN_PROJECT_SLUGS, ["obagi", "gero-app", "northwestern-mutual"]);
-  assert.equal(PROJECTS.length, 16);
-  assert.deepEqual(PROJECTS.map(({ title }) => title), visibleTitles);
-  assert.deepEqual(PROJECTS.filter(({ title }) => hiddenTitles.includes(title)), []);
+  assert.deepEqual(HIDDEN_PROJECT_SLUGS, []);
+  assert.equal(PROJECTS.length, 19);
+  assert.deepEqual(PROJECTS.map(({ title }) => title), expectedTitles);
   assert.deepEqual(
     ALL_PROJECTS.filter(({ slug }) => ["juuice-app", "tred-auto", "seattle-genetics"].includes(slug)),
     [],

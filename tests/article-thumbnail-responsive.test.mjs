@@ -22,7 +22,7 @@ test("Articles render as a text-only Projects-style collection", async () => {
   assert.match(html, /\.articles-entry\s*\{[^}]*display:\s*block;/s);
   assert.match(html, /\.articles-entry__body\s*\{[^}]*width:\s*min\(100%, 60ch\);[^}]*font-family:\s*"Geist",\s*sans-serif;[^}]*font-size:\s*15px;[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*align-items:\s*start;/s);
   assert.match(html, /\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*grid-column:\s*1;[^}]*grid-row:\s*auto;[^}]*max-width:\s*none;[^}]*margin:\s*0 0 16px;[^}]*font-size:\s*16px;[^}]*line-height:\s*1\.08;[^}]*text-transform:\s*none;/s);
-  assert.match(html, /\.articles-entry__meta\s*\{[^}]*grid-column:\s*1;[^}]*margin:\s*0 0 8px;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*12px;/s);
+  assert.match(html, /\.articles-entry__meta\s*\{[^}]*grid-column:\s*1;[^}]*margin:\s*0 0 8px;[^}]*font-family:\s*var\(--fonts--family-mono\);[^}]*font-size:\s*var\(--typography--mono-size\);/s);
   assert.match(html, /\.articles-entry__excerpt\s*\{[^}]*grid-column:\s*1;[^}]*font-size:\s*13px;[^}]*line-height:\s*22px;[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*-webkit-line-clamp:\s*2;[^}]*line-clamp:\s*2;/s);
   assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__title\.heading-style-h2\.new\s*\{\s*font-size:\s*18px;/s);
   assert.match(html, /@media screen and \(min-width:\s*992px\)[\s\S]*?\.articles-entry__excerpt\s*\{\s*block-size:\s*2lh;/s);
@@ -34,9 +34,9 @@ test("Articles keep the refined collection rhythm at every breakpoint", async ()
 
   assert.doesNotMatch(html, /articles-index__header|All \(10\)/i);
   assert.match(html, /\.articles-entry-list > li\s*\{[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*0;[^}]*border-bottom:\s*0;/s);
-  assert.match(html, /\.articles-entry-link\s*\{[^}]*width:\s*100%;[^}]*padding-bottom:\s*60px;[^}]*display:\s*block;/s);
+  assert.match(html, /\.articles-entry-link\s*\{[^}]*width:\s*100%;[^}]*padding-bottom:\s*76px;[^}]*display:\s*block;/s);
   assert.match(elevated, /\.articles-entry-list > li\s*\{\s*padding-block:\s*0;\s*border:\s*0;/s);
-  assert.match(elevated, /\.articles-entry-link\s*\{\s*padding-bottom:\s*60px;/s);
+  assert.match(elevated, /\.articles-entry-link\s*\{\s*padding-bottom:\s*76px;/s);
   assert.match(elevated, /@media \(max-width: 991px\)[\s\S]*?\.articles-entry-link\s*\{\s*padding-bottom:\s*32px;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__body\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*grid-row:\s*auto;[^}]*margin-bottom:\s*16px;/s);

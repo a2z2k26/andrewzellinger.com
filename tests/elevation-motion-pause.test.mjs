@@ -114,12 +114,25 @@ test("document visibility pauses and resumes without clearing the user's prefere
 test("the collection loop pauses its existing position and handles direct input without a coast", async () => {
   const source = await readFile(motionURL, "utf8");
   assert.match(source, /subscribeMotionPause\(applyPause\)/);
-  assert.match(source, /loopTween\?\.paused\(isMotionPaused\(\)\)/);
+  assert.match(source, /loopTween\?\.paused\(isLoopPaused\(\)\)/);
   assert.match(source, /if \(isMotionInputPaused\(\)\) return;/);
-  assert.match(source, /if \(isUserMotionPaused\(\)\) \{[\s\S]*?gsap\.set\(track, \{ y: nextY \}\);[\s\S]*?return;/);
+  assert.match(source, /if \(isUserMotionPaused\(\) \|\| isHoverPaused\) \{[\s\S]*?gsap\.set\(track, \{ y: nextY \}\);[\s\S]*?return;/);
   assert.match(source, /field\.addEventListener\("focusin", onFocusIn\)/);
   assert.match(source, /field\.removeEventListener\("focusin", onFocusIn\)/);
   assert.match(source, /unsubscribePause\(\)/);
+});
+
+test("hover pauses the active right-rail loop without becoming a global input pause", async () => {
+  const source = await readFile(motionURL, "utf8");
+  assert.match(source, /const HOVER_PAUSE_QUERY = "\(hover: hover\) and \(pointer: fine\)";/);
+  assert.match(source, /const isLoopPaused = \(\) => isMotionPaused\(\) \|\| isHoverPaused;/);
+  assert.match(source, /const onPointerEnter = \(\) => \{[\s\S]*?isHoverPaused = true;[\s\S]*?applyPause\(\);/);
+  assert.match(source, /const onPointerLeave = \(\) => \{[\s\S]*?isHoverPaused = false;[\s\S]*?applyPause\(\);/);
+  assert.match(source, /field\.addEventListener\("pointerenter", onPointerEnter\)/);
+  assert.match(source, /field\.addEventListener\("pointerleave", onPointerLeave\)/);
+  assert.match(source, /field\.removeEventListener\("pointerenter", onPointerEnter\)/);
+  assert.match(source, /field\.removeEventListener\("pointerleave", onPointerLeave\)/);
+  assert.doesNotMatch(source, /setMotionPause\([^\n]*hover/);
 });
 
 test("restored pointer focus resumes collections while keyboard focus and independent pauses remain protected", async () => {
@@ -254,7 +267,7 @@ test("paused direct input moves by the input amount, with transient reasons free
   let coasts = 0;
   const progressEvents = [];
   const context = vm.createContext({
-    ...pause, track, distance: 1000, direction: -1,
+    ...pause, track, distance: 1000, direction: -1, isHoverPaused: false,
     CustomEvent,
     window: { dispatchEvent: event => progressEvents.push(event.type) },
     field: { getBoundingClientRect: () => ({ left: 500, right: 1000, top: 0, bottom: 800 }) },
@@ -284,6 +297,13 @@ test("paused direct input moves by the input amount, with transient reasons free
   assert.equal(track.y, -332);
   assert.equal(coasts, 0);
   assert.equal(progressEvents.length, 2, 'only actual direct movement refreshes collection progress');
+  pause.setUserMotionPaused(false);
+  context.isHoverPaused = true;
+  context.handleInput({ direction: -1, magnitude: 36, source: "wheel", x: 750, y: 200 });
+  assert.equal(track.y, -368, "hovered wheel input moves the collection by the input amount");
+  assert.equal(segments, 3, "the manually moved loop retains its paused segment");
+  assert.equal(coasts, 0, "hovered manual input never starts an automatic coast");
+  assert.equal(progressEvents.length, 3);
 });
 
 test("rail-sweep arrival clears residual impulse and sets upward direction without clearing pauses", async () => {

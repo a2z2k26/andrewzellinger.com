@@ -24,6 +24,7 @@ const ARTICLE_CARD_SELECTOR = ".articles-entry-list > li";
 const MOBILE_NATIVE_PATHS = new Set([WORKS_PATH, INDEX_PATH, "/articles", "/history"]);
 const NATIVE_SCROLL_PATHS = new Set([INDEX_PATH]);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const HOVER_PAUSE_QUERY = "(hover: hover) and (pointer: fine)";
 const LOOP_SPEED_PX_PER_SECOND = 60;
 const LOOP_MIN_IMPULSE_MULTIPLIER = 8;
 const LOOP_MAX_IMPULSE_MULTIPLIER = 24;
@@ -300,7 +301,11 @@ function createContentLoop(logicalItems, {
   let pendingAnchor = initialAnchor?.anchorSlug ? initialAnchor : null;
   const speedState = { multiplier: 1 };
   const focusReason = `${namespace}:focus`;
+  const hoverPauseEnabled = window.matchMedia(HOVER_PAUSE_QUERY).matches;
+  let isHoverPaused = false;
   let destroyed = false;
+
+  const isLoopPaused = () => isMotionPaused() || isHoverPaused;
 
   const currentPhase = () => {
     if (!distance) return 0;
@@ -310,14 +315,14 @@ function createContentLoop(logicalItems, {
 
   const applySpeed = () => {
     loopTween?.timeScale(speedState.multiplier);
-    track.dataset.loopPaused = String(isMotionPaused());
+    track.dataset.loopPaused = String(isLoopPaused());
     track.dataset.loopSpeedMultiplier = speedState.multiplier.toFixed(3);
-    track.dataset.loopSpeed = (isMotionPaused() ? 0 : LOOP_SPEED_PX_PER_SECOND * speedState.multiplier).toFixed(1);
+    track.dataset.loopSpeed = (isLoopPaused() ? 0 : LOOP_SPEED_PX_PER_SECOND * speedState.multiplier).toFixed(1);
   };
 
   const applyPause = () => {
     if (destroyed) return;
-    if (isMotionPaused()) {
+    if (isLoopPaused()) {
       settleCall?.kill();
       settleCall = null;
       decayTween?.kill();
@@ -325,8 +330,8 @@ function createContentLoop(logicalItems, {
       speedState.multiplier = 1;
     }
     // Pause the current tween, rather than reconstructing its phase or endpoint.
-    loopTween?.paused(isMotionPaused());
-    startCall?.paused(isMotionPaused());
+    loopTween?.paused(isLoopPaused());
+    startCall?.paused(isLoopPaused());
     applySpeed();
   };
 
@@ -359,7 +364,7 @@ function createContentLoop(logicalItems, {
       y: direction > 0 ? 0 : -2 * distance,
       duration: Math.abs((direction > 0 ? 0 : -2 * distance) - startY) / LOOP_SPEED_PX_PER_SECOND,
       ease: "none",
-      paused: isMotionPaused(),
+      paused: isLoopPaused(),
       onUpdate: () => window.dispatchEvent(new CustomEvent('portfolio:loop-progress')),
       onComplete: () => {
         gsap.set(track, { y: -distance });
@@ -410,7 +415,7 @@ function createContentLoop(logicalItems, {
         startCall = null;
         startSegment();
       });
-      startCall.paused(isMotionPaused());
+      startCall.paused(isLoopPaused());
     } else {
       startSegment();
     }
@@ -463,10 +468,11 @@ function createContentLoop(logicalItems, {
       && y >= fieldBounds.top && y <= fieldBounds.bottom;
     if (!isKeyboardInput && !isWithinField) return;
 
-    if (isUserMotionPaused()) {
+    if (isUserMotionPaused() || isHoverPaused) {
       if (!distance) return;
-      // Direct input remains useful while paused, but introduces no inertia or
-      // ambient restart. Normalize into the two-set runway at the same phase.
+      // Direct input remains useful while autoplay is paused by the user or
+      // pointer hover, but introduces no inertia or ambient restart. Normalize
+      // into the two-set runway at the same phase.
       const currentY = Number(gsap.getProperty(track, "y")) || 0;
       const delta = direction * Math.abs(magnitude);
       const nextY = ((((currentY + delta) % distance) + distance) % distance) - distance;
@@ -556,8 +562,20 @@ function createContentLoop(logicalItems, {
     focusFrame = requestAnimationFrame(syncFocusPause);
   };
   const onFocusOut = scheduleFocusPause;
+  const onPointerEnter = () => {
+    if (!hoverPauseEnabled || destroyed) return;
+    isHoverPaused = true;
+    applyPause();
+  };
+  const onPointerLeave = () => {
+    if (!hoverPauseEnabled || destroyed) return;
+    isHoverPaused = false;
+    applyPause();
+  };
   syncFocusPause();
   const unsubscribePause = subscribeMotionPause(applyPause);
+  field.addEventListener("pointerenter", onPointerEnter);
+  field.addEventListener("pointerleave", onPointerLeave);
   field.addEventListener("focusin", onFocusIn);
   field.addEventListener("focusout", onFocusOut);
   window.addEventListener('keydown', scheduleFocusPause);
@@ -582,6 +600,8 @@ function createContentLoop(logicalItems, {
       field.removeEventListener('click', onCloneLinkClick);
       field.removeEventListener('scroll', onReadingViewportScroll);
       unsubscribePause();
+      field.removeEventListener("pointerenter", onPointerEnter);
+      field.removeEventListener("pointerleave", onPointerLeave);
       field.removeEventListener("focusin", onFocusIn);
       field.removeEventListener("focusout", onFocusOut);
       window.removeEventListener('keydown', scheduleFocusPause);
@@ -667,7 +687,7 @@ export function initSiteMotion({ reduceMotion, initialAnchor } = {}) {
           }
           : null;
   const logicalItems = routeLoop
-    ? gsap.utils.toArray(routeLoop.itemSelector).filter((item) => !item.closest("[aria-hidden='true']"))
+    ? gsap.utils.toArray(routeLoop.itemSelector).filter((item) => !item.closest("[data-loop-clone]"))
     : [];
   const media = gsap.matchMedia();
 
