@@ -33,11 +33,18 @@ test('phone navigation collapses into an accessible tap and swipe drawer',()=>{
   assert.ok(js.includes('travel <= -24'));
   assert.ok(js.includes('travel >= 24'));
   assert.ok(js.includes("event.key === 'Escape'"));
-  assert.match(css,/\.site-navigation__menu-toggle \{[\s\S]*?width: 100%;[\s\S]*?height: calc\(56px \+ env\(safe-area-inset-bottom,0px\)\);[\s\S]*?touch-action: none;/);
+  assert.match(css,/\.site-navigation__menu-toggle \{[\s\S]*?width: 100%;[\s\S]*?height: calc\(54px \+ env\(safe-area-inset-bottom,0px\)\);[\s\S]*?background: #000;[\s\S]*?touch-action: none;/);
+  assert.match(css,/\.site-navigation--mobile-open \.site-navigation__menu-toggle \{\s*height: 54px;[\s\S]*?transform: translateY\(calc\(-1 \* var\(--mobile-menu-content-height, 162px\)\)\);/);
+  assert.ok(js.includes('host.append(menuToggle, nav, back)'));
+  assert.ok(js.includes("host.style.setProperty('--mobile-menu-content-height', nav.offsetHeight + 'px')"));
+  assert.match(css,/\.site-navigation__menu-toggle \{[^}]*border-radius: 0;/);
+  assert.match(css,/@media \(max-width: 599px\) \{\s*\.masthead-links \{[^}]*background: #000;[^}]*border-radius: 0;/);
   assert.doesNotMatch(js,/site-navigation__menu-label/);
-  assert.match(css,/\.site-navigation__menu-icon::before,[\s\S]*?\.site-navigation__menu-icon::after \{[\s\S]*?width: 28px;[\s\S]*?height: 2px;/);
+  assert.match(css,/\.site-navigation__menu-icon::before,[\s\S]*?\.site-navigation__menu-icon::after \{[\s\S]*?width: 28px;[\s\S]*?height: 1\.5px;/);
   assert.match(css,/\.site-navigation--mobile-open \.masthead-links \{[\s\S]*?opacity: 1;[\s\S]*?pointer-events: auto;/);
-  assert.match(css,/\.masthead-link \{ width: 100%; min-height: 44px;[\s\S]*?font-size: 12px;/);
+  assert.match(css,/\.masthead-link \{ width: 100%; height: 54px; min-height: 54px; flex: 0 0 54px;[\s\S]*?font-size: 14px;/);
+  assert.match(css,/@media \(max-width: 599px\) \{\s*\.masthead-links \{[^}]*padding: 0 0 env\(safe-area-inset-bottom,0px\);[^}]*border: 0;/);
+  assert.match(css,/\.masthead-link \{ border-top: 1px solid rgba\(255,255,255,\.1\); \}/);
 });
 test('accepted dimensions and detail context preserved',()=>{
   for(const value of ['- 52px','height: 44px','height: calc(68px','width: 14px']) assert.ok(css.includes(value),value);

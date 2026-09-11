@@ -6,6 +6,24 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 mobile menu row-height follow-up: increase all four rows from 48px to 54px, including the collapsed handle (plus safe-area inset). Keep equal sizing, full-width dividers, centered content and all other styling.
+
+- September 11 mobile drawer equal-row cleanup: the open handle and each of the three link rows are exactly 48px tall, with centered contents and edge-to-edge dividers. Remove tray top/side padding and side borders; keep safe-area padding only below the last row. Collapsed shelf remains 48px plus safe area. Preserve black fill, thin icon, 14px labels, gestures and larger breakpoints.
+
+- September 11 mobile menu dividers: add three subtle 1px white-at-10% separators, one above each link row, delineating handle/Projects, Projects/Articles and Articles/History. Keep phone-only scope and preserve drawer geometry and interactions.
+
+- September 11 mobile menu label sizing: increase Projects, Articles and History drawer labels from 12px to 14px. Preserve 44px row targets, drawer geometry and larger breakpoints.
+
+- September 11 mobile drawer order: on expansion, the handle rises to the top edge with Projects, Articles and History stacked below. Position it using measured tray height; put safe-area padding below the links, not beneath the elevated handle. Match DOM focus order to the visual order. Preserve the collapsed 48px shelf, black square-edged treatment, gestures, detail Close and tablet/desktop.
+
+- September 11 expanded mobile menu matching treatment: use canvas-black (#000) background and square top corners on the expanded links tray, matching the collapsed shelf. Preserve dimensions, borders, typography, gestures and larger breakpoints.
+
+- September 11 mobile shelf corners: remove the collapsed menu shelf's rounded top corners with a zero border radius. Preserve the 48px height, black fill, thin handle and expanded tray styling.
+
+- September 11 mobile drawer shelf refinement: below 600px, thin the two-line handle from 2px to 1.5px, use canvas-black (#000) for the shelf, and reduce collapsed height from 56px to 48px plus safe-area inset. Keep the expanded shelf at 56px, tray presentation, rounded collapsed corners, gestures and detail Close behavior intact. Tablet and desktop are unchanged.
+
+- September 11 mobile page-title refinement: set the shared Projects, Articles and History page titles to 32px below 600px, superseding 38px. Preserve existing spacing, tablet and desktop styles.
+
 - September 11 approved introduction copy: use exactly “3 years of building with AI has reshaped my design practice. This site documents what came before. Here’s what’s next:” Preserve Andrew's chosen “has” wording, numeral “3” and final colon. Replace placeholder copy at every breakpoint and allow responsive wrapping; retain the visit link and modal styling.
 
 - September 11 History globe speed refinement: reduce rotation speed by 20%, increasing its cycle duration from 6860ms to 8575ms. The modal retains its 6860ms cycle. Preserve all overlay styling.

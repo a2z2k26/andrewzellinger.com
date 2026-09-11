@@ -80,7 +80,7 @@ test("elevated page titles use the approved desktop and phone sizes", async () =
   assert.match(styles, /html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 72px;\s*line-height: \.98;\s*font-weight: 500;/);
   assert.match(styles, /@media \(min-width: 992px\) \{[\s\S]*?html\[data-design-edition="elevated"\] \.title \.heading\s*\{\s*font-size: 80px;\s*font-weight: 500;/);
   assert.match(styles, /@media \(max-width: 991px\)[\s\S]*?\.title \.heading \{ font-size: clamp\(56px, 6\.9vw, 94px\); \}/);
-  assert.match(styles, /@media \(max-width: 599px\)[\s\S]*?\.title \.heading \{ font-size: 38px; \}/);
+  assert.match(styles, /@media \(max-width: 599px\)[\s\S]*?\.title \.heading \{ font-size: 32px; \}/);
 });
 
 test("article collection and detail titles share 18px on desktop while project details stay 16px", async () => {

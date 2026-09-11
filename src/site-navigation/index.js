@@ -43,7 +43,7 @@ function initialize() {
   const menuIcon = make('span', 'site-navigation__menu-icon');
   menuIcon.setAttribute('aria-hidden', 'true');
   menuToggle.append(menuIcon);
-  host.append(nav, menuToggle, back);
+  host.append(menuToggle, nav, back);
   document.body.append(host);
   const compact = matchMedia('(max-width: 991px)');
   const phone = matchMedia('(max-width: 599px)');
@@ -54,6 +54,7 @@ function initialize() {
   let frame = 0;
   const brand = document.querySelector('.nav_brand');
   const place = () => {
+    host.style.setProperty('--mobile-menu-content-height', nav.offsetHeight + 'px');
     root.style.setProperty('--site-nav-title-top', heading.getBoundingClientRect().top + 'px');
     if (brand) {
       const rect = brand.getBoundingClientRect();
