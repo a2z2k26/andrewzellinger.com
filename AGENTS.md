@@ -6,6 +6,8 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 phone detail interaction trial: below 600px, case-study and article URLs render only the selected story as a full-screen reading page with native document scrolling, not the complete continuous collection and not a nested-scroll dialog. Keep the selected piece's content and approved phone type scale, shared header, bottom Close control, deep links, browser history, and saved collection return position. Use a short restrained entrance/exit with reduced-motion support. Desktop (992px+) and tablet (600–991px) retain their existing detail presentation. This is a local reviewable implementation of Andrew's approved direction; do not treat visual acceptance or deployment as complete until explicitly confirmed.
+
 - September 11 modal destination display correction: the modal visit row displays `www.frgmnt.ai` and links to `https://www.frgmnt.ai`. This supersedes the non-www address below. Preserve the lowercase presentation, 6px label gap, typography, colors, external-link behavior and surrounding geometry.
 
 - September 11 modal destination correction: the modal visit row displays `frgmnt.ai` and links to `https://frgmnt.ai`, superseding the earlier Heavymental address. Preserve the lowercase presentation, 6px label gap, typography, colors, external-link behavior and surrounding geometry.

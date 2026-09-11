@@ -596,6 +596,22 @@ html[data-design-edition="elevated"] [data-detail-slug="showing-my-teeth"] .deta
     transform: none !important;
   }
 }
+/* Only phone routes isolate a single story. No nested scroll container. */
+@media (max-width: 599px) {
+  html[data-design-edition="elevated"][data-detail-mode="isolated"] .title {
+    display: none;
+  }
+
+  html[data-design-edition="elevated"][data-detail-mode="isolated"] .detail-view {
+    padding-top: 80px;
+    min-height: 100svh;
+  }
+
+  html[data-design-edition="elevated"][data-detail-mode="isolated"] .detail-rail {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 .detail-unit__decisions {
   width: 90%;
   margin: 0;

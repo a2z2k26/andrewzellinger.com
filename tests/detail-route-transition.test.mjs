@@ -106,7 +106,8 @@ test("an interrupted detail rerender restores Projects atomically", async () => 
   );
 
   assert.ok(popState.indexOf("if (pendingDetailRender)") < popState.indexOf("if (activeDetail)"));
-  assert.match(popState, /discardPendingDetailRender\(\{ restoreCollection: true \}\);\s*return;/);
+  assert.match(popState, /discardPendingDetailRender\(\{ restoreCollection: true \}\);/);
+  assert.match(popState, /if \(operation === routeOperation\) setScroll\(event.state\?\.\[COLLECTION_STATE_KEY\]\?\.scrollY \?\? 0\)/);
   assert.match(detail, /if \(toggle && \(activeDetail \|\| pendingDetailRender\)\)/);
   assert.match(detail, /function destroyDetailView\(detail = activeDetail\)[\s\S]*?if \(activeDetail === detail\) activeDetail = null;/);
 });

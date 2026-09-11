@@ -143,10 +143,80 @@ try {
         assert.equal(await page.locator('.detail-view').isVisible(), true);
         await page.locator('[data-site-detail-back]').click();
         await page.waitForURL(base + route.path);
-        assert.equal(await page.locator('.masthead-links').isVisible(), true);
+        assert.equal(await page.locator(width < 600 ? '.site-navigation__menu-toggle' : '.masthead-links').isVisible(), true);
       }
     }, { viewport: { width, height: 900 }, isMobile: true, hasTouch: true });
   }
+  for (const width of [320, 390]) {
+    for (const route of routes.slice(0, 2)) {
+      await check(`Phone ${width} isolated ${route.name} reading and return`, async page => {
+        await visit(page, route.path);
+        const card = page.locator('[data-portfolio-detail-link]').nth(2);
+        await card.scrollIntoViewIfNeeded();
+        const path = await card.getAttribute('href');
+        const slug = await card.getAttribute('data-detail-slug');
+        const savedScroll = await page.evaluate(() => scrollY);
+        await card.click();
+        await page.waitForTimeout(600);
+        assert.equal(await page.locator('.detail-unit').count(), 1, 'Only the selected story is mounted');
+        assert.equal(await page.locator('.detail-unit').getAttribute('data-detail-slug'), slug);
+        assert.equal(await page.locator('.detail-view h1').count(), 1, 'Selected piece owns the reading heading');
+        assert.equal(await page.evaluate(() => document.documentElement.dataset.detailMode), 'isolated');
+        assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+        await page.screenshot({ path: `${artifacts}/phone-${width}-${route.name}-detail.png` });
+        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+        await page.waitForTimeout(800);
+        assert.equal(new URL(page.url()).pathname, path, 'Reading to the end never advances to a different story');
+        const lastBlock = page.locator('.detail-unit p, .detail-unit li').last();
+        const lastBounds = await lastBlock.boundingBox();
+        const closeBounds = await page.locator('[data-site-detail-back]').boundingBox();
+        assert.ok(lastBounds.y + lastBounds.height < closeBounds.y, 'Final content clears the fixed Close bar');
+        await page.locator('[data-site-detail-back]').click();
+        await page.waitForTimeout(500);
+        assert.equal(new URL(page.url()).pathname, route.path);
+        assert.ok(Math.abs(await page.evaluate(() => scrollY) - savedScroll) < 2, 'Close restores the collection position');
+        await page.goForward();
+        await page.waitForTimeout(500);
+        assert.equal(await page.locator('.detail-unit').count(), 1, 'Browser Forward reopens only that story');
+        await page.goBack();
+        await page.waitForTimeout(500);
+        assert.ok(Math.abs(await page.evaluate(() => scrollY) - savedScroll) < 2, 'Browser Back restores position');
+        await visit(page, path);
+        assert.equal(await page.locator('.detail-unit').count(), 1, 'Direct URLs also isolate content');
+        await page.reload();
+        await page.waitForTimeout(500);
+        assert.equal(await page.locator('.detail-unit').count(), 1, 'Reload retains isolated content');
+        await page.setViewportSize({ width: 820, height: 900 });
+        await page.waitForTimeout(700);
+        assert.equal(await page.locator('.detail-unit').count(), route.name === 'Projects' ? CASE_STUDIES.length : ARTICLE_DETAILS.length, 'Tablet retains its full static document');
+        await page.setViewportSize({ width, height: 760 });
+        await page.waitForTimeout(700);
+        assert.equal(await page.locator('.detail-unit').count(), 1, 'Returning to phone isolates the same item');
+        assert.equal(await page.locator('.detail-unit').getAttribute('data-detail-slug'), slug);
+        await page.locator('[data-site-detail-back]').click();
+        await page.waitForURL(base + route.path);
+      }, { viewport: { width, height: 760 }, isMobile: true, hasTouch: true });
+    }
+  }
+  await check('Phone immediate Back cancels detail entry', async page => {
+    await visit(page, '/articles');
+    const link = page.locator('[data-portfolio-detail-link]').nth(3);
+    await link.scrollIntoViewIfNeeded();
+    const savedScroll = await page.evaluate(() => scrollY);
+    await link.evaluate(el => { el.click(); history.back(); });
+    await page.waitForTimeout(600);
+    assert.equal(new URL(page.url()).pathname, '/articles');
+    assert.equal(await page.locator('.detail-view').count(), 0);
+    assert.equal(await page.locator('.articles-index').isVisible(), true);
+    assert.ok(Math.abs(await page.evaluate(() => scrollY) - savedScroll) < 2);
+  }, { viewport: { width: 390, height: 844 } });
+  await check('Phone reduced-motion isolated reading', async page => {
+    await visit(page, ARTICLE_DETAILS[2].path);
+    assert.equal(await page.locator('.detail-unit').count(), 1);
+    assert.equal(await page.locator('.detail-view').evaluate(el => getComputedStyle(el).transform), 'none');
+    await page.keyboard.press('Escape');
+    await page.waitForURL(base + '/articles');
+  }, { viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
   await check('Reduced motion collections', async page => {
     for (const route of routes) {
       await visit(page, route.path);

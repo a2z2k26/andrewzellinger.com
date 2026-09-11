@@ -29,6 +29,7 @@ const COLLECTION_STATE_KEY = "portfolioCollection";
 const DETAIL_TOP_INSET = 16;
 const ARTICLE_DETAIL_TOP_INSET = 64;
 const DESKTOP_QUERY = "(min-width: 992px)";
+const PHONE_QUERY = "(max-width: 599px)";
 const detailTopInset = () => {
   if (!matchMedia(DESKTOP_QUERY).matches) return DETAIL_TOP_INSET + 64;
   return document.documentElement.dataset.detailKind === "article"
@@ -415,6 +416,22 @@ function killTransition() {
   activeTransition = null;
 }
 
+// Phone routes are full-screen reading pages, not a scrollable dialog nested
+// inside the collection. Keep this transition separate from desktop expansion.
+function runPhoneTransition(view, entering, reduceMotion, onComplete = () => {}) {
+  let resolve;
+  const finished = new Promise((done) => { resolve = done; });
+  let tween;
+  const clear = () => gsap.set(view, { clearProps: "opacity,transform" });
+  const complete = () => { clear(); onComplete(); resolve(); };
+  if (reduceMotion) complete();
+  else tween = gsap.fromTo(view,
+    { opacity: entering ? 0 : 1, y: entering ? 16 : 0 },
+    { opacity: entering ? 1 : 0, y: entering ? 0 : 12,
+      duration: entering ? .24 : .16, ease: "power2.out", onComplete: complete });
+  return { finished, cancel() { tween?.kill(); clear(); resolve(); } };
+}
+
 function updateActiveEntry(entries, units) {
   const marker = window.scrollY + detailTopInset() + 2;
   let activeUnit = units[0];
@@ -539,7 +556,8 @@ async function renderDetail(entry, {
   const reduceMotionQuery = matchMedia(REDUCED_MOTION_QUERY);
   const reduceMotion = shouldReduceMotion(reduceMotionQuery);
   const circular = matchMedia(DESKTOP_QUERY).matches && !reduceMotion;
-  const entries = collectionForKind(entry.kind);
+  const isolated = matchMedia(PHONE_QUERY).matches;
+  const entries = isolated ? [entry] : collectionForKind(entry.kind);
   const nodes = collectionNodes();
   nodes.forEach((node) => { node.hidden = true; });
 
@@ -552,6 +570,15 @@ async function renderDetail(entry, {
   const sourceSet = view.querySelector('[data-detail-set="source"]');
   const selectedIndex = entries.findIndex((candidate) => candidate.slug === entry.slug);
   const selectedUnit = sourceSet.querySelector(`.detail-unit[data-detail-index="${selectedIndex}"]`);
+  if (isolated) {
+    const title = selectedUnit.querySelector(".detail-unit__title");
+    const heading = document.createElement("h1");
+    [...title.attributes].forEach(({ name, value }) => heading.setAttribute(name, value));
+    heading.innerHTML = title.innerHTML;
+    title.replaceWith(heading);
+    view.setAttribute("aria-label", entry.title);
+    if (!reduceMotion) gsap.set(view, { opacity: 0 });
+  }
   const animateFromCard = circular
     && (entry.kind === "article"
       ? Boolean(sourceCopyVisual) && Number.isFinite(sourceCopyRect?.top)
@@ -575,7 +602,7 @@ async function renderDetail(entry, {
     sourceCopyVisual: sourceCopyVisual?.isConnected ? sourceCopyVisual : null,
   };
   pendingDetailRender = pending;
-  document.documentElement.dataset.detailMode = circular ? "circular" : "static";
+  document.documentElement.dataset.detailMode = isolated ? "isolated" : circular ? "circular" : "static";
   await nextFrame();
   if (pendingDetailRender !== pending || operation !== routeOperation) return;
 
@@ -600,7 +627,8 @@ async function renderDetail(entry, {
     if (activeDetail?.view !== view) return;
     const readingAnchor = activeDetail.readingAnchor ?? captureDetailReadingAnchor(view);
     const nextCircular = matchMedia(DESKTOP_QUERY).matches && !shouldReduceMotion();
-    if (nextCircular === activeDetail?.circular) {
+    const nextIsolated = matchMedia(PHONE_QUERY).matches;
+    if (nextCircular === activeDetail?.circular && nextIsolated === activeDetail?.isolated) {
       restoreDetailReadingAnchor(view, readingAnchor);
       activeDetail?.scrollRuntime?.measure();
       activeDetail.resizing = false;
@@ -626,6 +654,7 @@ async function renderDetail(entry, {
     view,
     entries,
     circular,
+    isolated,
     reduceMotion,
     sectionMotion,
     scrollRuntime,
@@ -646,6 +675,15 @@ async function renderDetail(entry, {
   pendingDetailRender = null;
 
   const focusTarget = selectedUnit.querySelector(".detail-unit__title");
+  if (isolated) {
+    sourceVisual?.remove();
+    sourceCopyVisual?.remove();
+    activeTransition = runPhoneTransition(view, true, reduceMotion, () => {
+      sectionMotion.start();
+      if (!readingAnchor && focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
+    });
+    return;
+  }
   if (entry.kind === "project") {
     const targetMedia = selectedUnit.querySelector(".detail-unit__media");
     const targetCopy = selectedUnit.querySelector("[data-project-card-copy]");
@@ -703,6 +741,28 @@ async function restoreCollection(state) {
 
   const saved = state?.[COLLECTION_STATE_KEY];
   const scrollY = saved?.scrollY ?? previous.sourceScrollY ?? 0;
+  if (previous.isolated) {
+    const exit = runPhoneTransition(previous.view, false, previous.reduceMotion);
+    activeTransition = exit;
+    await exit.finished;
+    if (operation !== routeOperation) return;
+    destroyDetailView(previous);
+    previous.collectionNodes.forEach((node) => { node.hidden = false; });
+    restoreCollectionChrome(previous);
+    if (!previous.collectionNodes.length) {
+      window.location.replace(previous.collectionCanonical);
+      return;
+    }
+    window.dispatchEvent(new Event(MOTION_ROUTE_EVENT));
+    await nextFrame();
+    if (operation !== routeOperation) return;
+    setScroll(scrollY);
+    const link = [...document.querySelectorAll("[data-portfolio-detail-link]")]
+      .find((node) => node.dataset.detailSlug === previous.originSlug
+        && !node.closest('[aria-hidden="true"], [inert]'));
+    finishCollectionReturn(link);
+    return;
+  }
   const activeSlug = document.documentElement.dataset.detailActiveSlug;
   const returnSlug = activeSlug;
   const activeUnit = closestDetailUnit(previous.view, activeSlug);
@@ -918,6 +978,11 @@ function onDocumentClick(event) {
 }
 
 function onDocumentKeyDown(event) {
+  if (event.key === "Escape" && activeDetail?.isolated) {
+    event.preventDefault();
+    closeDetail();
+    return;
+  }
   if (activeDetail || pendingDetailRender || event.key !== "Enter") return;
   const link = event.target.closest?.("[data-portfolio-detail-link]");
   if (!link) return;
@@ -969,6 +1034,10 @@ function onPopState(event) {
   if (pendingDetailRender) {
     routeOperation += 1;
     discardPendingDetailRender({ restoreCollection: true });
+    const operation = routeOperation;
+    requestAnimationFrame(() => {
+      if (operation === routeOperation) setScroll(event.state?.[COLLECTION_STATE_KEY]?.scrollY ?? 0);
+    });
     return;
   }
   if (activeDetail) {
