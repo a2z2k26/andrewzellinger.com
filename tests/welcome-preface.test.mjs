@@ -105,11 +105,13 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 24px;[^}]*line-height: 20px/);
   assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*margin-top: 20px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*width: 48px;[^}]*height: 48px/);
-  assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 48px;[^}]*width: 48px;[^}]*height: 48px/);
+  assert.match(styles, /@media screen and \(min-width: 992px\)\s*\{\s*\.welcome-preface__close\s*\{[^}]*width: 40px;[^}]*height: 40px/);
+  assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 36px;[^}]*width: 36px;[^}]*height: 36px/);
+  assert.match(phoneStyles, /\.welcome-preface__close::before\s*\{[^}]*inset: -6px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*margin-top: 60px/);
-  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(344px, calc\(100vw - 32px\)\);[^}]*padding: 52px 24px/);
+  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(312px, calc\(100vw - 64px\)\);[^}]*padding: 0/);
   assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*width: 62px;[^}]*height: 34px/);
-  assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 44px;[^}]*margin-bottom: 0/);
+  assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 36px;[^}]*margin-bottom: 0/);
   assert.match(styles, /border: 0/);
   assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?background: rgb\(255 255 255 \/ 8%\)/);
   assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?color: #8a8a8a/);

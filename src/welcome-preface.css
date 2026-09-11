@@ -194,6 +194,13 @@ html[data-welcome-preface="open"] body {
   overflow: hidden;
 }
 
+@media screen and (min-width: 992px) {
+  .welcome-preface__close {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .welcome-preface {
     padding: 16px;
@@ -208,9 +215,11 @@ html[data-welcome-preface="open"] body {
 
 @media screen and (max-width: 599px) {
   .welcome-preface__panel {
-    width: min(344px, calc(100vw - 32px));
+    width: min(312px, calc(100vw - 64px));
     height: auto;
-    padding: 52px 24px;
+    padding: 0;
+    /* Keep the close button's invisible touch extension usable at the edge. */
+    overflow: visible;
   }
 
   .rotating-globe-icon {
@@ -237,11 +246,20 @@ html[data-welcome-preface="open"] body {
   }
 
   .welcome-preface__close {
-    flex: 0 0 48px;
-    width: 48px;
-    height: 48px;
-    margin-top: 44px;
+    position: relative;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    margin-top: 36px;
     margin-bottom: 0;
+  }
+
+  /* Preserve a 48px touch target around the smaller visible circle. */
+  .welcome-preface__close::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
   }
 
   .welcome-preface__close svg {

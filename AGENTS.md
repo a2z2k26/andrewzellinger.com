@@ -6,6 +6,14 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 mobile modal frame reduction: remove another 16px around each side of the phone panel while preserving content size and centered placement. Phone width becomes `min(312px, calc(100vw - 64px))` and padding becomes zero, consuming the previous 16px inset. Content-sized height decreases by 32px; internal gaps and type/icon sizes remain unchanged. Desktop and tablet stay unchanged.
+
+- September 11 mobile modal interior-padding follow-up: set phone panel padding to 16px on all four sides, superseding 52px vertical / 24px horizontal. Keep the existing responsive width, centered lockup, internal gaps, typography and controls. Desktop and tablet are unchanged.
+
+- September 11 mobile modal visit-to-close refinement: reduce the phone-only gap from 44px to 36px. Preserve 52px top/bottom and 24px left/right panel padding, 36px visible close circle, its extended touch target, and desktop/tablet styling.
+
+- September 11 modal close-circle size refinement: desktop (992px+) circle is 40×40px; phone (below 600px) circle is 36×36px. Keep tablet at 48px. Preserve the current X icon dimensions and 2px stroke. A transparent 6px extension around the phone circle preserves a 48px touch target without enlarging its visible fill. Keep internal gaps and the centered lockup.
+
 - September 11 afternoon mobile modal alignment: use the accepted 464×536px desktop composition as the visual reference for the phone layout. Phone panel is `min(344px, calc(100vw - 32px))`, content-sized with 52px vertical / 24px horizontal padding; center the whole group. Globe is 62×34px, wordmark stays 24px, supporting text stays 12px, close circle stays 48px and X stays 12px with 2px stroke. Restore 44px between visit and Close to match the desktop hierarchy instead of the overly compressed 8px gap. Preserve other internal gaps and the true 8px visit-to-URL gap. This supersedes the prior phone 16px-inset / 328px-width trial; desktop and tablet remain unchanged.
 
 - September 11 afternoon modal outer-space reduction: reduce standard panel dimensions from 528×600px to 464×536px, removing 32px of rendered space on every side while retaining the centered lockup and 400px content width. Standard CSS padding is 16px vertical / 32px horizontal (flex centering supplies the remaining vertical free space). Phone uses 16px padding on all sides instead of 48px vertical / 24px horizontal; side reduction is capped at a safe 16px inset because subtracting 32px would be negative. Phone width is `min(328px, calc(100vw - 48px))`, preserving its existing content width. Keep all internal spacing and element sizes unchanged.
