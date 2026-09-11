@@ -7,7 +7,7 @@
   overflow: auto;
   overscroll-behavior: contain;
   padding: 24px;
-  background: rgb(0 0 0 / 80%);
+  background: rgb(0 0 0 / 88%);
   opacity: 0;
   transition: opacity var(--motion-duration-response, 240ms) var(--motion-ease-enter, cubic-bezier(.16, 1, .3, 1));
 }
@@ -32,7 +32,7 @@
   max-height: calc(100dvh - 48px);
   overflow: hidden;
   padding: 16px 32px;
-  border-radius: 16px;
+  border-radius: 40px;
   background: linear-gradient(180deg, #151515 0%, #121212 100%);
   box-shadow: inset 0 0 0 1px #242424;
   color: #fff;
@@ -68,20 +68,6 @@
   width: 82.8px;
   height: 46px;
   color: #8a8a8a;
-}
-
-.rotating-globe-icon :is(.rotating-globe-icon__meridian, .rotating-globe-icon__latitude) {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.rotating-globe-icon__outline {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 3.4;
 }
 
 .welcome-preface__title {
@@ -217,7 +203,8 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__panel {
     width: min(312px, calc(100vw - 64px));
     height: auto;
-    padding: 32px 0 40px;
+    padding: 40px 0;
+    border-radius: 32px;
     /* Keep the close button's invisible touch extension usable at the edge. */
     overflow: visible;
   }

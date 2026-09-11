@@ -3,13 +3,14 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
-const [html, source, styles, siteFonts, motionSource, globeSource] = await Promise.all([
+const [html, source, styles, siteFonts, motionSource, globeSource, globeStyles] = await Promise.all([
   readFile(new URL("index.html", root), "utf8"),
   readFile(new URL("src/welcome-preface.js", root), "utf8"),
   readFile(new URL("src/welcome-preface.css", root), "utf8"),
   readFile(new URL("src/site-fonts.css", root), "utf8"),
   readFile(new URL("src/site-motion.js", root), "utf8"),
   readFile(new URL("src/rotating-globe-icon.js", root), "utf8"),
+  readFile(new URL("src/rotating-globe-icon.css", root), "utf8"),
 ]);
 
 test("Projects loads the introduction before the collection motion runtime", () => {
@@ -55,9 +56,9 @@ test("the modal globe remains vector, horizontally animated, and reduced-motion 
   assert.match(source, /globe\.destroy\?\.\(\)/);
   assert.doesNotMatch(globeSource, /canvas|<img|\.png|\.jpg/);
   assert.match(styles, /\.rotating-globe-icon\s*\{[\s\S]*?width: 82\.8px;[\s\S]*?height: 46px;[\s\S]*?color: #8a8a8a/);
-  assert.match(styles, /stroke: currentColor/);
-  assert.match(styles, /stroke-width: 2\.8/);
-  assert.match(styles, /stroke-width: 3\.4/);
+  assert.match(globeStyles, /stroke: currentColor/);
+  assert.match(globeStyles, /stroke-width: 2\.8/);
+  assert.match(globeStyles, /stroke-width: 3\.4/);
 });
 
 test("dismissal and background behavior cover pointer, keyboard, focus, and uninterrupted carousel motion", () => {
@@ -78,13 +79,13 @@ test("dismissal and background behavior cover pointer, keyboard, focus, and unin
 });
 
 test("the Figma modal composition and reduced-motion treatment remain explicit", () => {
-  assert.match(styles, /background: rgb\(0 0 0 \/ 80%\)/);
+  assert.match(styles, /background: rgb\(0 0 0 \/ 88%\)/);
   assert.match(styles, /width: min\(464px, calc\(100vw - 48px\)\)/);
   assert.match(styles, /height: 536px/);
   assert.doesNotMatch(styles, /aspect-ratio: 5 \/ 6/);
   assert.match(styles, /\.welcome-preface__panel\s*\{[^}]*justify-content: center/);
   assert.match(styles, /padding: 16px 32px/);
-  assert.match(styles, /border-radius: 16px/);
+  assert.match(styles, /border-radius: 40px/);
   assert.match(styles, /background: linear-gradient\(180deg, #151515 0%, #121212 100%\)/);
   assert.match(styles, /box-shadow: inset 0 0 0 1px #242424/);
   assert.doesNotMatch(styles, /translate3d\(0, -4px, 0\)/);
@@ -102,6 +103,7 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(styles, /\.welcome-preface__visit\s*\{[\s\S]*?gap: 8px;[\s\S]*?margin-top: 28px;[\s\S]*?color: #8a8a8a[\s\S]*?text-transform: none/);
   assert.match(styles, /\.welcome-preface__visit\s*\{[^}]*text-indent: 0/);
   const phoneStyles = styles.slice(styles.indexOf('@media screen and (max-width: 599px)'));
+  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*border-radius: 32px;/);
   assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 24px;[^}]*line-height: 20px/);
   assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*margin-top: 20px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*width: 48px;[^}]*height: 48px/);
@@ -109,7 +111,7 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 36px;[^}]*width: 36px;[^}]*height: 36px/);
   assert.match(phoneStyles, /\.welcome-preface__close::before\s*\{[^}]*inset: -6px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*margin-top: 60px/);
-  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(312px, calc\(100vw - 64px\)\);[^}]*padding: 32px 0 40px;/);
+  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(312px, calc\(100vw - 64px\)\);[^}]*padding: 40px 0;/);
   assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*width: 62px;[^}]*height: 34px/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 36px;[^}]*margin-bottom: 0/);
   assert.match(styles, /border: 0/);

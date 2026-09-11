@@ -6,6 +6,28 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 History globe speed refinement: reduce rotation speed by 20%, increasing its cycle duration from 6860ms to 8575ms. The modal retains its 6860ms cycle. Preserve all overlay styling.
+
+- September 11 History globe opacity follow-up: reduce the white portrait overlay to 8% opacity; preserve all other globe and modal settings.
+
+- September 11 History globe color follow-up: restore white strokes and reduce overall opacity to 15%. Keep its 95% width, vertical stretch, uniform strokes, Overlay blending and rotation unchanged; modal globe is unaffected.
+
+- September 11 History globe enlargement and uniform strokes: enlarge the portrait overlay to 95% image width, preserving the 1.25 vertical stretch and centering. All lines are black, with both grid and outline at 2 SVG units. Retain Overlay blend, 30% opacity, constant-opacity rotation and the unchanged modal globe.
+
+- September 11 History globe refinement: stretch the portrait-only globe 25% taller while keeping its 80% width and center. Thin grid strokes to 2 SVG units and outline to 2.4. Use six front-facing meridians wrapping edge-to-edge at constant opacity rather than depth fading; overall Overlay blend and 30% opacity remain. Modal geometry, strokes and original fading animation remain unchanged.
+
+- September 11 History globe blending: apply Overlay blend mode and 30% opacity to the enlarged portrait globe only. Isolate blending to the portrait; leave the modal globe unchanged.
+
+- September 11 History globe overlay trial: reuse the modal's rotating SVG globe over the biography portrait at all breakpoints. Review treatment is centered, white, 80% portrait width with no cap; preserve the image, layout and modal globe. Desktop loop copies need independent animation instances and unique clip IDs. Respect reduced motion and keep the overlay decorative and non-interactive.
+
+- September 11 mobile modal radius refinement: below 600px, use a 32px panel corner radius. Keep desktop and tablet at 40px; preserve all other modal styling.
+
+- September 11 modal corner-radius follow-up: use a 40px panel radius across desktop, tablet and mobile, superseding 16px. Preserve panel dimensions, padding, content and backdrop.
+
+- September 11 modal backdrop follow-up: use 88% black dimming across desktop, tablet and mobile, superseding 80%. Preserve the modal panel, geometry, content and underlying motion behavior.
+
+- September 11 mobile modal symmetric-padding follow-up: use 40px interior padding at both top and bottom, with zero horizontal padding. Preserve width, centered content, internal gaps and larger breakpoints.
+
 - September 11 mobile modal bottom-padding follow-up: use 40px bottom interior padding while retaining 32px top and zero horizontal padding. Preserve width, internal gaps and larger breakpoints.
 
 - September 11 mobile modal vertical breathing room: add 32px interior padding above and below the centered lockup. Preserve phone width `min(312px, calc(100vw - 64px))`, zero horizontal panel padding, internal spacing, typography and controls. Tablet and desktop are unchanged. This supersedes the zero vertical padding from the earlier frame reduction.

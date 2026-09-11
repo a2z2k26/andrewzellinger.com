@@ -1,3 +1,5 @@
+import "./rotating-globe-icon.css";
+
 const SVG_NS = "http://www.w3.org/2000/svg";
 const CENTER_X = 64;
 const TOP_Y = 10;
@@ -24,7 +26,7 @@ function meridianPath(offset) {
   ].join(" ");
 }
 
-export function createRotatingGlobeIcon({ duration = 6860 } = {}) {
+export function createRotatingGlobeIcon({ duration = 6860, fadeMeridians = true, visibilityTarget = null } = {}) {
   instanceCount += 1;
   const clipId = `rotating-globe-clip-${instanceCount}`;
   const svg = createSvgElement("svg", {
@@ -45,7 +47,8 @@ export function createRotatingGlobeIcon({ duration = 6860 } = {}) {
     "clip-path": `url(#${clipId})`,
   });
 
-  const meridians = Array.from({ length: MERIDIAN_COUNT }, () => {
+  const meridianCount = fadeMeridians ? MERIDIAN_COUNT : MERIDIAN_COUNT / 2;
+  const meridians = Array.from({ length: meridianCount }, () => {
     const path = createSvgElement("path", { class: "rotating-globe-icon__meridian" });
     grid.append(path);
     return path;
@@ -84,11 +87,18 @@ export function createRotatingGlobeIcon({ duration = 6860 } = {}) {
 
   const render = (phase) => {
     meridians.forEach((path, index) => {
-      const longitude = (index / MERIDIAN_COUNT) * Math.PI * 2 + phase;
+      // Constant-opacity mode wraps six front-facing arcs edge to edge.
+      // Hidden rear arcs are not drawn, so there is no fade or doubled grid.
+      const angle = (index / MERIDIAN_COUNT) * Math.PI * 2 + phase;
+      const longitude = fadeMeridians
+        ? angle
+        : ((angle % Math.PI + Math.PI) % Math.PI) - Math.PI / 2;
       const depth = Math.cos(longitude);
       const offset = MERIDIAN_RADIUS * Math.sin(longitude);
       path.setAttribute("d", meridianPath(offset));
-      path.style.opacity = depth > 0 ? String(.18 + .82 * Math.pow(depth, .62)) : "0";
+      path.style.opacity = fadeMeridians
+        ? (depth > 0 ? String(.18 + .82 * Math.pow(depth, .62)) : "0")
+        : "1";
     });
   };
 
@@ -137,7 +147,7 @@ export function createRotatingGlobeIcon({ duration = 6860 } = {}) {
     : null;
 
   render(0);
-  observer?.observe(svg);
+  observer?.observe(visibilityTarget ?? svg);
   reducedMotion.addEventListener?.("change", onMotionPreferenceChange);
   document.addEventListener("visibilitychange", syncPlayback);
   window.requestAnimationFrame(syncPlayback);

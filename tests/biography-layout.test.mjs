@@ -2,6 +2,22 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
+test("History reuses the animated globe as a portrait-only decorative overlay", async () => {
+  const runtime = await readFile(new URL("../src/biography.js", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/biography.css", import.meta.url), "utf8");
+  assert.match(runtime, /import \{ createRotatingGlobeIcon \} from "\.\/rotating-globe-icon.js"/);
+  assert.match(runtime, /new WeakSet\(\)/);
+  assert.match(runtime, /new MutationObserver\(mount\)/);
+  assert.match(runtime, /const globe = createRotatingGlobeIcon\(\{\s*fadeMeridians: false,/);
+  assert.match(runtime, /fadeMeridians: false,\s*duration: 8575,/);
+  assert.match(runtime, /visibilityTarget: portrait\.closest\("\.biography-section"\)/);
+  assert.match(styles, /translate\(-50%, -50%\) scaleY\(1\.25\)/);
+  assert.match(styles, /\.biography-portrait-globe :is\([^}]+stroke-width: 2;/);
+  assert.match(styles, /\.biography-portrait-placeholder\s*\{[^}]*isolation: isolate;/);
+  assert.match(styles, /\.biography-portrait-placeholder \.biography-portrait-globe\s*\{[^}]*width: 95%;[^}]*color: #fff;[^}]*mix-blend-mode: overlay;[^}]*opacity: \.08;[^}]*pointer-events: none;/);
+  assert.match(styles, /\.biography-portrait-globe \.rotating-globe-icon__outline\s*\{\s*stroke-width: 2;/);
+});
+
 test("Biography permanently omits the Archive-derived reference register", async () => {
   const [html, styles, glass, generator] = await Promise.all([
     readFile(new URL("../info/index.html", import.meta.url), "utf8"),
@@ -75,7 +91,8 @@ test("History uses one flush-left editorial column with shared spacing", async (
   assert.match(styles, /\.biography-block\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);[^}]*gap:\s*var\(--biography-label-gap\);/s);
   assert.match(styles, /\.biography-editorial,\s*\.biography-editorial \*,\s*\.biography-contact,\s*\.biography-contact \*\s*\{[^}]*text-indent:\s*0;[^}]*text-align:\s*left;/s);
   assert.match(styles, /\.biography-editorial :is\(p, h2, h3, dl, dt, dd, ol\)\s*\{[^}]*margin:\s*0;[^}]*padding-inline:\s*0;/s);
-  assert.doesNotMatch(styles, /calc\([^;]*- 80px|width:\s*80%/);
+  const contentStyles = styles.replace(/\.biography-portrait-placeholder \.biography-portrait-globe\s*\{[^}]*\}/, "");
+  assert.doesNotMatch(contentStyles, /calc\([^;]*- 80px|width:\s*80%/);
   assert.doesNotMatch(elevation, /\.biography-block\s*\{/);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*--biography-section-gap:\s*48px;/);
   assert.match(styles, /\.biography-introduction\s*\{[^}]*padding-top:\s*48px;/s);

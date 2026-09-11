@@ -1,4 +1,5 @@
 import { BIOGRAPHY, BIOGRAPHY_CONTACT } from "./biography-content.js";
+import { createRotatingGlobeIcon } from "./rotating-globe-icon.js";
 import "./biography.css";
 
 function element(tagName, className, text) {
@@ -89,5 +90,31 @@ function renderContact() {
   anchor.replaceChildren(contact);
 }
 
+function mountPortraitGlobes() {
+  const viewport = document.querySelector(".biography-sweep-viewport");
+  if (!viewport) return;
+  const mounted = new WeakSet();
+  const mount = () => {
+    viewport.querySelectorAll(".biography-portrait-placeholder").forEach((portrait) => {
+      if (mounted.has(portrait)) return;
+      mounted.add(portrait);
+      // Loop copies need their own animation and unique SVG clip IDs.
+      portrait.querySelectorAll(".biography-portrait-globe").forEach((globe) => globe.remove());
+      const globe = createRotatingGlobeIcon({
+        fadeMeridians: false,
+        duration: 8575,
+        // Observe outside the entrance clip, which can suppress SVG visibility updates.
+        visibilityTarget: portrait.closest(".biography-section"),
+      });
+      globe.classList.add("biography-portrait-globe");
+      portrait.append(globe);
+    });
+  };
+  mount();
+  const observer = new MutationObserver(mount);
+  observer.observe(viewport, { childList: true, subtree: true });
+}
+
 renderBiography();
 renderContact();
+mountPortraitGlobes();

@@ -1,0 +1,13 @@
+.rotating-globe-icon :is(.rotating-globe-icon__meridian, .rotating-globe-icon__latitude) {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rotating-globe-icon__outline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.4;
+}
