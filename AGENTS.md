@@ -6,6 +6,8 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 modal destination display correction: the modal visit row displays `www.frgmnt.ai` and links to `https://www.frgmnt.ai`. This supersedes the non-www address below. Preserve the lowercase presentation, 6px label gap, typography, colors, external-link behavior and surrounding geometry.
+
 - September 11 modal destination correction: the modal visit row displays `frgmnt.ai` and links to `https://frgmnt.ai`, superseding the earlier Heavymental address. Preserve the lowercase presentation, 6px label gap, typography, colors, external-link behavior and surrounding geometry.
 
 - September 11 desktop acceptance checkpoint: Andrew approved the complete current desktop experience as final for this phase and requested a pause in incremental desktop enhancements. Preserve the accepted Projects, Articles, History, detail, modal, navigation, typography, image and motion behavior. Subsequent work should focus on explicitly requested scopes rather than unsolicited desktop refinements.

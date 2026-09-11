@@ -64,10 +64,10 @@ function makePreface() {
   visitLabel.textContent = "visit";
 
   const visitLink = document.createElement("a");
-  visitLink.href = "https://frgmnt.ai";
+  visitLink.href = "https://www.frgmnt.ai";
   visitLink.target = "_blank";
   visitLink.rel = "noopener noreferrer";
-  visitLink.textContent = "frgmnt.ai";
+  visitLink.textContent = "www.frgmnt.ai";
   visit.append(visitLabel, visitLink);
 
   const closeButton = document.createElement("button");
