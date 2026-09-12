@@ -171,6 +171,7 @@ try {
         const lastBounds = await lastBlock.boundingBox();
         const closeBounds = await page.locator('[data-site-detail-back]').boundingBox();
         assert.ok(lastBounds.y + lastBounds.height < closeBounds.y, 'Final content clears the fixed Close bar');
+        assert.ok(closeBounds.y - (lastBounds.y + lastBounds.height) < 160, 'Phone detail does not retain collection-height blank space');
         await page.locator('[data-site-detail-back]').click();
         await page.waitForTimeout(500);
         assert.equal(new URL(page.url()).pathname, route.path);

@@ -43,12 +43,19 @@ test('phone navigation collapses into an accessible tap and swipe drawer',()=>{
   assert.match(css,/\.site-navigation__menu-icon::before,[\s\S]*?\.site-navigation__menu-icon::after \{[\s\S]*?width: 28px;[\s\S]*?height: 1\.5px;/);
   assert.match(css,/\.site-navigation--mobile-open \.masthead-links \{[\s\S]*?opacity: 1;[\s\S]*?pointer-events: auto;/);
   assert.match(css,/\.masthead-link \{ width: 100%; height: 54px; min-height: 54px; flex: 0 0 54px;[\s\S]*?font-size: 14px;/);
+  assert.match(css,/\.masthead-link:last-child \{ height: 62px; min-height: 62px; flex-basis: 62px; padding-bottom: 8px; \}/);
   assert.match(css,/@media \(max-width: 599px\) \{\s*\.masthead-links \{[^}]*padding: 0 0 env\(safe-area-inset-bottom,0px\);[^}]*border: 0;/);
   assert.match(css,/\.masthead-link \{ border-top: 1px solid rgba\(255,255,255,\.1\); \}/);
 });
 test('accepted dimensions and detail context preserved',()=>{
   for(const value of ['- 52px','height: 44px','height: calc(68px','width: 14px']) assert.ok(css.includes(value),value);
   assert.ok(!css.includes('.edition-context'));
+});
+test('phone case studies use a text-only Close row matching the mobile menu',()=>{
+  const phone=css.slice(css.indexOf('@media (max-width: 599px) {'));
+  assert.match(phone,/html\[data-detail-kind="project"\] \.site-navigation__back,[\s\S]*?height: calc\(62px \+ env\(safe-area-inset-bottom,0px\)\);[\s\S]*?padding: 0 16px calc\(8px \+ env\(safe-area-inset-bottom,0px\)\);[\s\S]*?border-top: 1px solid rgba\(255,255,255,\.1\);/);
+  assert.match(phone,/html\[data-detail-kind="project"\] \.site-navigation__close-icon \{ display: none; \}/);
+  assert.match(phone,/html\[data-detail-kind="project"\] \.site-navigation__close-label \{ font-size: 14px; \}/);
 });
 test('desktop Back control uses the refined neutral treatment',()=>{
   assert.match(css,/\.site-navigation__back \{[^}]*color: #aaa;[^}]*background: transparent;/);

@@ -26,8 +26,10 @@ test("phone typography uses one shared hierarchy without changing larger breakpo
 
   assert.match(phone, /\.title \.heading \{ font-size: 32px; \}/);
   assert.match(phone, /\.works-motion-route \{ --works-card-gap: 32px; \}/);
-  assert.match(phone, /\.title \{ padding-top: 132px; padding-bottom: 32px; \}/);
-  assert.match(phone, /\.articles-entry__title\.heading-style-h2\.new,[\s\S]*?\.detail-unit__title--article \{\s*font-size: 14px;\s*line-height: 1\.15;/);
+  assert.match(phone, /--mobile-page-top-inset: 132px;/);
+  assert.match(phone, /\.title \{ padding-top: var\(--mobile-page-top-inset\); padding-bottom: 32px; \}/);
+  assert.match(phone, /\.articles-entry__title\.heading-style-h2\.new,[\s\S]*?\.detail-unit__project-lockup \.heading-style-h2\.new \{\s*font-size: 14px;\s*line-height: 1\.15;/);
+  assert.match(phone, /\.detail-unit__title--article \{\s*font-family: "Geist", sans-serif;\s*font-size: 18px;\s*font-weight: 500;\s*line-height: 1\.3;\s*letter-spacing: -\.035em;/);
   assert.match(phone, /\.articles-entry__excerpt,[\s\S]*?\.detail-unit__lede \{\s*font-size: 12px;/);
   assert.match(phone, /\.articles-entry__title\.heading-style-h2\.new \{[^}]*margin-bottom: 6px;[^}]*text-wrap: pretty;/s);
   assert.match(phone, /\.articles-entry__excerpt \{[^}]*line-height: 1\.5;[^}]*text-wrap: pretty;/s);

@@ -406,7 +406,7 @@
     flex-wrap: nowrap;
     align-items: flex-start;
     gap: 0;
-    padding-bottom: 0;
+    padding-bottom: 40px;
   }
 
   .biography-contact__item {
@@ -418,6 +418,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
+    margin-top: var(--biography-label-gap);
   }
 
   .biography-contact__link {

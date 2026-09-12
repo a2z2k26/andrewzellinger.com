@@ -141,7 +141,7 @@ test("History registers stack flush left on phones and clear the fixed menu", as
   assert.doesNotMatch(runtime, /element\("div", "biography-contact__label", "Email"\)/);
   assert.doesNotMatch(runtime, /mailto:/);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-contact\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;[^}]*gap:\s*0;/s);
-  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-contact__socials\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;[^}]*gap:\s*0;/s);
+  assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-contact__socials\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;[^}]*gap:\s*0;[^}]*margin-top:\s*var\(--biography-label-gap\);/s);
   assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*\.biography-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/);
   assert.match(styles, /padding-bottom:\s*calc\(80px \+ env\(safe-area-inset-bottom, 0px\)\);/);
 });

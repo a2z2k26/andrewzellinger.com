@@ -171,7 +171,17 @@ test("article details settle below the desktop canvas edge while project details
 
   assert.match(detail, /const DETAIL_TOP_INSET = 16;/);
   assert.match(detail, /const ARTICLE_DETAIL_TOP_INSET = 64;/);
+  assert.match(detail, /getPropertyValue\("--mobile-page-top-inset"\)/);
+  assert.match(detail, /if \(matchMedia\(PHONE_QUERY\)\.matches\) return mobilePageTopInset\(\);/);
   assert.match(detail, /dataset\.detailKind === "article"[\s\S]*?\? ARTICLE_DETAIL_TOP_INSET[\s\S]*?: DETAIL_TOP_INSET/);
   assert.match(detail, /const expandedTop = detailTopInset\(\);/);
   assert.match(detail, /setScroll\(documentTop\(selectedUnit\) - expandedTop\);/);
+});
+
+test("phone detail routes clear the collection-only page height", async () => {
+  const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+  const phone = styles.slice(styles.indexOf("@media (max-width: 599px)"));
+
+  assert.match(phone, /html\[data-design-edition="elevated"\]\.detail-route body\s*\{\s*min-height:\s*0;/);
+  assert.match(phone, /\[data-detail-mode="isolated"\] \.detail-view\s*\{[^}]*padding-top:\s*var\(--mobile-page-top-inset, 132px\);/s);
 });

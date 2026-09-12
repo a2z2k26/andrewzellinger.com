@@ -598,12 +598,16 @@ html[data-design-edition="elevated"] [data-detail-slug="showing-my-teeth"] .deta
 }
 /* Only phone routes isolate a single story. No nested scroll container. */
 @media (max-width: 599px) {
+  html[data-design-edition="elevated"].detail-route body {
+    min-height: 0;
+  }
+
   html[data-design-edition="elevated"][data-detail-mode="isolated"] .title {
     display: none;
   }
 
   html[data-design-edition="elevated"][data-detail-mode="isolated"] .detail-view {
-    padding-top: 80px;
+    padding-top: var(--mobile-page-top-inset, 132px);
     min-height: 100svh;
   }
 

@@ -39,7 +39,7 @@ test("Articles keep the refined collection rhythm at every breakpoint", async ()
   assert.match(elevated, /\.articles-entry-link\s*\{\s*padding-bottom:\s*76px;/s);
   assert.match(elevated, /@media \(max-width: 991px\)[\s\S]*?\.articles-entry-link\s*\{\s*padding-bottom:\s*32px;/s);
   assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-entry-link\s*\{\s*padding-bottom:\s*24px;/s);
-  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index__list\s*\{[^}]*position:\s*relative;[^}]*margin-top:\s*16px;/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index__list\s*\{[^}]*position:\s*relative;[^}]*margin-top:\s*24px;/s);
   assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index__list::before\s*\{[^}]*content:\s*"";[^}]*top:\s*-24px;[^}]*height:\s*1px;[^}]*background:\s*rgba\(255, 255, 255, \.12\);/s);
   assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index \.articles-entry-list > li\s*\{[^}]*border-bottom:\s*1px solid rgba\(255, 255, 255, \.12\);/s);
   assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index \.articles-entry-list > li:not\(:last-child\)\s*\{[^}]*margin-bottom:\s*24px;/s);

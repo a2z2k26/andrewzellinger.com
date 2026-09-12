@@ -34,11 +34,15 @@ test("Cal.com embed initializes the namespaced month-view overlay", async () => 
 
 test("footer actions are compact phone-only controls above the mobile navigation", async () => {
   const css = await readFile(new URL("src/elevation/styles.css", root), "utf8");
+  const biographyCss = await readFile(new URL("src/biography.css", root), "utf8");
   const phone = css.slice(css.indexOf('@media (max-width: 599px) {'));
+  const biographyPhone = biographyCss.slice(biographyCss.indexOf('@media screen and (max-width: 599px) {'));
 
   assert.match(css, /:is\(\.page-footer-actions, \.page-title-actions\) \{ display: none; \}/);
   assert.match(css, /@media \(min-width: 992px\)[\s\S]*?\.page-title-actions \{[\s\S]*?top: calc\(100% \+ 40px\);[\s\S]*?display: flex;[\s\S]*?gap: 16px;/);
   assert.match(phone, /\.page-footer-actions \{[\s\S]*?display: flex;[\s\S]*?justify-content: flex-start;[\s\S]*?gap: 16px;[\s\S]*?padding-bottom: calc\(111px \+ env\(safe-area-inset-bottom, 0px\)\);/);
   assert.match(phone, /:is\(\.articles-index, \.biography-sweep-content\) > \.page-footer-actions \{\s*margin-inline: 0;/);
+  assert.match(phone, /\.articles-index__list \{[\s\S]*?padding-bottom: 16px;/);
+  assert.match(biographyPhone, /\.biography-contact \{[\s\S]*?padding-bottom: 40px;/);
   assert.match(css, /\.page-footer-actions__link \{[\s\S]*?min-height: 36px;[\s\S]*?padding-inline: 18px;[\s\S]*?border-radius: 10px;[\s\S]*?background: #121212;[\s\S]*?font-size: 12px;[\s\S]*?text-transform: none;/);
 });

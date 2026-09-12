@@ -30,7 +30,11 @@ const DETAIL_TOP_INSET = 16;
 const ARTICLE_DETAIL_TOP_INSET = 64;
 const DESKTOP_QUERY = "(min-width: 992px)";
 const PHONE_QUERY = "(max-width: 599px)";
+const mobilePageTopInset = () => Number.parseFloat(
+  getComputedStyle(document.documentElement).getPropertyValue("--mobile-page-top-inset"),
+) || 132;
 const detailTopInset = () => {
+  if (matchMedia(PHONE_QUERY).matches) return mobilePageTopInset();
   if (!matchMedia(DESKTOP_QUERY).matches) return DETAIL_TOP_INSET + 64;
   return document.documentElement.dataset.detailKind === "article"
     ? ARTICLE_DETAIL_TOP_INSET
