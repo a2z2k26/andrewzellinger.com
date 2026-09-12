@@ -6,6 +6,12 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 12 mobile intro dark theme: inherit desktop modal colors, dark gradient panel, subtle border, 88% black backdrop, white wordmark/link, gray supporting text/globe and subtle close-circle fill. Preserve all mobile geometry, typography sizes/weights, spacing and touch targets.
+
+- September 12 desktop modal close circle: use 52×52px at 992px and above. Preserve the X icon size, existing gaps, and tablet/mobile controls.
+
+- September 12 text selection: use native browser/system selection colors site-wide. Do not override `::selection` or `::-moz-selection` with the orange brand accent. Preserve other orange accents.
+
 - September 11 mobile modal vertical padding: below 600px, add 20px to both the top and bottom interior padding, increasing it from 40px to 60px. Preserve the content-sized height, 312px maximum width, centered lockup, internal gaps and tablet/desktop geometry.
 
 - September 11 desktop modal frame refinement: at 992px and above, reduce the accepted 464×536px modal by 20px on every side to 424×496px. Use 12px horizontal CSS padding so the 400px content width and existing paragraph wrapping remain unchanged; flex centering supplies the reduced vertical free space. Preserve tablet/mobile dimensions and all internal lockup gaps.
@@ -66,7 +72,7 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 - September 11 mobile page-title refinement: set the shared Projects, Articles and History page titles to 32px below 600px, superseding 38px. Preserve existing spacing, tablet and desktop styles.
 
-- September 11 approved introduction copy: use exactly “3 years of building with AI has reshaped my design practice. This site documents what came before. Here’s what’s next:” Preserve Andrew's chosen “has” wording, numeral “3” and final colon. Replace placeholder copy at every breakpoint and allow responsive wrapping; retain the visit link and modal styling.
+- September 12 approved introduction copy: use exactly “2 years of building with AI has reshaped my design practice. This site documents what came before, here’s what’s next:” Preserve Andrew's chosen “has” wording, numeral “2”, comma and final colon. Apply at every breakpoint and allow responsive wrapping; retain the visit link and modal styling.
 
 - September 11 History globe speed refinement: reduce rotation speed by 20%, increasing its cycle duration from 6860ms to 8575ms. The modal retains its 6860ms cycle. Preserve all overlay styling.
 

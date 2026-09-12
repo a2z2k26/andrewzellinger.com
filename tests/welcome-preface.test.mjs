@@ -31,7 +31,7 @@ test("the retained introduction is launch-gated on, Projects-only, and once per 
 
 test("the approved copy and accessible dialog contract are present", () => {
   assert.match(source, /title\.textContent = "ZELLINGER"/);
-  assert.match(source, /description\.textContent = "3 years of building with AI has reshaped my design practice\. This site documents what came before\. Here’s what’s next:"/);
+  assert.match(source, /description\.textContent = "2 years of building with AI has reshaped my design practice\. This site documents what came before, here’s what’s next:"/);
   assert.doesNotMatch(source, /Lorem ipsum/);
   assert.match(source, /role", "dialog"/);
   assert.match(source, /aria-modal", "true"/);
@@ -107,28 +107,21 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(styles, /\.welcome-preface__visit\s*\{[\s\S]*?gap: 8px;[\s\S]*?margin-top: 28px;[\s\S]*?color: #8a8a8a[\s\S]*?text-transform: none/);
   assert.match(styles, /\.welcome-preface__visit\s*\{[^}]*text-indent: 0/);
   const phoneStyles = styles.slice(styles.indexOf('@media screen and (max-width: 599px)'));
-  assert.match(phoneStyles, /\.welcome-preface\s*\{[^}]*background: rgb\(0 0 0 \/ 65%\);/s);
+  assert.doesNotMatch(phoneStyles, /(?:background|box-shadow|(?:^|[;\s])color|outline-color):/);
   assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*border-radius: 32px;/);
-  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*background: #fff;[^}]*box-shadow: inset 0 0 0 1px #d8d8d8;[^}]*color: #000;/s);
-  assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*color: #000;/s);
   assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 24px;[^}]*font-weight: 700;[^}]*line-height: 20px/);
-  assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*color: #000;/s);
   assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*margin-top: 20px;[^}]*font-weight: 700/);
-  assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*color: #000;/s);
-  assert.match(phoneStyles, /\.welcome-preface__visit a,[\s\S]*?\.welcome-preface__visit a:visited\s*\{\s*color: #000;/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*width: 48px;[^}]*height: 48px/);
   assert.match(styles, /@media screen and \(min-width: 992px\)\s*\{\s*\.welcome-preface__panel\s*\{[^}]*width: min\(400px, calc\(100vw - 48px\)\);[^}]*height: 464px;[^}]*padding-inline: 12px;/);
   assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__description\s*\{[^}]*font-size: 14px;[^}]*line-height: 24px;/);
   assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__visit\s*\{[^}]*font-size: 14px;[^}]*line-height: 24px;/);
-  assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__close\s*\{[^}]*width: 40px;[^}]*height: 40px;[^}]*margin-top: 34px/);
+  assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__close\s*\{[^}]*width: 52px;[^}]*height: 52px;[^}]*margin-top: 34px/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 36px;[^}]*width: 36px;[^}]*height: 36px/);
   assert.match(phoneStyles, /\.welcome-preface__close::before\s*\{[^}]*inset: -6px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*margin-top: 28px/);
   assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(296px, calc\(100vw - 80px\)\);[^}]*padding: 48px 0;/);
   assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*width: 70px;[^}]*height: 39px/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 28px;[^}]*margin-bottom: 0/);
-  assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*background: transparent;[^}]*color: #000;/s);
-  assert.match(phoneStyles, /\.welcome-preface__close:hover\s*\{[^}]*background: transparent;[^}]*color: #000;/s);
   assert.match(styles, /border: 0/);
   assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?background: rgb\(255 255 255 \/ 8%\)/);
   assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?color: #8a8a8a/);
