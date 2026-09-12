@@ -138,6 +138,11 @@
   padding-top: 64px;
 }
 
+.biography-introduction__resume {
+  margin-top: 24px;
+  align-self: flex-start;
+}
+
 .biography-introduction__lead {
   width: 100%;
   max-width: none;

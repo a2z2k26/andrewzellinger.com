@@ -2,6 +2,16 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
+test("History offers the approved PDF beneath the second introduction paragraph", async () => {
+  const runtime = await readFile(new URL("../src/biography.js", import.meta.url), "utf8");
+  assert.match(runtime, /page-footer-actions__link biography-introduction__resume/);
+  assert.match(runtime, /resume\.href = "\/downloads\/andrew-zellinger-resume-2026\.pdf"/);
+  assert.match(runtime, /resume\.download = "Andrew Zellinger \[2026\]\.pdf"/);
+  assert.ok(runtime.indexOf("introduction.append(resume)") > runtime.indexOf("BIOGRAPHY.practice.body"));
+  const pdf = await readFile(new URL("../public/downloads/andrew-zellinger-resume-2026.pdf", import.meta.url));
+  assert.equal(pdf.subarray(0, 5).toString(), "%PDF-");
+});
+
 test("History reuses the animated globe as a portrait-only decorative overlay", async () => {
   const runtime = await readFile(new URL("../src/biography.js", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/biography.css", import.meta.url), "utf8");

@@ -32,6 +32,10 @@ function renderBiography() {
     element("p", "biography-introduction__lead", BIOGRAPHY.lead),
     element("p", "biography-introduction__practice-body", BIOGRAPHY.practice.body),
   );
+  const resume = element("a", "page-footer-actions__link biography-introduction__resume", "Download resume");
+  resume.href = "/downloads/andrew-zellinger-resume-2026.pdf";
+  resume.download = "Andrew Zellinger [2026].pdf";
+  introduction.append(resume);
   editorial.append(introduction);
 
   const experience = element("section", "biography-experience-section");

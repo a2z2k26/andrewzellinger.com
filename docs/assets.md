@@ -8,6 +8,11 @@ The [article inventory](../assets/source/articles/README.md) records all 13 orig
 
 Project presentation uses the media references in the HTML and project records. Any intentional asset replacement must check collection, detail, build and browser behavior. Preserve originals and notices, including the font package's license document.
 
+## Resume download
+
+The History introduction offers `public/downloads/andrew-zellinger-resume-2026.pdf`, a byte-identical served copy of the owner-supplied `Resume/Andrew Zellinger [2026].pdf`, explicitly authorized for download on September 12, 2026. The original remains ignored. Replace the served PDF only when Andrew supplies or approves a new version; the link uses the HTML `download` attribute with the original filename.
+
+
 ## Development galleries
 
 The five image-option galleries live in `dev/artwork/`. With the Vite dev server running, open their `.html` paths directly. They reference originals under `/assets/source/projects/` and are not production build entries.
