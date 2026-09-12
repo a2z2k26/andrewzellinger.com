@@ -153,7 +153,7 @@ test("every breakpoint uses one stacked menu and contains no legacy circular-men
     "../src/biography.css",
     "../src/detail-state.css",
     "../src/effects/center-control.js",
-    "../scripts/mirror-source.mjs",
+    "../scripts/archive/mirror-source.mjs",
   ];
   const sources = await Promise.all(sourceFiles.map((file) => readFile(new URL(file, import.meta.url), "utf8")));
 

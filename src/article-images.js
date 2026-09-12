@@ -1,4 +1,4 @@
-// Approved abstract-image assignments. Originals remain in Article-Image/.
+// Approved abstract-image assignments. Originals remain in assets/source/articles/.
 // Both the collection and detail renderer consume these through ARTICLE_DETAILS.
 export const ARTICLE_IMAGES = Object.freeze({
   "the-constraint-was-the-brief": Object.freeze({

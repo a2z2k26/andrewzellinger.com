@@ -32,7 +32,7 @@ test("the landing page mounts Projects without a Home portrait and retains the c
 
 test("the desktop Projects carousel passes behind the canvas's vertical inset", async () => {
   const index = await readFile(new URL("../index.html", import.meta.url), "utf8");
-  const mirror = await readFile(new URL("../scripts/mirror-source.mjs", import.meta.url), "utf8");
+  const mirror = await readFile(new URL("../scripts/archive/mirror-source.mjs", import.meta.url), "utf8");
 
   for (const [label, source] of [["shipped page", index], ["source mirror", mirror]]) {
     assert.match(

@@ -24,7 +24,7 @@
   </head>
   <body>
     <header><h1>Material sculpture · geometric</h1><p>Reference anchor · 20 new images</p></header>
-    <section class="anchor"><h2>Selected direction</h2><figure><img src="/Project-Images/article-options/material-sculpture-set/reference-company-of-one.png" alt="Selected material sculpture reference"><figcaption>Reference anchor</figcaption></figure></section>
+    <section class="anchor"><h2>Selected direction</h2><figure><img src="/assets/source/projects/article-options/material-sculpture-set/reference-company-of-one.png" alt="Selected material sculpture reference"><figcaption>Reference anchor</figcaption></figure></section>
     <main id="gallery"></main>
     <script>
       const articles = [
@@ -43,7 +43,7 @@
       const gallery = document.querySelector("#gallery");
       for (const [title, slug, count] of articles) {
         const section = document.createElement("section");
-        section.innerHTML = `<h2>${title}</h2><div class="grid">${Array.from({ length: count }, (_, index) => `<figure><img src="/Project-Images/article-options/material-sculpture-set-4/${slug}/option-${index + 1}.png" alt="${title}, geometric material sculpture option ${index + 1}"><figcaption>Option ${index + 1}</figcaption></figure>`).join("")}</div>`;
+        section.innerHTML = `<h2>${title}</h2><div class="grid">${Array.from({ length: count }, (_, index) => `<figure><img src="/assets/source/projects/article-options/material-sculpture-set-4/${slug}/option-${index + 1}.png" alt="${title}, geometric material sculpture option ${index + 1}"><figcaption>Option ${index + 1}</figcaption></figure>`).join("")}</div>`;
         gallery.append(section);
       }
     </script>

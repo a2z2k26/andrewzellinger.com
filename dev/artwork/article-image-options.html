@@ -40,7 +40,7 @@
       const gallery = document.querySelector("#gallery");
       for (const [title, slug] of articles) {
         const section = document.createElement("section");
-        section.innerHTML = `<h2>${title}</h2><div class="grid">${[1, 2, 3].map(option => `<figure><img src="/Project-Images/article-options/${slug}/option-${option}.png" alt="${title}, option ${option}"><figcaption>Option ${option}</figcaption></figure>`).join("")}</div>`;
+        section.innerHTML = `<h2>${title}</h2><div class="grid">${[1, 2, 3].map(option => `<figure><img src="/assets/source/projects/article-options/${slug}/option-${option}.png" alt="${title}, option ${option}"><figcaption>Option ${option}</figcaption></figure>`).join("")}</div>`;
         gallery.append(section);
       }
     </script>

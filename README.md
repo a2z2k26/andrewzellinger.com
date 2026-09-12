@@ -1,49 +1,47 @@
 # andrewzellinger.com
 
-Andrew Zellinger's commercial product design portfolio. Vite serves static HTML with DOM controllers, GSAP motion and local media. Selected effects use React. Content is checked in; no runtime CMS credentials are required.
+Andrew Zellinger's portfolio of product design work and writing.
 
-## Routes
+[Website](https://andrewzellinger.com) · [Documentation](docs/README.md) · [Contributing](.github/CONTRIBUTING.md)
 
-- `/` (Projects collection; `/projects` redirects here)
-- `/articles`
-- `/history`
-- `/case-studies/<slug>/` (direct project details)
-- `/articles/<slug>/` (direct article details)
+Built with Vite, static HTML, JavaScript DOM controllers and GSAP. Content and media live in the repository; the site does not require a CMS or API credentials to run locally.
 
-Legacy redirects live in `vite.config.mjs` and `worker/index.js`; keep them consistent.
+## Development
 
-## Run locally
+Use Node.js 22, as specified in `.nvmrc`.
 
-```bash
+```sh
 nvm use
 npm ci
 npm run dev
 ```
 
-Production verification:
-
-```bash
-npm run check
+```sh
+npm run check                     # Production build, packaging and Node tests
+npx playwright install chromium   # First-time browser setup
+npm run test:browser               # Checks the built site in Chromium
+npm run preview                   # Preview the production build
 ```
 
-## Asset policy
+## Repository map
 
-Project imagery, portraits, fonts and UI assets are served locally. `src/article-images.js` maps artwork across listing and detail views; `Article-Image/README.md` documents originals, assignments and the remaining spare. Preserve originals and third-party notices.
+| Path | Purpose |
+| --- | --- |
+| `src/` | Content, controllers, navigation and styles |
+| `public/` | Files served directly: images, fonts and vendor assets |
+| `assets/source/` | Original artwork and font source files |
+| `articles/`, `info/`, root HTML | Vite entry shells; `info/` builds the public History route |
+| `worker/`, `.openai/` | Sites routing and deployment configuration |
+| `scripts/` | Build and verification tools; historical tools are under `archive/` |
+| `tests/` | Node regression and packaging tests |
+| `dev/` | Development-only studies and artwork galleries |
+| `docs/` | Current guides and clearly separated historical records |
+| `.github/` | CI, contribution guidance and pull request template |
 
-## Source map
+See [architecture and routes](docs/architecture.md), [asset maintenance](docs/assets.md) and [agent instructions](AGENTS.md) before making changes.
 
-- `src/site-navigation/`: responsive Masthead and detail-return controls.
-- `src/site-motion.js`, `src/detail-state.js`: carousels and transitions.
-- `src/project-content.js`, `src/project-narratives.js`: project records and editorial copy.
-- `src/article-content.js`, `src/article-images.js`: articles and artwork mapping.
-- `src/biography-content.js`, `src/biography.js`, `src/biography.css`: History.
-- `tests/`: Node regression tests; `npm test` runs them all.
-- `worker/`, `scripts/prepare-sites-build.mjs`: production routing and packaging.
+## Content and rights
 
-## Maintenance boundaries
+Preserve authored copy, factual provenance, original artwork and third-party notices. Public visibility does not itself grant reuse rights. No blanket open-source license has been selected for this repository; do not assume permission to reuse client material, writing, artwork or fonts.
 
-Use Node 22 (`.nvmrc`) and `npm ci`. `npm run check` runs tests and the production build. Follow the newest decisions in `AGENTS.md` and `docs/masthead-navigation.md`; older audit documents describe historical snapshots. Check changed visual states in a browser on desktop and compact layouts, including keyboard navigation, reduced motion and detail returns. Tests alone are not visual approval.
-
-`scripts/mirror-source.mjs` is an archival restoration tool, not a normal build step. It can overwrite authored route shells and prune assets. It requires explicit source-capture and origin environment variables. Do not run `npm run mirror` or `npm run prune:assets` as routine cleanup.
-
-Preserve factual provenance and third-party license notices. Do not apply an open-source license to artwork or client material without owner approval. Do not commit secrets, generated builds, dependencies or local worktrees. Deployment and pushing commits require separate authorization.
+The [public-release review](docs/public-release.md) records the remaining history, content and rights decisions. Publishing, pushing and deployment require Andrew's authorization.

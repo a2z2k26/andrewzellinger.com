@@ -8,7 +8,7 @@ import { ARTICLE_DETAILS } from '../src/article-content.js';
 const root = new URL('../', import.meta.url);
 
 test('eleven distinct artworks are assigned, leaving one spare and one duplicate original', async () => {
-  const originals = (await readdir(new URL('Article-Image/', root))).filter(name => name.endsWith('.png'));
+  const originals = (await readdir(new URL('assets/source/articles/', root))).filter(name => name.endsWith('.png'));
   const used = Object.values(ARTICLE_IMAGES).map(image => image.source);
   assert.equal(originals.length, 13);
   assert.equal(new Set(used).size, 11);
@@ -18,13 +18,13 @@ test('eleven distinct artworks are assigned, leaving one spare and one duplicate
     'two-dollar-bill__option-2.png',
   ]);
   const hashes = new Map(await Promise.all(originals.map(async name => [
-    name, createHash('sha256').update(await readFile(new URL(`Article-Image/${name}`, root))).digest('hex'),
+    name, createHash('sha256').update(await readFile(new URL(`assets/source/articles/${name}`, root))).digest('hex'),
   ])));
   assert.equal(new Set(hashes.values()).size, 12);
   assert.equal(new Set(used.map(name => hashes.get(name))).size, 11, 'unique filenames must not hide duplicate artwork');
   assert.equal(hashes.get('mixed-material-outtakes__company-of-one__option-4.png'), hashes.get('material-sculpture-set__reference-company-of-one.png'));
   assert.ok(!used.some(name => hashes.get(name) === hashes.get('two-dollar-bill__option-2.png')));
-  const readme = await readFile(new URL('Article-Image/README.md', root), 'utf8');
+  const readme = await readFile(new URL('assets/source/articles/README.md', root), 'utf8');
   assert.match(readme, /11 assigned, 1 available/);
   for (const name of originals) assert.ok(readme.includes(name));
   for (const article of ARTICLE_DETAILS) {

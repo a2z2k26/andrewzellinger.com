@@ -23,7 +23,7 @@ test("Biography permanently omits the Archive-derived reference register", async
     readFile(new URL("../info/index.html", import.meta.url), "utf8"),
     readFile(new URL("../src/biography.css", import.meta.url), "utf8"),
     readFile(new URL("../src/effects/glass-surface.js", import.meta.url), "utf8"),
-    readFile(new URL("../scripts/mirror-source.mjs", import.meta.url), "utf8"),
+    readFile(new URL("../scripts/archive/mirror-source.mjs", import.meta.url), "utf8"),
   ]);
 
   for (const source of [html, styles, glass, generator]) {

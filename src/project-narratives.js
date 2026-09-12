@@ -1,6 +1,6 @@
 // @ts-check
 // Public editorial layer, revised 2026-09-08. Source recollections are retained
-// in project-content.js; unresolved evidence is tracked privately in docs/content-claim-ledger.md.
+// in project-content.js; unresolved evidence is tracked privately in docs/archive/content-claim-ledger.md.
 // No minimum word quota: evidence determines the length of each record.
 export const PROJECT_SECTION_LABELS = Object.freeze(["Context", "Key decisions", "Outcome"]);
 export const ENGAGEMENT_SECTION_LABELS = Object.freeze(["Context", "Outcome"]);

@@ -15,7 +15,7 @@ test("article records share publish-date metadata, authored bodies and stable ro
   const indexHtml = await readFile(new URL("../articles/index.html", import.meta.url), "utf8");
   const indexRuntime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
   const source = await readFile(new URL("../src/article-content.js", import.meta.url), "utf8");
-  const { ARTICLE_DETAILS: previousArticles } = await import("../docs/editorial/article-source-before-2026-09-08-pass.js");
+  const { ARTICLE_DETAILS: previousArticles } = await import("../docs/archive/editorial/article-source-before-2026-09-08-pass.js");
   assert.equal(ARTICLE_DETAILS.length, 11);
   assert.deepEqual(new Set(ARTICLE_DETAILS.map(a => a.slug)), new Set(previousArticles.map(a => a.slug)));
   assert.deepEqual(ARTICLE_DETAILS.slice(0,3).map(a => a.slug), ["the-constraint-was-the-brief", "intention-deficit-disorder", "company-of-one"]);

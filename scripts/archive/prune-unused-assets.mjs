@@ -1,9 +1,14 @@
 import { readdir, readFile, rm, rmdir, stat } from "node:fs/promises";
 import path from "node:path";
 
-const projectRoot = path.resolve(import.meta.dirname, "..");
+const projectRoot = path.resolve(import.meta.dirname, "../..");
 const publicRoot = path.join(projectRoot, "public");
 const apply = process.argv.includes("--apply");
+// This legacy scanner does not follow the current application module graph.
+// An explicit guard prevents accidental deletion of live assets.
+if (apply && process.env.PORTFOLIO_ALLOW_ARCHIVE_PRUNE !== "1") {
+  throw new Error("Archival prune is guarded: review its dry-run report and references before setting PORTFOLIO_ALLOW_ARCHIVE_PRUNE=1. It is not safe as routine maintenance.");
+}
 const entryFiles = [
   path.join(projectRoot, "index.html"),
   path.join(projectRoot, "articles/index.html"),

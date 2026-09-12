@@ -5,7 +5,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
-const projectRoot = path.resolve(import.meta.dirname, "..");
+const projectRoot = path.resolve(import.meta.dirname, "../..");
 // Archival restoration only: never overwrite the accepted site with implicit inputs.
 const sourceRoot = process.env.PORTFOLIO_IMPORT_ROOT;
 const sourceOrigin = process.env.PORTFOLIO_IMPORT_ORIGIN;
@@ -669,7 +669,7 @@ async function main() {
     skippedVideoAssets: skippedVideos.size,
     failures,
   };
-  await writeFile(path.join(projectRoot, "asset-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
+  await writeFile(path.join(projectRoot, "docs/archive/source-capture.json"), `${JSON.stringify(manifest, null, 2)}\n`);
 
   if (failures.length) {
     console.error(JSON.stringify(manifest, null, 2));

@@ -254,9 +254,9 @@ html[data-welcome-preface="open"] body {
 
   .welcome-preface__close {
     position: relative;
-    flex: 0 0 36px;
-    width: 36px;
-    height: 36px;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
     margin-top: 28px;
     margin-bottom: 0;
   }
@@ -265,7 +265,7 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__close::before {
     content: "";
     position: absolute;
-    inset: -6px;
+    inset: -3px;
     border-radius: 50%;
   }
 

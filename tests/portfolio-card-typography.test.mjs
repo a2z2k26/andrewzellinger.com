@@ -30,5 +30,5 @@ test("authored Projects cards keep the approved typography and spacing", async (
 });
 
 test("the mirror generator preserves the approved Projects treatment", async () => {
-  assertPortfolioTreatment(await read("scripts/mirror-source.mjs"), "mirror-source.mjs");
+  assertPortfolioTreatment(await read("scripts/archive/mirror-source.mjs"), "mirror-source.mjs");
 });

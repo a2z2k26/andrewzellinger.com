@@ -7,7 +7,7 @@ const root = new URL('../', import.meta.url);
 mkdirSync(new URL('public/images/articles/', root), { recursive: true });
 let originalBytes = 0, servedBytes = 0;
 for (const image of Object.values(ARTICLE_IMAGES)) {
-  const original = fileURLToPath(new URL(`Article-Image/${image.source}`, root));
+  const original = fileURLToPath(new URL(`assets/source/articles/${image.source}`, root));
   const served = fileURLToPath(new URL(`public${image.src}`, root));
   execFileSync('cwebp', ['-quiet', '-q', '90', '-m', '6', original, '-o', served]);
   originalBytes += statSync(original).size;

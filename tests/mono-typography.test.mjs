@@ -6,7 +6,7 @@ const sourcePaths = [
   "../public/css/site-base.css",
   "../index.html",
   "../articles/index.html",
-  "../scripts/mirror-source.mjs",
+  "../scripts/archive/mirror-source.mjs",
   "../src/biography.css",
   "../src/detail-state.css",
 ];

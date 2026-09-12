@@ -63,7 +63,7 @@ test("collection templates keep their active destinations on canonical routes", 
 });
 
 test("the mirror generator preserves canonical routes and route-specific page names", async () => {
-  const generator = await readFile(new URL("../scripts/mirror-source.mjs", import.meta.url), "utf8");
+  const generator = await readFile(new URL("../scripts/archive/mirror-source.mjs", import.meta.url), "utf8");
 
   assert.ok(generator.includes('href="/"'));
   assert.doesNotMatch(generator, />Home<\/a>/);

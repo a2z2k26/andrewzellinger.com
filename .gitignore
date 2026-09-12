@@ -8,6 +8,8 @@ dist/
 test-results/
 playwright-report/
 .worktrees/
-.vercel/
 .vercel
-.env*
+# Local inputs and scratch work; never include in a public source release.
+/Resume/
+/tmp/
+/.local/
