@@ -1,7 +1,7 @@
 import { createRotatingGlobeIcon } from "./rotating-globe-icon.js";
 
 // Launch gate: retain the complete introduction while keeping it off every viewport.
-const WELCOME_PREFACE_ENABLED = false;
+const WELCOME_PREFACE_ENABLED = true;
 const SESSION_KEY = "portfolio:welcome-preface-dismissed-v1";
 const HOME_PATHS = new Set(["", "/projects"]);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";

@@ -21,8 +21,8 @@ test("Projects loads the introduction before the collection motion runtime", () 
   assert.match(html, /href="\/src\/welcome-preface\.css"/);
 });
 
-test("the retained introduction is launch-gated off, Projects-only, and once per browser session", () => {
-  assert.match(source, /const WELCOME_PREFACE_ENABLED = false;/);
+test("the retained introduction is launch-gated on, Projects-only, and once per browser session", () => {
+  assert.match(source, /const WELCOME_PREFACE_ENABLED = true;/);
   assert.match(source, /function shouldOpen\(\) \{\s*if \(!WELCOME_PREFACE_ENABLED\) return false;/);
   assert.match(source, /new Set\(\["", "\/projects"\]\)/);
   assert.match(source, /window\.sessionStorage\.getItem\(SESSION_KEY\)/);
