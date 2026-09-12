@@ -6,7 +6,13 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
-- September 11 mobile Experience density: reduce the vertical gap between History experience entries from 16px to 12px below 600px. Preserve single-line three-column rows and larger breakpoints.
+- September 11 History contact treatment: rename the shared contact section label from Email to Connect at every breakpoint. Below 600px, stack email, LinkedIn, GitHub and Cal.com vertically as one flush-left list. Preserve the existing tablet and desktop link layout.
+
+- September 11 mobile History label spacing: below 600px, reduce the vertical gap between every rendered section label and its content from 24px to 16px. Preserve the 40px spacing between complete sections, the introduction rhythm and larger breakpoints.
+
+- September 11 mobile History rhythm: below 600px, reduce the shared gap between History sections from 48px to 40px and use `text-wrap: pretty` on the introduction lead to prevent a single-word final line. Preserve the authored copy and larger breakpoints.
+
+- September 11 mobile Experience density: reduce the vertical gap between History experience entries from 16px to 8px below 600px, superseding the intermediate 12px setting. Preserve single-line three-column rows and larger breakpoints.
 
 - September 11 Experience role normalization and mobile columns: across all breakpoints, change every `Senior Product Designer · Contract` role to `Product Designer` and remove the `· Contract` suffix from every other Experience role. Below 600px, use equal flexible outer columns around a consistent 112px-wide middle column, so every job title begins at the same x-position in the mathematical center of the layout. Keep job titles left-aligned and dates right-aligned. Retain single-line organization, role and date rows. Preserve tablet and desktop layout geometry.
 

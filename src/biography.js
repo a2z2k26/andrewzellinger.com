@@ -75,7 +75,7 @@ function renderContact() {
   const email = element("div", "biography-contact__item");
   const emailLink = element("a", "biography-contact__link", BIOGRAPHY_CONTACT.email);
   emailLink.href = `mailto:${BIOGRAPHY_CONTACT.email}`;
-  email.append(element("div", "biography-contact__label", "Email"), emailLink);
+  email.append(element("div", "biography-contact__label", "Connect"), emailLink);
 
   contact.append(email);
   const socials = element("div", "biography-contact__socials");
