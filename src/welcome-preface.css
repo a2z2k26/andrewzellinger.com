@@ -188,6 +188,11 @@ html[data-welcome-preface="open"] body {
     padding-inline: 12px;
   }
 
+  .welcome-preface__description {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
   .welcome-preface__close {
     width: 40px;
     height: 40px;

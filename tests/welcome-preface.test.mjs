@@ -116,6 +116,7 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(phoneStyles, /\.welcome-preface__visit a,[\s\S]*?\.welcome-preface__visit a:visited\s*\{\s*color: #000;/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*width: 48px;[^}]*height: 48px/);
   assert.match(styles, /@media screen and \(min-width: 992px\)\s*\{\s*\.welcome-preface__panel\s*\{[^}]*width: min\(400px, calc\(100vw - 48px\)\);[^}]*height: 464px;[^}]*padding-inline: 12px;/);
+  assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__description\s*\{[^}]*font-size: 14px;[^}]*line-height: 24px;/);
   assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__close\s*\{[^}]*width: 40px;[^}]*height: 40px;[^}]*margin-top: 32px/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 36px;[^}]*width: 36px;[^}]*height: 36px/);
   assert.match(phoneStyles, /\.welcome-preface__close::before\s*\{[^}]*inset: -6px/);
