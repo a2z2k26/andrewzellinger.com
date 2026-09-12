@@ -2,6 +2,8 @@
 
 ## Latest approved refinements
 
+- September 12 introduction copy follow-up: use exactly “Years of building with AI has reshaped my design practice. This site documents what came before, here’s what’s next:” at every breakpoint. Preserve the chosen “has” wording and all styling.
+
 - September 12 mobile introduction modal: increase its content-sized height by 16px using 56px top/bottom padding (previously 48px). Use a 65% black page dimmer below 600px. Preserve the dark panel, 42px close circle, internal gaps, typography and desktop/tablet styling.
 
 ## Scope and verification

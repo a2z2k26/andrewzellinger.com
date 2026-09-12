@@ -31,7 +31,7 @@ test("the retained introduction is launch-gated on, Projects-only, and once per 
 
 test("the approved copy and accessible dialog contract are present", () => {
   assert.match(source, /title\.textContent = "ZELLINGER"/);
-  assert.match(source, /description\.textContent = "2 years of building with AI has reshaped my design practice\. This site documents what came before, here’s what’s next:"/);
+  assert.match(source, /description\.textContent = "Years of building with AI has reshaped my design practice\. This site documents what came before, here’s what’s next:"/);
   assert.doesNotMatch(source, /Lorem ipsum/);
   assert.match(source, /role", "dialog"/);
   assert.match(source, /aria-modal", "true"/);
