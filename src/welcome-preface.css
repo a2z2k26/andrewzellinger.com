@@ -183,14 +183,15 @@ html[data-welcome-preface="open"] body {
 
 @media screen and (min-width: 992px) {
   .welcome-preface__panel {
-    width: min(424px, calc(100vw - 48px));
-    height: 496px;
+    width: min(400px, calc(100vw - 48px));
+    height: 464px;
     padding-inline: 12px;
   }
 
   .welcome-preface__close {
     width: 40px;
     height: 40px;
+    margin-top: 32px;
   }
 }
 
@@ -208,9 +209,9 @@ html[data-welcome-preface="open"] body {
 
 @media screen and (max-width: 599px) {
   .welcome-preface__panel {
-    width: min(312px, calc(100vw - 64px));
+    width: min(296px, calc(100vw - 80px));
     height: auto;
-    padding: 60px 0;
+    padding: 48px 0;
     border-radius: 32px;
     background: #fff;
     box-shadow: inset 0 0 0 1px #d8d8d8;
