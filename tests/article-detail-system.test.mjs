@@ -108,6 +108,13 @@ test("article reading columns and opening rule share the left-aligned text width
   assert.doesNotMatch(elevated, /\.detail-unit__article-body\s*\{[^}]*max-width:/s);
 });
 
+test("phone article details divide the header lockup from the body without expanding the existing rhythm", async () => {
+  const styles = await readFile(new URL("../src/detail-state.css", import.meta.url), "utf8");
+  const phone = styles.slice(styles.indexOf("@media (max-width: 599px)"));
+
+  assert.match(phone, /html\[data-design-edition="elevated"\]\[data-detail-mode="isolated"\] \.detail-unit__article-body\s*\{[^}]*margin-top:\s*32px;[^}]*padding-top:\s*32px;[^}]*border-top:\s*1px solid rgba\(255,255,255,\.12\);/s);
+});
+
 test("article titles retain the collection scale in desktop detail views", async () => {
   const elevated = await readFile(new URL("../src/elevation/styles.css", import.meta.url), "utf8");
   assert.match(elevated, /@media \(min-width: 992px\) \{[\s\S]*?\.articles-entry__title\.heading-style-h2\.new \{\s*font-size: 18px;\s*\}[\s\S]*?\.detail-unit__title--article \{\s*font-size: 18px;\s*\}/);

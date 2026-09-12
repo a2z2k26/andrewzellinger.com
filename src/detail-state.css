@@ -614,6 +614,12 @@ html[data-design-edition="elevated"] [data-detail-slug="showing-my-teeth"] .deta
   html[data-design-edition="elevated"][data-detail-mode="isolated"] .detail-rail {
     padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
   }
+
+  html[data-design-edition="elevated"][data-detail-mode="isolated"] .detail-unit__article-body {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,.12);
+  }
 }
 
 .detail-unit__decisions {

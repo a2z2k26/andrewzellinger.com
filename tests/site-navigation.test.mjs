@@ -48,14 +48,15 @@ test('phone navigation collapses into an accessible tap and swipe drawer',()=>{
   assert.match(css,/\.masthead-link \{ border-top: 1px solid rgba\(255,255,255,\.1\); \}/);
 });
 test('accepted dimensions and detail context preserved',()=>{
-  for(const value of ['- 52px','height: 44px','height: calc(68px','width: 14px']) assert.ok(css.includes(value),value);
+  for(const value of ['- 52px','height: 44px','height: calc(62px']) assert.ok(css.includes(value),value);
   assert.ok(!css.includes('.edition-context'));
 });
-test('phone case studies use a text-only Close row matching the mobile menu',()=>{
+test('phone detail routes use a text-only Close row matching the mobile menu',()=>{
   const phone=css.slice(css.indexOf('@media (max-width: 599px) {'));
-  assert.match(phone,/html\[data-detail-kind="project"\] \.site-navigation__back,[\s\S]*?height: calc\(62px \+ env\(safe-area-inset-bottom,0px\)\);[\s\S]*?padding: 0 16px calc\(8px \+ env\(safe-area-inset-bottom,0px\)\);[\s\S]*?border-top: 1px solid rgba\(255,255,255,\.1\);/);
-  assert.match(phone,/html\[data-detail-kind="project"\] \.site-navigation__close-icon \{ display: none; \}/);
-  assert.match(phone,/html\[data-detail-kind="project"\] \.site-navigation__close-label \{ font-size: 14px; \}/);
+  assert.match(phone,/\.site-navigation__back \{[^}]*height: calc\(62px \+ env\(safe-area-inset-bottom,0px\)\);[^}]*padding: 0 16px calc\(8px \+ env\(safe-area-inset-bottom,0px\)\);[^}]*border-top: 1px solid rgba\(255,255,255,\.1\);[^}]*background: #000;[^}]*color: var\(--edition-muted\);/);
+  assert.match(phone,/\.site-navigation__close-icon \{ display: none; \}/);
+  assert.match(phone,/\.site-navigation__close-label \{ display: inline; font-size: 14px; font-weight: 500; \}/);
+  assert.doesNotMatch(phone,/data-detail-kind="project"/);
 });
 test('desktop Back control uses the refined neutral treatment',()=>{
   assert.match(css,/\.site-navigation__back \{[^}]*color: #aaa;[^}]*background: transparent;/);
