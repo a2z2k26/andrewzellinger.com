@@ -111,9 +111,9 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*border-radius: 32px;/);
   assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*background: #fff;[^}]*box-shadow: inset 0 0 0 1px #d8d8d8;[^}]*color: #000;/s);
   assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*color: #000;/s);
-  assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 24px;[^}]*line-height: 20px/);
+  assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 24px;[^}]*font-weight: 700;[^}]*line-height: 20px/);
   assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*color: #000;/s);
-  assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*margin-top: 20px/);
+  assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*margin-top: 20px;[^}]*font-weight: 700/);
   assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*color: #000;/s);
   assert.match(phoneStyles, /\.welcome-preface__visit a,[\s\S]*?\.welcome-preface__visit a:visited\s*\{\s*color: #000;/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*width: 48px;[^}]*height: 48px/);
