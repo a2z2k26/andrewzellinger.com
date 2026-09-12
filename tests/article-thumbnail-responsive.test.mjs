@@ -38,6 +38,14 @@ test("Articles keep the refined collection rhythm at every breakpoint", async ()
   assert.match(elevated, /\.articles-entry-list > li\s*\{\s*padding-block:\s*0;\s*border:\s*0;/s);
   assert.match(elevated, /\.articles-entry-link\s*\{\s*padding-bottom:\s*76px;/s);
   assert.match(elevated, /@media \(max-width: 991px\)[\s\S]*?\.articles-entry-link\s*\{\s*padding-bottom:\s*32px;/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-entry-link\s*\{\s*padding-bottom:\s*24px;/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index__list\s*\{[^}]*position:\s*relative;[^}]*margin-top:\s*16px;/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index__list::before\s*\{[^}]*content:\s*"";[^}]*top:\s*-24px;[^}]*height:\s*1px;[^}]*background:\s*rgba\(255, 255, 255, \.12\);/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index \.articles-entry-list > li\s*\{[^}]*border-bottom:\s*1px solid rgba\(255, 255, 255, \.12\);/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-index \.articles-entry-list > li:not\(:last-child\)\s*\{[^}]*margin-bottom:\s*24px;/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*margin-bottom:\s*6px;[^}]*text-wrap:\s*pretty;/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-entry__excerpt\s*\{[^}]*line-height:\s*1\.5;[^}]*text-wrap:\s*pretty;/s);
+  assert.match(elevated, /@media \(max-width: 599px\)[\s\S]*?\.articles-entry__meta\s*\{\s*margin:\s*0 0 4px;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__body\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__title\.heading-style-h2\.new\s*\{[^}]*grid-row:\s*auto;[^}]*margin-bottom:\s*16px;/s);
   assert.match(html, /@media screen and \(max-width:\s*768px\)[\s\S]*?\.articles-entry__meta\s*\{[^}]*margin:\s*0 0 8px;/s);

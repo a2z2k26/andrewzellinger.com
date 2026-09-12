@@ -29,6 +29,8 @@ test("phone typography uses one shared hierarchy without changing larger breakpo
   assert.match(phone, /\.title \{ padding-top: 132px; padding-bottom: 32px; \}/);
   assert.match(phone, /\.articles-entry__title\.heading-style-h2\.new,[\s\S]*?\.detail-unit__title--article \{\s*font-size: 14px;\s*line-height: 1\.15;/);
   assert.match(phone, /\.articles-entry__excerpt,[\s\S]*?\.detail-unit__lede \{\s*font-size: 12px;/);
+  assert.match(phone, /\.articles-entry__title\.heading-style-h2\.new \{[^}]*margin-bottom: 6px;[^}]*text-wrap: pretty;/s);
+  assert.match(phone, /\.articles-entry__excerpt \{[^}]*line-height: 1\.5;[^}]*text-wrap: pretty;/s);
   assert.match(phone, /\.detail-unit__section-body--project p,[\s\S]*?\.detail-unit__article-body blockquote \{\s*font-size: 14px;/);
 
   assert.match(historyPhone, /--biography-body-size: 12px;/);

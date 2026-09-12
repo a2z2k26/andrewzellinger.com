@@ -72,12 +72,10 @@ function renderContact() {
   const contact = element("section", "biography-contact");
   contact.setAttribute("aria-label", "Contact");
 
-  const email = element("div", "biography-contact__item");
-  const emailLink = element("a", "biography-contact__link", BIOGRAPHY_CONTACT.email);
-  emailLink.href = `mailto:${BIOGRAPHY_CONTACT.email}`;
-  email.append(element("div", "biography-contact__label", "Connect"), emailLink);
+  const heading = element("div", "biography-contact__item");
+  heading.append(element("div", "biography-contact__label", "Connect"));
 
-  contact.append(email);
+  contact.append(heading);
   const socials = element("div", "biography-contact__socials");
   BIOGRAPHY_CONTACT.socialLinks.forEach(({ label, url }) => {
     const link = element("a", "biography-contact__link", label);

@@ -6,6 +6,32 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 
 ## Durable product decisions
 
+- September 11 mobile modal vertical padding: below 600px, add 20px to both the top and bottom interior padding, increasing it from 40px to 60px. Preserve the content-sized height, 312px maximum width, centered lockup, internal gaps and tablet/desktop geometry.
+
+- September 11 desktop modal frame refinement: at 992px and above, reduce the accepted 464×536px modal by 20px on every side to 424×496px. Use 12px horizontal CSS padding so the 400px content width and existing paragraph wrapping remain unchanged; flex centering supplies the reduced vertical free space. Preserve tablet/mobile dimensions and all internal lockup gaps.
+
+- September 11 modal balanced lower rhythm: match the visit-to-close gap to the paragraph-to-visit gap at every breakpoint. Use 28px for both gaps on desktop/tablet and 20px for both gaps on mobile. Preserve the centered full lockup, type, icons, control sizes and panel geometry.
+
+- September 11 modal paragraph alignment: keep the introduction paragraph center-aligned at every breakpoint and explicitly reset `text-indent` to zero so the global paragraph indent cannot shift its first line.
+
+- September 11 History Connect links: at every breakpoint, the History `Connect` list contains exactly Substack, LinkedIn and GitHub. Email and Cal.com are handled by the shared collection action buttons and must not be duplicated in this list.
+
+- September 11 desktop contact actions and masthead spacing: at 992px and above, move the Projects/Articles/History masthead group 56px left from its prior computed placement. Show the same Cal.com and Email action buttons 40px beneath the Projects, Articles and History page titles with a 16px gap between them, without changing title geometry. Preserve tablet/mobile navigation and the mobile footer actions.
+
+- September 11 Cal overlay close control: retain Cal.com's stock upper-right close control as the only visible dismiss button at every breakpoint. Do not add, restyle, hide or duplicate it with a site-owned control. Preserve the direct-link fallback and Cal's booking content.
+
+- September 11 mobile Articles divider rhythm: below 600px, keep 24px between the Articles title and opening divider, 24px between that divider and the first article, and 24px on both sides of every divider between article lockups. Preserve the mobile-only dividers, type scale, inner lockup spacing and larger breakpoints.
+
+- September 11 mobile Cal.com overlay: the Cal.com buttons at the end of Projects, Articles and History open the `andrewzellinger/15min` Cal.com element-click overlay in month view, using the `15min` namespace and small-screen slots view. Keep the direct event URL as a fallback. The companion Email action remains a mailto link.
+
+- September 11 mobile collection footer actions: below 600px, end the Projects, Articles and History collection pages with a left-aligned pair of compact Cal.com and Email buttons in normal document flow above the mobile navigation. Align the first control to the shared 16px page-content gutter. Use 36px-high dark-charcoal rounded controls with 18px horizontal padding, 12px white labels and a 16px gap. Keep 73px of rendered clearance between the buttons and the collapsed main navigation, matching the Projects description-to-button gap, and use that same bottom clearance on all three collections. Preserve detail pages and all tablet/desktop layouts.
+
+- September 11 mobile Articles leading divider: below 600px, add one full-width white-at-12% divider centered in the existing 32px gap between the Articles page title and the first listing, leaving 16px on each side. Preserve the page-title/content gap, subsequent dividers and larger breakpoints.
+
+- September 11 mobile Articles dividers and density: below 600px on the Articles collection only, tighten title-to-metadata spacing to 6px and metadata-to-excerpt spacing to 4px. Replace the prior 24px trailing link padding with 12px below each entry, then add a full-width 1px white-at-12% divider after every article, including the final article. Keep 12px following margin between adjacent entries. Preserve typography and larger breakpoints.
+
+- September 11 mobile Articles hierarchy: below 600px, retain the established 32px page title, 14px article titles, 12px excerpts and 11px mono metadata. Tighten title-to-metadata spacing from 16px to 8px, metadata-to-excerpt spacing from 8px to 6px, excerpt leading to 1.5 and article-to-article spacing from 32px to 24px. Use pretty wrapping on titles and excerpts. Preserve the 32px page-title/content gap and all tablet/desktop styling.
+
 - September 11 History contact treatment: rename the shared contact section label from Email to Connect at every breakpoint. Below 600px, stack email, LinkedIn, GitHub and Cal.com vertically as one flush-left list. Preserve the existing tablet and desktop link layout.
 
 - September 11 mobile History label spacing: below 600px, reduce the vertical gap between every rendered section label and its content from 24px to 16px. Preserve the 40px spacing between complete sections, the introduction rhythm and larger breakpoints.

@@ -98,7 +98,7 @@ test("desktop page titles sit 32px above vertical center with left alignment and
   assert.match(desktop, /\.title \{ bottom: 64px; \}/);
   assert.match(
     desktop,
-    /\.title \.container-xlarge \{\s*max-width: calc\(50% - 60px\);\s*margin: 0;\s*\}/,
+    /\.title \.container-xlarge \{\s*position: relative;\s*max-width: calc\(50% - 60px\);\s*margin: 0;\s*\}/,
   );
   assert.doesNotMatch(desktop, /bottom: 20vh|top: -3px/);
   assert.doesNotMatch(styles, /\.title \{ padding-bottom: 100px; \}/);

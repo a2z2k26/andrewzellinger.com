@@ -12,7 +12,7 @@ test('detail parents resolve correctly',()=>{
 });
 test('desktop menu centers between the logo and right content column',()=>{
   assert.equal(centeredMastheadLeft(104,728,205),313.5);
-  assert.equal(centeredMastheadLeft(104,728,205,-80),233.5);
+  assert.equal(centeredMastheadLeft(104,728,205,-136),177.5);
 });
 const js=await readFile(new URL('../src/site-navigation/index.js',import.meta.url),'utf8');
 const css=await readFile(new URL('../src/site-navigation/styles.css',import.meta.url),'utf8');
@@ -23,7 +23,7 @@ test('persistent desktop links and compact detail state',()=>{
   assert.ok(js.includes('compact.addEventListener'));
   assert.ok(js.includes('phone.addEventListener'));
   assert.ok(js.includes("getPropertyValue('--structure--grid-row-gap')"));
-  assert.ok(js.includes('centeredMastheadLeft(rect.right, rightColumnLeft, menuWidth, -80)'));
+  assert.ok(js.includes('centeredMastheadLeft(rect.right, rightColumnLeft, menuWidth, -136)'));
   assert.ok(js.includes('sizes.observe(nav)'));
   assert.ok(!js.includes('rect.right + 156'));
 });

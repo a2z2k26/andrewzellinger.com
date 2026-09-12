@@ -100,7 +100,12 @@ test("biography draft avoids disputed metrics and private runtime source paths",
   const publicContent = JSON.stringify({ BIOGRAPHY, BIOGRAPHY_CONTACT });
   assert.doesNotMatch(publicContent, /\b\d+(?:\.\d+)?%|\$\d|million|conversion|revenue/i);
   assert.doesNotMatch(publicContent, /\.pdf|\/Users\/|Desktop\/|A-Z Profile/i);
-  assert.equal(BIOGRAPHY_CONTACT.email, "hello@andrewzellinger.com");
-  assert.deepEqual(BIOGRAPHY_CONTACT.socialLinks.map(({ label }) => label), ["LinkedIn", "GitHub", "Cal.com"]);
+  assert.equal("email" in BIOGRAPHY_CONTACT, false);
+  assert.deepEqual(BIOGRAPHY_CONTACT.socialLinks.map(({ label }) => label), ["Substack", "LinkedIn", "GitHub"]);
+  assert.deepEqual(BIOGRAPHY_CONTACT.socialLinks.map(({ url }) => url), [
+    "https://substack.com/@andrewzellinger",
+    "https://www.linkedin.com/in/andrewzellinger/",
+    "https://github.com/a2z2k26",
+  ]);
   assert.doesNotMatch(publicContent, /"label":"X\.com"|"url":"https:\/\/x\.com\//i);
 });

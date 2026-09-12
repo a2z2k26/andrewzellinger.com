@@ -139,6 +139,7 @@ test("History registers stack flush left on phones and clear the fixed menu", as
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-experience__dates\s*\{[^}]*grid-column:\s*3;[^}]*justify-self:\s*end;[^}]*text-align:\s*right;/s);
   assert.match(runtime, /element\("div", "biography-contact__label", "Connect"\)/);
   assert.doesNotMatch(runtime, /element\("div", "biography-contact__label", "Email"\)/);
+  assert.doesNotMatch(runtime, /mailto:/);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-contact\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;[^}]*gap:\s*0;/s);
   assert.match(styles, /@media screen and \(max-width:\s*599px\)[\s\S]*\.biography-contact__socials\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;[^}]*gap:\s*0;/s);
   assert.match(styles, /@media screen and \(max-width:\s*991px\)[\s\S]*\.biography-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/);

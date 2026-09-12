@@ -98,6 +98,7 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(styles, /letter-spacing: \.04em/);
   assert.match(styles, /margin-top: 18px/);
   assert.match(styles, /\.welcome-preface__description\s*\{[^}]*margin-top: 36px/);
+  assert.match(styles, /\.welcome-preface__description\s*\{[^}]*text-align: center;[^}]*text-indent: 0/);
   assert.match(styles, /font-size: 16px/);
   assert.match(styles, /\.welcome-preface__description\s*\{[^}]*line-height: 28px/);
   assert.match(styles, /\.welcome-preface__description\s*\{[\s\S]*?color: #8a8a8a/);
@@ -108,13 +109,14 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 24px;[^}]*line-height: 20px/);
   assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*margin-top: 20px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*width: 48px;[^}]*height: 48px/);
-  assert.match(styles, /@media screen and \(min-width: 992px\)\s*\{\s*\.welcome-preface__close\s*\{[^}]*width: 40px;[^}]*height: 40px/);
+  assert.match(styles, /@media screen and \(min-width: 992px\)\s*\{\s*\.welcome-preface__panel\s*\{[^}]*width: min\(424px, calc\(100vw - 48px\)\);[^}]*height: 496px;[^}]*padding-inline: 12px;/);
+  assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__close\s*\{[^}]*width: 40px;[^}]*height: 40px/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 36px;[^}]*width: 36px;[^}]*height: 36px/);
   assert.match(phoneStyles, /\.welcome-preface__close::before\s*\{[^}]*inset: -6px/);
-  assert.match(styles, /\.welcome-preface__close\s*\{[^}]*margin-top: 60px/);
-  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(312px, calc\(100vw - 64px\)\);[^}]*padding: 40px 0;/);
+  assert.match(styles, /\.welcome-preface__close\s*\{[^}]*margin-top: 28px/);
+  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(312px, calc\(100vw - 64px\)\);[^}]*padding: 60px 0;/);
   assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*width: 62px;[^}]*height: 34px/);
-  assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 36px;[^}]*margin-bottom: 0/);
+  assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 20px;[^}]*margin-bottom: 0/);
   assert.match(styles, /border: 0/);
   assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?background: rgb\(255 255 255 \/ 8%\)/);
   assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?color: #8a8a8a/);

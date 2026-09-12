@@ -91,6 +91,7 @@
   line-height: 28px;
   letter-spacing: 0;
   text-align: center;
+  text-indent: 0;
   text-transform: none;
   text-wrap: balance;
 }
@@ -133,7 +134,7 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  margin-top: 60px;
+  margin-top: 28px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -181,6 +182,12 @@ html[data-welcome-preface="open"] body {
 }
 
 @media screen and (min-width: 992px) {
+  .welcome-preface__panel {
+    width: min(424px, calc(100vw - 48px));
+    height: 496px;
+    padding-inline: 12px;
+  }
+
   .welcome-preface__close {
     width: 40px;
     height: 40px;
@@ -203,7 +210,7 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__panel {
     width: min(312px, calc(100vw - 64px));
     height: auto;
-    padding: 40px 0;
+    padding: 60px 0;
     border-radius: 32px;
     /* Keep the close button's invisible touch extension usable at the edge. */
     overflow: visible;
@@ -237,7 +244,7 @@ html[data-welcome-preface="open"] body {
     flex: 0 0 36px;
     width: 36px;
     height: 36px;
-    margin-top: 36px;
+    margin-top: 20px;
     margin-bottom: 0;
   }
 
