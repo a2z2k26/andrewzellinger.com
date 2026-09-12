@@ -92,6 +92,7 @@ function initialize() {
     }
     schedule();
   };
+  window.addEventListener('portfolio:phone-route-capture', () => setMobileMenuOpen(false));
   nav.addEventListener('click', event => {
     const link = event.target.closest('a');
     if (link) setMobileMenuOpen(false);

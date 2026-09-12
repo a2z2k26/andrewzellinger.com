@@ -1,0 +1,51 @@
+/* Phone-only profile. Desktop and tablet retain their accepted choreography. */
+@media (max-width: 599px) {
+  html[data-phone-route]::view-transition-group(*) { animation: none; }
+  html[data-phone-route]::view-transition-old(root) {
+    animation: phone-page-out var(--phone-motion-route) var(--phone-ease-exit) both;
+  }
+  html[data-phone-route]::view-transition-new(root) {
+    animation: phone-page-in var(--phone-motion-route) var(--phone-ease-enter) both;
+  }
+  html[data-phone-route]::view-transition-old(phone-brand),
+  html[data-phone-route]::view-transition-old(phone-clock),
+  html[data-phone-route]::view-transition-old(phone-control) { animation: none; opacity: 0; }
+  html[data-phone-route]::view-transition-new(phone-brand),
+  html[data-phone-route]::view-transition-new(phone-clock),
+  html[data-phone-route]::view-transition-new(phone-control) { animation: none; opacity: 1; }
+  html[data-phone-route]::view-transition-group(phone-brand),
+  html[data-phone-route]::view-transition-group(phone-clock),
+  html[data-phone-route]::view-transition-group(phone-control) { z-index: 5; }
+  html[data-phone-route]::view-transition { pointer-events: none; }
+  html[data-phone-route]::view-transition-old(*),
+  html[data-phone-route]::view-transition-new(*) { mix-blend-mode: normal; }
+
+  .site-navigation__menu-toggle, .masthead-links {
+    transition-duration: var(--phone-motion-response);
+    transition-timing-function: var(--phone-ease-enter);
+  }
+  html[data-phone-route] .site-navigation__menu-toggle,
+  html[data-phone-route] .masthead-links { transition: none !important; }
+  .masthead-link, .site-navigation__back, .page-footer-actions__link,
+  .biography-introduction__resume, .site-navigation__menu-toggle {
+    -webkit-tap-highlight-color: transparent;
+  }
+  html[data-design-edition="elevated"] body :is(.masthead-link, .site-navigation__back, .page-footer-actions__link, .biography-introduction__resume):active { opacity: .68; }
+  .site-navigation__menu-toggle:active .site-navigation__menu-icon { opacity: .6; }
+  html[data-design-edition="elevated"] body :is(.masthead-link, .site-navigation__back, .page-footer-actions__link, .biography-introduction__resume) {
+    transition: color var(--phone-motion-feedback) var(--phone-ease-enter), opacity var(--phone-motion-feedback) var(--phone-ease-enter), background-color var(--phone-motion-feedback) var(--phone-ease-enter);
+  }
+  html[data-edition-motion="reduced"] :is(.site-navigation__menu-toggle, .masthead-links, .site-navigation__menu-icon) { transition: none !important; }
+  .site-navigation__menu-icon { transition: opacity var(--phone-motion-feedback) var(--phone-ease-enter); }
+}
+@keyframes phone-page-out {
+  0% { opacity: 1; transform: translateY(0); }
+  30%, 100% { opacity: 0; transform: translateY(calc(-1 * var(--phone-distance-feedback))); }
+}
+@keyframes phone-page-in {
+  0%, 30% { opacity: 0; transform: translateY(var(--phone-distance-page)); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 599px) and (prefers-reduced-motion: reduce) {
+  .site-navigation__menu-toggle, .masthead-links, .site-navigation__menu-icon { transition: none !important; }
+}

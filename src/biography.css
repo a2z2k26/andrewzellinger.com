@@ -139,7 +139,7 @@
 }
 
 .biography-introduction__resume {
-  margin-top: 24px;
+  margin-top: var(--biography-section-gap);
   align-self: flex-start;
 }
 

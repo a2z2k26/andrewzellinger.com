@@ -1,4 +1,6 @@
 import { gsap } from "gsap";
+import { PHONE_MOTION, isPhoneWidth } from "../motion/profile.js";
+const phone = () => typeof innerWidth !== "undefined" && isPhoneWidth(innerWidth);
 
 export const TEXT_MOTION = Object.freeze({
   duration: Object.freeze({
@@ -30,7 +32,7 @@ export function prepareStructuralText(parts) {
   if (!targets.length) return targets;
   gsap.set(targets, {
     autoAlpha: 0,
-    y: TEXT_MOTION.distance.reveal,
+    y: phone() ? PHONE_MOTION.distance.reveal : TEXT_MOTION.distance.reveal,
     willChange: "transform,opacity",
   });
   return targets;
@@ -49,7 +51,7 @@ export function revealStructuralText({ label = null, body = null, onComplete = n
     timeline.to(label, {
       autoAlpha: 1,
       y: 0,
-      duration: TEXT_MOTION.duration.response,
+      duration: phone() ? PHONE_MOTION.duration.response : TEXT_MOTION.duration.response,
       ease: TEXT_MOTION.ease.enter,
     }, 0);
   }
@@ -57,9 +59,9 @@ export function revealStructuralText({ label = null, body = null, onComplete = n
     timeline.to(body, {
       autoAlpha: 1,
       y: 0,
-      duration: TEXT_MOTION.duration.reveal,
+      duration: phone() ? PHONE_MOTION.duration.reading - PHONE_MOTION.stagger : TEXT_MOTION.duration.reveal,
       ease: TEXT_MOTION.ease.enter,
-    }, label ? TEXT_MOTION.stagger.structural : 0);
+    }, label ? (phone() ? PHONE_MOTION.stagger : TEXT_MOTION.stagger.structural) : 0);
   }
   if (!targets.length) onComplete?.();
   return timeline;

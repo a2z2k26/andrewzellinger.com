@@ -3,6 +3,7 @@ import { PROJECTS } from '../project-content.js';
 import { setMotionPause } from './motion-pause.js';
 import { captureTitleCharacters, animateCapturedTitleCharacters } from './title-motion.js';
 import './counterflow.css';
+import { isPhone } from '../motion/phone.js';
 
 const root=document.documentElement;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
@@ -37,6 +38,7 @@ function warmImage(src) {
   return warmed.get(src);
 }
 export async function prepareCounterflow(to) {
+  if (isPhone()) return true; // Native loading; never hold phone navigation for image decoding.
   const sources=destinationMedia(to);
   const ready=await waitForVisualReadiness([
     ...sources.map(src=>warmImage(src).then(ok=>{if(!ok) throw new Error('Image unavailable');})),
@@ -110,6 +112,20 @@ function caseStudyViewport() {
 
 function nameSurfaces(direction, phase) {
   if (!direction || reduced()) return false;
+  if (isPhone()) {
+    root.dataset.phoneRoute = 'active';
+    captureTitleCharacters(phase);
+    // Close the drawer synchronously before the browser captures the old page.
+    window.dispatchEvent(new Event('portfolio:phone-route-capture'));
+    for (const [selector, name] of [
+      ['.nav_brand', 'phone-brand'],
+      ['.nav_h', 'phone-clock'], ['.site-navigation__menu-toggle:not([hidden])', 'phone-control'],
+    ]) {
+      const node = document.querySelector(selector);
+      if (node && node.getBoundingClientRect().height) node.style.viewTransitionName = name;
+    }
+    return true;
+  }
   const title=document.querySelector('.title');
   // On compact layouts capture only the first media frame, never the entire
   // long collection. The document below it stays in its native reading flow.
@@ -148,6 +164,7 @@ function settle(token, focus=false) {
   releaseTitleMotion=()=>{};
   clearNames();
   restoreRail();
+  delete root.dataset.phoneRoute;
   delete root.dataset.counterflow;
   delete root.dataset.railSweep;
   root.dataset.transitionPhase='idle';
@@ -194,13 +211,14 @@ window.addEventListener('pagereveal',event=>{
     if(token===sequence) {
       releaseTitleMotion=animateCapturedTitleCharacters();
       root.dataset.transitionPhase='animating';
-      root.dataset.transitionVerified='rail-sweep-up';
+      root.dataset.transitionVerified=isPhone()?'phone-fade-through':'rail-sweep-up';
     }
   }).catch(()=>settle(token));
   event.viewTransition.finished.catch(()=>{}).then(()=>settle(token,true));
   safety=setTimeout(cancel,2200);
 });
 
+window.addEventListener('pointerdown', () => { if (active && isPhone()) cancel(); }, { capture: true });
 window.addEventListener('resize',cancel);
 reduce.addEventListener('change',()=>{if(reduce.matches) cancel();});
 window.addEventListener('pageshow',event=>{

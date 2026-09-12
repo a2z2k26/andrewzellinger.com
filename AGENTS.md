@@ -2,6 +2,12 @@
 
 ## Latest approved refinements
 
+- September 12 motion correction: Andrew rejected the phone title-cascade removal and found the additions too subtle. Preserve the established character title animation at every breakpoint; additions should remain visibly legible. The initial entrance waits for the introduction modal to close. Phone reading uses a masked title followed by metadata and lede, with a 12px / 60ms structural vocabulary. Visual acceptance remains Andrew's decision.
+
+- September 12 motion continuation: implement the approved D1–D4 phone motion profile below 600px: coherent collection changes, coordinated reading entry/return, restrained heading and structural reveals, and tactile controls. Preserve desktop/tablet choreography and resting layout. Use `src/motion/profile.js` for shared phone timing and `docs/motion-system.md` for behavior, cancellation and QA. Keep native reading, exact collection returns and reduced-motion support.
+
+- September 12 resume spacing follow-up: use the shared `--biography-section-gap` between the second introduction paragraph and Download resume, replacing the prior 24px gap (64px desktop/tablet, 40px mobile).
+
 - September 12 History resume download: show a left-aligned “Download resume” control 24px below the second introduction paragraph at every breakpoint, reusing the Cal.com/Email button style. Andrew explicitly authorized serving the supplied `Resume/Andrew Zellinger [2026].pdf` as `/downloads/andrew-zellinger-resume-2026.pdf`; preserve the ignored original and its bytes.
 
 - September 12 introduction copy follow-up: use exactly “Years of building with AI has reshaped my design practice. This site documents what came before, here’s what’s next:” at every breakpoint. Preserve the chosen “has” wording and all styling.

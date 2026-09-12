@@ -4,6 +4,8 @@ import test from "node:test";
 
 test("History offers the approved PDF beneath the second introduction paragraph", async () => {
   const runtime = await readFile(new URL("../src/biography.js", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../src/biography.css", import.meta.url), "utf8");
+  assert.match(styles, /\.biography-introduction__resume\s*\{\s*margin-top: var\(--biography-section-gap\)/);
   assert.match(runtime, /page-footer-actions__link biography-introduction__resume/);
   assert.match(runtime, /resume\.href = "\/downloads\/andrew-zellinger-resume-2026\.pdf"/);
   assert.match(runtime, /resume\.download = "Andrew Zellinger \[2026\]\.pdf"/);

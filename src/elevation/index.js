@@ -6,6 +6,7 @@ import {
   revealStructuralText,
 } from "./text-motion-system.js";
 import "./styles.css";
+import { isPhone, animatePhoneArrival } from "../motion/phone.js";
 import './portrait-artwork.js';
 
 const root = document.documentElement;
@@ -66,8 +67,16 @@ function initialize() {
   const animateEntrance = () => {
     entering.forEach((animation) => animation.cancel());
     entering = [];
-    if (shouldReduceMotion() || (hasCounterflow() && isCounterflowArrival())) return;
+    if (root.dataset.welcomePreface === "open" || shouldReduceMotion() || (hasCounterflow() && isCounterflowArrival())) return;
     const rail = currentRail();
+    if (isPhone()) {
+      if (performance.getEntriesByType('navigation')[0]?.type === 'back_forward') return;
+      if (!root.classList.contains('detail-route')) {
+        entering.push(animateTitleCharacters('enter'));
+        entering.push(animatePhoneArrival([rail]));
+      }
+      return;
+    }
     const timing = { duration: 650, easing: "cubic-bezier(.16,1,.3,1)", fill: "none" };
     entering.push(animateTitleCharacters('enter'));
     // Clip the outer rail only; the existing detail/loop motion owns its children.
@@ -90,8 +99,13 @@ function initialize() {
     cancelAnimationFrame(scheduled);
     scheduled = requestAnimationFrame(updateChrome);
   };
-  const modeObserver = new MutationObserver(synchronize);
-  modeObserver.observe(root, { attributes: true, attributeFilter: ["class", "data-detail-active-slug", "data-works-motion", "data-articles-motion", "data-history-motion"] });
+  const modeObserver = new MutationObserver(records => {
+    synchronize();
+    // The first title entrance belongs after the introduction has cleared.
+    if (records.some(record => record.attributeName === 'data-welcome-preface' && record.oldValue === 'open')
+      && !root.hasAttribute('data-welcome-preface')) requestAnimationFrame(animateEntrance);
+  });
+  modeObserver.observe(root, { attributes: true, attributeOldValue: true, attributeFilter: ["data-welcome-preface", "class", "data-detail-active-slug", "data-works-motion", "data-articles-motion", "data-history-motion"] });
   window.addEventListener("popstate", synchronize);
 
   // Top-level routes retain real document navigation and the existing detail history.
@@ -125,6 +139,7 @@ function initialize() {
       });
       return;
     }
+    if (isPhone()) return;
     event.preventDefault();
     navigating = true;
     const rail = currentRail();
@@ -151,21 +166,25 @@ function initialize() {
   let historyTextMode = null;
   const setupHistoryTextMotion = () => {
     const nextMode = sectionFor(location.pathname) === "/history" && innerWidth < 992 && !shouldReduceMotion()
-      ? "compact"
+      ? (isPhone() ? "phone" : "compact")
       : "static";
     if (nextMode === historyTextMode) return;
     destroyHistoryTextMotion();
     destroyHistoryTextMotion = () => {};
     historyTextMode = nextMode;
-    if (nextMode !== "compact") return;
+    if (nextMode === "static") return;
 
     const sections = [...document.querySelectorAll(
       ".biography-block, .biography-introduction, .biography-experience-section, .biography-contact",
     )];
     const timelines = new Map();
-    sections.forEach((section) => prepareStructuralText(historyTextParts(section)));
+    const revealed = new Set();
+    if (nextMode !== "phone") sections.forEach((section) => prepareStructuralText(historyTextParts(section)));
     const reveal = (section) => {
-      if (timelines.has(section)) return;
+      if (revealed.has(section)) return;
+      revealed.add(section);
+      if (nextMode === "phone" && section.getBoundingClientRect().top < 0) return;
+      if (nextMode === "phone") prepareStructuralText(historyTextParts(section));
       timelines.set(section, revealStructuralText(historyTextParts(section)));
     };
     let observer = null;
@@ -178,7 +197,7 @@ function initialize() {
           observer.unobserve(target);
           reveal(target);
         });
-      }, { rootMargin: "0px 0px -12% 0px", threshold: .08 });
+      }, { rootMargin: nextMode === "phone" ? "0px" : "0px 0px -12% 0px", threshold: nextMode === "phone" ? 0 : .08 });
       sections.forEach((section) => observer.observe(section));
     }
     destroyHistoryTextMotion = () => {

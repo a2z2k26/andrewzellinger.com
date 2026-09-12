@@ -28,23 +28,27 @@ function sectionParts(section) {
   };
 }
 
-export function createDetailSectionMotion({ view, enabled = false }) {
+export function createDetailSectionMotion({ view, enabled = false, phone = false }) {
   const sections = enabled
     ? [...view.querySelectorAll(
       ".detail-unit__section--project, .detail-unit__article-opening, .detail-unit__article-section",
     )]
     : [];
   const timelines = new Map();
+  const revealed = new Set();
   let observer = null;
   let started = false;
 
   sections.forEach((section) => {
-    prepareStructuralText(sectionParts(section));
+    if (!phone) prepareStructuralText(sectionParts(section));
   });
 
   const reveal = (section) => {
-    if (timelines.has(section)) return;
+    if (revealed.has(section)) return;
+    revealed.add(section);
+    if (phone && section.getBoundingClientRect().top < 0) return;
     const parts = sectionParts(section);
+    if (phone) prepareStructuralText(parts);
     const timeline = revealStructuralText(parts);
     timelines.set(section, timeline);
   };
@@ -65,8 +69,8 @@ export function createDetailSectionMotion({ view, enabled = false }) {
       });
     }, {
       root: null,
-      rootMargin: "0px 0px -12% 0px",
-      threshold: .12,
+      rootMargin: phone ? "0px" : "0px 0px -12% 0px",
+      threshold: phone ? 0 : .12,
     });
     sections.forEach((section) => observer.observe(section));
   };

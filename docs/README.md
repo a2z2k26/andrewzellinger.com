@@ -3,6 +3,7 @@
 Start with the current guides:
 
 - [Architecture and routes](architecture.md): entry points, runtime and build output.
+- [Motion system](motion-system.md): phone choreography, shared timing and cancellation.
 - [Asset maintenance](assets.md): original media, served files and development galleries.
 - [Public-release review](public-release.md): evidence, limitations and owner decisions before publication.
 - [Contributing](../.github/CONTRIBUTING.md): local workflow and validation.

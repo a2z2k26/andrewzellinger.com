@@ -1,4 +1,5 @@
 import { gsap } from "gsap";
+import { animatePhoneReading, animatePhoneArrival } from "./motion/phone.js";
 import "./detail-state.css";
 import { createBoundaryMotion } from "./detail-boundary-motion.js";
 import { createDetailSectionMotion } from "./detail-section-motion.js";
@@ -422,19 +423,7 @@ function killTransition() {
 
 // Phone routes are full-screen reading pages, not a scrollable dialog nested
 // inside the collection. Keep this transition separate from desktop expansion.
-function runPhoneTransition(view, entering, reduceMotion, onComplete = () => {}) {
-  let resolve;
-  const finished = new Promise((done) => { resolve = done; });
-  let tween;
-  const clear = () => gsap.set(view, { clearProps: "opacity,transform" });
-  const complete = () => { clear(); onComplete(); resolve(); };
-  if (reduceMotion) complete();
-  else tween = gsap.fromTo(view,
-    { opacity: entering ? 0 : 1, y: entering ? 16 : 0 },
-    { opacity: entering ? 1 : 0, y: entering ? 0 : 12,
-      duration: entering ? .24 : .16, ease: "power2.out", onComplete: complete });
-  return { finished, cancel() { tween?.kill(); clear(); resolve(); } };
-}
+function runPhoneTransition(...args) { return animatePhoneReading(...args); }
 
 function updateActiveEntry(entries, units) {
   const marker = window.scrollY + detailTopInset() + 2;
@@ -592,7 +581,8 @@ async function renderDetail(entry, {
   }
   const sectionMotion = createDetailSectionMotion({
     view,
-    enabled: !reduceMotion,
+    enabled: !reduceMotion && !(isolated && readingAnchor),
+    phone: isolated,
   });
   const pending = {
     operation,
@@ -650,7 +640,11 @@ async function renderDetail(entry, {
     resizeCall = gsap.delayedCall(.2, rerenderForEnvironment);
     if (activeDetail) activeDetail.resizeCall = resizeCall;
   };
-  const onMotionPreferenceChange = () => rerenderForEnvironment();
+  const onMotionPreferenceChange = () => {
+    if (activeDetail?.view !== view) return;
+    const anchor = captureDetailReadingAnchor(view);
+    renderDetail(currentEntry(entries), { readingAnchor: anchor });
+  };
   window.addEventListener("resize", onResize, { passive: true });
   reduceMotionQuery.addEventListener("change", onMotionPreferenceChange);
 
@@ -682,8 +676,8 @@ async function renderDetail(entry, {
   if (isolated) {
     sourceVisual?.remove();
     sourceCopyVisual?.remove();
-    activeTransition = runPhoneTransition(view, true, reduceMotion, () => {
-      sectionMotion.start();
+    sectionMotion.start();
+    activeTransition = runPhoneTransition(view, true, reduceMotion || Boolean(readingAnchor), () => {
       if (!readingAnchor && focusTarget?.isConnected) focusTarget.focus({ preventScroll: true });
     });
     return;
@@ -765,6 +759,7 @@ async function restoreCollection(state) {
       .find((node) => node.dataset.detailSlug === previous.originSlug
         && !node.closest('[aria-hidden="true"], [inert]'));
     finishCollectionReturn(link);
+    activeTransition = animatePhoneArrival(previous.collectionNodes, { returning: true });
     return;
   }
   const activeSlug = document.documentElement.dataset.detailActiveSlug;

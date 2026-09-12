@@ -77,6 +77,114 @@ async function clickVisibleCard(page) {
   return target.href;
 }
 try {
+  for (const width of [390, 1440]) {
+    await check(`First title entrance waits for the introduction at ${width}px`, async page => {
+      await page.goto(base + '/', { waitUntil: 'load' });
+      await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
+      await page.waitForTimeout(600);
+      assert.ok(await page.locator('.page-title-char').evaluateAll(chars => chars.every(char => getComputedStyle(char).transform === 'none')));
+      await page.getByRole('button', { name: 'Close portfolio introduction' }).click();
+      await page.waitForFunction(() => !document.documentElement.hasAttribute('data-welcome-preface')
+        && [...document.querySelectorAll('.page-title-char')].some(char => /matrix/.test(getComputedStyle(char).transform)));
+      await page.waitForTimeout(600);
+      assert.ok(await page.locator('.page-title-char').evaluateAll(chars => chars.every(char => {
+        const matrix = new DOMMatrix(getComputedStyle(char).transform);
+        return Math.abs(matrix.m42) < .1;
+      })));
+    }, { viewport: { width, height: 1000 } });
+  }
+  for (const width of [390, 820, 1440]) {
+    await check(`Title characters animate in the painted route snapshots at ${width}px`, async page => {
+      await page.addInitScript(() => {
+        window.__titleFrames = [];
+        addEventListener('pagereveal', event => {
+          if (!event.viewTransition) return;
+          event.viewTransition.ready.then(() => {
+            const start = performance.now();
+            const sample = () => {
+              const glyphs = document.getAnimations().filter(animation => /^cf-letter-(exit|enter)$/.test(animation.animationName));
+              window.__titleFrames.push(glyphs.map(animation => ({ name: animation.animationName, time: animation.currentTime })));
+              if (performance.now() - start < 1000) requestAnimationFrame(sample);
+            };
+            requestAnimationFrame(sample);
+          }).catch(() => {});
+        });
+      });
+      await visit(page, '/');
+      if (width < 600) await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
+      await page.locator('.masthead-link').filter({ hasText: 'Articles' }).click();
+      await page.waitForURL(base + '/articles');
+      await page.waitForTimeout(1100);
+      const frames = await page.evaluate(() => window.__titleFrames);
+      for (const name of ['cf-letter-exit', 'cf-letter-enter']) {
+        assert.ok(frames.some(frame => frame.filter(glyph => glyph.name === name && glyph.time > 0 && glyph.time < 1000).length > 1), `${name} actually advances through intermediate frames`);
+        assert.ok(frames.some(frame => new Set(frame.filter(glyph => glyph.name === name).map(glyph => Math.round(glyph.time))).size > 2), `${name} staggers individual characters`);
+      }
+      assert.equal(await page.locator('.title .heading').getAttribute('aria-label'), 'Articles');
+      assert.equal(await page.locator('[style*="view-transition-name"]').count(), 0, 'Glyph snapshots clean up');
+    }, { viewport: { width, height: 1000 } });
+  }
+  await check('Motion profile preserves the 600px and 992px boundaries', async page => {
+    for (const width of [599, 600, 991, 992]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await visit(page, '/articles');
+      if (width < 600) await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
+      await page.locator('.masthead-link').filter({ hasText: 'History' }).click();
+      await page.waitForURL(base + '/history');
+      await page.waitForTimeout(1100);
+      assert.equal(await page.evaluate(() => document.documentElement.dataset.transitionVerified), width < 600 ? 'phone-fade-through' : 'rail-sweep-up');
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+    }
+  });
+  for (const width of [320, 390, 430]) {
+    await check(`Phone ${width} coordinated page and reading motion`, async page => {
+      await visit(page, '/');
+      await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
+      await page.locator('.masthead-link').filter({ hasText: 'Articles' }).click();
+      await page.waitForURL(base + '/articles');
+      await page.waitForTimeout(900);
+      assert.equal(await page.evaluate(() => document.documentElement.dataset.transitionVerified), 'phone-fade-through');
+      assert.equal(await page.locator('.site-navigation__menu-toggle').getAttribute('aria-expanded'), 'false');
+      assert.equal(await page.evaluate(() => document.documentElement.hasAttribute('data-phone-route')), false, 'Snapshots release their state');
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+      await page.locator('[data-portfolio-detail-link]').first().click();
+      await page.locator('.detail-view').waitFor();
+      await page.waitForTimeout(650);
+      assert.equal(await page.locator('.detail-unit').count(), 1);
+      const settled = await page.locator('.detail-view').evaluate(view => ({
+        opacity: getComputedStyle(view).opacity, transform: getComputedStyle(view).transform,
+        hiddenText: [...view.querySelectorAll('p,h1,h3')].filter(node => getComputedStyle(node).visibility === 'hidden').length,
+      }));
+      assert.deepEqual(settled, { opacity: '1', transform: 'none', hiddenText: 0 }, 'Phone text and reading surface settle together');
+      await page.locator('[data-site-detail-back]').click();
+      await page.waitForURL(base + '/articles');
+      await page.waitForTimeout(350);
+      assert.equal(await page.locator('.detail-view').count(), 0);
+      assert.equal(await page.locator('.articles-index').evaluate(node => node.style.opacity), '');
+      await page.screenshot({ path: `${artifacts}/phone-${width}-motion-return.png` });
+    }, { viewport: { width, height: 844 }, isMobile: true, hasTouch: true });
+  }
+  await check('Phone motion preference change cancels entry cleanly', async page => {
+    await visit(page, '/articles');
+    await page.locator('[data-portfolio-detail-link]').first().click();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.waitForTimeout(400);
+    assert.equal(await page.locator('.detail-unit').count(), 1);
+    assert.equal(await page.locator('.detail-view').evaluate(el => getComputedStyle(el).transform), 'none');
+    assert.equal(await page.locator('.detail-view').evaluate(el => getComputedStyle(el).opacity), '1');
+    await page.locator('[data-site-detail-back]').click();
+    await page.waitForURL(base + '/articles');
+    await page.waitForTimeout(100);
+    assert.equal(await page.locator('.detail-view').count(), 0);
+  }, { viewport: { width: 390, height: 844 } });
+  await check('Phone reduced-motion navigation remains immediate', async page => {
+    await visit(page, '/');
+    await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
+    await page.locator('.masthead-link').filter({ hasText: 'History' }).click();
+    await page.waitForURL(base + '/history');
+    assert.equal(await page.evaluate(() => document.documentElement.hasAttribute('data-phone-route')), false);
+    assert.equal(await page.locator('.biography-introduction').evaluate(node => getComputedStyle(node).visibility), 'visible');
+  }, { viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
   for (const route of routes) {
     await check(`${route.name} desktop autoplay and reverse`, async page => {
       await visit(page, route.path);

@@ -25,7 +25,7 @@ test("section motion is prepared before paint and cleaned up with the detail vie
   const runtime = await readSource("../src/detail-state.js");
 
   assert.match(runtime, /createDetailSectionMotion/);
-  assert.match(runtime, /const sectionMotion = createDetailSectionMotion\(\{[\s\S]*?view,[\s\S]*?enabled: !reduceMotion,/);
+  assert.match(runtime, /const sectionMotion = createDetailSectionMotion\(\{[\s\S]*?view,[\s\S]*?enabled: !reduceMotion && !\(isolated && readingAnchor\),/);
   assert.match(runtime, /activeDetail = \{[\s\S]*?sectionMotion,/);
   assert.match(runtime, /sectionMotion\.start\(\)/);
   assert.match(runtime, /detail\.sectionMotion\?\.destroy\(\)/);

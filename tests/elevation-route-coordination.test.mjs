@@ -16,7 +16,7 @@ function deferred() {
 // Execute the actual elevation entry and its installed click handler. Only
 // browser surfaces, animation time, and destination decode are controlled here;
 // none of the route-selection/cancellation/commit logic is copied into the test.
-function loadRouteCoordinator({ nativeCounterflow = true, reducedMotion = false, startPath = '/' } = {}) {
+function loadRouteCoordinator({ nativeCounterflow = true, reducedMotion = false, phone = false, startPath = '/' } = {}) {
   const assignments = [], commits = [], preparations = [], animations = [];
   const timers = new Map();
   let nextTimer = 0;
@@ -71,6 +71,7 @@ function loadRouteCoordinator({ nativeCounterflow = true, reducedMotion = false,
   const window = Object.assign(new EventTarget(), { location });
   class Observer { observe() {} disconnect() {} unobserve() {} }
   const context = vm.createContext({
+    isPhone: () => phone,
     document, window, location, URL, URLSearchParams,
     innerWidth: 1440, innerHeight: 1000,
     ensureTitleCharacters() {},
@@ -345,4 +346,14 @@ test('a newer History preparation supersedes Articles without committing stale d
   runtime.preparations[1].resolve(true);
   await flushPromises();
   assert.deepEqual(runtime.assignments, ['https://portfolio.test/history']);
+});
+
+
+test('unsupported phone transitions keep real links immediate without an exit timer', () => {
+  const runtime = loadRouteCoordinator({ nativeCounterflow: false, phone: true });
+  const event = runtime.click('/articles');
+  assert.equal(event.defaultPrevented, false);
+  assert.equal(runtime.timers.size, 0);
+  assert.equal(runtime.exits().length, 0);
+  assert.equal(runtime.assignments.length, 0, 'Native navigation owns the destination');
 });

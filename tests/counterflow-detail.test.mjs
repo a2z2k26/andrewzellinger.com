@@ -42,6 +42,7 @@ function detailSweep() {
   const window = Object.assign(new EventTarget(), { onpageswap: null, onpagereveal: null });
   const pauses = [];
   const context = vm.createContext({
+    isPhone: () => false,
     ...model, document, window, location, innerWidth: 1440, innerHeight: 1000, URL,
     matchMedia: () => Object.assign(new EventTarget(), { matches: false }),
     setMotionPause: (...args) => pauses.push(args),
