@@ -271,6 +271,14 @@ try {
         assert.equal(await page.locator('.detail-view h1').count(), 1, 'Selected piece owns the reading heading');
         assert.equal(await page.evaluate(() => document.documentElement.dataset.detailMode), 'isolated');
         assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+        const entryTop = (await page.locator('.detail-view').boundingBox()).y;
+        await page.mouse.wheel(0, -1000);
+        await page.waitForTimeout(150);
+        const upperBoundaryTop = (await page.locator('.detail-view').boundingBox()).y;
+        assert.ok(
+          Math.abs(upperBoundaryTop - entryTop) < 2,
+          `Phone detail cannot scroll above its entry boundary: ${entryTop} -> ${upperBoundaryTop}`,
+        );
         await page.screenshot({ path: `${artifacts}/phone-${width}-${route.name}-detail.png` });
         await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
         await page.waitForTimeout(800);

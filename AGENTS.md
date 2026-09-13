@@ -2,6 +2,8 @@
 
 ## Latest approved refinements
 
+- September 12 phone detail upper boundary: isolated case-study and article detail views must begin at the document's true upper scroll boundary. Never expose collection-only footer actions above a selected story when the reader scrolls upward. Preserve collection actions on collection pages and leave tablet/desktop detail behavior unchanged.
+
 - September 12 motion correction: Andrew rejected the phone title-cascade removal and found the additions too subtle. Preserve the established character title animation at every breakpoint; additions should remain visibly legible. The initial entrance waits for the introduction modal to close. Phone reading uses a masked title followed by metadata and lede, with a 12px / 60ms structural vocabulary. Visual acceptance remains Andrew's decision.
 
 - September 12 motion continuation: implement the approved D1–D4 phone motion profile below 600px: coherent collection changes, coordinated reading entry/return, restrained heading and structural reveals, and tactile controls. Preserve desktop/tablet choreography and resting layout. Use `src/motion/profile.js` for shared phone timing and `docs/motion-system.md` for behavior, cancellation and QA. Keep native reading, exact collection returns and reduced-motion support.

@@ -308,6 +308,9 @@ html[data-design-edition="elevated"] .detail-unit__article-heading { font-size: 
     padding-top: 32px;
     padding-bottom: calc(111px + env(safe-area-inset-bottom, 0px));
   }
+  html[data-design-edition="elevated"].detail-route .page-footer-actions {
+    display: none;
+  }
   html[data-design-edition="elevated"] :is(.articles-index, .biography-sweep-content) > .page-footer-actions {
     margin-inline: 0;
   }

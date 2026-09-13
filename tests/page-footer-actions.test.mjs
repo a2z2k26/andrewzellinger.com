@@ -41,6 +41,7 @@ test("footer actions are compact phone-only controls above the mobile navigation
   assert.match(css, /:is\(\.page-footer-actions, \.page-title-actions\) \{ display: none; \}/);
   assert.match(css, /@media \(min-width: 992px\)[\s\S]*?\.page-title-actions \{[\s\S]*?top: calc\(100% \+ 40px\);[\s\S]*?display: flex;[\s\S]*?gap: 16px;/);
   assert.match(phone, /\.page-footer-actions \{[\s\S]*?display: flex;[\s\S]*?justify-content: flex-start;[\s\S]*?gap: 16px;[\s\S]*?padding-bottom: calc\(111px \+ env\(safe-area-inset-bottom, 0px\)\);/);
+  assert.match(phone, /html\[data-design-edition="elevated"\]\.detail-route \.page-footer-actions \{\s*display: none;/);
   assert.match(phone, /:is\(\.articles-index, \.biography-sweep-content\) > \.page-footer-actions \{\s*margin-inline: 0;/);
   assert.match(phone, /\.articles-index__list \{[\s\S]*?padding-bottom: 16px;/);
   assert.match(biographyPhone, /\.biography-contact \{[\s\S]*?padding-bottom: 40px;/);

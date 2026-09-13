@@ -40,8 +40,8 @@ test("the approved copy and accessible dialog contract are present", () => {
   assert.match(source, /Close portfolio introduction/);
   assert.match(source, /createRotatingGlobeIcon/);
   assert.match(source, /visitLabel\.textContent = "visit"/);
-  assert.match(source, /visitLink\.href = "https:\/\/www\.frgmnt\.ai"/);
-  assert.match(source, /visitLink\.textContent = "www\.frgmnt\.ai"/);
+  assert.match(source, /visitLink\.href = "https:\/\/comingsoon\.com"/);
+  assert.match(source, /visitLink\.textContent = "comingsoon\.com"/);
   assert.match(source, /M2 2 30 30M30 2 2 30/);
   assert.match(source, /panel\.append\(globe, title, description, visit, closeButton\)/);
 });
