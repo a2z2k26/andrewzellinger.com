@@ -7,8 +7,8 @@ test("Articles render as a text-only Projects-style collection", async () => {
   const runtime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
   const entries = html.split('<article class="articles-entry" data-article-card-copy>').slice(1);
 
-  assert.equal(entries.length, 11);
-  assert.equal(html.match(/data-article-card-copy/g)?.length, 11);
+  assert.equal(entries.length, 10);
+  assert.equal(html.match(/data-article-card-copy/g)?.length, 10);
   assert.doesNotMatch(html, /articles-entry__thumbnail|articles-entry__cta|Read more/);
   assert.doesNotMatch(runtime, /articles-entry__thumbnail|articles-entry__cta|entry\.media\.src|Read more/);
 

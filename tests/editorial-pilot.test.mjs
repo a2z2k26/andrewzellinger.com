@@ -6,14 +6,13 @@ import { PROJECT_NARRATIVES } from "../src/project-narratives.js";
 import { ARTICLE_DETAILS } from "../src/article-content.js";
 
 test("all documented cases use the consolidated narrative model", () => {
-  assert.equal(ALL_PROJECTS.filter(p => p.sections.length === 3).length, 18);
+  assert.equal(ALL_PROJECTS.filter(p => p.sections.length === 3).length, 19);
   for (const p of ALL_PROJECTS) {
     assert.equal(p.summary, PROJECT_NARRATIVES[p.slug].summary);
     assert.equal(p.sections, PROJECT_NARRATIVES[p.slug].sections);
     assert.equal(p.sections[0].label, "Context");
     assert.equal(p.sections[0].paragraphs.length, 1);
-    if (p.slug !== "amazon-fire-tv") assert.equal(p.sections[1].items.length, 3);
-    else assert.equal(p.sections.length, 2);
+    assert.equal(p.sections[1].items.length, 3);
   }
 });
 

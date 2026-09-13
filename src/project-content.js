@@ -167,13 +167,13 @@ const projectRecords = [
     "metadata": {
       "client": "Google",
       "studio": "ustwo",
-      "year": "2017",
+      "year": "2015",
       "role": "UI/UX Design"
     },
     "meta": [
       "Google",
       "ustwo",
-      "2017",
+      "2015",
       "UI/UX Design"
     ],
     "summary": "A groundbreaking collaboration between ustwo and Google's Wear OS team revolutionized watch face design and development, setting a new standard for smart watch face user experiences more broadly.",
@@ -612,13 +612,13 @@ const projectRecords = [
     "metadata": {
       "client": "Foursquare",
       "studio": "Red Antler",
-      "year": "2014",
+      "year": "2016",
       "role": "Brand Design"
     },
     "meta": [
       "Foursquare",
       "Red Antler",
-      "2014",
+      "2016",
       "Brand Design"
     ],
     "summary": "Foursquare was splitting in two. The product that had defined location-based social networking — the check-in — was migrating to a new app called Swarm, and Foursquare itself was pivoting to become a personalized local discovery platform.",
@@ -907,13 +907,13 @@ const projectRecords = [
     "metadata": {
       "client": "Thomson Reuters",
       "studio": "Ueno",
-      "year": "2015",
+      "year": "2017",
       "role": "UI/UX Design"
     },
     "meta": [
       "Thomson Reuters",
       "Ueno",
-      "2015",
+      "2017",
       "UI/UX Design"
     ],
     "summary": "Reuters wanted to rethink how people consume video news. The premise was simple and radical: most news apps dump a feed on you and let you drown. Reuters TV asked a different question — how much time do you actually have?",
@@ -1344,13 +1344,13 @@ const projectRecords = [
     "metadata": {
       "client": "McDonald's",
       "studio": "Method",
-      "year": "2018",
+      "year": "2016",
       "role": "Lead UX Designer"
     },
     "meta": [
       "McDonald's",
       "Method",
-      "2018",
+      "2016",
       "Lead UX Designer"
     ],
     "summary": "McDonald's was in the middle of \"Experience of the Future\" — one of the most ambitious digital transformations in QSR history. Self-order kiosks were rolling out to thousands of locations globally, but the first version of the kiosk application had clear UX problems.",
@@ -1548,13 +1548,13 @@ const projectRecords = [
     "metadata": {
       "client": "Modern Age",
       "studio": "Direct with client",
-      "year": "2021",
+      "year": "2022",
       "role": "Design Lead"
     },
     "meta": [
       "Modern Age",
       "Direct with client",
-      "2021",
+      "2022",
       "Design Lead"
     ],
     "summary": "A connected digital journey that helped Modern Age customers discover services, find a physical location, book appointments, and complete checkout with confidence.",
@@ -1566,7 +1566,7 @@ const projectRecords = [
       {
         "label": "Context",
         "paragraphs": [
-          "In 2021, Modern Age was building a technology-enabled service that connected its digital experience with in-person therapeutic care. The website had to do more than explain the offering: it needed to help prospective customers understand available services, find an appropriate brick-and-mortar location, book an appointment, and complete checkout with confidence. As the startup expanded, those journeys accumulated new decisions and promotional messages, creating a need for clearer structure across discovery, scheduling, and conversion."
+          "In 2022, Modern Age was building a technology-enabled service that connected its digital experience with in-person therapeutic care. The website had to do more than explain the offering: it needed to help prospective customers understand available services, find an appropriate brick-and-mortar location, book an appointment, and complete checkout with confidence. As the startup expanded, those journeys accumulated new decisions and promotional messages, creating a need for clearer structure across discovery, scheduling, and conversion."
         ]
       },
       {

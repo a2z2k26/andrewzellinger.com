@@ -7,7 +7,7 @@ import {
   HIDDEN_PROJECT_SLUGS,
   PROJECTS,
 } from "../src/project-content.js";
-import { PROJECT_SECTION_LABELS, ENGAGEMENT_SECTION_LABELS } from "../src/project-narratives.js";
+import { PROJECT_SECTION_LABELS } from "../src/project-narratives.js";
 
 const expectedTitles = [
   "Avantos",
@@ -227,16 +227,13 @@ test("Positive Intelligence uses the approved 2018 year tag", () => {
 
 test("case studies use substantive decisions without a padding quota", () => {
   for (const project of ALL_PROJECTS) {
-    const shortRecord = project.slug === "amazon-fire-tv";
-    assert.deepEqual(project.sections.map(s => s.label), shortRecord ? ENGAGEMENT_SECTION_LABELS : PROJECT_SECTION_LABELS);
-    assert.deepEqual(project.sections.map(s => s.paragraphs.length), shortRecord ? [1,1] : [1,0,1]);
+    assert.deepEqual(project.sections.map(s => s.label), PROJECT_SECTION_LABELS);
+    assert.deepEqual(project.sections.map(s => s.paragraphs.length), [1,0,1]);
     assert.equal(project.sections[0].label, "Context");
     assert.equal(project.sections[0].paragraphs.length, 1);
     assert.ok(!project.sections.some(section => section.label === "Work"));
-    if (!shortRecord) {
-      assert.equal(project.sections[1].items.length, 3);
-      assert.ok(project.sections[1].items.every(item => item.trim().split(/\s+/).length >= 10));
-    }
+    assert.equal(project.sections[1].items.length, 3);
+    assert.ok(project.sections[1].items.every(item => item.trim().split(/\s+/).length >= 10));
     const words = project.sections.flatMap(s => [...s.paragraphs, ...(s.items ?? [])]).join(" ").split(/\s+/).length;
     assert.ok(words <= 350, project.slug + " exceeds the editorial upper budget");
     assert.ok(project.summary.length > 30);

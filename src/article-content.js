@@ -186,10 +186,10 @@ AI makes this more visible. A plausible screen can be generated without resolvin
 
 [One constraint that changed the design]
 
-On the Audible sleep prototype, the player was not designed for an alert listener managing a queue. It was designed for someone preparing to sleep. That changed what control should mean.
-We separated setup from the session and aimed for a simple in-session path: start and stop, with additional controls still available when needed. Bedtime, rise time, and personalization belonged before playback. The player could then recede instead of asking the listener to keep managing it.
+On one prototype, the interface had to support a person whose attention would soon be limited. That changed what control should mean.
+We separated configuration from the core experience and aimed for a simple active-state path: a primary start-or-stop action, with additional controls available only when needed. Decisions that shaped the experience belonged beforehand. The interface could then recede instead of asking the person to keep managing it.
 
-The important judgment was not choosing a calmer-looking player from several variations. It was recognizing that a conventional media-player structure asked for the wrong kind of attention. The visual direction followed an interaction decision.
+The important judgment was not choosing a calmer-looking interface from several variations. It was recognizing that the conventional structure asked for the wrong kind of attention. The visual direction followed an interaction decision.
 The same distinction matters in AI work. A polished interface is not enough if its underlying process spends without a limit, loses context between steps, or gives users no way to correct an assumption. Those are design questions even when their implementation lives below the screen.
 
 [Make judgment operational]
@@ -849,6 +849,9 @@ const articleOrder = [
   "you-always-let-yourself-win", "two-dollar-bill", "a-free-surf-lesson", "showing-my-teeth",
 ];
 
+export const HIDDEN_ARTICLE_SLUGS = Object.freeze(["showing-my-teeth"]);
+const hiddenArticleSlugs = new Set(HIDDEN_ARTICLE_SLUGS);
+
 function article({ slug, title, date, summary, body = temporaryArticleBody, index }) {
   const normalizedBody = normalizeArticleBody(body);
   return Object.freeze({
@@ -869,7 +872,7 @@ function article({ slug, title, date, summary, body = temporaryArticleBody, inde
   });
 }
 
-export const ARTICLE_DETAILS = Object.freeze([
+export const ALL_ARTICLE_DETAILS = Object.freeze([
   article({
     index: 1,
     slug: "company-of-one",
@@ -883,7 +886,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     slug: "a-free-surf-lesson",
     title: "A Free Surf Lesson",
     date: "Feb 12th 2024",
-    summary: "Why design judgment needs systems understanding and hands-on execution, with a sleep-player example showing how user state, constraints, and implementation shape the work.",
+    summary: "Why design judgment needs systems understanding and hands-on execution, with a constrained-interface example showing how user state, constraints, and implementation shape the work.",
     body: aFreeSurfLessonBody,
   }),
   article({
@@ -959,3 +962,7 @@ export const ARTICLE_DETAILS = Object.freeze([
     body: realMvpBody,
   }),
 ].sort((a, b) => articleOrder.indexOf(a.slug) - articleOrder.indexOf(b.slug)));
+
+export const ARTICLE_DETAILS = Object.freeze(
+  ALL_ARTICLE_DETAILS.filter((article) => !hiddenArticleSlugs.has(article.slug)),
+);

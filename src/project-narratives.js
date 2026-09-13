@@ -13,15 +13,15 @@ function narrative([summary, context, work, decisions, outcome]) {
 }
 const records = {
   "audible-sleep": [
-    "Sleep-session design for Audible, connecting bedtime setup, personalized audio, and low-interaction playback in a mobile prototype.",
+    "End-to-end UX leadership for Audible's mobile sleep experience, connecting application architecture, personalized setup, and low-interaction playback.",
     "Audible wanted to explore a dedicated sleep experience using its audio library. Working with I&Co, we needed to make discovery and personalization useful before bed without carrying the interaction demands of a conventional media player into the session itself.",
-    "As UX Lead, I translated research into the application architecture, wireframes, and session-player states. I worked with product strategists, visual designers, Audible's internal team, and subject-matter experts. Home, Browse, and Profile supported setup and discovery; interactive prototypes explored how scheduling, content selection, and playback could work together.",
+    "As UX Lead, I led the team responsible for the experience's architecture and interaction design. We worked through the wider roadmap to establish the core application flow, then developed a comprehensive system of wireframes and interaction diagrams covering Home, Browse, Profile, scheduling, content selection, and playback. That blueprint guided design and development across the application.",
     [
       "Separate bedtime, rise-time, and mood configuration from playback so the player can stay quiet once a session begins.",
       "Organize audio into fall-asleep, stay-asleep, and wake phases rather than ask listeners to manage a conventional queue.",
       "Make essential controls available in-app and on the lock screen, allowing the interface to recede without removing control."
     ],
-    "The deliverable was an interactive prototype joining personalized sessions, discovery, scheduling, and playback. Reviews informed navigation and player refinements before handoff. Its central trade-off was giving listeners useful control without asking for more attention at the moment they wanted less."
+    "The UX blueprint was validated through user testing and carried into the production application. The case makes no performance claim; its verified outcome is a tested, implemented interaction system spanning the complete experience. Its central trade-off was giving listeners useful control without asking for more attention at the moment they wanted less."
   ],
   "turner-tv": [
     "Participatory research and rapid prototypes helping Turner explore what viewers wanted from a streaming experience.",
@@ -120,7 +120,7 @@ const records = {
       "Connect subscription requirements with the purchase journey so they are part of the decision rather than a late surprise.",
       "Separate the tone and priorities of safety interactions from community and marketing features, while retaining shared visual patterns."
     ],
-    "My contribution covered product interfaces and growth-related design across app and web, developed with the internal team and engineers. The work required making a technically complex service understandable when users had very different needs and levels of attention, from an urgent search to an ordinary purchase."
+    "My contribution covered product interfaces and growth-related design across app and web, developed with the internal team and engineers. Every experience described here progressed into production. The work required making a technically complex service understandable when users had very different needs and levels of attention, from an urgent search to an ordinary purchase."
   ],
   "thompson-reuters": [
     "UI and UX contributions to Reuters TV with Ueno, shaping time-bounded video-news viewing across web and mobile.",
@@ -156,11 +156,15 @@ const records = {
     "The engagement produced identity applications supporting Foursquare's new product direction. Execution across formats required precision at small scales, where silhouette, color, and consistency do more than elaborate presentation. The app remained the practical test of whether the wider visual system held together."
   ],
   "amazon-fire-tv": [
-    "Design Lead engagement with Sketch for Amazon Fire TV.",
-    "I worked with Sketch on an Amazon Fire TV engagement.",
-    "My role was Design Lead.",
-    [],
-    "Selected interface work is shown above. This entry is a concise engagement record rather than a full process case study."
+    "Design-system leadership for Amazon Fire TV, extending an established system across in-vehicle displays with varied sizes and orientations.",
+    "Amazon Fire TV needed its established design system adapted for automotive experiences, where screen proportions, orientations, and installed hardware varied across vehicles.",
+    "As Design Lead with Sketch, I oversaw a team of designers extending the existing system. We translated its foundations into a production-ready library of components, variables, patterns, and documentation, adding new elements for automotive display constraints and collaborating with engineering through implementation.",
+    [
+      "Preserve the behavior and visual language of the existing system while adapting it to varied vehicle-display configurations.",
+      "Use reusable components and variables to absorb differences in screen size and orientation rather than design a separate interface for each installation.",
+      "Document component behavior and usage alongside the library so design and engineering could apply the system consistently."
+    ],
+    "The work produced a documented component and variable library that was implemented for Amazon Fire TV's in-vehicle experience. It supported consistent behavior across varied vehicle displays and gave design and engineering a shared system for faster delivery."
   ],
   "price-waterhouse-coopers": [
     "Workflow and interface design for PwC audit teams, connecting document verification, assignment ownership, and review.",
@@ -171,7 +175,7 @@ const records = {
       "Make assignment ownership and review status visible so each role can understand the next action and handoff.",
       "Use field research to capture workarounds and communication habits that the official process map did not explain."
     ],
-    "The work brought audit setup, assignments, document information, and review into a shared application design. Staff feedback informed terminology and hierarchy as the team developed the workflow. Traceability and responsibility were central interaction-design concerns, particularly where one person's work became another person's review."
+    "The work brought audit setup, assignments, document information, and review into a deployed internal application supporting PwC's audit process. Staff feedback informed terminology and hierarchy as the team developed the workflow. Traceability and responsibility were central interaction-design concerns, particularly where one person's work became another person's review. No measured efficiency result is claimed."
   ],
   "northwestern-mutual": [
     "Desktop and mobile financial-planning design for LearnVest within Northwestern Mutual's digital ecosystem.",
@@ -204,7 +208,7 @@ const records = {
       "Give clients guided progress and operators configurable, information-dense workflows over a shared model: journey, phase, action, sub-action group, sub-action, task.",
       "Prioritize document entry and verification in the MVP prototype, while keeping deeper AI concepts visible as future scope."
     ],
-    "The engagement delivered an MVP prototype for both audiences and a roadmap for further AI capability. Pilot feedback informed terminology, filtering, and progress presentation. Investor-facing concepts were also part of the work. The prototype made the relationship between automation and human review tangible while separating immediate scope from future possibilities."
+    "The engagement delivered an MVP prototype for both audiences and a roadmap for further AI capability. It was piloted with more than one hundred investment-banking professionals; their feedback informed terminology, filtering, feature utility, and progress presentation. Selected parts of the designed experience were implemented in production, while future-state AI concepts remained roadmap. No financing or product-market-fit claim is made."
   ],
   "pi-app": [
     "Initial identity and application prototyping for Positive Intelligence, connecting its founder's teaching with a digital practice.",

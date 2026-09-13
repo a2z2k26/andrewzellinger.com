@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readdir, readFile } from 'node:fs/promises';
 import { ARTICLE_IMAGES } from '../src/article-images.js';
-import { ARTICLE_DETAILS } from '../src/article-content.js';
+import { ALL_ARTICLE_DETAILS, ARTICLE_DETAILS } from '../src/article-content.js';
 
 const root = new URL('../', import.meta.url);
 
@@ -12,7 +12,7 @@ test('eleven distinct artworks are assigned, leaving one spare and one duplicate
   const used = Object.values(ARTICLE_IMAGES).map(image => image.source);
   assert.equal(originals.length, 13);
   assert.equal(new Set(used).size, 11);
-  assert.deepEqual(Object.keys(ARTICLE_IMAGES).sort(), ARTICLE_DETAILS.map(article => article.slug).sort());
+  assert.deepEqual(Object.keys(ARTICLE_IMAGES).sort(), ALL_ARTICLE_DETAILS.map(article => article.slug).sort());
   assert.deepEqual(originals.filter(name => !used.includes(name)).sort(), [
     'mixed-material-outtakes__company-of-one__option-4.png',
     'two-dollar-bill__option-2.png',
@@ -27,7 +27,7 @@ test('eleven distinct artworks are assigned, leaving one spare and one duplicate
   const readme = await readFile(new URL('assets/source/articles/README.md', root), 'utf8');
   assert.match(readme, /11 assigned, 1 available/);
   for (const name of originals) assert.ok(readme.includes(name));
-  for (const article of ARTICLE_DETAILS) {
+  for (const article of ALL_ARTICLE_DETAILS) {
     const image = ARTICLE_IMAGES[article.slug];
     assert.ok(originals.includes(image.source));
     assert.equal(article.media.src, image.src);

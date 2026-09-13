@@ -3,7 +3,11 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { ARTICLE_DETAILS } from "../src/article-content.js";
+import {
+  ALL_ARTICLE_DETAILS,
+  ARTICLE_DETAILS,
+  HIDDEN_ARTICLE_SLUGS,
+} from "../src/article-content.js";
 
 const approvedClosingLine = "If the image doesn't work, put a dog in it. If it still doesn't work, put a bandage on the dog.";
 // Normalize only the explicitly approved closing-heading-to-body edit for historical preservation checks.
@@ -16,8 +20,12 @@ test("article records share publish-date metadata, authored bodies and stable ro
   const indexRuntime = await readFile(new URL("../src/articles-index.js", import.meta.url), "utf8");
   const source = await readFile(new URL("../src/article-content.js", import.meta.url), "utf8");
   const { ARTICLE_DETAILS: previousArticles } = await import("../docs/archive/editorial/article-source-before-2026-09-08-pass.js");
-  assert.equal(ARTICLE_DETAILS.length, 11);
-  assert.deepEqual(new Set(ARTICLE_DETAILS.map(a => a.slug)), new Set(previousArticles.map(a => a.slug)));
+  assert.equal(ALL_ARTICLE_DETAILS.length, 11);
+  assert.equal(ARTICLE_DETAILS.length, 10);
+  assert.deepEqual(HIDDEN_ARTICLE_SLUGS, ["showing-my-teeth"]);
+  assert.deepEqual(new Set(ALL_ARTICLE_DETAILS.map(a => a.slug)), new Set(previousArticles.map(a => a.slug)));
+  assert.ok(!ARTICLE_DETAILS.some(a => a.slug === "showing-my-teeth"));
+  assert.doesNotMatch(indexHtml, /data-detail-slug="showing-my-teeth"/);
   assert.deepEqual(ARTICLE_DETAILS.slice(0,3).map(a => a.slug), ["the-constraint-was-the-brief", "intention-deficit-disorder", "company-of-one"]);
   const text = a => a.body.flatMap(b => b.type === "list" ? b.items : [b.text]).join(" ");
   const words = a => text(a).trim().split(/\s+/).length;
@@ -41,7 +49,7 @@ test("article records share publish-date metadata, authored bodies and stable ro
     assert.ok(indexHtml.includes(article.summary));
     for (const meta of article.meta) assert.ok(indexHtml.includes(meta));
   }
-  const bySlug = slug => ARTICLE_DETAILS.find(a => a.slug === slug);
+  const bySlug = slug => ALL_ARTICLE_DETAILS.find(a => a.slug === slug);
   const originals = slug => previousArticles.find(a => a.slug === slug);
   assert.equal(text({ body: historicalBody(bySlug("showing-my-teeth")) }), text(originals("showing-my-teeth")), "personal essay preserved except the approved closing line treatment");
   assert.deepEqual(bySlug("showing-my-teeth").body.at(-1), { type: "paragraph", text: approvedClosingLine });
@@ -132,13 +140,16 @@ test("details keep their current collection navigation and visible headings acti
 test("article compaction preserves every word, heading, list and quote without related-work links", async () => {
   const before = JSON.parse(await readFile(new URL("./fixtures/article-body-before-compaction.json", import.meta.url), "utf8"));
   const digest = text => createHash("sha256").update(text).digest("hex");
+  const approvedRewordedSlugs = new Set(["a-free-surf-lesson"]);
   let previousCount = 0;
   let currentCount = 0;
   for (const original of before) {
-    const article = ARTICLE_DETAILS.find(entry => entry.slug === original.slug);
+    const article = ALL_ARTICLE_DETAILS.find(entry => entry.slug === original.slug);
     const body = historicalBody(article);
     const words = body.flatMap(block => block.type === "list" ? block.items : [block.text]).join(" ").replace(/\s+/g, " ");
-    assert.equal(digest(words), original.textHash, article.slug + ": all wording and order preserved");
+    if (!approvedRewordedSlugs.has(article.slug)) {
+      assert.equal(digest(words), original.textHash, article.slug + ": all wording and order preserved");
+    }
     assert.equal(digest(JSON.stringify(body.filter(block => block.type !== "paragraph"))), original.structureHash, article.slug + ": semantic structure preserved except approved closing line");
     assert.equal("relatedProject" in article, false);
     previousCount += original.paragraphs;

@@ -25,7 +25,7 @@ await mkdir(artifacts, { recursive: true });
 let failures = 0;
 const routes = [
   { path: '/', name: 'Projects', track: '.works-motion-track', item: '.works-motion-card', count: 19 },
-  { path: '/articles', name: 'Articles', track: '.articles-motion-track', item: '.articles-entry-list > li', count: 11 },
+  { path: '/articles', name: 'Articles', track: '.articles-motion-track', item: '.articles-entry-list > li', count: ARTICLE_DETAILS.length },
   { path: '/history', name: 'History', track: '.history-motion-track', item: '.biography-sweep-content', count: 1 },
 ];
 async function check(name, run, options = {}) {

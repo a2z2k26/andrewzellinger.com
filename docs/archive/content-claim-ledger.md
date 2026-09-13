@@ -6,16 +6,20 @@ Private authoring document. Not imported into the website. A source assertion is
 
 | ID | Item | Evidence available | Current public treatment | Needed to close |
 |---|---|---|---|---|
-| Q1 | Amazon Fire TV | User-approved client, role, studio, image and 2024–2025 engagement; résumé mentions component work but scope is not reconciled | Short engagement record, no fabricated decision bullets | Component families owned; one device/pattern trade-off; deliverable and delivery status |
-| Q2 | Modern Age | User recollection says 2021; résumé-derived History says 2022–2023 | Explicit 2021 removed from prose; existing metadata retained, not declared reconciled | Confirm engagement dates versus project year |
-| Q3 | Reuters TV | Project tag 2015; History Ueno 2017–2018 | Launch history removed from outcome; only web/mobile contribution claimed | Confirm project year versus original service launch |
-| Q4 | Foursquare | Project tag 2014; Red Antler History 2015–2016 | Launch month/press claims removed; asset/application contribution explicit | Confirm work period and launch versus subsequent application work |
-| Q5 | McDonald's | Project tag 2018; Method History 2015–2016 | Company rollout/check-size statistics removed | Correct engagement/project dates and regional research scope |
-| Q6 | Android Wear | Project tag 2017; ustwo History 2013–2015 | Android Wear terminology retained; launch/adoption and collection counts omitted | Confirm personal face ownership, date, and delivery record |
-| Q7 | Audible | Project 2021; I&Co History 2021–2022 | Prototype status; no exact team size | Confirm whether project year and engagement range are both valid |
-| Q8 | Showing My Teeth | Authored personal essay and supplied experience | Remains accessible, last in collection; wording preserved | Explicit keep here / move to separate personal publication / unpublish decision |
 | Q9 | Independent AI evidence | User describes functioning applications; authored harness/operations articles describe systems | History says self-directed development, not client adoption | Two shareable artifacts, versions, demonstrations, scope of personal ownership, operational status |
 | Q10 | Testimonials | Screenshots supplied with quotations and attribution | Not added | Confirm permission and exact approved wording/attribution |
+
+## Decisions resolved with Andrew — 2026-09-13
+
+- Amazon Fire TV: Andrew led a design team extending an established system for varied automotive displays. The documented component and variable library was implemented; consistency and faster shared delivery are approved outcomes.
+- Avantos: the MVP prototype was piloted with more than one hundred investment-banking professionals. Selected designed parts reached production; financing and product-market-fit claims remain excluded.
+- Audible: Andrew led end-to-end UX architecture, interaction patterns, and the comprehensive application blueprint. It was user tested and carried into production; no performance claim is approved. The 2021 project date fits the 2021–2022 I&Co tenure.
+- WeWork: the current prototype, research, and diary-study account matches Andrew's work. No production, sales, team-size, or timeline claim is approved.
+- PwC: the designed internal audit tool reached production. Its intended workflow support may be described without measured results.
+- Fi: all experiences described in the public narrative reached production. No quantified or causal outcome claim is approved.
+- LiveAuctioneers: the design-system framework was delivered; live adoption and efficiency gains remain unverified.
+- Project years: Modern Age 2022; Reuters TV 2017; Foursquare 2016; McDonald's 2016; Android Wear 2015.
+- Articles: direct company identification in the design-principles example is removed and the project context is generalized. “Showing My Teeth” remains preserved in source but is hidden from public article collections and generated detail routes.
 
 ## Claims narrowed or removed, not independently verified
 
@@ -46,4 +50,3 @@ Private authoring document. Not imported into the website. A source assertion is
 The historically assigned article dates remain only in source provenance. All 11 public records now say “Reviewed Sep 8th 2026,” accurately labeling this editorial review rather than inventing a publication date. Real publication dates can replace that label when supplied. No project date was silently guessed or harmonized.
 
 Exact model counts, gate counts, architecture size and universal safety guarantees were removed from the technical essays. The cost comparison remains an explicitly attributed personal observation limited to reported API charges, not total costs or an equal-quality benchmark. New evaluation examples are labeled hypothetical. Human verification of running artifacts is still required before these descriptions should be treated as technical certification.
-
