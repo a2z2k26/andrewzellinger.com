@@ -93,6 +93,19 @@ try {
       })));
     }, { viewport: { width, height: 1000 } });
   }
+  await check('Introduction returns on every Projects arrival', async page => {
+    await page.goto(base + '/', { waitUntil: 'load' });
+    const close = page.getByRole('button', { name: 'Close portfolio introduction' });
+    await close.waitFor();
+    await close.click();
+    await page.waitForFunction(() => !document.documentElement.hasAttribute('data-welcome-preface'));
+
+    await page.goto(base + '/articles', { waitUntil: 'load' });
+    assert.equal(await page.getByRole('button', { name: 'Close portfolio introduction' }).count(), 0);
+
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
+  });
   for (const width of [390, 820, 1440]) {
     await check(`Title characters animate in the painted route snapshots at ${width}px`, async page => {
       await page.addInitScript(() => {

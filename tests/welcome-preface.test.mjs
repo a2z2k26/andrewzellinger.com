@@ -21,12 +21,12 @@ test("Projects loads the introduction before the collection motion runtime", () 
   assert.match(html, /href="\/src\/welcome-preface\.css"/);
 });
 
-test("the retained introduction is launch-gated on, Projects-only, and once per browser session", () => {
+test("the retained introduction is launch-gated on, Projects-only, and shown on every arrival", () => {
   assert.match(source, /const WELCOME_PREFACE_ENABLED = true;/);
   assert.match(source, /function shouldOpen\(\) \{\s*if \(!WELCOME_PREFACE_ENABLED\) return false;/);
   assert.match(source, /new Set\(\["", "\/projects"\]\)/);
-  assert.match(source, /window\.sessionStorage\.getItem\(SESSION_KEY\)/);
-  assert.match(source, /window\.sessionStorage\.setItem\(SESSION_KEY, "true"\)/);
+  assert.match(source, /return HOME_PATHS\.has\(currentPath\(\)\);/);
+  assert.doesNotMatch(source, /sessionStorage|SESSION_KEY|readDismissal|rememberDismissal/);
 });
 
 test("the approved copy and accessible dialog contract are present", () => {

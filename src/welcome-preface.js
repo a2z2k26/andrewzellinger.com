@@ -1,8 +1,7 @@
 import { createRotatingGlobeIcon } from "./rotating-globe-icon.js";
 
-// Launch gate: retain the complete introduction while keeping it off every viewport.
+// Launch gate: retain the complete introduction and show it on every Projects arrival.
 const WELCOME_PREFACE_ENABLED = true;
-const SESSION_KEY = "portfolio:welcome-preface-dismissed-v1";
 const HOME_PATHS = new Set(["", "/projects"]);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const SCROLL_KEYS = new Set(["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "]);
@@ -11,28 +10,9 @@ function currentPath() {
   return window.location.pathname.replace(/\/$/, "");
 }
 
-function readDismissal() {
-  try {
-    return window.sessionStorage.getItem(SESSION_KEY) === "true";
-  } catch {
-    return false;
-  }
-}
-
-function rememberDismissal() {
-  try {
-    window.sessionStorage.setItem(SESSION_KEY, "true");
-  } catch {
-    // A blocked storage API should not prevent the modal from closing.
-  }
-}
-
 function shouldOpen() {
   if (!WELCOME_PREFACE_ENABLED) return false;
-  if (!HOME_PATHS.has(currentPath())) return false;
-  const forcePreview = import.meta.env.DEV
-    && new URLSearchParams(window.location.search).get("welcome") === "1";
-  return forcePreview || !readDismissal();
+  return HOME_PATHS.has(currentPath());
 }
 
 function makePreface() {
@@ -134,7 +114,6 @@ function mountPreface() {
   const close = () => {
     if (closing) return;
     closing = true;
-    rememberDismissal();
     backdrop.dataset.state = "leaving";
     document.removeEventListener("keydown", onKeyDown);
     backdrop.removeEventListener("click", onBackdropClick);
@@ -197,7 +176,6 @@ function mountPreface() {
   }
 
   function onPageHide() {
-    rememberDismissal();
     document.removeEventListener("keydown", onKeyDown);
     backdrop.removeEventListener("wheel", onBlockedScrollInput);
     backdrop.removeEventListener("touchmove", onBlockedScrollInput);
