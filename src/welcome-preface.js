@@ -15,6 +15,28 @@ function shouldOpen() {
   return HOME_PATHS.has(currentPath());
 }
 
+function waitForIncomingTopLayer() {
+  if (!("onpagereveal" in window)) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    window.addEventListener("pagereveal", (event) => {
+      if (!event.viewTransition) {
+        resolve();
+        return;
+      }
+
+      // Cross-document view-transition snapshots paint in the browser's top
+      // layer, above every ordinary DOM z-index. Mount only after that layer
+      // has cleared so the introduction cannot flash beneath the carousel.
+      event.viewTransition.finished.catch(() => {}).then(resolve);
+    }, { once: true });
+  });
+}
+
+const incomingTopLayerReady = shouldOpen()
+  ? waitForIncomingTopLayer()
+  : Promise.resolve();
+
 function makePreface() {
   const backdrop = document.createElement("div");
   backdrop.className = "welcome-preface";
@@ -204,8 +226,12 @@ function mountPreface() {
   window.addEventListener("pagehide", onPageHide, { once: true });
 }
 
+function mountPrefaceWhenReady() {
+  incomingTopLayerReady.then(mountPreface);
+}
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", mountPreface, { once: true });
+  document.addEventListener("DOMContentLoaded", mountPrefaceWhenReady, { once: true });
 } else {
-  mountPreface();
+  mountPrefaceWhenReady();
 }

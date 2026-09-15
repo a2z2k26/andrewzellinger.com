@@ -29,6 +29,13 @@ test("the retained introduction is launch-gated on, Projects-only, and shown on 
   assert.doesNotMatch(source, /sessionStorage|SESSION_KEY|readDismissal|rememberDismissal/);
 });
 
+test("the introduction waits for the incoming browser top layer before mounting", () => {
+  assert.match(source, /function waitForIncomingTopLayer\(\)/);
+  assert.match(source, /"onpagereveal" in window/);
+  assert.match(source, /event\.viewTransition\.finished\.catch\(\(\) => \{\}\)\.then\(resolve\)/);
+  assert.match(source, /incomingTopLayerReady\.then\(mountPreface\)/);
+});
+
 test("the approved copy and accessible dialog contract are present", () => {
   assert.match(source, /title\.textContent = "ZELLINGER"/);
   assert.match(source, /description\.textContent = "Years of building with AI has reshaped my design practice\. This site documents what came before, here’s what’s next:"/);

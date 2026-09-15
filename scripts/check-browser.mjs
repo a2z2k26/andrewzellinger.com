@@ -106,6 +106,40 @@ try {
     await page.goto(base + '/', { waitUntil: 'load' });
     await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
   });
+  await check('Projects introduction waits for the return transition top layer', async page => {
+    await page.addInitScript(() => {
+      window.__welcomeLayerFrames = [];
+      addEventListener('pagereveal', event => {
+        if (!event.viewTransition) return;
+        let transitionPending = true;
+        event.viewTransition.finished.finally(() => { transitionPending = false; });
+        const started = performance.now();
+        const sample = () => {
+          const modal = document.querySelector('.welcome-preface');
+          window.__welcomeLayerFrames.push({
+            transitionPending,
+            opacity: modal ? Number.parseFloat(getComputedStyle(modal).opacity) : 0,
+          });
+          if (performance.now() - started < 1600) requestAnimationFrame(sample);
+        };
+        requestAnimationFrame(sample);
+      });
+    });
+
+    await page.goto(base + '/articles', { waitUntil: 'load' });
+    await page.locator('.masthead-link').filter({ hasText: 'Projects' }).click();
+    await page.waitForURL(base + '/');
+    await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
+    await page.waitForTimeout(1700);
+
+    const frames = await page.evaluate(() => window.__welcomeLayerFrames);
+    assert.ok(frames.length > 0, 'Projects return exposes a cross-document view transition');
+    assert.equal(
+      frames.filter(frame => frame.transitionPending && frame.opacity > .01).length,
+      0,
+      'The introduction must not paint while the browser transition top layer is active',
+    );
+  });
   for (const width of [390, 820, 1440]) {
     await check(`Title characters animate in the painted route snapshots at ${width}px`, async page => {
       await page.addInitScript(() => {

@@ -2,6 +2,8 @@
 
 ## Latest approved refinements
 
+- September 14 Projects-return modal layering: on cross-document returns to Projects, do not mount the introduction until the browser view-transition top layer has finished. The modal must be topmost in every visible frame; a short intentional delay is preferable to painting beneath the returning carousel. Preserve direct-load behavior, reduced motion, the accepted modal entrance, title cascade and collection return choreography.
+
 - September 12 phone detail upper boundary: isolated case-study and article detail views must begin at the document's true upper scroll boundary. Never expose collection-only footer actions above a selected story when the reader scrolls upward. Preserve collection actions on collection pages and leave tablet/desktop detail behavior unchanged.
 
 - September 12 motion correction: Andrew rejected the phone title-cascade removal and found the additions too subtle. Preserve the established character title animation at every breakpoint; additions should remain visibly legible. The initial entrance waits for the introduction modal to close. Phone reading uses a masked title followed by metadata and lede, with a 12px / 60ms structural vocabulary. Visual acceptance remains Andrew's decision.
