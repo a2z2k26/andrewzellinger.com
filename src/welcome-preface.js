@@ -69,10 +69,10 @@ function makePreface() {
   visitLabel.textContent = "visit";
 
   const visitLink = document.createElement("a");
-  visitLink.href = "https://comingsoon.com";
+  visitLink.href = "https://andrewzellinger.framer.website/";
   visitLink.target = "_blank";
   visitLink.rel = "noopener noreferrer";
-  visitLink.textContent = "comingsoon.com";
+  visitLink.textContent = "temporary.com";
   visit.append(visitLabel, visitLink);
 
   const closeButton = document.createElement("button");

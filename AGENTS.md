@@ -2,6 +2,8 @@
 
 ## Latest approved refinements
 
+- September 15 modal destination: display `temporary.com` in the Projects welcome modal and link it to `https://andrewzellinger.framer.website/`. Preserve the `visit` label, new-tab behavior, security relationship, typography, spacing, modal behavior, and every non-link element.
+
 - September 15 History portrait orb verdict: remove the trial thinking-orb overlay completely from the profile portrait and all desktop carousel copies. Keep the source portrait, framing, History content/motion, and the separate Projects welcome-modal orb unchanged. Do not restore the earlier SVG globe.
 
 - September 15 phone orb and modal height: below 600px, render the searching orb canvas at 85% of its prior 112×68px footprint (95.2×57.8px), uniformly scaling the dots, and shorten the content-sized welcome panel by 12px from 396px to about 384px through a 50.2px bottom inset. Preserve the phone panel width, 48px top inset, copy, internal gaps, 38px close circle and 48px touch target; desktop/tablet and the orb's animation/reduced-motion behavior remain unchanged.
