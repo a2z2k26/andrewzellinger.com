@@ -378,12 +378,12 @@ try {
     assert.equal(await page.locator('.biography-introduction').evaluate(node => getComputedStyle(node).visibility), 'visible');
   }, { viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
   for (const width of [390, 1440]) {
-    await check(`History portrait has no decorative globe at ${width}px`, async page => {
+    await check(`History portrait has no decorative globe or thinking orb at ${width}px`, async page => {
       await visit(page, '/history');
       const portraits = page.locator('.biography-portrait-placeholder');
       assert.ok(await portraits.count() > 0, 'History portrait remains mounted');
-      assert.equal(await page.locator('.biography-portrait-globe').count(), 0,
-        'No globe is mounted on the portrait or its carousel copies');
+      assert.equal(await page.locator('.biography-portrait-globe, .biography-portrait-orb').count(), 0,
+        'No globe or thinking orb is mounted on the portrait or its carousel copies');
       assert.ok(await portraits.first().evaluate(node =>
         getComputedStyle(node).getPropertyValue('--portfolio-media-image').includes('az-headshot-extended-v1.png')),
       'The original portrait media remains sourced');

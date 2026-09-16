@@ -2,6 +2,8 @@
 
 ## Latest approved refinements
 
+- September 15 History portrait orb verdict: remove the trial thinking-orb overlay completely from the profile portrait and all desktop carousel copies. Keep the source portrait, framing, History content/motion, and the separate Projects welcome-modal orb unchanged. Do not restore the earlier SVG globe.
+
 - September 15 phone orb and modal height: below 600px, render the searching orb canvas at 85% of its prior 112×68px footprint (95.2×57.8px), uniformly scaling the dots, and shorten the content-sized welcome panel by 12px from 396px to about 384px through a 50.2px bottom inset. Preserve the phone panel width, 48px top inset, copy, internal gaps, 38px close circle and 48px touch target; desktop/tablet and the orb's animation/reduced-motion behavior remain unchanged.
 
 - September 15 welcome close-button sizing: desktop (992px+) visible circle is 48×48px with a 12×12px X; phone (below 600px) visible circle is 38×38px with a 10×10px X and an invisible 5px perimeter extension retaining a 48px touch target. Tablet stays at 48×48px with a 14×14px X. Preserve the desktop orb's rendered top gap and the phone panel's 396px content-sized height while resizing the close control; keep all copy, modal motion, return gating and reduced-motion behavior unchanged.
