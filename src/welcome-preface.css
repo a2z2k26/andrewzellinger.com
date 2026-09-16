@@ -27,8 +27,8 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: min(464px, calc(100vw - 48px));
-  height: 536px;
+  width: min(448px, calc(100vw - 48px));
+  height: 520px;
   max-height: calc(100dvh - 48px);
   overflow: hidden;
   padding: 16px 32px;
@@ -62,12 +62,11 @@
   margin: 0;
 }
 
-.rotating-globe-icon {
+.welcome-preface__orb {
   display: block;
   flex: 0 0 auto;
-  width: 82.8px;
-  height: 46px;
-  color: #8a8a8a;
+  width: 112px;
+  height: 68px;
 }
 
 .welcome-preface__title {
@@ -84,7 +83,7 @@
 
 .welcome-preface__description {
   width: 100%;
-  margin-top: 36px;
+  margin-top: 32px;
   color: #8a8a8a;
   font-size: 16px;
   font-weight: 500;
@@ -138,7 +137,7 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: rgb(255 255 255 / 8%);
+  background: rgb(255 255 255 / 4%);
   color: #8a8a8a;
   cursor: pointer;
   transition: border-color var(--motion-duration-micro, 160ms) ease,
@@ -162,7 +161,7 @@
 }
 
 .welcome-preface__close:hover {
-  background: rgb(255 255 255 / 8%);
+  background: rgb(255 255 255 / 4%);
   color: #fff;
   transform: scale(1.035);
 }
@@ -183,9 +182,9 @@ html[data-welcome-preface="open"] body {
 
 @media screen and (min-width: 992px) {
   .welcome-preface__panel {
-    width: min(400px, calc(100vw - 48px));
-    height: 464px;
-    padding-inline: 12px;
+    width: min(376px, calc(100vw - 48px));
+    height: 448px;
+    padding: 20px 12px 12px;
   }
 
   .welcome-preface__description {
@@ -211,7 +210,7 @@ html[data-welcome-preface="open"] body {
   }
 
   .welcome-preface__panel {
-    width: min(464px, calc(100vw - 32px));
+    width: min(448px, calc(100vw - 32px));
     max-height: calc(100dvh - 32px);
     padding-inline: 32px;
   }
@@ -223,17 +222,12 @@ html[data-welcome-preface="open"] body {
   }
 
   .welcome-preface__panel {
-    width: min(296px, calc(100vw - 80px));
+    width: min(292px, calc(100vw - 84px));
     height: auto;
-    padding: 56px 0;
+    padding: 48px 0;
     border-radius: 32px;
     /* Keep the close button's invisible touch extension usable at the edge. */
     overflow: visible;
-  }
-
-  .rotating-globe-icon {
-    width: 70px;
-    height: 39px;
   }
 
   .welcome-preface__title {
@@ -243,7 +237,7 @@ html[data-welcome-preface="open"] body {
   }
 
   .welcome-preface__description {
-    margin-top: 24px;
+    margin-top: 20px;
     font-size: 12px;
     font-weight: 700;
     line-height: 20px;

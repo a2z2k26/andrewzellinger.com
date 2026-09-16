@@ -3,14 +3,13 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
-const [html, source, styles, siteFonts, motionSource, globeSource, globeStyles] = await Promise.all([
+const [html, source, styles, siteFonts, motionSource, orbSource] = await Promise.all([
   readFile(new URL("index.html", root), "utf8"),
   readFile(new URL("src/welcome-preface.js", root), "utf8"),
   readFile(new URL("src/welcome-preface.css", root), "utf8"),
   readFile(new URL("src/site-fonts.css", root), "utf8"),
   readFile(new URL("src/site-motion.js", root), "utf8"),
-  readFile(new URL("src/rotating-globe-icon.js", root), "utf8"),
-  readFile(new URL("src/rotating-globe-icon.css", root), "utf8"),
+  readFile(new URL("src/thinking-orb-icon.js", root), "utf8"),
 ]);
 
 test("Projects loads the introduction before the collection motion runtime", () => {
@@ -45,30 +44,33 @@ test("the approved copy and accessible dialog contract are present", () => {
   assert.match(source, /aria-labelledby/);
   assert.match(source, /aria-describedby/);
   assert.match(source, /Close portfolio introduction/);
-  assert.match(source, /createRotatingGlobeIcon/);
+  assert.match(source, /createThinkingOrbIcon/);
   assert.match(source, /visitLabel\.textContent = "visit"/);
   assert.match(source, /visitLink\.href = "https:\/\/comingsoon\.com"/);
   assert.match(source, /visitLink\.textContent = "comingsoon\.com"/);
   assert.match(source, /M2 2 30 30M30 2 2 30/);
-  assert.match(source, /panel\.append\(globe, title, description, visit, closeButton\)/);
+  assert.match(source, /panel\.append\(orb, title, description, visit, closeButton\)/);
 });
 
-test("the modal globe remains vector, horizontally animated, and reduced-motion safe", () => {
-  assert.match(globeSource, /createElementNS\(SVG_NS/);
-  assert.match(globeSource, /viewBox: "0 0 128 72"/);
-  assert.match(globeSource, /duration = 6860/);
-  assert.match(globeSource, /MERIDIAN_RADIUS \* Math\.sin\(longitude\)/);
-  assert.match(globeSource, /Math\.cos\(longitude\)/);
-  assert.match(globeSource, /requestAnimationFrame\(tick\)/);
-  assert.match(globeSource, /prefers-reduced-motion: reduce/);
-  assert.match(globeSource, /IntersectionObserver/);
-  assert.match(globeSource, /svg\.destroy = cleanup/);
-  assert.match(source, /globe\.destroy\?\.\(\)/);
-  assert.doesNotMatch(globeSource, /canvas|<img|\.png|\.jpg/);
-  assert.match(styles, /\.rotating-globe-icon\s*\{[\s\S]*?width: 82\.8px;[\s\S]*?height: 46px;[\s\S]*?color: #8a8a8a/);
-  assert.match(globeStyles, /stroke: currentColor/);
-  assert.match(globeStyles, /stroke-width: 2\.8/);
-  assert.match(globeStyles, /stroke-width: 3\.4/);
+test("the modal uses a restrained wider searching preset without a React root", () => {
+  assert.match(orbSource, /from "thinking-orbs\/engine"/);
+  assert.match(orbSource, /const PRESET_SIZE = 64/);
+  assert.match(orbSource, /const FRAME_SIZE = 68/);
+  assert.match(orbSource, /const WIDTH = 112/);
+  assert.match(orbSource, /const HORIZONTAL_SPREAD = 1\.72/);
+  assert.match(orbSource, /resolvePreset\("searching", PRESET_SIZE\)/);
+  assert.match(orbSource, /MODE_FRAMES\[mode\]/);
+  assert.match(orbSource, /dot\.x = WIDTH \/ 2 \+ \(dot\.x - FRAME_SIZE \/ 2\) \* HORIZONTAL_SPREAD/);
+  assert.match(orbSource, /paintFrame\(context, frame, true\)/);
+  assert.match(orbSource, /aria-hidden", "true"/);
+  assert.match(orbSource, /prefers-reduced-motion: reduce/);
+  assert.match(orbSource, /paint\(STATIC_FRAME_TIME\)/);
+  assert.match(orbSource, /IntersectionObserver/);
+  assert.match(orbSource, /visibilitychange/);
+  assert.match(orbSource, /canvas\.destroy = \(\) =>/);
+  assert.match(source, /orb\.destroy\?\.\(\)/);
+  assert.doesNotMatch(orbSource, /from ["']react|createRoot\(/i);
+  assert.match(styles, /\.welcome-preface__orb\s*\{[^}]*width: 112px;[^}]*height: 68px/);
 });
 
 test("dismissal and background behavior cover pointer, keyboard, focus, and uninterrupted carousel motion", () => {
@@ -90,8 +92,8 @@ test("dismissal and background behavior cover pointer, keyboard, focus, and unin
 
 test("the Figma modal composition and reduced-motion treatment remain explicit", () => {
   assert.match(styles, /background: rgb\(0 0 0 \/ 88%\)/);
-  assert.match(styles, /width: min\(464px, calc\(100vw - 48px\)\)/);
-  assert.match(styles, /height: 536px/);
+  assert.match(styles, /width: min\(448px, calc\(100vw - 48px\)\)/);
+  assert.match(styles, /height: 520px/);
   assert.doesNotMatch(styles, /aspect-ratio: 5 \/ 6/);
   assert.match(styles, /\.welcome-preface__panel\s*\{[^}]*justify-content: center/);
   assert.match(styles, /padding: 16px 32px/);
@@ -106,7 +108,7 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(styles, /line-height: 32px/);
   assert.match(styles, /letter-spacing: \.04em/);
   assert.match(styles, /margin-top: 18px/);
-  assert.match(styles, /\.welcome-preface__description\s*\{[^}]*margin-top: 36px/);
+  assert.match(styles, /\.welcome-preface__description\s*\{[^}]*margin-top: 32px/);
   assert.match(styles, /\.welcome-preface__description\s*\{[^}]*text-align: center;[^}]*text-indent: 0/);
   assert.match(styles, /font-size: 16px/);
   assert.match(styles, /\.welcome-preface__description\s*\{[^}]*line-height: 28px/);
@@ -117,26 +119,26 @@ test("the Figma modal composition and reduced-motion treatment remain explicit",
   assert.match(phoneStyles, /\.welcome-preface\s*\{\s*background: rgb\(0 0 0 \/ 65%\);/);
   assert.doesNotMatch(phoneStyles, /(?:box-shadow|(?:^|[;\s])color|outline-color):/);
   assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*border-radius: 32px;/);
-  assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 24px;[^}]*font-weight: 700;[^}]*line-height: 20px/);
+  assert.match(phoneStyles, /\.welcome-preface__description\s*\{[^}]*margin-top: 20px;[^}]*font-weight: 700;[^}]*line-height: 20px/);
   assert.match(phoneStyles, /\.welcome-preface__visit\s*\{[^}]*margin-top: 20px;[^}]*font-weight: 700/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*width: 48px;[^}]*height: 48px/);
-  assert.match(styles, /@media screen and \(min-width: 992px\)\s*\{\s*\.welcome-preface__panel\s*\{[^}]*width: min\(400px, calc\(100vw - 48px\)\);[^}]*height: 464px;[^}]*padding-inline: 12px;/);
+  assert.match(styles, /@media screen and \(min-width: 992px\)\s*\{\s*\.welcome-preface__panel\s*\{[^}]*width: min\(376px, calc\(100vw - 48px\)\);[^}]*height: 448px;[^}]*padding: 20px 12px 12px;/);
   assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__description\s*\{[^}]*font-size: 14px;[^}]*line-height: 24px;/);
   assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__visit\s*\{[^}]*font-size: 14px;[^}]*line-height: 24px;/);
   assert.match(styles, /@media screen and \(min-width: 992px\)[\s\S]*?\.welcome-preface__close\s*\{[^}]*width: 52px;[^}]*height: 52px;[^}]*margin-top: 34px/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*flex: 0 0 42px;[^}]*width: 42px;[^}]*height: 42px/);
   assert.match(phoneStyles, /\.welcome-preface__close::before\s*\{[^}]*inset: -3px/);
   assert.match(styles, /\.welcome-preface__close\s*\{[^}]*margin-top: 28px/);
-  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(296px, calc\(100vw - 80px\)\);[^}]*padding: 56px 0;/);
-  assert.match(phoneStyles, /\.rotating-globe-icon\s*\{[^}]*width: 70px;[^}]*height: 39px/);
+  assert.match(phoneStyles, /\.welcome-preface__panel\s*\{[^}]*width: min\(292px, calc\(100vw - 84px\)\);[^}]*padding: 48px 0;/);
+  assert.doesNotMatch(phoneStyles, /\.welcome-preface__orb\s*\{/);
   assert.match(phoneStyles, /\.welcome-preface__close\s*\{[^}]*margin-top: 28px;[^}]*margin-bottom: 0/);
   assert.match(styles, /border: 0/);
-  assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?background: rgb\(255 255 255 \/ 8%\)/);
+  assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?background: rgb\(255 255 255 \/ 4%\)/);
   assert.match(styles, /\.welcome-preface__close\s*\{[\s\S]*?color: #8a8a8a/);
   assert.match(styles, /\.welcome-preface__close svg\s*\{[^}]*width: 14px;[^}]*height: 14px/);
   assert.match(phoneStyles, /\.welcome-preface__close svg\s*\{[^}]*width: 12px;[^}]*height: 12px/);
   assert.match(styles, /\.welcome-preface__close path\s*\{[^}]*stroke-width: 2;/);
-  assert.match(styles, /\.welcome-preface__close:hover\s*\{[\s\S]*?background: rgb\(255 255 255 \/ 8%\);[\s\S]*?color: #fff/);
+  assert.match(styles, /\.welcome-preface__close:hover\s*\{[\s\S]*?background: rgb\(255 255 255 \/ 4%\);[\s\S]*?color: #fff/);
   assert.match(styles, /translate3d\(0, 8px, 0\)/);
   assert.match(styles, /text-transform: none/);
   assert.match(styles, /var\(--motion-duration-response, 240ms\)/);

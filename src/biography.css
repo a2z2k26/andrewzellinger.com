@@ -48,28 +48,6 @@
   isolation: isolate;
 }
 
-.biography-portrait-placeholder .biography-portrait-globe {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 95%;
-  height: auto;
-  aspect-ratio: 128 / 72;
-  transform: translate(-50%, -50%) scaleY(1.25);
-  color: #fff;
-  mix-blend-mode: overlay;
-  opacity: .08;
-  pointer-events: none;
-}
-
-.biography-portrait-globe :is(.rotating-globe-icon__meridian, .rotating-globe-icon__latitude) {
-  stroke-width: 2;
-}
-
-.biography-portrait-globe .rotating-globe-icon__outline {
-  stroke-width: 2;
-}
-
 @media (min-width: 992px) {
   .biography-portrait-placeholder {
     width: var(--biography-content-width);

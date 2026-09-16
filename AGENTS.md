@@ -2,6 +2,18 @@
 
 ## Latest approved refinements
 
+- September 15 History portrait refinement: remove the ghosted animated globe over Andrew's profile photo at every breakpoint and from desktop carousel copies. Preserve the portrait image, its framing, History content/motion, and the separate Projects introduction orb.
+
+- September 15 mobile modal width refinement: below 600px, widen the Projects welcome panel by exactly 12px using `min(292px, calc(100vw - 84px))`. Keep desktop/tablet dimensions, the close touch target, copy, motion, and return-layer behavior unchanged.
+
+- September 15 desktop modal refinement: narrow the Projects welcome panel by another 8px, from 384px to 376px, without changing its 448px height or phone/tablet dimensions. Increase the rendered gap from panel top to thinking orb by exactly 4px, preserving the centered content group's internal gaps, modal behavior and close control.
+
+- September 15 orb scan and close-circle refinement: slow only the searching orb's bright highlight sweep to 60% of its previous speed, keeping the globe's base rotation unchanged. Set the welcome modal close circle's white background fill to 4% opacity at rest and hover; preserve its size, X contrast, focus ring and touch target.
+
+- September 15 introduction refinement: widen the searching orb's projected silhouette to about 1.7:1 using the package's public frame geometry; leave its dots round and its vertical presence modestly larger. Reduce the modal panel's rendered width and height by 16px, and its title-to-paragraph gap by exactly 4px from the accepted baseline. Keep the phone's content-sized panel at 396px actual height by balancing the tighter gap with 48px top/bottom padding. Preserve all existing copy, controls, motion, reduced-motion behavior, return-layer gating and History's independent globe.
+
+- September 15 introduction icon swap: replace only the Projects welcome modal globe with the 64px `thinking-orbs` `searching` visual. Keep the site DOM-first by using the package's canvas engine rather than introducing a React root. Preserve exact modal copy, dialog/close behavior, responsive geometry, reduced motion, the entrance/title choreography and the September 14 top-layer return gate. History's portrait globe is unchanged.
+
 - September 14 Projects-return modal layering: on cross-document returns to Projects, do not mount the introduction until the browser view-transition top layer has finished. The modal must be topmost in every visible frame; a short intentional delay is preferable to painting beneath the returning carousel. Preserve direct-load behavior, reduced motion, the accepted modal entrance, title cascade and collection return choreography.
 
 - September 12 phone detail upper boundary: isolated case-study and article detail views must begin at the document's true upper scroll boundary. Never expose collection-only footer actions above a selected story when the reader scrolls upward. Preserve collection actions on collection pages and leave tablet/desktop detail behavior unchanged.

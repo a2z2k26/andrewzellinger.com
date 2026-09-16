@@ -25,6 +25,7 @@
     "liquid-gooey": "^0.2.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "thinking-orbs": "^0.3.1",
     "three": "^0.185.1",
     "vite": "6.4.2"
   },

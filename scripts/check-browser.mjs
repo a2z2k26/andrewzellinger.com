@@ -106,7 +106,114 @@ try {
     await page.goto(base + '/', { waitUntil: 'load' });
     await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
   });
-  await check('Projects introduction waits for the return transition top layer', async page => {
+  for (const width of [320, 390, 1440]) {
+    await check(`Searching orb paints inside the introduction at ${width}px`, async page => {
+      await page.goto(base + '/', { waitUntil: 'load' });
+      await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
+      await page.waitForTimeout(350);
+      const geometry = await page.locator('.welcome-preface__orb').evaluate(canvas => {
+        const orb = canvas.getBoundingClientRect();
+        const panel = canvas.closest('.welcome-preface__panel').getBoundingClientRect();
+        const description = canvas.parentElement.querySelector('.welcome-preface__description');
+        const copy = description.getBoundingClientRect();
+        const close = canvas.parentElement.querySelector('.welcome-preface__close').getBoundingClientRect();
+        const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+        let painted = 0;
+        let minX = canvas.width, minY = canvas.height, maxX = -1, maxY = -1;
+        for (let y = 0; y < canvas.height; y++) {
+          for (let x = 0; x < canvas.width; x++) {
+            if (pixels[(y * canvas.width + x) * 4 + 3] <= 1) continue;
+            painted++;
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
+          }
+        }
+        const pixelRatio = canvas.width / orb.width;
+        return {
+          width: orb.width, height: orb.height, painted,
+          silhouetteWidth: (maxX - minX + 1) / pixelRatio,
+          silhouetteHeight: (maxY - minY + 1) / pixelRatio,
+          panelWidth: panel.width, panelHeight: panel.height,
+          orbTopGap: orb.top - panel.top,
+          copyGap: Number.parseFloat(getComputedStyle(description).marginTop),
+          inside: orb.left >= panel.left && orb.right <= panel.right
+            && orb.top >= panel.top && orb.bottom <= panel.bottom,
+          copyInside: copy.left >= panel.left && copy.right <= panel.right
+            && copy.top >= panel.top && copy.bottom <= panel.bottom,
+          closeInside: close.left >= panel.left && close.right <= panel.right
+            && close.top >= panel.top && close.bottom <= panel.bottom,
+          pixelWidth: canvas.width, pixelHeight: canvas.height,
+          hidden: canvas.getAttribute('aria-hidden'),
+        };
+      });
+      assert.equal(geometry.width, 112);
+      assert.equal(geometry.height, 68);
+      assert.ok(geometry.painted > 100, 'Package engine paints a non-empty orb');
+      const silhouetteRatio = geometry.silhouetteWidth / geometry.silhouetteHeight;
+      assert.ok(silhouetteRatio >= 1.6 && silhouetteRatio <= 1.8,
+        `The painted globe reads horizontally elongated, not ${silhouetteRatio.toFixed(2)}:1`);
+      assert.equal(geometry.inside, true, 'Orb stays inside the panel');
+      assert.equal(geometry.panelWidth, width < 600 ? Math.min(292, width - 84) : 376);
+      assert.equal(geometry.panelHeight, width < 600 ? 396 : 448);
+      assert.equal(geometry.copyGap, width < 600 ? 20 : 32);
+      assert.equal(geometry.copyInside, true, 'Copy stays inside the panel');
+      assert.equal(geometry.closeInside, true, 'Close control stays inside the panel');
+      assert.ok(geometry.pixelWidth > geometry.pixelHeight);
+      assert.equal(geometry.hidden, 'true');
+      assert.equal(await page.locator('.welcome-preface__panel').evaluate(panel => panel.scrollHeight <= panel.clientHeight + 1), true);
+      console.log(`ORB_PANEL ${width}px: ${geometry.panelWidth}×${geometry.panelHeight}px, title-to-copy ${geometry.copyGap}px`);
+      console.log(`ORB_SHAPE ${width}px: ${geometry.silhouetteWidth}×${geometry.silhouetteHeight}px, ${silhouetteRatio.toFixed(2)}:1`);
+      await page.screenshot({ path: `${artifacts}/searching-orb-direct-${width}.png` });
+
+      if (width < 600) {
+        await page.addStyleTag({ content: '.welcome-preface__panel { width: min(280px, calc(100vw - 96px)); }' });
+        const previousWidth = await page.locator('.welcome-preface__panel').evaluate(panel => panel.getBoundingClientRect().width);
+        assert.equal(geometry.panelWidth - previousWidth, 12, 'The rendered phone panel is 12px wider');
+      }
+
+      if (width >= 992) {
+        await page.addStyleTag({ content: '.welcome-preface__panel { width: 384px; padding: 16px 12px; }' });
+        const previousTopGap = await page.locator('.welcome-preface__orb').evaluate(canvas =>
+          canvas.getBoundingClientRect().top - canvas.closest('.welcome-preface__panel').getBoundingClientRect().top);
+        assert.ok(Math.abs(geometry.orbTopGap - previousTopGap - 4) < 0.5,
+          'The desktop orb sits exactly 4px farther from the panel top');
+      }
+
+      // Browser-render the accepted prior footprint as a test-only override;
+      // compare actual panels, including the content-sized phone height.
+      await page.addStyleTag({ content: width < 600 ? `
+        .welcome-preface__panel { width: min(296px, calc(100vw - 80px)); height: auto; padding: 56px 0; }
+        .welcome-preface__orb { width: 64px; height: 64px; }
+        .welcome-preface__description { margin-top: 24px; }
+      ` : `
+        .welcome-preface__panel { width: 400px; height: 464px; }
+        .welcome-preface__orb { width: 64px; height: 64px; }
+        .welcome-preface__description { margin-top: 36px; }
+      ` });
+      const before = await page.locator('.welcome-preface__panel').evaluate(panel => {
+        const rect = panel.getBoundingClientRect();
+        return { width: rect.width, height: rect.height };
+      });
+      assert.equal(before.width - geometry.panelWidth, width < 600 ? 4 : 24,
+        'The rendered panel retains the earlier reduction and the latest phone/desktop width adjustments');
+      assert.equal(before.height - geometry.panelHeight, 16, 'The rendered panel is 16px shorter');
+      console.log(`ORB_PANEL_BEFORE ${width}px: ${before.width}×${before.height}px`);
+    }, { viewport: { width, height: width < 600 ? 844 : 900 } });
+  }
+  await check('Searching orb freezes as a static frame for reduced motion', async page => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
+    const image = () => page.locator('.welcome-preface__orb').evaluate(canvas =>
+      [...canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data]);
+    const before = await image();
+    await page.waitForTimeout(180);
+    assert.deepEqual(await image(), before, 'Reduced motion keeps the representative frame still');
+  }, { viewport: { width: 390, height: 844 } });
+  for (const width of [320, 390, 1440]) {
+    await check(`Projects introduction waits for the return transition top layer at ${width}px`, async page => {
     await page.addInitScript(() => {
       window.__welcomeLayerFrames = [];
       addEventListener('pagereveal', event => {
@@ -127,10 +234,21 @@ try {
     });
 
     await page.goto(base + '/articles', { waitUntil: 'load' });
+    if (width < 600) await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
     await page.locator('.masthead-link').filter({ hasText: 'Projects' }).click();
     await page.waitForURL(base + '/');
     await page.getByRole('button', { name: 'Close portfolio introduction' }).waitFor();
     await page.waitForTimeout(1700);
+
+    assert.equal(await page.locator('.welcome-preface__orb').count(), 1);
+    assert.equal(await page.locator('.welcome-preface__orb').evaluate(canvas => {
+      const orb = canvas.getBoundingClientRect();
+      const panel = canvas.closest('.welcome-preface__panel').getBoundingClientRect();
+      return orb.width === 112 && orb.height === 68
+        && orb.left >= panel.left && orb.right <= panel.right
+        && orb.top >= panel.top && orb.bottom <= panel.bottom;
+    }), true);
+    await page.screenshot({ path: `${artifacts}/searching-orb-projects-return-${width}.png` });
 
     const frames = await page.evaluate(() => window.__welcomeLayerFrames);
     assert.ok(frames.length > 0, 'Projects return exposes a cross-document view transition');
@@ -139,7 +257,8 @@ try {
       0,
       'The introduction must not paint while the browser transition top layer is active',
     );
-  });
+    }, { viewport: { width, height: width < 600 ? 844 : 900 } });
+  }
   for (const width of [390, 820, 1440]) {
     await check(`Title characters animate in the painted route snapshots at ${width}px`, async page => {
       await page.addInitScript(() => {
@@ -232,6 +351,19 @@ try {
     assert.equal(await page.evaluate(() => document.documentElement.hasAttribute('data-phone-route')), false);
     assert.equal(await page.locator('.biography-introduction').evaluate(node => getComputedStyle(node).visibility), 'visible');
   }, { viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' });
+  for (const width of [390, 1440]) {
+    await check(`History portrait has no decorative globe at ${width}px`, async page => {
+      await visit(page, '/history');
+      const portraits = page.locator('.biography-portrait-placeholder');
+      assert.ok(await portraits.count() > 0, 'History portrait remains mounted');
+      assert.equal(await page.locator('.biography-portrait-globe').count(), 0,
+        'No globe is mounted on the portrait or its carousel copies');
+      assert.ok(await portraits.first().evaluate(node =>
+        getComputedStyle(node).getPropertyValue('--portfolio-media-image').includes('az-headshot-extended-v1.png')),
+      'The original portrait media remains sourced');
+      await page.screenshot({ path: `${artifacts}/history-portrait-no-globe-${width}.png` });
+    }, { viewport: { width, height: width < 600 ? 844 : 900 } });
+  }
   for (const route of routes) {
     await check(`${route.name} desktop autoplay and reverse`, async page => {
       await visit(page, route.path);

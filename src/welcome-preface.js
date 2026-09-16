@@ -1,4 +1,4 @@
-import { createRotatingGlobeIcon } from "./rotating-globe-icon.js";
+import { createThinkingOrbIcon } from "./thinking-orb-icon.js";
 
 // Launch gate: retain the complete introduction and show it on every Projects arrival.
 const WELCOME_PREFACE_ENABLED = true;
@@ -50,7 +50,7 @@ function makePreface() {
   panel.setAttribute("aria-describedby", "welcome-preface-description");
   panel.tabIndex = -1;
 
-  const globe = createRotatingGlobeIcon();
+  const orb = createThinkingOrbIcon();
 
   const title = document.createElement("h2");
   title.id = "welcome-preface-title";
@@ -85,9 +85,9 @@ function makePreface() {
     </svg>
   `;
 
-  panel.append(globe, title, description, visit, closeButton);
+  panel.append(orb, title, description, visit, closeButton);
   backdrop.append(panel);
-  return { backdrop, panel, closeButton, globe };
+  return { backdrop, panel, closeButton, orb };
 }
 
 function mountPreface() {
@@ -97,7 +97,7 @@ function mountPreface() {
   const priorFocus = document.activeElement;
   const priorAriaHidden = page?.getAttribute("aria-hidden");
   const pageWasInert = page?.hasAttribute("inert") ?? false;
-  const { backdrop, panel, closeButton, globe } = makePreface();
+  const { backdrop, panel, closeButton, orb } = makePreface();
   let closing = false;
   let removalTimer = 0;
 
@@ -125,7 +125,7 @@ function mountPreface() {
     window.removeEventListener("pagehide", onPageHide);
     backdrop.removeEventListener("wheel", onBlockedScrollInput);
     backdrop.removeEventListener("touchmove", onBlockedScrollInput);
-    globe.destroy?.();
+    orb.destroy?.();
     backdrop.remove();
     restorePage();
     if (priorFocus instanceof HTMLElement && priorFocus.isConnected && priorFocus !== document.body) {
@@ -201,7 +201,7 @@ function mountPreface() {
     document.removeEventListener("keydown", onKeyDown);
     backdrop.removeEventListener("wheel", onBlockedScrollInput);
     backdrop.removeEventListener("touchmove", onBlockedScrollInput);
-    globe.destroy?.();
+    orb.destroy?.();
     backdrop.remove();
     restorePage();
   }
