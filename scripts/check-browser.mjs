@@ -117,6 +117,7 @@ try {
         const description = canvas.parentElement.querySelector('.welcome-preface__description');
         const copy = description.getBoundingClientRect();
         const close = canvas.parentElement.querySelector('.welcome-preface__close').getBoundingClientRect();
+        const closeIcon = canvas.parentElement.querySelector('.welcome-preface__close svg').getBoundingClientRect();
         const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
         let painted = 0;
         let minX = canvas.width, minY = canvas.height, maxX = -1, maxY = -1;
@@ -137,6 +138,11 @@ try {
           silhouetteHeight: (maxY - minY + 1) / pixelRatio,
           panelWidth: panel.width, panelHeight: panel.height,
           orbTopGap: orb.top - panel.top,
+          closeWidth: close.width, closeHeight: close.height,
+          closeIconWidth: closeIcon.width, closeIconHeight: closeIcon.height,
+          touchExtension: innerWidth < 600
+            ? Math.abs(Number.parseFloat(getComputedStyle(canvas.parentElement.querySelector('.welcome-preface__close'), '::before').top))
+            : 0,
           copyGap: Number.parseFloat(getComputedStyle(description).marginTop),
           inside: orb.left >= panel.left && orb.right <= panel.right
             && orb.top >= panel.top && orb.bottom <= panel.bottom,
@@ -148,18 +154,24 @@ try {
           hidden: canvas.getAttribute('aria-hidden'),
         };
       });
-      assert.equal(geometry.width, 112);
-      assert.equal(geometry.height, 68);
+      assert.ok(Math.abs(geometry.width - (width < 600 ? 95.2 : 112)) < 0.1);
+      assert.ok(Math.abs(geometry.height - (width < 600 ? 57.8 : 68)) < 0.1);
       assert.ok(geometry.painted > 100, 'Package engine paints a non-empty orb');
       const silhouetteRatio = geometry.silhouetteWidth / geometry.silhouetteHeight;
       assert.ok(silhouetteRatio >= 1.6 && silhouetteRatio <= 1.8,
         `The painted globe reads horizontally elongated, not ${silhouetteRatio.toFixed(2)}:1`);
       assert.equal(geometry.inside, true, 'Orb stays inside the panel');
       assert.equal(geometry.panelWidth, width < 600 ? Math.min(292, width - 84) : 376);
-      assert.equal(geometry.panelHeight, width < 600 ? 396 : 448);
+      assert.ok(Math.abs(geometry.panelHeight - (width < 600 ? 384 : 448)) < 0.1);
       assert.equal(geometry.copyGap, width < 600 ? 20 : 32);
       assert.equal(geometry.copyInside, true, 'Copy stays inside the panel');
       assert.equal(geometry.closeInside, true, 'Close control stays inside the panel');
+      assert.equal(geometry.closeWidth, width < 600 ? 38 : 48);
+      assert.equal(geometry.closeHeight, width < 600 ? 38 : 48);
+      assert.equal(geometry.closeIconWidth, width < 600 ? 10 : 12);
+      assert.equal(geometry.closeIconHeight, width < 600 ? 10 : 12);
+      if (width < 600) assert.equal(geometry.closeWidth + geometry.touchExtension * 2, 48,
+        'The smaller phone circle retains its 48px touch target');
       assert.ok(geometry.pixelWidth > geometry.pixelHeight);
       assert.equal(geometry.hidden, 'true');
       assert.equal(await page.locator('.welcome-preface__panel').evaluate(panel => panel.scrollHeight <= panel.clientHeight + 1), true);
@@ -168,13 +180,23 @@ try {
       await page.screenshot({ path: `${artifacts}/searching-orb-direct-${width}.png` });
 
       if (width < 600) {
+        await page.addStyleTag({ content: '.welcome-preface__orb { width: 112px; height: 68px; } .welcome-preface__panel { padding-bottom: 52px; }' });
+        const previousSize = await page.locator('.welcome-preface__orb').evaluate(canvas => ({
+          orbWidth: canvas.getBoundingClientRect().width,
+          orbHeight: canvas.getBoundingClientRect().height,
+          panelHeight: canvas.closest('.welcome-preface__panel').getBoundingClientRect().height,
+        }));
+        assert.ok(Math.abs(geometry.width / previousSize.orbWidth - .85) < .001);
+        assert.ok(Math.abs(geometry.height / previousSize.orbHeight - .85) < .001);
+        assert.ok(Math.abs(previousSize.panelHeight - geometry.panelHeight - 12) < .1,
+          'The rendered phone panel is 12px shorter');
         await page.addStyleTag({ content: '.welcome-preface__panel { width: min(280px, calc(100vw - 96px)); }' });
         const previousWidth = await page.locator('.welcome-preface__panel').evaluate(panel => panel.getBoundingClientRect().width);
         assert.equal(geometry.panelWidth - previousWidth, 12, 'The rendered phone panel is 12px wider');
       }
 
       if (width >= 992) {
-        await page.addStyleTag({ content: '.welcome-preface__panel { width: 384px; padding: 16px 12px; }' });
+        await page.addStyleTag({ content: '.welcome-preface__panel { width: 384px; padding: 16px 12px; } .welcome-preface__close { width: 52px; height: 52px; }' });
         const previousTopGap = await page.locator('.welcome-preface__orb').evaluate(canvas =>
           canvas.getBoundingClientRect().top - canvas.closest('.welcome-preface__panel').getBoundingClientRect().top);
         assert.ok(Math.abs(geometry.orbTopGap - previousTopGap - 4) < 0.5,
@@ -187,6 +209,7 @@ try {
         .welcome-preface__panel { width: min(296px, calc(100vw - 80px)); height: auto; padding: 56px 0; }
         .welcome-preface__orb { width: 64px; height: 64px; }
         .welcome-preface__description { margin-top: 24px; }
+        .welcome-preface__close { flex-basis: 42px; width: 42px; height: 42px; }
       ` : `
         .welcome-preface__panel { width: 400px; height: 464px; }
         .welcome-preface__orb { width: 64px; height: 64px; }
@@ -198,7 +221,8 @@ try {
       });
       assert.equal(before.width - geometry.panelWidth, width < 600 ? 4 : 24,
         'The rendered panel retains the earlier reduction and the latest phone/desktop width adjustments');
-      assert.equal(before.height - geometry.panelHeight, 16, 'The rendered panel is 16px shorter');
+      assert.ok(Math.abs(before.height - geometry.panelHeight - (width < 600 ? 28 : 16)) < .1,
+        'The rendered panel retains the earlier reduction plus the latest phone-height adjustment');
       console.log(`ORB_PANEL_BEFORE ${width}px: ${before.width}×${before.height}px`);
     }, { viewport: { width, height: width < 600 ? 844 : 900 } });
   }
@@ -244,7 +268,9 @@ try {
     assert.equal(await page.locator('.welcome-preface__orb').evaluate(canvas => {
       const orb = canvas.getBoundingClientRect();
       const panel = canvas.closest('.welcome-preface__panel').getBoundingClientRect();
-      return orb.width === 112 && orb.height === 68
+      const expectedWidth = innerWidth < 600 ? 95.2 : 112;
+      const expectedHeight = innerWidth < 600 ? 57.8 : 68;
+      return Math.abs(orb.width - expectedWidth) < .1 && Math.abs(orb.height - expectedHeight) < .1
         && orb.left >= panel.left && orb.right <= panel.right
         && orb.top >= panel.top && orb.bottom <= panel.bottom;
     }), true);

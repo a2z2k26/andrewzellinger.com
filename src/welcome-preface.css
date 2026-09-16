@@ -184,7 +184,7 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__panel {
     width: min(376px, calc(100vw - 48px));
     height: 448px;
-    padding: 20px 12px 12px;
+    padding: 18px 12px 14px;
   }
 
   .welcome-preface__description {
@@ -198,9 +198,14 @@ html[data-welcome-preface="open"] body {
   }
 
   .welcome-preface__close {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     margin-top: 34px;
+  }
+
+  .welcome-preface__close svg {
+    width: 12px;
+    height: 12px;
   }
 }
 
@@ -224,10 +229,15 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__panel {
     width: min(292px, calc(100vw - 84px));
     height: auto;
-    padding: 48px 0;
+    padding: 48px 0 50.2px;
     border-radius: 32px;
     /* Keep the close button's invisible touch extension usable at the edge. */
     overflow: visible;
+  }
+
+  .welcome-preface__orb {
+    width: 95.2px;
+    height: 57.8px;
   }
 
   .welcome-preface__title {
@@ -252,9 +262,9 @@ html[data-welcome-preface="open"] body {
 
   .welcome-preface__close {
     position: relative;
-    flex: 0 0 42px;
-    width: 42px;
-    height: 42px;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
     margin-top: 28px;
     margin-bottom: 0;
   }
@@ -263,13 +273,13 @@ html[data-welcome-preface="open"] body {
   .welcome-preface__close::before {
     content: "";
     position: absolute;
-    inset: -3px;
+    inset: -5px;
     border-radius: 50%;
   }
 
   .welcome-preface__close svg {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
   }
 }
 
