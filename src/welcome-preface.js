@@ -60,7 +60,7 @@ function makePreface() {
   const description = document.createElement("p");
   description.id = "welcome-preface-description";
   description.className = "welcome-preface__description";
-  description.textContent = "Years of building with AI has reshaped my design practice. This site documents what came before, here’s what’s next:";
+  description.textContent = "This site documents my commercial product design work. Explore my AI projects here:";
 
   const visit = document.createElement("p");
   visit.className = "welcome-preface__visit";

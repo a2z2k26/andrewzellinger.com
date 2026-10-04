@@ -40,11 +40,6 @@ export const BIOGRAPHY = Object.freeze({
         dates: "2024 — 2025",
       }),
       Object.freeze({
-        organization: "Sketch Deck",
-        role: "Design Lead",
-        dates: "2024 — 2025",
-      }),
-      Object.freeze({
         organization: "SketchDeck",
         role: "Design Lead",
         dates: "2023 — 2024",

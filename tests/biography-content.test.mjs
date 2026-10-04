@@ -22,7 +22,6 @@ test("biography contains the approved editorial structure and experience record"
       "Independent",
       "Cosmos",
       "Avantos",
-      "Sketch Deck",
       "SketchDeck",
       "Fi",
       "Live Auctioneers",

@@ -2,6 +2,10 @@
 
 ## Latest approved refinements
 
+- October 4 introduction copy: replace the Projects welcome-modal paragraph with exactly “This site documents my commercial product design work. Explore my AI projects here:”. Preserve the `ZELLINGER` title, thinking orb, `visit temporary.com` link and destination, close control, layout, motion, responsive behavior, and return-layer gating. This supersedes the September 12 introduction paragraph only.
+
+- September 24 History experience correction: remove the duplicate `Sketch Deck — Design Lead — 2024–2025` entry. Retain the source-backed `SketchDeck — Design Lead — 2023–2024` entry and preserve every other History role, date, order, and presentation detail.
+
 - September 15 modal destination: display `temporary.com` in the Projects welcome modal and link it to `https://andrewzellinger.framer.website/`. Preserve the `visit` label, new-tab behavior, security relationship, typography, spacing, modal behavior, and every non-link element.
 
 - September 15 History portrait orb verdict: remove the trial thinking-orb overlay completely from the profile portrait and all desktop carousel copies. Keep the source portrait, framing, History content/motion, and the separate Projects welcome-modal orb unchanged. Do not restore the earlier SVG globe.
@@ -34,7 +38,7 @@
 
 - September 12 History resume download: show a left-aligned “Download resume” control 24px below the second introduction paragraph at every breakpoint, reusing the Cal.com/Email button style. Andrew explicitly authorized serving the supplied `Resume/Andrew Zellinger [2026].pdf` as `/downloads/andrew-zellinger-resume-2026.pdf`; preserve the ignored original and its bytes.
 
-- September 12 introduction copy follow-up: use exactly “Years of building with AI has reshaped my design practice. This site documents what came before, here’s what’s next:” at every breakpoint. Preserve the chosen “has” wording and all styling.
+- September 12 introduction copy follow-up (superseded October 4): use exactly “Years of building with AI has reshaped my design practice. This site documents what came before, here’s what’s next:” at every breakpoint. Preserve the chosen “has” wording and all styling.
 
 - September 12 mobile introduction modal: increase its content-sized height by 16px using 56px top/bottom padding (previously 48px). Use a 65% black page dimmer below 600px. Preserve the dark panel, 42px close circle, internal gaps, typography and desktop/tablet styling.
 

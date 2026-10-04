@@ -37,7 +37,7 @@ test("the introduction waits for the incoming browser top layer before mounting"
 
 test("the approved copy and accessible dialog contract are present", () => {
   assert.match(source, /title\.textContent = "ZELLINGER"/);
-  assert.match(source, /description\.textContent = "Years of building with AI has reshaped my design practice\. This site documents what came before, here’s what’s next:"/);
+  assert.match(source, /description\.textContent = "This site documents my commercial product design work\. Explore my AI projects here:"/);
   assert.doesNotMatch(source, /Lorem ipsum/);
   assert.match(source, /role", "dialog"/);
   assert.match(source, /aria-modal", "true"/);
