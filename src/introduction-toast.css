@@ -1,0 +1,79 @@
+.introduction-toast {
+  position: fixed;
+  z-index: 149;
+  right: max(24px, env(safe-area-inset-right, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  width: min(340px, calc(100vw - 48px));
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  padding: 16px 44px 16px 18px;
+  border-radius: var(--media--image-radius);
+  background: rgb(255 255 255 / 15%);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  color: #dedede;
+  font-family: "Geist", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.introduction-toast[data-state="open"] { opacity: 1; transform: none; }
+.introduction-toast[data-state="leaving"] { pointer-events: none; }
+.introduction-toast__copy,
+.introduction-toast__visit {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-indent: 0;
+  text-transform: none;
+}
+.introduction-toast__visit {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.introduction-toast__visit a,
+.introduction-toast__visit a:visited { color: #fff; text-decoration: none; }
+.introduction-toast__visit a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.introduction-toast__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #dedede;
+  cursor: pointer;
+}
+.introduction-toast__close::before { content: ""; position: absolute; inset: -6px; }
+.introduction-toast__close svg { width: 12px; height: 12px; }
+.introduction-toast__close path { fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; }
+.introduction-toast__close:hover { color: #fff; background: rgb(255 255 255 / 6%); }
+.introduction-toast a:focus-visible,
+.introduction-toast button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 991px) {
+  .introduction-toast { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); max-height: calc(100dvh - 120px); }
+}
+@media (max-width: 599px) {
+  .introduction-toast {
+    right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    width: min(340px, calc(100vw - 32px));
+    max-height: calc(100dvh - 96px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .introduction-toast { transition: none; transform: none; }
+}

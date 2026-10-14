@@ -46,6 +46,11 @@ async function check(name, run, options = {}) {
 async function visit(page, path) {
   await page.goto(base + path, { waitUntil: 'load' });
   await page.waitForTimeout(1500);
+  const toastClose = page.getByRole('button', { name: 'Dismiss portfolio introduction' });
+  if (await toastClose.count()) {
+    await toastClose.click();
+    await page.locator('.introduction-toast').waitFor({ state: 'detached' });
+  }
   const welcomeClose = page.getByRole('button', { name: 'Close portfolio introduction' });
   if (await welcomeClose.count()) {
     await welcomeClose.click();
@@ -77,6 +82,76 @@ async function clickVisibleCard(page) {
   return target.href;
 }
 try {
+  for (const width of [320, 390, 820, 1440]) {
+    await check(`Text toast fits and remains nonmodal at ${width}px`, async page => {
+      await page.goto(base + '/', { waitUntil: 'load' });
+      const toast = page.locator('.introduction-toast');
+      await toast.waitFor();
+      await page.waitForTimeout(300);
+      const appearance = await toast.evaluate(el => {
+        const r = el.getBoundingClientRect();
+        const style = getComputedStyle(el);
+        const close = el.querySelector('button');
+        return { width: r.width, height: r.height, x: r.x, bottom: r.bottom,
+          background: style.backgroundColor, blur: style.backdropFilter,
+          fits: el.scrollWidth <= el.clientWidth && el.scrollHeight <= el.clientHeight,
+          focused: el.contains(document.activeElement),
+          target: close.offsetWidth + 2 * Math.abs(parseFloat(getComputedStyle(close, '::before').left)),
+        };
+      });
+      assert.equal(appearance.background, 'rgba(255, 255, 255, 0.15)');
+      assert.equal(appearance.blur, 'blur(24px)');
+      assert.equal(appearance.width, Math.min(340, width - (width < 600 ? 32 : 48)));
+      assert.ok(appearance.fits && appearance.height <= 140 && appearance.x >= 16);
+      assert.ok(appearance.bottom <= 900 - (width < 600 ? 72 : width < 992 ? 96 : 24));
+      assert.equal(appearance.focused, false);
+      assert.equal(appearance.target, 44);
+      assert.equal(await toast.locator('canvas, h2').count(), 0);
+      assert.equal(await toast.locator('.introduction-toast__copy').textContent(), 'This site documents my commercial product design work. Explore my AI projects here:');
+      const link = toast.getByRole('link', { name: 'temporary.com' });
+      assert.equal(await link.getAttribute('href'), 'https://andrewzellinger.framer.website/');
+      assert.equal(await link.getAttribute('target'), '_blank');
+      assert.equal(await page.locator('.page').evaluate(el => el.inert), false);
+      await page.screenshot({ path: `${artifacts}/subdued-toast-${width}.png` });
+      const close = toast.getByRole('button');
+      await close.focus();
+      await page.keyboard.press('Tab');
+      assert.equal(await toast.evaluate(el => el.contains(document.activeElement)), false, 'No focus trap');
+      if (width < 600) {
+        await page.mouse.move(120, 220);
+        await page.mouse.wheel(0, 400);
+        await page.waitForFunction(() => scrollY > 100, null, { timeout: 3000 });
+      }
+      await close.click();
+      await toast.waitFor({ state: 'detached' });
+      assert.equal(await page.locator('.welcome-preface').count(), 0);
+    }, { viewport: { width, height: 900 } });
+  }
+  await check('Text toast allows page navigation and returns on Projects arrival', async page => {
+    await page.goto(base + '/', { waitUntil: 'load' });
+    await page.locator('.introduction-toast').waitFor();
+    await page.locator('.masthead-link').filter({ hasText: 'Articles' }).click();
+    await page.waitForURL(base + '/articles');
+    assert.equal(await page.locator('.introduction-toast').count(), 0);
+    await page.locator('.masthead-link').filter({ hasText: 'Projects' }).click();
+    await page.waitForURL(base + '/');
+    await page.locator('.introduction-toast').waitFor();
+    await clickVisibleCard(page);
+    await page.waitForFunction(() => location.pathname.startsWith('/case-studies/'));
+    assert.equal(await page.locator('.introduction-toast').count(), 0);
+  });
+  await check('Text toast respects reduced motion and scoped Escape dismissal', async page => {
+    await page.goto(base + '/', { waitUntil: 'load' });
+    const toast = page.locator('.introduction-toast');
+    await toast.waitFor();
+    assert.ok(await toast.evaluate(el => parseFloat(getComputedStyle(el).transitionDuration) <= .001));
+    await page.keyboard.press('Escape');
+    assert.equal(await toast.count(), 1);
+    await toast.getByRole('link').focus();
+    await page.keyboard.press('Escape');
+    assert.equal(await toast.count(), 0);
+    assert.equal(await page.locator('.masthead-link[aria-current="page"]').evaluate(el => el === document.activeElement), true);
+  }, { reducedMotion: 'reduce' });
   // Retain the approved modal checks for a future explicit re-enable.
   const introductionEnabled = (await readFile(resolve('src/welcome-preface.js'), 'utf8'))
     .includes('const WELCOME_PREFACE_ENABLED = true;');
