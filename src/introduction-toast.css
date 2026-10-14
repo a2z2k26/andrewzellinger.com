@@ -64,14 +64,18 @@
 .introduction-toast__close:hover { color: #fff; background: rgb(255 255 255 / 6%); }
 .introduction-toast a:focus-visible,
 .introduction-toast button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (min-width: 992px) {
+  .introduction-toast { right: max(48px, env(safe-area-inset-right, 0px)); }
+}
 @media (max-width: 991px) {
   .introduction-toast { bottom: calc(96px + env(safe-area-inset-bottom, 0px)); max-height: calc(100dvh - 120px); }
 }
 @media (max-width: 599px) {
   .introduction-toast {
-    right: max(16px, env(safe-area-inset-right, 0px));
+    left: 32px;
+    right: 32px;
     bottom: calc(72px + env(safe-area-inset-bottom, 0px));
-    width: min(340px, calc(100vw - 32px));
+    width: auto;
     max-height: calc(100dvh - 96px);
   }
 }

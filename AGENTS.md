@@ -2,6 +2,8 @@
 
 ## Latest approved refinements
 
+- October 14 toast horizontal placement: desktop (992px+) uses a 48px inset from the page’s right edge; phone (below 600px) is centered with exactly 32px left/right gutters and fills the remaining width. Preserve tablet placement, bottom clearance, copy, styling and dismissal behavior. Andrew approved this placement for merge, GitHub push and Vercel production deployment.
+
 - October 14 toast paragraph leading: reduce only `.introduction-toast__copy` line height from 20px to 18px. Preserve exact text, link leading/spacing and all other toast styling and behavior. Authorized for merge, GitHub push and Vercel production deployment.
 
 - October 14 subdued introduction toast: add a text-only dismissible lower-right notice using the exact introduction paragraph and existing `visit temporary.com` link/destination. Use 15%-opacity white fill, background blur, white/light-grey text and a subdued X. Share the images’ `--media--image-radius` token (8px) for the toast corners. Andrew approved this treatment for GitHub merge/push and production deployment. Keep the prior modal disabled and retained; omit its orb and title from the toast. Preserve page interaction and clear compact navigation.

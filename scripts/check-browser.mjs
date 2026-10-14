@@ -101,7 +101,8 @@ try {
       });
       assert.equal(appearance.background, 'rgba(255, 255, 255, 0.15)');
       assert.equal(appearance.blur, 'blur(24px)');
-      assert.equal(appearance.width, Math.min(340, width - (width < 600 ? 32 : 48)));
+      assert.equal(appearance.width, width < 600 ? width - 64 : Math.min(340, width - 48));
+      assert.equal(width - appearance.x - appearance.width, width < 600 ? 32 : width >= 992 ? 48 : 24);
       assert.ok(appearance.fits && appearance.height <= 140 && appearance.x >= 16);
       assert.ok(appearance.bottom <= 900 - (width < 600 ? 72 : width < 992 ? 96 : 24));
       assert.equal(appearance.focused, false);
