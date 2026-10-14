@@ -1,7 +1,7 @@
 import { createThinkingOrbIcon } from "./thinking-orb-icon.js";
 
-// Launch gate: retain the complete introduction and show it on every Projects arrival.
-const WELCOME_PREFACE_ENABLED = true;
+// Launch gate: retain the approved modal, but keep it hidden until re-enabled.
+const WELCOME_PREFACE_ENABLED = false;
 const HOME_PATHS = new Set(["", "/projects"]);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const SCROLL_KEYS = new Set(["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "]);

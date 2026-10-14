@@ -20,8 +20,8 @@ test("Projects loads the introduction before the collection motion runtime", () 
   assert.match(html, /href="\/src\/welcome-preface\.css"/);
 });
 
-test("the retained introduction is launch-gated on, Projects-only, and shown on every arrival", () => {
-  assert.match(source, /const WELCOME_PREFACE_ENABLED = true;/);
+test("the retained introduction is launch-gated off while retaining its Projects-only arrival behavior", () => {
+  assert.match(source, /const WELCOME_PREFACE_ENABLED = false;/);
   assert.match(source, /function shouldOpen\(\) \{\s*if \(!WELCOME_PREFACE_ENABLED\) return false;/);
   assert.match(source, /new Set\(\["", "\/projects"\]\)/);
   assert.match(source, /return HOME_PATHS\.has\(currentPath\(\)\);/);

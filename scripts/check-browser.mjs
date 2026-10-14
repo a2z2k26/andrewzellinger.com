@@ -77,6 +77,10 @@ async function clickVisibleCard(page) {
   return target.href;
 }
 try {
+  // Retain the approved modal checks for a future explicit re-enable.
+  const introductionEnabled = (await readFile(resolve('src/welcome-preface.js'), 'utf8'))
+    .includes('const WELCOME_PREFACE_ENABLED = true;');
+  if (introductionEnabled) {
   for (const width of [390, 1440]) {
     await check(`First title entrance waits for the introduction at ${width}px`, async page => {
       await page.goto(base + '/', { waitUntil: 'load' });
@@ -284,6 +288,27 @@ try {
       'The introduction must not paint while the browser transition top layer is active',
     );
     }, { viewport: { width, height: width < 600 ? 844 : 900 } });
+  }
+  } else {
+    for (const width of [320, 390, 820, 1440]) {
+      await check(`Introduction stays hidden and Projects remains interactive at ${width}px`, async page => {
+        await page.goto(base + '/', { waitUntil: 'load' });
+        await page.waitForTimeout(1000);
+        assert.equal(await page.locator('.welcome-preface').count(), 0);
+        assert.equal(await page.locator('html').getAttribute('data-welcome-preface'), null);
+        assert.equal(await page.locator('.page').evaluate(el => el.inert), false);
+        assert.equal(await page.locator('.page').getAttribute('aria-hidden'), null);
+        if (width < 600) await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
+        await page.locator('.masthead-link').filter({ hasText: 'Articles' }).click();
+        await page.waitForURL(base + '/articles');
+        if (width < 600) await page.getByRole('button', { name: 'Open navigation', exact: true }).click();
+        await page.locator('.masthead-link').filter({ hasText: 'Projects' }).click();
+        await page.waitForURL(base + '/');
+        await page.waitForTimeout(1000);
+        assert.equal(await page.locator('.welcome-preface').count(), 0, 'Introduction stays hidden on return');
+        await page.screenshot({ path: `${artifacts}/introduction-hidden-${width}.png` });
+      }, { viewport: { width, height: width < 600 ? 844 : 900 } });
+    }
   }
   for (const width of [390, 820, 1440]) {
     await check(`Title characters animate in the painted route snapshots at ${width}px`, async page => {

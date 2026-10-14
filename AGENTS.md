@@ -2,6 +2,8 @@
 
 ## Latest approved refinements
 
+- October 14 introduction rollback and hide: reject the lower-right toast trial and restore the prior approved interstitial implementation exactly. Keep the modal hidden through `WELCOME_PREFACE_ENABLED = false`; retain its copy, orb, styling, accessibility, motion and return-layer logic for a future explicit re-enable. Publish this hidden-introduction state to Vercel and synchronize GitHub main with local main.
+
 - October 4 introduction copy: replace the Projects welcome-modal paragraph with exactly “This site documents my commercial product design work. Explore my AI projects here:”. Preserve the `ZELLINGER` title, thinking orb, `visit temporary.com` link and destination, close control, layout, motion, responsive behavior, and return-layer gating. This supersedes the September 12 introduction paragraph only.
 
 - September 24 History experience correction: remove the duplicate `Sketch Deck — Design Lead — 2024–2025` entry. Retain the source-backed `SketchDeck — Design Lead — 2023–2024` entry and preserve every other History role, date, order, and presentation detail.
