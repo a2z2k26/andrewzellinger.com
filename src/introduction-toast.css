@@ -33,6 +33,7 @@
   text-indent: 0;
   text-transform: none;
 }
+.introduction-toast__copy { line-height: 18px; }
 .introduction-toast__visit {
   display: flex;
   gap: 6px;
